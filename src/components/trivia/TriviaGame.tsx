@@ -134,11 +134,8 @@ export default function TriviaGame() {
       }
     } else {
       setShowFeedback({ type: 'incorrect', message: `Not quite! The correct answer was: ${currentQuestion.answer}` });
-      toast({
-        title: "Incorrect",
-        description: `The correct answer was: ${currentQuestion.answer}`,
-        variant: "destructive",
-      });
+      // Removed redundant toast for incorrect answer to avoid double messages
+      
       // Play fog horn sound
       try {
         const audio = new Audio(); // Create empty audio object first
@@ -149,19 +146,19 @@ export default function TriviaGame() {
           if (audio.error) {
             switch (audio.error.code) {
               case audio.error.MEDIA_ERR_ABORTED:
-                errorMessage = "Audio playback aborted.";
+                errorMessage = "Audio playback aborted by user or script.";
                 break;
               case audio.error.MEDIA_ERR_NETWORK:
-                errorMessage = "Network error fetching audio.";
+                errorMessage = "Network error prevented successful fetching of the audio.";
                 break;
               case audio.error.MEDIA_ERR_DECODE:
-                errorMessage = "Audio decoding error or unsupported format.";
+                errorMessage = "Audio decoding error. The file might be corrupted or in an unsupported format.";
                 break;
               case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                errorMessage = "Audio source not supported or not found. Please ensure '/sounds/fog-horn.mp3' exists in your 'public/sounds/' directory.";
+                errorMessage = "The audio source format is not supported or the source was not found. Ensure '/sounds/fog-horn.mp3' exists in 'public/sounds/'.";
                 break;
               default:
-                errorMessage = `An unknown error occurred (code: ${audio.error.code}).`;
+                errorMessage = `An unknown error occurred with the audio (code: ${audio.error.code}).`;
             }
           }
           console.error("Detailed audio error:", errorMessage, audio.error);
@@ -172,7 +169,6 @@ export default function TriviaGame() {
           });
         };
 
-        // Attempt to play only after it's likely ready
         audio.oncanplaythrough = () => {
           const playPromise = audio.play();
           if (playPromise !== undefined) {
@@ -190,7 +186,7 @@ export default function TriviaGame() {
         };
         
         audio.src = '/sounds/fog-horn.mp3'; // Set the source
-        audio.load(); // Explicitly call load
+        audio.load(); // Explicitly call load. Browsers often require user interaction to play audio.
 
       } catch (error: any) {
         console.error("Synchronous error creating Audio object or setting up handlers:", error);
@@ -332,3 +328,4 @@ export default function TriviaGame() {
     </div>
   );
 }
+
