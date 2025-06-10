@@ -1,6 +1,6 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { Castle, Diamond, Fish, Scroll, Ship, Star, Trophy, Leaf, Anchor, MapPin, Lightbulb, BookOpen } from 'lucide-react';
+import { Castle, Diamond, Fish, Scroll, Ship, Star, Trophy, Leaf, Anchor, MapPin, Lightbulb, BookOpen, Palette, Mountain, Trees, Water, Waves, Bird } from 'lucide-react';
 
 export interface TriviaQuestion {
   id: string;
@@ -106,7 +106,7 @@ export const triviaQuestions: TriviaQuestion[] = [
     id: '14',
     question: "What does the term 'River Rat' affectionately refer to in this region?",
     options: ["A type of invasive rodent", "Locals who are knowledgeable about the St. Lawrence River", "A famous steamboat", "A mythical river creature"],
-    answer: "Locals who are knowledgeable about the St.Lawrence River",
+    answer: "Locals who are knowledgeable about the St. Lawrence River",
     storylineHintKey: "pirate_treasure_1",
   },
   {
@@ -114,7 +114,7 @@ export const triviaQuestions: TriviaQuestion[] = [
     question: "Which of these fish species is a prized catch for anglers in the St. Lawrence River?",
     options: ["Piranha", "Muskellunge (Muskie)", "Clownfish", "Swordfish"],
     answer: "Muskellunge (Muskie)",
-    storylineHintKey: "fish_expert_clue", // Assuming a new key or maps to a generic one
+    storylineHintKey: "fish_expert_clue",
   },
   {
     id: '16',
@@ -134,7 +134,7 @@ export const triviaQuestions: TriviaQuestion[] = [
     id: '18',
     question: "Which island is known for having a U.S. Post Office that is the smallest in the country?",
     options: ["Wellesley Island", "Grindstone Island", "Sugar Island (unofficial)", "Picton Island"],
-    answer: "Sugar Island (unofficial)", // Often cited, though its official status can be debated. Good for trivia!
+    answer: "Sugar Island (unofficial)",
     storylineHintKey: "small_island_clue_1",
   },
   {
@@ -185,6 +185,216 @@ export const triviaQuestions: TriviaQuestion[] = [
     options: ["Boldt Castle Visitor Center", "Hawkins Point Visitors Center (Frank S. McCullough, Jr. Powerhouse)", "Minna Anthony Common Nature Center", "Aquatarium"],
     answer: "Hawkins Point Visitors Center (Frank S. McCullough, Jr. Powerhouse)",
     storylineHintKey: "seaway_journey_1",
+  },
+  {
+    id: '26',
+    question: "Which Great Lake is the primary source of the St. Lawrence River?",
+    options: ["Lake Superior", "Lake Huron", "Lake Erie", "Lake Ontario"],
+    answer: "Lake Ontario",
+    storylineHintKey: "river_origin_clue",
+  },
+  {
+    id: '27',
+    question: "What type of bridge is the international span of the Thousand Islands Bridge System that crosses the St. Lawrence River's main shipping channel?",
+    options: ["Cantilever bridge", "Suspension bridge", "Arch bridge", "Cable-stayed bridge"],
+    answer: "Suspension bridge",
+    storylineHintKey: "border_mystery_1",
+  },
+  {
+    id: '28',
+    question: "Which famous American president owned a summer home on Campobello Island, near the Thousand Islands region?",
+    options: ["Theodore Roosevelt", "Franklin D. Roosevelt", "John F. Kennedy", "Abraham Lincoln"],
+    answer: "Franklin D. Roosevelt",
+    storylineHintKey: "historical_figure_clue",
+  },
+  {
+    id: '29',
+    question: "What is the approximate length of the Thousand Islands region along the St. Lawrence River?",
+    options: ["10 miles", "50 miles", "100 miles", "200 miles"],
+    answer: "50 miles",
+    storylineHintKey: "region_geography_clue",
+  },
+  {
+    id: '30',
+    question: "The Alster Tower on Dark Island (Singer Castle) was inspired by a structure in which country?",
+    options: ["Germany", "France", "England", "Scotland"],
+    answer: "Germany",
+    storylineHintKey: "boldt_secret_1",
+  },
+  {
+    id: '31',
+    question: "What unique geological feature characterizes many of the Thousand Islands, creating steep cliffs and deep channels?",
+    options: ["Volcanic craters", "Glacial sculpting", "Coral reefs", "Meteor impact sites"],
+    answer: "Glacial sculpting",
+    storylineHintKey: "geology_mystery_clue",
+  },
+  {
+    id: '32',
+    question: "The Thousand Islands National Park is managed by which country?",
+    options: ["United States", "Canada", "Jointly by US & Canada", "United Nations"],
+    answer: "Canada",
+    storylineHintKey: "border_mystery_1",
+  },
+  {
+    id: '33',
+    question: "What is the primary species of pine tree commonly found on the islands?",
+    options: ["Loblolly Pine", "Ponderosa Pine", "Eastern White Pine", "Scots Pine"],
+    answer: "Eastern White Pine",
+    storylineHintKey: "flora_fauna_clue",
+  },
+  {
+    id: '34',
+    question: "Rock Island Lighthouse State Park features a lighthouse built in what century?",
+    options: ["17th Century", "18th Century", "19th Century", "20th Century"],
+    answer: "19th Century",
+    storylineHintKey: "lighthouse_legend_clue",
+  },
+  {
+    id: '35',
+    question: "Which of these towns is NOT considered a major hub for Thousand Islands tourism on the US side?",
+    options: ["Alexandria Bay, NY", "Clayton, NY", "Sackets Harbor, NY", "Syracuse, NY"],
+    answer: "Syracuse, NY",
+    storylineHintKey: "region_geography_clue",
+  },
+  {
+    id: '36',
+    question: "The Frederic Remington Art Museum, featuring works of the famous Western artist, is located in which nearby town?",
+    options: ["Clayton", "Ogdensburg", "Watertown", "Gananoque"],
+    answer: "Ogdensburg",
+    storylineHintKey: "local_culture_clue",
+  },
+  {
+    id: '37',
+    question: "During the War of 1812, which strategic naval base was located near the Thousand Islands on the US side?",
+    options: ["Fort Niagara", "Fort Ticonderoga", "Sackets Harbor", "West Point"],
+    answer: "Sackets Harbor",
+    storylineHintKey: "war_history_clue",
+  },
+  {
+    id: '38',
+    question: "What is the name of the large, migratory bird of prey often seen soaring above the Thousand Islands?",
+    options: ["Bald Eagle", "Golden Eagle", "Osprey", "Peregrine Falcon"],
+    answer: "Osprey",
+    storylineHintKey: "flora_fauna_clue",
+  },
+  {
+    id: '39',
+    question: "The 'Boldt Castle Yacht House' is notable for housing what?",
+    options: ["Modern luxury yachts", "A collection of historic houseboats and antique wooden boats", "A submarine", "A seaplane hangar"],
+    answer: "A collection of historic houseboats and antique wooden boats",
+    storylineHintKey: "boldt_secret_1",
+  },
+  {
+    id: '40',
+    question: "What is the common name for 'Esox masquinongy', a large predatory fish found in the St. Lawrence River?",
+    options: ["Northern Pike", "Walleye", "Muskellunge", "Lake Sturgeon"],
+    answer: "Muskellunge",
+    storylineHintKey: "fish_expert_clue",
+  },
+  {
+    id: '41',
+    question: "The term 'cottage country' is often used to describe the Thousand Islands. What does 'cottage' typically refer to here?",
+    options: ["Small, rustic shacks", "Modest, one-room cabins", "Seasonal vacation homes, often quite grand", "Agricultural farmhouses"],
+    answer: "Seasonal vacation homes, often quite grand",
+    storylineHintKey: "local_culture_clue",
+  },
+  {
+    id: '42',
+    question: "Which of the Thousand Islands is home to the 'Half Moon Bay', known for its unique rock formations?",
+    options: ["Wellesley Island", "Grindstone Island", "Carleton Island", "Howe Island"],
+    answer: "Wellesley Island",
+    storylineHintKey: "geology_mystery_clue",
+  },
+  {
+    id: '43',
+    question: "The International Rift is a narrow, deep section of the river located between which two islands?",
+    options: ["Heart Island and Dark Island", "Wellesley Island (US) and Hill Island (Canada)", "Grindstone Island and Wolfe Island", "Just Room Enough Island and Longue Vue Island"],
+    answer: "Wellesley Island (US) and Hill Island (Canada)",
+    storylineHintKey: "border_mystery_1",
+  },
+  {
+    id: '44',
+    question: "What is 'skiff life,' a term associated with the region?",
+    options: ["A type of fishing lure", "A lifestyle centered around small, open motorboats", "A competitive rowing sport", "A local theater production"],
+    answer: "A lifestyle centered around small, open motorboats",
+    storylineHintKey: "local_culture_clue",
+  },
+  {
+    id: '45',
+    question: "The Cornwall-Massena International Bridge is another major crossing. What does it primarily facilitate besides passenger vehicles?",
+    options: ["Pedestrian traffic", "High-speed rail", "Shipping and power line transmission", "Bicycle tours"],
+    answer: "Shipping and power line transmission",
+    storylineHintKey: "seaway_journey_1",
+  },
+  {
+    id: '46',
+    question: "What does 'Iroquoian' refer to in the context of the Thousand Islands' history?",
+    options: ["A style of architecture", "A group of Indigenous peoples native to the region", "A type of sailing ship", "A French colonial fort"],
+    answer: "A group of Indigenous peoples native to the region",
+    storylineHintKey: "native_history_clue",
+  },
+  {
+    id: '47',
+    question: "Devil's Oven on Grindstone Island is what kind of natural feature?",
+    options: ["A hot spring", "A large cave or rock shelter", "A volcanic vent", "A meteor crater"],
+    answer: "A large cave or rock shelter",
+    storylineHintKey: "geology_mystery_clue",
+  },
+  {
+    id: '48',
+    question: "The 'Frontenac Arch Biosphere Reserve' encompasses the Thousand Islands. What is a biosphere reserve?",
+    options: ["A military exclusion zone", "An area promoting sustainable development based on local community efforts and sound science", "A theme park", "A private hunting ground"],
+    answer: "An area promoting sustainable development based on local community efforts and sound science",
+    storylineHintKey: "flora_fauna_clue",
+  },
+  {
+    id: '49',
+    question: "Before European settlement, the region was primarily the territory of which major Iroquoian confederacy?",
+    options: ["The Cherokee Nation", "The Haudenosaunee (Iroquois Confederacy)", "The Anishinaabe", "The Sioux Nation"],
+    answer: "The Haudenosaunee (Iroquois Confederacy)",
+    storylineHintKey: "native_history_clue",
+  },
+  {
+    id: '50',
+    question: "What is the 'Thousand Islands Winery' known for, besides wine?",
+    options: ["Its historic castle", "Its extensive cave system", "Its scenic location and local product focus", "Its Olympic-sized swimming pool"],
+    answer: "Its scenic location and local product focus",
+    storylineHintKey: "local_culture_clue",
+  },
+  {
+    id: '51',
+    question: "The Gananoque Boat Line offers tours originating from which country?",
+    options: ["USA", "Canada", "Both USA and Canada", "Mexico"],
+    answer: "Canada",
+    storylineHintKey: "border_mystery_1",
+  },
+  {
+    id: '52',
+    question: "What is a 'see-way' lock, as part of the St. Lawrence Seaway system?",
+    options: ["A type of fishing net", "A device for raising and lowering boats between different water levels", "A secure storage facility for boats", "A brand of nautical GPS"],
+    answer: "A device for raising and lowering boats between different water levels",
+    storylineHintKey: "seaway_journey_1",
+  },
+  {
+    id: '53',
+    question: "Tibbetts Point Lighthouse marks the entrance of the St. Lawrence River from which Great Lake?",
+    options: ["Lake Huron", "Lake Erie", "Lake Ontario", "Lake Superior"],
+    answer: "Lake Ontario",
+    storylineHintKey: "lighthouse_legend_clue",
+  },
+  {
+    id: '54',
+    question: "The 'Smugglers' Run' is a term often associated with the Thousand Islands during which historical period?",
+    options: ["The Gold Rush", "The American Revolution", "The Prohibition Era", "The Viking Age"],
+    answer: "The Prohibition Era",
+    storylineHintKey: "pirate_treasure_1",
+  },
+  {
+    id: '55',
+    question: "What popular summer event in Alexandria Bay features a week of pirate-themed festivities?",
+    options: ["River Fest", "Boldt Castle Regatta", "Bill Johnston's Pirate Days", "Island Folk Festival"],
+    answer: "Bill Johnston's Pirate Days",
+    storylineHintKey: "pirate_treasure_1",
   }
 ];
 
@@ -196,6 +406,7 @@ export interface StorylineHint {
   icon?: LucideIcon;
 }
 
+// Added new storyline keys for new question categories
 export const storyline: StorylineHint[] = [
   { key: "boldt_secret_1", title: "The Heart's Whisper", text: "A love story tragically cut short, yet echoes remain within the stone walls...", unlocked: false, icon: Castle },
   { key: "border_mystery_1", title: "Two Shores, One River", text: "The waters flow freely, but lines on a map tell tales of smugglers and divided loyalties.", unlocked: false, icon: Scroll },
@@ -203,6 +414,15 @@ export const storyline: StorylineHint[] = [
   { key: "seaway_journey_1", title: "Path of Giants", text: "Steel behemoths traverse these waters, carrying goods and secrets between continents.", unlocked: false, icon: Ship },
   { key: "pirate_treasure_1", title: "The River Rat's Gold", text: "They say ol' Bill Johnston stashed his ill-gotten gains where only the cleverest could find it.", unlocked: false, icon: Diamond },
   { key: "fish_expert_clue", title: "The River's Bounty", text: "Beneath the waves, a different kind of treasure swims, sought by patient anglers.", unlocked: false, icon: Fish },
+  { key: "river_origin_clue", title: "Source of Power", text: "From vast inland seas, the mighty river begins its long journey to the ocean.", unlocked: false, icon: Waves },
+  { key: "historical_figure_clue", title: "Echoes of Leaders", text: "Influential figures have long been drawn to the beauty and strategic importance of these waters.", unlocked: false, icon: BookOpen },
+  { key: "region_geography_clue", title: "Mapping the Maze", text: "Understanding the lay of the land and water is key to navigating this intricate archipelago.", unlocked: false, icon: MapPin },
+  { key: "geology_mystery_clue", title: "Ancient Stones", text: "The islands themselves tell a story of immense geological forces and millennia of change.", unlocked: false, icon: Mountain },
+  { key: "flora_fauna_clue", title: "Nature's Tapestry", text: "A rich diversity of plant and animal life calls this unique ecosystem home.", unlocked: false, icon: Trees },
+  { key: "lighthouse_legend_clue", title: "Guiding Lights", text: "Beacons of hope and warning, these structures have stories of their own to tell.", unlocked: false, icon: Lightbulb },
+  { key: "local_culture_clue", title: "Island Traditions", text: "The people of the Thousand Islands have developed unique customs and a deep connection to the river.", unlocked: false, icon: Palette },
+  { key: "war_history_clue", title: "Echoes of Conflict", text: "These strategic waters have witnessed battles and played crucial roles in shaping nations.", unlocked: false, icon: Anchor },
+  { key: "native_history_clue", title: "First Footprints", text: "Long before castles and seaways, Indigenous peoples thrived here, leaving an indelible mark.", unlocked: false, icon: Bird },
   { key: "final_revelation", title: "The River's Heart", text: "The true treasure of the Thousand Islands isn't gold or jewels, but the enduring spirit of its history and people.", unlocked: false, icon: Star }
 ];
 
@@ -237,4 +457,7 @@ export const achievements: Achievement[] = [
   { id: 'top_leaderboard', name: "Top RiverRat", description: "Reached the top 3 on the leaderboard.", icon: Trophy, unlocked: false, criteria: "Reach top 3" },
   { id: 'story_complete', name: "Lore Master", description: "Completed the entire storyline.", icon: Diamond, unlocked: false, criteria: "Unlock all hints" },
   { id: 'fish_expert', name: "Master Angler", description: "Answered a tricky fish-related question.", icon: Fish, unlocked: false, criteria: "Answer fish question" },
+  { id: 'geology_buff', name: "Rock Solid Knowledge", description: "Answered a question about island geology.", icon: Mountain, unlocked: false, criteria: "Answer geology question" },
+  { id: 'history_hound', name: "History Hound", description: "Answered a question about local history.", icon: BookOpen, unlocked: false, criteria: "Answer history question" },
 ];
+
