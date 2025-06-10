@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
-import { triviaQuestions, storyline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
+import { triviaQuestions as allTriviaQuestions, storyline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, LeaderboardEntry } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import HintDisplay from './HintDisplay';
@@ -12,12 +12,14 @@ import { Progress } from "@/components/ui/progress";
 import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
-import { Award, CheckCircle, XCircle, Zap, ChevronRight } from 'lucide-react';
+import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+
+const QUESTIONS_PER_GAME = 10; // Number of questions to play per game
 
 // Helper to update achievement state
 const updateAchievementProgress = (
-  achievementsList: Achievement[], 
+  achievementsList: Achievement[],
   achievementId: string,
   setAchievements: React.Dispatch<React.SetStateAction<Achievement[]>>
 ) => {
@@ -30,6 +32,7 @@ const updateAchievementProgress = (
 
 
 export default function TriviaGame() {
+  const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(
@@ -38,28 +41,50 @@ export default function TriviaGame() {
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [achievements, setAchievements] = useState<Achievement[]>(() => 
+  const [achievements, setAchievements] = useState<Achievement[]>(() =>
     initialAchievementsData.map(a => ({ ...a, unlocked: false }))
   );
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
-  
+
   const { toast } = useToast();
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
-  const currentQuestion = triviaQuestions[currentQuestionIndex];
+  const shuffleAndSelectQuestions = useCallback(() => {
+    const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
+    const selectedQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+    if (selectedQuestions.length < QUESTIONS_PER_GAME && allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
+      // Fallback if somehow slice didn't get enough, though unlikely with QUESTIONS_PER_GAME <= allTriviaQuestions.length
+       setActiveQuestions(allTriviaQuestions.slice(0, QUESTIONS_PER_GAME));
+    } else if (selectedQuestions.length === 0 && allTriviaQuestions.length > 0) {
+      // Fallback if allTriviaQuestions is very small
+      setActiveQuestions(allTriviaQuestions.slice(0, allTriviaQuestions.length));
+    }
+    else {
+      setActiveQuestions(selectedQuestions);
+    }
+  }, []);
 
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
+    shuffleAndSelectQuestions();
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
-    setUnlockedStoryHints(storyline.filter(h => h.unlocked));
+    setUnlockedStoryHints(storyline.filter(h => h.unlocked)); // Reset to initially unlocked
     setAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
     setToastedAchievementIds(new Set());
-  };
+  }, [shuffleAndSelectQuestions]);
+
+  useEffect(() => {
+    resetGame();
+  }, [resetGame]);
+
+  const currentQuestion = activeQuestions[currentQuestionIndex];
 
   const handleAnswerSubmit = useCallback(async (answer: string) => {
+    if (!currentQuestion) return;
+
     const isCorrect = answer === currentQuestion.answer;
 
     if (isCorrect) {
@@ -72,12 +97,14 @@ export default function TriviaGame() {
         variant: "default",
       });
 
-      if (newScore >= 500) { 
-         updateAchievementProgress(achievements, 'five_correct', setAchievements);
+      // Simplified achievement checks for example
+      if (newScore >= 300 && newScore < 500) { // Example: first few correct
+         updateAchievementProgress(achievements, 'five_correct', setAchievements); // Re-purpose or rename achievement
       }
-      if (currentQuestion.id === "1") { 
+       if (currentQuestion.storylineHintKey.includes("boldt")) {
         updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
       }
+
 
       setIsHintLoading(true);
       try {
@@ -89,11 +116,10 @@ export default function TriviaGame() {
 
         const storyHint = storyline.find(h => h.key === currentQuestion.storylineHintKey);
         if (storyHint && !unlockedStoryHints.some(ush => ush.key === storyHint.key)) {
-          const newUnlockedHint = { ...storyHint, unlocked: true, text: hintResult.hint }; 
+          const newUnlockedHint = { ...storyHint, unlocked: true, text: hintResult.hint };
           setUnlockedStoryHints(prev => {
             const updatedHints = [...prev, newUnlockedHint];
-            // Check for story_complete achievement
-             if (updatedHints.length >= storyline.filter(h => h.key !== 'final_revelation').length) {
+            if (updatedHints.length >= storyline.filter(h => h.key !== 'final_revelation').length) {
                 updateAchievementProgress(achievements, 'story_complete', setAchievements);
             }
             return updatedHints;
@@ -119,26 +145,25 @@ export default function TriviaGame() {
 
   const handleProceedToNext = useCallback(() => {
     setShowFeedback(null);
-    setCurrentGeneratedHint(null); 
+    setCurrentGeneratedHint(null);
 
-    if (currentQuestionIndex < triviaQuestions.length - 1) {
+    if (currentQuestionIndex < (activeQuestions.length > 0 ? activeQuestions.length : QUESTIONS_PER_GAME) - 1) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      // Ensure score is the latest before updating leaderboard
-      const finalScore = score; // Use the score from state at the time of game over
-      const userEntry = leaderboardData.find(e => e.name === "You"); 
+      const finalScore = score;
+      const userEntry = leaderboardData.find(e => e.name === "You");
       if (userEntry) {
-        userEntry.score = finalScore;
+        userEntry.score = Math.max(userEntry.score, finalScore); // Keep highest score
       } else {
         leaderboardData.push({id: "currentUser", name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
       }
       leaderboardData.sort((a,b) => b.score - a.score);
-      if(leaderboardData.findIndex(e => e.name === "You") < 3 && finalScore > 0){ // only if score is positive
+      if(leaderboardData.findIndex(e => e.name === "You") < 3 && finalScore > 0){
           updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
       }
     }
-  }, [currentQuestionIndex, triviaQuestions.length, score, achievements]);
+  }, [currentQuestionIndex, activeQuestions.length, score, achievements]);
 
 
   useEffect(() => {
@@ -148,7 +173,7 @@ export default function TriviaGame() {
           title: "Achievement Unlocked!",
           description: (
             <div className="flex items-center">
-              <ach.icon className="w-5 h-5 mr-2 text-accent" />
+              {React.createElement(ach.icon, { className: "w-5 h-5 mr-2 text-accent" })}
               <span>{ach.name}: {ach.description}</span>
             </div>
           ),
@@ -178,7 +203,7 @@ export default function TriviaGame() {
           <p className="text-lg text-foreground/80">
             You've navigated the treacherous waters of Thousand Islands trivia. Check the storyline for your discovered secrets and the leaderboard to see your standing!
           </p>
-          <div className="flex justify-center gap-4 mt-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
             <Button asChild className="bg-primary hover:bg-primary/90">
               <Link href="/leaderboard">View Leaderboard</Link>
             </Button>
@@ -186,15 +211,25 @@ export default function TriviaGame() {
               <Link href="/storyline">View Storyline</Link>
             </Button>
             <Button onClick={resetGame} className="bg-accent text-accent-foreground hover:bg-accent/80">
-                Play Again
+                <RefreshCw className="mr-2 h-4 w-4" /> Play Again
             </Button>
           </div>
         </CardContent>
       </Card>
     );
   }
+  
+  if (!activeQuestions.length || !currentQuestion) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
+        <Zap className="w-12 h-12 animate-pulse text-primary" />
+        <p className="ml-4 text-xl">Loading Questions...</p>
+      </div>
+    );
+  }
 
-  const progressPercentage = (currentQuestionIndex / triviaQuestions.length) * 100;
+  const totalQuestionsToDisplay = activeQuestions.length > 0 ? activeQuestions.length : QUESTIONS_PER_GAME;
+  const progressPercentage = (currentQuestionIndex / totalQuestionsToDisplay) * 100;
 
   return (
     <div className="space-y-8">
@@ -209,33 +244,30 @@ export default function TriviaGame() {
       {showFeedback && (
         <div className="animate-fadeIn space-y-4">
           <Card className={`p-4 text-center ${showFeedback.type === 'correct' ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'}`}>
-            {showFeedback.type === 'correct' ? 
-              <CheckCircle className="w-8 h-8 mx-auto text-green-600 mb-2" /> : 
+            {showFeedback.type === 'correct' ?
+              <CheckCircle className="w-8 h-8 mx-auto text-green-600 mb-2" /> :
               <XCircle className="w-8 h-8 mx-auto text-red-600 mb-2" />
             }
             <p className={`font-semibold ${showFeedback.type === 'correct' ? 'text-green-700' : 'text-red-700'}`}>{showFeedback.message}</p>
           </Card>
           <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />
           <Button onClick={handleProceedToNext} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-            {currentQuestionIndex < triviaQuestions.length - 1 ? 'Next Question' : 'Finish Game'}
+            {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question' : 'Finish Game'}
             <ChevronRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       )}
 
       {!showFeedback && currentQuestion && (
-        <QuestionCard 
-          question={currentQuestion} 
+        <QuestionCard
+          question={currentQuestion}
           onAnswerSubmit={handleAnswerSubmit}
           questionNumber={currentQuestionIndex + 1}
-          totalQuestions={triviaQuestions.length}
+          totalQuestions={totalQuestionsToDisplay}
         />
       )}
-      
-      {/* Show hint display here only if not showing feedback (as it's bundled with feedback now) */}
+
       {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />}
     </div>
   );
 }
-
-    
