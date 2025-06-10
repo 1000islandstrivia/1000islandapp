@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle } from 'lucide-react';
+import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 
 export default function DashboardPage() {
@@ -46,7 +46,7 @@ export default function DashboardPage() {
               <Image 
                 src="https://placehold.co/800x400.png" 
                 alt="Thousand Islands scenic view" 
-                layout="fill"
+                fill
                 objectFit="cover"
                 data-ai-hint="river islands bridge"
               />
