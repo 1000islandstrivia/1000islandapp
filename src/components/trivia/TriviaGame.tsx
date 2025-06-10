@@ -1,7 +1,8 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
-import { triviaQuestions, storyline, achievements as initialAchievements, leaderboardData } from '@/lib/trivia-data';
+import { triviaQuestions, storyline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, LeaderboardEntry } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import HintDisplay from './HintDisplay';
@@ -11,7 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
-import { Award, CheckCircle, XCircle, Zap } from 'lucide-react';
+import { Award, CheckCircle, XCircle, Zap, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 // Helper to update achievement state
@@ -32,24 +33,38 @@ export default function TriviaGame() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(
-    storyline.filter(h => h.unlocked)
+    () => storyline.filter(h => h.unlocked)
   );
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [achievements, setAchievements] = useState<Achievement[]>(initialAchievements);
+  const [achievements, setAchievements] = useState<Achievement[]>(() => 
+    initialAchievementsData.map(a => ({ ...a, unlocked: false }))
+  );
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
   
   const { toast } = useToast();
+  const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
   const currentQuestion = triviaQuestions[currentQuestionIndex];
 
+  const resetGame = () => {
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setGameOver(false);
+    setUnlockedStoryHints(storyline.filter(h => h.unlocked));
+    setAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
+    setShowFeedback(null);
+    setCurrentGeneratedHint(null);
+    setToastedAchievementIds(new Set());
+  };
+
   const handleAnswerSubmit = useCallback(async (answer: string) => {
-    setShowFeedback(null); // Clear previous feedback
     const isCorrect = answer === currentQuestion.answer;
 
     if (isCorrect) {
-      setScore(prevScore => prevScore + 100);
+      const newScore = score + 100;
+      setScore(newScore);
       setShowFeedback({ type: 'correct', message: 'Correct! Well done, RiverRat!' });
       toast({
         title: "Correct!",
@@ -57,16 +72,13 @@ export default function TriviaGame() {
         variant: "default",
       });
 
-      // Update achievements for correct answers
-      if (score + 100 >= 500) { // Example: 5 correct answers for Trivia Novice
+      if (newScore >= 500) { 
          updateAchievementProgress(achievements, 'five_correct', setAchievements);
       }
-      if (currentQuestion.id === "1") { // Example: Correctly answered Boldt Castle question
+      if (currentQuestion.id === "1") { 
         updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
       }
 
-
-      // Generate and unlock hint
       setIsHintLoading(true);
       try {
         const hintResult = await generateHint({
@@ -77,12 +89,16 @@ export default function TriviaGame() {
 
         const storyHint = storyline.find(h => h.key === currentQuestion.storylineHintKey);
         if (storyHint && !unlockedStoryHints.some(ush => ush.key === storyHint.key)) {
-          const newUnlockedHint = { ...storyHint, unlocked: true, text: hintResult.hint }; // Use AI hint text
-          setUnlockedStoryHints(prev => [...prev, newUnlockedHint]);
-           updateAchievementProgress(achievements, 'first_hint', setAchievements); // Unlock "Budding Detective"
-           if (unlockedStoryHints.length + 1 === storyline.filter(h => h.key !== 'final_revelation').length) {
-            updateAchievementProgress(achievements, 'story_complete', setAchievements);
-          }
+          const newUnlockedHint = { ...storyHint, unlocked: true, text: hintResult.hint }; 
+          setUnlockedStoryHints(prev => {
+            const updatedHints = [...prev, newUnlockedHint];
+            // Check for story_complete achievement
+             if (updatedHints.length >= storyline.filter(h => h.key !== 'final_revelation').length) {
+                updateAchievementProgress(achievements, 'story_complete', setAchievements);
+            }
+            return updatedHints;
+          });
+           updateAchievementProgress(achievements, 'first_hint', setAchievements);
         }
       } catch (error) {
         console.error("Error generating hint:", error);
@@ -99,38 +115,43 @@ export default function TriviaGame() {
         variant: "destructive",
       });
     }
+  }, [currentQuestion, score, toast, unlockedStoryHints, achievements]);
 
-    // Move to next question or end game after a short delay for feedback
-    setTimeout(() => {
-      setShowFeedback(null);
-      setCurrentGeneratedHint(null); // Clear hint for next question
-      if (currentQuestionIndex < triviaQuestions.length - 1) {
-        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+  const handleProceedToNext = useCallback(() => {
+    setShowFeedback(null);
+    setCurrentGeneratedHint(null); 
+
+    if (currentQuestionIndex < triviaQuestions.length - 1) {
+      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+    } else {
+      setGameOver(true);
+      // Ensure score is the latest before updating leaderboard
+      const finalScore = score; // Use the score from state at the time of game over
+      const userEntry = leaderboardData.find(e => e.name === "You"); 
+      if (userEntry) {
+        userEntry.score = finalScore;
       } else {
-        setGameOver(true);
-        // Add final score to leaderboard (mock)
-        const userEntry = leaderboardData.find(e => e.name === "CurrentUser"); // Replace with actual user
-        if (userEntry) userEntry.score = score; else leaderboardData.push({id: "currentUser", name: "You", score: score, avatar: "https://placehold.co/40x40.png?text=U"});
-        leaderboardData.sort((a,b) => b.score - a.score);
-        if(leaderboardData.findIndex(e => e.name === "You") < 3){
-            updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
-        }
+        leaderboardData.push({id: "currentUser", name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
       }
-    }, 2500); // 2.5 second delay
+      leaderboardData.sort((a,b) => b.score - a.score);
+      if(leaderboardData.findIndex(e => e.name === "You") < 3 && finalScore > 0){ // only if score is positive
+          updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
+      }
+    }
+  }, [currentQuestionIndex, triviaQuestions.length, score, achievements]);
 
-  }, [currentQuestion, currentQuestionIndex, score, toast, unlockedStoryHints, achievements]);
 
   useEffect(() => {
-    // Check for unlocked achievements and show toasts
     achievements.forEach(ach => {
-      if (ach.unlocked && !initialAchievements.find(iach => iach.id === ach.id)?.unlocked) {
-        // Find the achievement in the current state to ensure it's marked as "seen" for toast
-        const currentAch = initialAchievements.find(iach => iach.id === ach.id);
-        if(currentAch) currentAch.unlocked = true; // Mark as seen to prevent re-toasting on re-renders
-
+      if (ach.unlocked && !toastedAchievementIds.has(ach.id)) {
         toast({
           title: "Achievement Unlocked!",
-          description: `${ach.name}: ${ach.description}`,
+          description: (
+            <div className="flex items-center">
+              <ach.icon className="w-5 h-5 mr-2 text-accent" />
+              <span>{ach.name}: {ach.description}</span>
+            </div>
+          ),
           action: (
             <Link href="/achievements">
               <Button variant="outline" size="sm">
@@ -139,9 +160,10 @@ export default function TriviaGame() {
             </Link>
           ),
         });
+        setToastedAchievementIds(prev => new Set(prev).add(ach.id));
       }
     });
-  }, [achievements, toast]);
+  }, [achievements, toast, toastedAchievementIds]);
 
 
   if (gameOver) {
@@ -163,7 +185,7 @@ export default function TriviaGame() {
             <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
               <Link href="/storyline">View Storyline</Link>
             </Button>
-            <Button onClick={() => { setCurrentQuestionIndex(0); setScore(0); setGameOver(false); setUnlockedStoryHints(storyline.filter(h => h.unlocked)); setAchievements(initialAchievements.map(a => ({...a, unlocked: false}))); }} className="bg-accent text-accent-foreground hover:bg-accent/80">
+            <Button onClick={resetGame} className="bg-accent text-accent-foreground hover:bg-accent/80">
                 Play Again
             </Button>
           </div>
@@ -185,13 +207,20 @@ export default function TriviaGame() {
       </Card>
 
       {showFeedback && (
-        <Card className={`p-4 mb-4 text-center animate-fadeIn ${showFeedback.type === 'correct' ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'}`}>
-          {showFeedback.type === 'correct' ? 
-            <CheckCircle className="w-8 h-8 mx-auto text-green-600 mb-2" /> : 
-            <XCircle className="w-8 h-8 mx-auto text-red-600 mb-2" />
-          }
-          <p className={`font-semibold ${showFeedback.type === 'correct' ? 'text-green-700' : 'text-red-700'}`}>{showFeedback.message}</p>
-        </Card>
+        <div className="animate-fadeIn space-y-4">
+          <Card className={`p-4 text-center ${showFeedback.type === 'correct' ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'}`}>
+            {showFeedback.type === 'correct' ? 
+              <CheckCircle className="w-8 h-8 mx-auto text-green-600 mb-2" /> : 
+              <XCircle className="w-8 h-8 mx-auto text-red-600 mb-2" />
+            }
+            <p className={`font-semibold ${showFeedback.type === 'correct' ? 'text-green-700' : 'text-red-700'}`}>{showFeedback.message}</p>
+          </Card>
+          <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />
+          <Button onClick={handleProceedToNext} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+            {currentQuestionIndex < triviaQuestions.length - 1 ? 'Next Question' : 'Finish Game'}
+            <ChevronRight className="ml-2 h-5 w-5" />
+          </Button>
+        </div>
       )}
 
       {!showFeedback && currentQuestion && (
@@ -203,7 +232,10 @@ export default function TriviaGame() {
         />
       )}
       
-      <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />
+      {/* Show hint display here only if not showing feedback (as it's bundled with feedback now) */}
+      {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />}
     </div>
   );
 }
+
+    
