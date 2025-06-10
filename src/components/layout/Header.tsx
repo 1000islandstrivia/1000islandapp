@@ -1,10 +1,12 @@
+
 "use client";
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { ScrollText, LogOut, UserCircle2 } from 'lucide-react';
+import { ScrollText, LogOut, Menu } from 'lucide-react'; // Added Menu icon
 import { useRouter, usePathname } from 'next/navigation';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'; // Added Sheet components
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -26,11 +28,13 @@ export default function Header() {
           <ScrollText className="h-8 w-8 text-accent" />
           <h1 className="text-2xl font-headline font-bold">1000 Islands RiverRat Lore</h1>
         </Link>
-        <nav className="flex items-center gap-2">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-2">
           {user ? (
             <>
               {navItems.map(item => (
-                <Button key={item.href} variant="ghost" asChild className={pathname === item.href ? 'bg-primary-foreground/20' : ''}>
+                <Button key={item.href} variant="ghost" asChild className={pathname === item.href ? 'bg-primary-foreground/20 hover:bg-primary-foreground/30' : 'hover:bg-primary-foreground/10'}>
                   <Link href={item.href}>{item.label}</Link>
                 </Button>
               ))}
@@ -53,6 +57,72 @@ export default function Header() {
             </>
           )}
         </nav>
+
+        {/* Mobile Navigation Trigger */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 active:bg-primary-foreground/20">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[280px] p-0 pt-6 bg-primary text-primary-foreground flex flex-col">
+              <div className="px-4 mb-6">
+                 <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-2 mb-4">
+                  <ScrollText className="h-7 w-7 text-accent" />
+                  <h2 className="text-xl font-headline font-bold">RiverRat Lore</h2>
+                </Link>
+              </div>
+              <nav className="flex-grow flex flex-col gap-1 px-3">
+                {user ? (
+                  <>
+                    {navItems.map(item => (
+                      <SheetClose asChild key={item.href}>
+                        <Link
+                          href={item.href}
+                          className={`block p-3 rounded-md hover:bg-primary-foreground/10 active:bg-primary-foreground/20 ${pathname === item.href ? 'bg-primary-foreground/20 font-semibold' : ''}`}
+                        >
+                          {item.label}
+                        </Link>
+                      </SheetClose>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {pathname !== '/login' && (
+                      <SheetClose asChild>
+                        <Link href="/login" className={`block p-3 rounded-md hover:bg-primary-foreground/10 active:bg-primary-foreground/20 ${pathname === "/login" ? 'bg-primary-foreground/20 font-semibold' : ''}`}>
+                          Login
+                        </Link>
+                      </SheetClose>
+                    )}
+                    {pathname !== '/register' && (
+                      <SheetClose asChild>
+                        <Link href="/register" className={`block p-3 rounded-md hover:bg-primary-foreground/10 active:bg-primary-foreground/20 ${pathname === "/register" ? 'bg-primary-foreground/20 font-semibold' : ''}`}>
+                          Register
+                        </Link>
+                      </SheetClose>
+                    )}
+                  </>
+                )}
+              </nav>
+              {user && (
+                <div className="mt-auto p-4 border-t border-primary-foreground/20">
+                  <SheetClose asChild>
+                    <Button 
+                      variant="ghost" 
+                      onClick={logout} 
+                      className="w-full justify-start p-3 bg-accent text-accent-foreground hover:bg-accent/90 active:bg-accent/80 text-base"
+                    >
+                      <LogOut className="mr-3 h-5 w-5" /> Logout
+                    </Button>
+                  </SheetClose>
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );
