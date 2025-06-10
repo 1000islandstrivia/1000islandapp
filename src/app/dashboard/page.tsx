@@ -1,3 +1,4 @@
+
 "use client";
 
 import MainLayout from '@/components/layout/MainLayout';
@@ -44,11 +45,11 @@ export default function DashboardPage() {
           <CardContent>
             <div className="relative aspect-[2/1] w-full rounded-lg overflow-hidden mb-6 shadow-md">
               <Image 
-                src="https://placehold.co/800x400.png" 
-                alt="Thousand Islands scenic view" 
+                src="https://i.imgur.com/VwypPaT.png" 
+                alt="Thousand Islands scenic view with a bridge" 
                 fill
-                objectFit="cover"
-                data-ai-hint="river islands bridge"
+                style={{objectFit: "cover"}}
+                data-ai-hint="islands river"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-4">
                 <h3 className="text-white text-2xl font-semibold font-headline">The River Calls...</h3>
