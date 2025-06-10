@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { triviaQuestions as allTriviaQuestions, storyline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, LeaderboardEntry } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
@@ -103,6 +103,9 @@ export default function TriviaGame() {
       }
        if (currentQuestion.storylineHintKey.includes("boldt")) {
         updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
+      }
+      if (currentQuestion.storylineHintKey === "fish_expert_clue") {
+        updateAchievementProgress(achievements, 'fish_expert', setAchievements);
       }
 
 
@@ -271,3 +274,4 @@ export default function TriviaGame() {
     </div>
   );
 }
+
