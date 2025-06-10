@@ -53,10 +53,8 @@ export default function TriviaGame() {
     const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
     const selectedQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
     if (selectedQuestions.length < QUESTIONS_PER_GAME && allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
-      // Fallback if somehow slice didn't get enough, though unlikely with QUESTIONS_PER_GAME <= allTriviaQuestions.length
        setActiveQuestions(allTriviaQuestions.slice(0, QUESTIONS_PER_GAME));
     } else if (selectedQuestions.length === 0 && allTriviaQuestions.length > 0) {
-      // Fallback if allTriviaQuestions is very small
       setActiveQuestions(allTriviaQuestions.slice(0, allTriviaQuestions.length));
     }
     else {
@@ -69,7 +67,7 @@ export default function TriviaGame() {
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
-    setUnlockedStoryHints(storyline.filter(h => h.unlocked)); // Reset to initially unlocked
+    setUnlockedStoryHints(storyline.filter(h => h.unlocked));
     setAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
@@ -97,9 +95,8 @@ export default function TriviaGame() {
         variant: "default",
       });
 
-      // Simplified achievement checks for example
-      if (newScore >= 300 && newScore < 500) { // Example: first few correct
-         updateAchievementProgress(achievements, 'five_correct', setAchievements); // Re-purpose or rename achievement
+      if (newScore >= 300 && newScore < 500) {
+         updateAchievementProgress(achievements, 'five_correct', setAchievements);
       }
        if (currentQuestion.storylineHintKey.includes("boldt")) {
         updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
@@ -107,7 +104,6 @@ export default function TriviaGame() {
       if (currentQuestion.storylineHintKey === "fish_expert_clue") {
         updateAchievementProgress(achievements, 'fish_expert', setAchievements);
       }
-
 
       setIsHintLoading(true);
       try {
@@ -145,29 +141,62 @@ export default function TriviaGame() {
       });
       // Play fog horn sound
       try {
-        const audio = new Audio('/sounds/fog-horn.mp3'); // Ensure this path is correct: public/sounds/fog-horn.mp3
-        const playPromise = audio.play();
+        const audio = new Audio(); // Create empty audio object first
 
-        if (playPromise !== undefined) {
-          playPromise.then(_ => {
-            // Audio playback started successfully.
-            console.log("Fog horn sound playback initiated.");
-          }).catch(error => {
-            // Audio playback failed.
-            console.error("Error playing fog horn sound:", error);
-            toast({
-              title: "Sound Playback Error",
-              description: "Could not play the fog horn sound. Your browser might be blocking it, or the file might be missing/corrupt.",
-              variant: "destructive",
-            });
+        audio.onerror = (e) => {
+          console.error("Audio element error event:", e);
+          let errorMessage = "Unknown audio error.";
+          if (audio.error) {
+            switch (audio.error.code) {
+              case audio.error.MEDIA_ERR_ABORTED:
+                errorMessage = "Audio playback aborted.";
+                break;
+              case audio.error.MEDIA_ERR_NETWORK:
+                errorMessage = "Network error fetching audio.";
+                break;
+              case audio.error.MEDIA_ERR_DECODE:
+                errorMessage = "Audio decoding error or unsupported format.";
+                break;
+              case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                errorMessage = "Audio source not supported or not found. Please ensure '/sounds/fog-horn.mp3' exists in your 'public/sounds/' directory.";
+                break;
+              default:
+                errorMessage = `An unknown error occurred (code: ${audio.error.code}).`;
+            }
+          }
+          console.error("Detailed audio error:", errorMessage, audio.error);
+          toast({
+            title: "Audio Playback Failed",
+            description: `Could not load or play sound: ${errorMessage}`,
+            variant: "destructive",
           });
-        }
-      } catch (error) {
-        // This catch is for errors during the `new Audio()` instantiation or synchronous errors with `play()`.
-        console.error("Error creating or attempting to play Audio object:", error);
+        };
+
+        // Attempt to play only after it's likely ready
+        audio.oncanplaythrough = () => {
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(_ => {
+              console.log("Fog horn sound playback initiated successfully.");
+            }).catch(playError => {
+              console.error("Error during audio.play():", playError);
+              toast({
+                title: "Sound Playback Error",
+                description: `Could not play the loaded sound. Browser error: ${playError.message}`,
+                variant: "destructive",
+              });
+            });
+          }
+        };
+        
+        audio.src = '/sounds/fog-horn.mp3'; // Set the source
+        audio.load(); // Explicitly call load
+
+      } catch (error: any) {
+        console.error("Synchronous error creating Audio object or setting up handlers:", error);
         toast({
-          title: "Audio Initialization Error",
-          description: "There was an issue setting up the sound.",
+          title: "Audio Setup Error",
+          description: `There was an issue setting up the sound player: ${error.message}`,
           variant: "destructive",
         });
       }
@@ -182,18 +211,15 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score; // Use the score from state at the time of game over
-      const userEntry = leaderboardData.find(e => e.name === "You"); // Assuming "You" is the identifier for the current player
+      const finalScore = score;
+      const userEntry = leaderboardData.find(e => e.name === "You");
       if (userEntry) {
-        userEntry.score = Math.max(userEntry.score, finalScore); // Update if new score is higher
+        userEntry.score = Math.max(userEntry.score, finalScore);
       } else {
-        // Add new entry if "You" is not on the leaderboard
         leaderboardData.push({id: "currentUser", name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
       }
-      // Re-sort leaderboard
       leaderboardData.sort((a,b) => b.score - a.score);
 
-      // Check for top 3 achievement after updating leaderboard
       if(leaderboardData.findIndex(e => e.name === "You") < 3 && finalScore > 0){
           updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
       }
@@ -306,5 +332,3 @@ export default function TriviaGame() {
     </div>
   );
 }
-
-    
