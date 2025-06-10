@@ -145,11 +145,31 @@ export default function TriviaGame() {
       });
       // Play fog horn sound
       try {
-        const audio = new Audio('/sounds/fog-horn.mp3');
-        audio.play();
+        const audio = new Audio('/sounds/fog-horn.mp3'); // Ensure this path is correct: public/sounds/fog-horn.mp3
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            // Audio playback started successfully.
+            console.log("Fog horn sound playback initiated.");
+          }).catch(error => {
+            // Audio playback failed.
+            console.error("Error playing fog horn sound:", error);
+            toast({
+              title: "Sound Playback Error",
+              description: "Could not play the fog horn sound. Your browser might be blocking it, or the file might be missing/corrupt.",
+              variant: "destructive",
+            });
+          });
+        }
       } catch (error) {
-        console.error("Error playing sound:", error);
-        // You could add a toast here if sound playback fails, if desired
+        // This catch is for errors during the `new Audio()` instantiation or synchronous errors with `play()`.
+        console.error("Error creating or attempting to play Audio object:", error);
+        toast({
+          title: "Audio Initialization Error",
+          description: "There was an issue setting up the sound.",
+          variant: "destructive",
+        });
       }
     }
   }, [currentQuestion, score, toast, unlockedStoryHints, achievements]);
@@ -162,14 +182,18 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score;
-      const userEntry = leaderboardData.find(e => e.name === "You");
+      const finalScore = score; // Use the score from state at the time of game over
+      const userEntry = leaderboardData.find(e => e.name === "You"); // Assuming "You" is the identifier for the current player
       if (userEntry) {
-        userEntry.score = Math.max(userEntry.score, finalScore); // Keep highest score
+        userEntry.score = Math.max(userEntry.score, finalScore); // Update if new score is higher
       } else {
+        // Add new entry if "You" is not on the leaderboard
         leaderboardData.push({id: "currentUser", name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
       }
+      // Re-sort leaderboard
       leaderboardData.sort((a,b) => b.score - a.score);
+
+      // Check for top 3 achievement after updating leaderboard
       if(leaderboardData.findIndex(e => e.name === "You") < 3 && finalScore > 0){
           updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
       }
@@ -283,3 +307,4 @@ export default function TriviaGame() {
   );
 }
 
+    
