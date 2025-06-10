@@ -80,6 +80,41 @@ export default function TriviaGame() {
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
+  const playSound = useCallback((soundPath: string) => {
+    try {
+      const audio = new Audio();
+      audio.onerror = (e) => {
+        console.error(`Audio element error event for ${soundPath}:`, e);
+        let errorMessage = "Unknown audio error.";
+        if (audio.error) {
+          switch (audio.error.code) {
+            case audio.error.MEDIA_ERR_ABORTED: errorMessage = `Audio playback aborted for ${soundPath}.`; break;
+            case audio.error.MEDIA_ERR_NETWORK: errorMessage = `Network error for ${soundPath}.`; break;
+            case audio.error.MEDIA_ERR_DECODE: errorMessage = `Audio decoding error for ${soundPath}.`; break;
+            case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED: errorMessage = `Audio source not supported for ${soundPath}. Ensure '${soundPath}' exists in 'public/'.`; break;
+            default: errorMessage = `Unknown audio error (code: ${audio.error.code}) for ${soundPath}.`;
+          }
+        }
+        console.error("Detailed audio error:", errorMessage, audio.error);
+        toast({ title: "Audio Playback Failed", description: `Could not load or play sound: ${errorMessage}`, variant: "destructive" });
+      };
+      audio.oncanplaythrough = () => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {}).catch(playError => {
+            console.error(`Error during audio.play() for ${soundPath}:`, playError);
+            toast({ title: "Sound Playback Error", description: `Could not play ${soundPath}. Browser error: ${playError.message}`, variant: "destructive" });
+          });
+        }
+      };
+      audio.src = soundPath;
+      audio.load();
+    } catch (error: any) {
+      console.error(`Synchronous error for ${soundPath}:`, error);
+      toast({ title: "Audio Setup Error", description: `Issue setting up sound for ${soundPath}: ${error.message}`, variant: "destructive" });
+    }
+  }, [toast]);
+
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     if (!currentQuestion) return;
 
@@ -88,10 +123,11 @@ export default function TriviaGame() {
     if (isCorrect) {
       const newScore = score + 100;
       setScore(newScore);
-      setShowFeedback({ type: 'correct', message: 'Correct! Well done, RiverRat!' });
+      setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
+      playSound('/sounds/pirate-correct.mp3'); // Play pirate sound for correct answer
       toast({
-        title: "Correct!",
-        description: "You're navigating these waters like a true expert!",
+        title: "Shiver me timbers! Correct!",
+        description: "Ye be a true captain o' this quiz!",
         variant: "default",
       });
 
@@ -133,71 +169,10 @@ export default function TriviaGame() {
         setIsHintLoading(false);
       }
     } else {
-      setShowFeedback({ type: 'incorrect', message: `Not quite! The correct answer was: ${currentQuestion.answer}` });
-      // Removed redundant toast for incorrect answer to avoid double messages
-      
-      // Play fog horn sound
-      try {
-        const audio = new Audio(); // Create empty audio object first
-
-        audio.onerror = (e) => {
-          console.error("Audio element error event:", e);
-          let errorMessage = "Unknown audio error.";
-          if (audio.error) {
-            switch (audio.error.code) {
-              case audio.error.MEDIA_ERR_ABORTED:
-                errorMessage = "Audio playback aborted by user or script.";
-                break;
-              case audio.error.MEDIA_ERR_NETWORK:
-                errorMessage = "Network error prevented successful fetching of the audio.";
-                break;
-              case audio.error.MEDIA_ERR_DECODE:
-                errorMessage = "Audio decoding error. The file might be corrupted or in an unsupported format.";
-                break;
-              case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                errorMessage = "The audio source format is not supported or the source was not found. Ensure '/sounds/fog-horn.mp3' exists in 'public/sounds/'.";
-                break;
-              default:
-                errorMessage = `An unknown error occurred with the audio (code: ${audio.error.code}).`;
-            }
-          }
-          console.error("Detailed audio error:", errorMessage, audio.error);
-          toast({
-            title: "Audio Playback Failed",
-            description: `Could not load or play sound: ${errorMessage}`,
-            variant: "destructive",
-          });
-        };
-
-        audio.oncanplaythrough = () => {
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(_ => {
-              console.log("Fog horn sound playback initiated successfully.");
-            }).catch(playError => {
-              console.error("Error during audio.play():", playError);
-              toast({
-                title: "Sound Playback Error",
-                description: `Could not play the loaded sound. Browser error: ${playError.message}`,
-                variant: "destructive",
-              });
-            });
-          }
-        };
-        
-        audio.src = '/sounds/fog-horn.mp3'; // Set the source
-        audio.load(); // Explicitly call load. Browsers often require user interaction to play audio.
-
-      } catch (error: any) {
-        console.error("Synchronous error creating Audio object or setting up handlers:", error);
-        toast({
-          title: "Audio Setup Error",
-          description: `There was an issue setting up the sound player: ${error.message}`,
-          variant: "destructive",
-        });
-      }
+      setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
+      playSound('/sounds/fog-horn.mp3'); // Play fog horn sound for incorrect answer
     }
-  }, [currentQuestion, score, toast, unlockedStoryHints, achievements]);
+  }, [currentQuestion, score, toast, unlockedStoryHints, achievements, playSound]);
 
   const handleProceedToNext = useCallback(() => {
     setShowFeedback(null);
@@ -253,12 +228,12 @@ export default function TriviaGame() {
       <Card className="w-full max-w-lg mx-auto text-center p-8 shadow-xl bg-card/90 backdrop-blur-sm animate-slideUp">
         <CardHeader>
           <Award className="w-16 h-16 mx-auto text-accent mb-4" />
-          <CardTitle className="font-headline text-4xl text-primary">Adventure Complete!</CardTitle>
+          <CardTitle className="font-headline text-4xl text-primary">Adventure Complete, Captain!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-2xl">Your Final Score: <span className="font-bold text-accent">{score}</span></p>
+          <p className="text-2xl">Your Final Score: <span className="font-bold text-accent">{score}</span> pieces o' eight!</p>
           <p className="text-lg text-foreground/80">
-            You've navigated the treacherous waters of Thousand Islands trivia. Check the storyline for your discovered secrets and the leaderboard to see your standing!
+            Ye've navigated the treacherous waters of Thousand Islands trivia. Check yer treasure map (storyline) and see how ye rank against other pirates on the leaderboard!
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
             <Button asChild className="bg-primary hover:bg-primary/90">
@@ -268,7 +243,7 @@ export default function TriviaGame() {
               <Link href="/storyline">View Storyline</Link>
             </Button>
             <Button onClick={resetGame} className="bg-accent text-accent-foreground hover:bg-accent/80">
-                <RefreshCw className="mr-2 h-4 w-4" /> Play Again
+                <RefreshCw className="mr-2 h-4 w-4" /> Set Sail Again!
             </Button>
           </div>
         </CardContent>
@@ -280,7 +255,7 @@ export default function TriviaGame() {
     return (
       <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
         <Zap className="w-12 h-12 animate-pulse text-primary" />
-        <p className="ml-4 text-xl">Loading Questions...</p>
+        <p className="ml-4 text-xl">Loading Questions, Captain...</p>
       </div>
     );
   }
@@ -309,7 +284,7 @@ export default function TriviaGame() {
           </Card>
           <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />
           <Button onClick={handleProceedToNext} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-            {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question' : 'Finish Game'}
+            {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
             <ChevronRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
@@ -328,4 +303,3 @@ export default function TriviaGame() {
     </div>
   );
 }
-
