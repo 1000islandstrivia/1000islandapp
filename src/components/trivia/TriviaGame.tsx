@@ -143,6 +143,14 @@ export default function TriviaGame() {
         description: `The correct answer was: ${currentQuestion.answer}`,
         variant: "destructive",
       });
+      // Play fog horn sound
+      try {
+        const audio = new Audio('/sounds/fog-horn.mp3');
+        audio.play();
+      } catch (error) {
+        console.error("Error playing sound:", error);
+        // You could add a toast here if sound playback fails, if desired
+      }
     }
   }, [currentQuestion, score, toast, unlockedStoryHints, achievements]);
 
