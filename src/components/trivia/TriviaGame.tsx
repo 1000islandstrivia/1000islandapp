@@ -2,16 +2,17 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { triviaQuestions as allTriviaQuestions, storyline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
+import { triviaQuestions as allTriviaQuestions, storyline as initialStoryline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, LeaderboardEntry } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import HintDisplay from './HintDisplay';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress";
 import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from '@/hooks/useAuth'; // Import useAuth
 import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
@@ -32,12 +33,14 @@ const updateAchievementProgress = (
 
 
 export default function TriviaGame() {
+  const { user } = useAuth(); // Get user from auth hook
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(
-    () => storyline.filter(h => h.unlocked)
-  );
+  
+  // This state will hold the full StorylineHint objects for the current game session
+  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
+  
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -55,19 +58,64 @@ export default function TriviaGame() {
     if (selectedQuestions.length < QUESTIONS_PER_GAME && allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
        setActiveQuestions(allTriviaQuestions.slice(0, QUESTIONS_PER_GAME));
     } else if (selectedQuestions.length === 0 && allTriviaQuestions.length > 0) {
-      setActiveQuestions(allTriviaQuestions.slice(0, allTriviaQuestions.length));
+      setActiveQuestions(allTriviaQuestions.slice(0, Math.min(QUESTIONS_PER_GAME, allTriviaQuestions.length)));
     }
     else {
       setActiveQuestions(selectedQuestions);
     }
   }, []);
 
+  // Effect to load unlocked story hints from localStorage when user changes
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      const storedProgressKey = `storyProgress_${user.username}`;
+      const storedProgress = localStorage.getItem(storedProgressKey);
+      let currentUnlockedKeys: string[] = [];
+
+      if (storedProgress) {
+        try {
+          currentUnlockedKeys = JSON.parse(storedProgress);
+        } catch (e) {
+          console.error(`Failed to parse storyline progress for ${user.username} from localStorage in TriviaGame:`, e);
+          currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key); // Fallback to default
+        }
+      } else {
+        currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key); // Default if no progress
+      }
+      
+      // Reconstruct StorylineHint objects based on keys
+      setUnlockedStoryHints(
+        initialStoryline.map(hint => ({
+          ...hint,
+          unlocked: currentUnlockedKeys.includes(hint.key),
+          // Note: AI-generated text is not persisted here, only unlocked status.
+          // The `text` will be the default from initialStoryline.
+        }))
+      );
+    } else if (!user && typeof window !== 'undefined') {
+      // No user or logged out, reset to initial state of storyline (only default unlocked hints)
+      setUnlockedStoryHints(initialStoryline.map(hint => ({
+        ...hint,
+        unlocked: initialStoryline.find(h => h.key === hint.key)?.unlocked || false,
+      })));
+    }
+  }, [user]);
+
+  // Effect to save unlocked story hint keys to localStorage when they change or user changes
+  useEffect(() => {
+    if (user && typeof window !== 'undefined' && unlockedStoryHints.length > 0) {
+      const keysToSave = unlockedStoryHints.filter(h => h.unlocked).map(h => h.key);
+      localStorage.setItem(`storyProgress_${user.username}`, JSON.stringify(keysToSave));
+    }
+  }, [unlockedStoryHints, user]);
+
+
   const resetGame = useCallback(() => {
     shuffleAndSelectQuestions();
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
-    setUnlockedStoryHints(storyline.filter(h => h.unlocked));
+    // unlockedStoryHints are now loaded via useEffect based on user
     setAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
@@ -81,39 +129,40 @@ export default function TriviaGame() {
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
   const playSound = useCallback((soundPath: string) => {
+    if (typeof window === 'undefined' || !soundPath) return;
     try {
-      const audio = new Audio();
+      const audio = new Audio(soundPath); // Ensure path starts with '/' if in public folder
       audio.onerror = (e) => {
-        console.error(`Audio element error event for ${soundPath}:`, e);
-        let errorMessage = "Unknown audio error.";
+        let errorMessage = `Failed to load audio: ${soundPath}.`;
         if (audio.error) {
           switch (audio.error.code) {
-            case audio.error.MEDIA_ERR_ABORTED: errorMessage = `Audio playback aborted for ${soundPath}.`; break;
-            case audio.error.MEDIA_ERR_NETWORK: errorMessage = `Network error for ${soundPath}.`; break;
-            case audio.error.MEDIA_ERR_DECODE: errorMessage = `Audio decoding error for ${soundPath}.`; break;
-            case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED: errorMessage = `Audio source not supported for ${soundPath}. Ensure '${soundPath}' exists in 'public/'.`; break;
-            default: errorMessage = `Unknown audio error (code: ${audio.error.code}) for ${soundPath}.`;
+            case audio.error.MEDIA_ERR_ABORTED: errorMessage += ' Playback aborted.'; break;
+            case audio.error.MEDIA_ERR_NETWORK: errorMessage += ' Network error.'; break;
+            case audio.error.MEDIA_ERR_DECODE: errorMessage += ' Decoding error.'; break;
+            case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED: errorMessage += ' Source not supported. Ensure file exists and format is correct.'; break;
+            default: errorMessage += ` Unknown error code: ${audio.error.code}.`;
           }
         }
-        console.error("Detailed audio error:", errorMessage, audio.error);
-        toast({ title: "Audio Playback Failed", description: `Could not load or play sound: ${errorMessage}`, variant: "destructive" });
+        console.error("Audio element error:", errorMessage, e, audio.error);
+        toast({ title: "Audio Playback Issue", description: errorMessage, variant: "destructive" });
       };
-      audio.oncanplaythrough = () => {
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(_ => {}).catch(playError => {
-            console.error(`Error during audio.play() for ${soundPath}:`, playError);
-            toast({ title: "Sound Playback Error", description: `Could not play ${soundPath}. Browser error: ${playError.message}`, variant: "destructive" });
-          });
-        }
-      };
-      audio.src = soundPath;
-      audio.load();
+      
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(playError => {
+          console.error(`Error playing ${soundPath}:`, playError);
+          // Avoid toast for common browser restrictions (e.g., autoplay without interaction)
+          if (playError.name !== 'NotAllowedError' && playError.name !== 'NotSupportedError') {
+            toast({ title: "Sound Playback Error", description: `Could not play ${soundPath}. ${playError.message}`, variant: "destructive" });
+          }
+        });
+      }
     } catch (error: any) {
-      console.error(`Synchronous error for ${soundPath}:`, error);
-      toast({ title: "Audio Setup Error", description: `Issue setting up sound for ${soundPath}: ${error.message}`, variant: "destructive" });
+      console.error(`Error setting up sound ${soundPath}:`, error);
+      toast({ title: "Audio Setup Error", description: `Issue with ${soundPath}: ${error.message}`, variant: "destructive" });
     }
   }, [toast]);
+
 
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     if (!currentQuestion) return;
@@ -124,17 +173,17 @@ export default function TriviaGame() {
       const newScore = score + 100;
       setScore(newScore);
       setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
-      playSound('/sounds/pirate-correct.mp3'); // Play pirate sound for correct answer
+      playSound('/sounds/pirate-correct.mp3'); 
       toast({
         title: "Shiver me timbers! Correct!",
         description: "Ye be a true captain o' this quiz!",
         variant: "default",
       });
 
-      if (newScore >= 300 && newScore < 500) {
+      if (newScore >= 300 && newScore < 500) { // Example: Achievement for score range
          updateAchievementProgress(achievements, 'five_correct', setAchievements);
       }
-       if (currentQuestion.storylineHintKey.includes("boldt")) {
+       if (currentQuestion.storylineHintKey.includes("boldt")) { // Example: Category achievement
         updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
       }
       if (currentQuestion.storylineHintKey === "fish_expert_clue") {
@@ -149,18 +198,29 @@ export default function TriviaGame() {
         });
         setCurrentGeneratedHint(hintResult);
 
-        const storyHint = storyline.find(h => h.key === currentQuestion.storylineHintKey);
-        if (storyHint && !unlockedStoryHints.some(ush => ush.key === storyHint.key)) {
-          const newUnlockedHint = { ...storyHint, unlocked: true, text: hintResult.hint };
-          setUnlockedStoryHints(prev => {
-            const updatedHints = [...prev, newUnlockedHint];
-            if (updatedHints.length >= storyline.filter(h => h.key !== 'final_revelation').length) {
+        const storyHintKey = currentQuestion.storylineHintKey;
+        const hintIndex = unlockedStoryHints.findIndex(h => h.key === storyHintKey);
+
+        if (hintIndex !== -1 && !unlockedStoryHints[hintIndex].unlocked) {
+          setUnlockedStoryHints(prevHints => {
+            const updatedHints = prevHints.map(h => 
+              h.key === storyHintKey ? { ...h, unlocked: true, text: hintResult.hint } : h
+            );
+            // Check for story completion achievement
+            const allNonFinalUnlocked = updatedHints
+                .filter(h => h.key !== 'final_revelation')
+                .every(h => h.unlocked);
+            if (allNonFinalUnlocked) {
                 updateAchievementProgress(achievements, 'story_complete', setAchievements);
             }
             return updatedHints;
           });
-           updateAchievementProgress(achievements, 'first_hint', setAchievements);
+          updateAchievementProgress(achievements, 'first_hint', setAchievements);
+        } else if (hintIndex === -1) {
+          // This case should ideally not happen if all storylineHintKeys in questions exist in initialStoryline
+          console.warn(`Storyline hint key "${storyHintKey}" not found in initial storyline data.`);
         }
+
       } catch (error) {
         console.error("Error generating hint:", error);
         toast({ title: "Hint Error", description: "Could not generate a hint at this time.", variant: "destructive" });
@@ -170,7 +230,8 @@ export default function TriviaGame() {
       }
     } else {
       setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
-      playSound('/sounds/fog-horn.mp3'); // Play fog horn sound for incorrect answer
+      playSound('/sounds/fog-horn.mp3'); 
+      // Removed toast for incorrect answer as per user request
     }
   }, [currentQuestion, score, toast, unlockedStoryHints, achievements, playSound]);
 
@@ -182,12 +243,14 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score;
+      const finalScore = score; // Use the score from state
+      
+      // Update leaderboard data (this is client-side, ideally done on backend)
       const userEntry = leaderboardData.find(e => e.name === "You");
       if (userEntry) {
         userEntry.score = Math.max(userEntry.score, finalScore);
-      } else {
-        leaderboardData.push({id: "currentUser", name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
+      } else if (user) { // Make sure user exists before adding to leaderboard
+        leaderboardData.push({id: user.username, name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
       }
       leaderboardData.sort((a,b) => b.score - a.score);
 
@@ -195,7 +258,7 @@ export default function TriviaGame() {
           updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
       }
     }
-  }, [currentQuestionIndex, activeQuestions.length, score, achievements]);
+  }, [currentQuestionIndex, activeQuestions.length, score, achievements, user]);
 
 
   useEffect(() => {

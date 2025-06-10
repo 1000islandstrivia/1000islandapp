@@ -7,24 +7,16 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BookOpen, HelpCircle } from 'lucide-react';
-import { storyline as initialStoryline, StorylineHint } from '@/lib/trivia-data';
+import { storyline as initialStoryline, type StorylineHint } from '@/lib/trivia-data';
 
 export default function StorylinePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [unlockedHintKeys, setUnlockedHintKeys] = useState<string[]>(() => {
-    if (typeof window !== 'undefined') {
-        const storedProgress = localStorage.getItem(`storyProgress_${user?.username || 'guest'}`);
-        if (storedProgress) {
-            try {
-                return JSON.parse(storedProgress);
-            } catch (e) {
-                console.error("Failed to parse stored storyline progress", e);
-            }
-        }
-    }
-    return initialStoryline.filter(h => h.unlocked).map(h => h.key);
-  });
+
+  // Initialize with hints that are marked as initially unlocked in the data
+  const [unlockedHintKeys, setUnlockedHintKeys] = useState<string[]>(() =>
+    initialStoryline.filter(h => h.unlocked).map(h => h.key)
+  );
 
   useEffect(() => {
     if (!loading && !user) {
@@ -33,23 +25,32 @@ export default function StorylinePage() {
   }, [user, loading, router]);
 
   useEffect(() => {
+    // This effect runs when the component mounts and when `user` changes.
+    // It's responsible for loading the user-specific progress from localStorage.
     if (user && typeof window !== 'undefined') {
-        const storedProgress = localStorage.getItem(`storyProgress_${user.username}`);
+        const storedProgressKey = `storyProgress_${user.username}`;
+        const storedProgress = localStorage.getItem(storedProgressKey);
         if (storedProgress) {
             try {
-                setUnlockedHintKeys(JSON.parse(storedProgress));
+                const parsedProgress: string[] = JSON.parse(storedProgress);
+                setUnlockedHintKeys(parsedProgress);
             } catch (e) {
-                console.error("Error parsing storyline progress from local storage", e);
+                console.error(`Failed to parse storyline progress for ${user.username} from localStorage:`, e);
+                // If parsing fails, fall back to default unlocked hints for this user
                 setUnlockedHintKeys(initialStoryline.filter(h => h.unlocked).map(h => h.key));
             }
         } else {
-             setUnlockedHintKeys(initialStoryline.filter(h => h.unlocked).map(h => h.key));
+            // If no stored progress for this specific user, set to default 
+            setUnlockedHintKeys(initialStoryline.filter(h => h.unlocked).map(h => h.key));
         }
+    } else if (!user && typeof window !== 'undefined' && !loading) {
+        // If user logs out or is not available (and not still loading auth state), revert to default unlocked hints
+        setUnlockedHintKeys(initialStoryline.filter(h => h.unlocked).map(h => h.key));
     }
-  }, [user]);
+  }, [user, loading]);
 
 
-  if (loading || !user) {
+  if (loading || (!user && router.pathname !== '/login')) { // Ensure we don't show loading if redirecting
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <HelpCircle className="w-12 h-12 animate-spin text-primary" />
@@ -57,6 +58,11 @@ export default function StorylinePage() {
       </div>
     );
   }
+  
+  // If not loading and no user, means redirect should have happened or is happening.
+  // This check prevents rendering the page content briefly before redirect.
+  if (!user) return null;
+
 
   return (
     <MainLayout>
