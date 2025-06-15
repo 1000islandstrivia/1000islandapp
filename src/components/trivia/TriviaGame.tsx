@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { triviaQuestions as allTriviaQuestions, storyline as initialStoryline, achievements as initialAchievementsData, leaderboardData } from '@/lib/trivia-data';
+import { triviaQuestions as allTriviaQuestions, storyline as initialStoryline, achievements as initialAchievementsData } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, LeaderboardEntry } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import HintDisplay from './HintDisplay';
@@ -12,13 +12,13 @@ import { Progress } from "@/components/ui/progress";
 import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from '@/hooks/useAuth'; // Import useAuth
+import { useAuth } from '@/hooks/useAuth'; 
 import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
-const QUESTIONS_PER_GAME = 10; // Number of questions to play per game
+const QUESTIONS_PER_GAME = 10; 
+const LEADERBOARD_KEY = 'riverrat_lore_leaderboard';
 
-// Helper to update achievement state
 const updateAchievementProgress = (
   achievementsList: Achievement[],
   achievementId: string,
@@ -33,12 +33,11 @@ const updateAchievementProgress = (
 
 
 export default function TriviaGame() {
-  const { user } = useAuth(); // Get user from auth hook
+  const { user } = useAuth(); 
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   
-  // This state will hold the full StorylineHint objects for the current game session
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
   
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
@@ -65,7 +64,6 @@ export default function TriviaGame() {
     }
   }, []);
 
-  // Effect to load unlocked story hints from localStorage when user changes
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
       const storedProgressKey = `storyProgress_${user.username}`;
@@ -77,23 +75,19 @@ export default function TriviaGame() {
           currentUnlockedKeys = JSON.parse(storedProgress);
         } catch (e) {
           console.error(`Failed to parse storyline progress for ${user.username} from localStorage in TriviaGame:`, e);
-          currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key); // Fallback to default
+          currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key); 
         }
       } else {
-        currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key); // Default if no progress
+        currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key); 
       }
       
-      // Reconstruct StorylineHint objects based on keys
       setUnlockedStoryHints(
         initialStoryline.map(hint => ({
           ...hint,
           unlocked: currentUnlockedKeys.includes(hint.key),
-          // Note: AI-generated text is not persisted here, only unlocked status.
-          // The `text` will be the default from initialStoryline.
         }))
       );
     } else if (!user && typeof window !== 'undefined') {
-      // No user or logged out, reset to initial state of storyline (only default unlocked hints)
       setUnlockedStoryHints(initialStoryline.map(hint => ({
         ...hint,
         unlocked: initialStoryline.find(h => h.key === hint.key)?.unlocked || false,
@@ -101,7 +95,6 @@ export default function TriviaGame() {
     }
   }, [user]);
 
-  // Effect to save unlocked story hint keys to localStorage when they change or user changes
   useEffect(() => {
     if (user && typeof window !== 'undefined' && unlockedStoryHints.length > 0) {
       const keysToSave = unlockedStoryHints.filter(h => h.unlocked).map(h => h.key);
@@ -115,7 +108,6 @@ export default function TriviaGame() {
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
-    // unlockedStoryHints are now loaded via useEffect based on user
     setAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
@@ -131,7 +123,7 @@ export default function TriviaGame() {
   const playSound = useCallback((soundPath: string) => {
     if (typeof window === 'undefined' || !soundPath) return;
     try {
-      const audio = new Audio(soundPath); // Ensure path starts with '/' if in public folder
+      const audio = new Audio(soundPath);
       audio.onerror = (e) => {
         let errorMessage = `Failed to load audio: ${soundPath}.`;
         if (audio.error) {
@@ -151,7 +143,6 @@ export default function TriviaGame() {
       if (playPromise !== undefined) {
         playPromise.catch(playError => {
           console.error(`Error playing ${soundPath}:`, playError);
-          // Avoid toast for common browser restrictions (e.g., autoplay without interaction)
           if (playError.name !== 'NotAllowedError' && playError.name !== 'NotSupportedError') {
             toast({ title: "Sound Playback Error", description: `Could not play ${soundPath}. ${playError.message}`, variant: "destructive" });
           }
@@ -180,10 +171,10 @@ export default function TriviaGame() {
         variant: "default",
       });
 
-      if (newScore >= 300 && newScore < 500) { // Example: Achievement for score range
+      if (newScore >= 300 && newScore < 500) { 
          updateAchievementProgress(achievements, 'five_correct', setAchievements);
       }
-       if (currentQuestion.storylineHintKey.includes("boldt")) { // Example: Category achievement
+       if (currentQuestion.storylineHintKey.includes("boldt")) { 
         updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
       }
       if (currentQuestion.storylineHintKey === "fish_expert_clue") {
@@ -206,7 +197,6 @@ export default function TriviaGame() {
             const updatedHints = prevHints.map(h => 
               h.key === storyHintKey ? { ...h, unlocked: true, text: hintResult.hint } : h
             );
-            // Check for story completion achievement
             const allNonFinalUnlocked = updatedHints
                 .filter(h => h.key !== 'final_revelation')
                 .every(h => h.unlocked);
@@ -217,7 +207,6 @@ export default function TriviaGame() {
           });
           updateAchievementProgress(achievements, 'first_hint', setAchievements);
         } else if (hintIndex === -1) {
-          // This case should ideally not happen if all storylineHintKeys in questions exist in initialStoryline
           console.warn(`Storyline hint key "${storyHintKey}" not found in initial storyline data.`);
         }
 
@@ -231,7 +220,6 @@ export default function TriviaGame() {
     } else {
       setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
       playSound('/sounds/fog-horn.mp3'); 
-      // Removed toast for incorrect answer as per user request
     }
   }, [currentQuestion, score, toast, unlockedStoryHints, achievements, playSound]);
 
@@ -243,19 +231,42 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score; // Use the score from state
+      const finalScore = score; 
       
-      // Update leaderboard data (this is client-side, ideally done on backend)
-      const userEntry = leaderboardData.find(e => e.name === "You");
-      if (userEntry) {
-        userEntry.score = Math.max(userEntry.score, finalScore);
-      } else if (user) { // Make sure user exists before adding to leaderboard
-        leaderboardData.push({id: user.username, name: "You", score: finalScore, avatar: "https://placehold.co/40x40.png?text=U"});
-      }
-      leaderboardData.sort((a,b) => b.score - a.score);
+      if (user && typeof window !== 'undefined') {
+        const storedLeaderboard = localStorage.getItem(LEADERBOARD_KEY);
+        let currentLeaderboard: LeaderboardEntry[] = [];
+        if (storedLeaderboard) {
+          try {
+            currentLeaderboard = JSON.parse(storedLeaderboard);
+          } catch (e) {
+            console.error("Failed to parse leaderboard from localStorage", e);
+            currentLeaderboard = [];
+          }
+        }
 
-      if(leaderboardData.findIndex(e => e.name === "You") < 3 && finalScore > 0){
-          updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
+        const userIndex = currentLeaderboard.findIndex(entry => entry.id === user.username);
+        if (userIndex > -1) {
+          if (finalScore > currentLeaderboard[userIndex].score) {
+            currentLeaderboard[userIndex].score = finalScore;
+          }
+        } else {
+          currentLeaderboard.push({
+            id: user.username,
+            name: user.username,
+            score: finalScore,
+            avatar: `https://placehold.co/40x40.png?text=${user.username.substring(0,2).toUpperCase()}`
+          });
+        }
+        
+        currentLeaderboard.sort((a, b) => b.score - a.score);
+        localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(currentLeaderboard));
+
+        // Update achievement based on the updated leaderboard
+        const userRank = currentLeaderboard.findIndex(e => e.id === user.username);
+        if (userRank !== -1 && userRank < 3 && finalScore > 0) {
+           updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
+        }
       }
     }
   }, [currentQuestionIndex, activeQuestions.length, score, achievements, user]);

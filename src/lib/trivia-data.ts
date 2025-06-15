@@ -602,19 +602,13 @@ export const storyline: StorylineHint[] = [
 ];
 
 export interface LeaderboardEntry {
-  id: string;
+  id: string; // Should correspond to user.username for logged-in users
   name: string;
   score: number;
   avatar?: string; // URL to avatar image
 }
 
-export const leaderboardData: LeaderboardEntry[] = [
-  { id: 'player1', name: "CaptainRiverRat", score: 1250, avatar: "https://placehold.co/40x40.png?text=CR" },
-  { id: 'player2', name: "IsleExplorer", score: 1100, avatar: "https://placehold.co/40x40.png?text=IE" },
-  { id: 'player3', name: "SeawaySage", score: 950, avatar: "https://placehold.co/40x40.png?text=SS" },
-  { id: 'player4', name: "BoldtFanatic", score: 800, avatar: "https://placehold.co/40x40.png?text=BF" },
-  { id: 'player5', name: "NewbieNavigator", score: 500, avatar: "https://placehold.co/40x40.png?text=NN" },
-];
+// Static leaderboardData is removed. It will be managed via localStorage.
 
 export interface Achievement {
   id: string;
@@ -635,4 +629,3 @@ export const achievements: Achievement[] = [
   { id: 'geology_buff', name: "Rock Solid Knowledge", description: "Answered a question about island geology.", icon: Mountain, unlocked: false, criteria: "Answer geology question" },
   { id: 'history_hound', name: "History Hound", description: "Answered a question about local history.", icon: BookOpen, unlocked: false, criteria: "Answer history question" },
 ];
-
