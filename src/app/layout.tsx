@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${ptSans.variable} ${playfairDisplay.variable}`}>
+    <html lang="en" className={`${ptSans.variable} ${playfairDisplay.variable}`} suppressHydrationWarning={true}>
       <head>
         {/* Note: next/font handles font loading, so direct <link> tags for Google Fonts are not needed here if using next/font. */}
         {/* The existing <link> tags are preserved as per instructions, though next/font is preferred. */}
