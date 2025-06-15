@@ -602,13 +602,14 @@ export const storyline: StorylineHint[] = [
 ];
 
 export interface LeaderboardEntry {
-  id: string; // Should correspond to user.username for logged-in users
+  id: string; // User's username, will serve as document ID in Firestore
   name: string;
   score: number;
   avatar?: string; // URL to avatar image
+  rank?: number; // Optional: for client-side display after fetching
+  lastUpdated?: Date; // Optional: if you want to show when the score was last updated
 }
 
-// Static leaderboardData is removed. It will be managed via localStorage.
 
 export interface Achievement {
   id: string;

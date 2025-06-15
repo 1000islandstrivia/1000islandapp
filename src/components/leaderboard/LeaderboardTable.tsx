@@ -1,53 +1,87 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { LeaderboardEntry } from '@/lib/trivia-data';
-import { Award, ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { Award, ChevronDown, ChevronUp, ChevronsUpDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth'; // Import useAuth
+import { useAuth } from '@/hooks/useAuth';
+import { getLeaderboard } from '@/services/leaderboardService'; // Import Firestore service
+import { useToast } from "@/hooks/use-toast";
 
-type SortKey = keyof LeaderboardEntry;
+type SortKey = keyof LeaderboardEntry | 'rank'; // Add 'rank' as a possible sort key
 type SortOrder = 'asc' | 'dsc';
 
-const LEADERBOARD_KEY = 'riverrat_lore_leaderboard';
-
 export default function LeaderboardTable() {
-  const { user } = useAuth(); // Get current user
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [sortConfig, setSortConfig] = useState<{ key: SortKey; order: SortOrder }>({ key: 'score', order: 'dsc' });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchAndSetLeaderboard = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getLeaderboard();
+      // Add rank to each entry before sorting locally if needed
+      const rankedData = data.map((entry, index) => ({ ...entry, rank: index + 1 }));
+      setLeaderboard(rankedData);
+    } catch (err) {
+      console.error("Failed to fetch leaderboard:", err);
+      setError("Could not load leaderboard. Please try again later.");
+      toast({
+        title: "Leaderboard Error",
+        description: "Failed to fetch leaderboard data.",
+        variant: "destructive",
+      });
+      setLeaderboard([]); // Ensure leaderboard is empty on error
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
 
   useEffect(() => {
-    let storedLeaderboard: LeaderboardEntry[] = [];
-    if (typeof window !== 'undefined') {
-      const data = localStorage.getItem(LEADERBOARD_KEY);
-      if (data) {
-        try {
-          storedLeaderboard = JSON.parse(data);
-        } catch (e) {
-          console.error("Failed to parse leaderboard from localStorage", e);
-          storedLeaderboard = [];
+    fetchAndSetLeaderboard();
+  }, [fetchAndSetLeaderboard]);
+
+  const sortedLeaderboard = useCallback(() => {
+    let sortableItems = [...leaderboard];
+    if (sortConfig.key) {
+      sortableItems.sort((a, b) => {
+        // Handle rank separately as it's pre-calculated based on score
+        if (sortConfig.key === 'rank') {
+           // Ranks are usually pre-sorted by score desc by the service.
+           // If sorting by rank asc, we invert the comparison for b.rank vs a.rank
+           // For desc rank, it's more complex, usually tied to score.
+           // For simplicity, if sortKey is 'rank', we assume it's based on the order from DB.
+           // If 'rank' asc, means lower number is better. If 'rank' dsc, higher number is better (unusual for ranks)
+           // The service already orders by score desc, so rank is implicitly asc.
+          if (sortConfig.order === 'asc') {
+            return (a.rank ?? 0) - (b.rank ?? 0);
+          } else {
+            return (b.rank ?? 0) - (a.rank ?? 0);
+          }
         }
-      }
+
+        const valA = a[sortConfig.key as keyof LeaderboardEntry];
+        const valB = b[sortConfig.key as keyof LeaderboardEntry];
+
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return sortConfig.order === 'asc' ? valA - valB : valB - valA;
+        }
+        if (typeof valA === 'string' && typeof valB === 'string') {
+          return sortConfig.order === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return 0;
+      });
     }
-    
-    const sortedData = [...storedLeaderboard].sort((a, b) => {
-      if (a[sortConfig.key]! < b[sortConfig.key]!) {
-        return sortConfig.order === 'asc' ? -1 : 1;
-      }
-      if (a[sortConfig.key]! > b[sortConfig.key]!) {
-        return sortConfig.order === 'asc' ? 1 : -1;
-      }
-      // Secondary sort by name if scores are equal
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
-      return 0;
-    });
-    setLeaderboard(sortedData);
-  }, [sortConfig]); // Re-run if sortConfig changes, data is fetched once initially
+    return sortableItems;
+  }, [leaderboard, sortConfig]);
 
   const requestSort = (key: SortKey) => {
     let order: SortOrder = 'dsc'; 
@@ -57,6 +91,8 @@ export default function LeaderboardTable() {
       order = 'dsc';
     } else if (key === 'name') {
       order = 'asc'; 
+    } else if (key === 'rank') {
+      order = 'asc'; // Default rank sort is ascending
     }
     setSortConfig({ key, order });
   };
@@ -68,6 +104,24 @@ export default function LeaderboardTable() {
     return sortConfig.order === 'asc' ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />;
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8 bg-card/90 backdrop-blur-sm rounded-lg shadow-md min-h-[200px]">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <p className="ml-3 text-lg text-muted-foreground">Loading RiverRat Rankings...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center p-8 bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md border border-destructive">
+        <p className="text-xl text-destructive-foreground">{error}</p>
+        <Button onClick={fetchAndSetLeaderboard} className="mt-4">Try Again</Button>
+      </div>
+    );
+  }
+
   if (!leaderboard.length) {
     return (
       <div className="text-center p-8 bg-card/90 backdrop-blur-sm rounded-lg shadow-md">
@@ -77,12 +131,18 @@ export default function LeaderboardTable() {
     );
   }
 
+  const displayData = sortedLeaderboard();
+
   return (
     <div className="overflow-hidden rounded-lg border shadow-lg bg-card/90 backdrop-blur-sm">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-muted/0">
-            <TableHead className="w-[80px] text-center font-semibold text-primary">Rank</TableHead>
+            <TableHead className="w-[80px] text-center">
+                 <Button variant="ghost" onClick={() => requestSort('rank')} className="px-0 hover:bg-transparent text-primary font-semibold">
+                    Rank {getSortIcon('rank')}
+                </Button>
+            </TableHead>
             <TableHead>
                 <Button variant="ghost" onClick={() => requestSort('name')} className="px-0 hover:bg-transparent text-primary font-semibold">
                     Player {getSortIcon('name')}
@@ -96,28 +156,28 @@ export default function LeaderboardTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {leaderboard.map((entry, index) => (
+          {displayData.map((entry, index) => (
             <TableRow 
               key={entry.id} 
               className={cn(
                 "transition-all duration-300 ease-in-out hover:bg-primary/10",
-                index < 3 && "bg-accent/10 hover:bg-accent/20",
-                user && entry.id === user.username && "bg-primary/20 ring-2 ring-primary font-bold" // Highlight current user by username
+                (entry.rank ?? Infinity) <= 3 && "bg-accent/10 hover:bg-accent/20", // Use entry.rank
+                user && entry.id === user.username && "bg-primary/20 ring-2 ring-primary font-bold"
               )}
             >
               <TableCell className="text-center font-medium text-lg">
                 <div className="flex items-center justify-center">
-                  {index < 3 ? (
+                  {(entry.rank ?? Infinity) <= 3 ? (
                     <Award
                       className={cn(
                         "w-7 h-7",
-                        index === 0 && "text-yellow-500", 
-                        index === 1 && "text-slate-500", 
-                        index === 2 && "text-yellow-700"  
+                        entry.rank === 1 && "text-yellow-500", 
+                        entry.rank === 2 && "text-slate-500", 
+                        entry.rank === 3 && "text-yellow-700"  
                       )}
                     />
                   ) : (
-                    <span>{index + 1}</span>
+                    <span>{entry.rank}</span>
                   )}
                 </div>
               </TableCell>
