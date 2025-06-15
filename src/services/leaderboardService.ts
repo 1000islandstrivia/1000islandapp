@@ -48,10 +48,12 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
         // lastUpdated: (data.lastUpdated as Timestamp)?.toDate() // Optional: if you need to display it
       } as LeaderboardEntry);
     });
-    return leaderboard;
-  } catch (error) {
+    // Add rank to each entry
+    return leaderboard.map((entry, index) => ({ ...entry, rank: index + 1 }));
+  } catch (error: any) {
     console.error("Error fetching leaderboard:", error);
-    throw new Error("Could not fetch leaderboard data.");
+    // Throw a more specific error message
+    throw new Error(`Could not fetch leaderboard data. Original error: ${error.message || String(error)}`);
   }
 }
 
@@ -88,8 +90,8 @@ export async function updateUserScore(userId: string, username: string, newScore
         lastUpdated: serverTimestamp(),
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating user score:", error);
-    throw new Error("Could not update user score.");
+    throw new Error(`Could not update user score. Original error: ${error.message || String(error)}`);
   }
 }
