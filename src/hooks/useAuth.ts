@@ -4,16 +4,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserLeaderboardEntry } from '@/services/leaderboardService';
-import { getRankByScore, type PlayerRank } from '@/lib/trivia-data';
+import { getRankByScore, playerRanks, type PlayerRank } from '@/lib/trivia-data';
 
-const AUTH_KEY = 'riverrat_lore_auth';
+const AUTH_KEY = 'riverrat_lore_auth_v2'; // Changed key to avoid conflicts with old structure
 
 interface User {
   username: string;
   email?: string;
   score?: number;
   rankTitle?: string;
-  rankIcon?: PlayerRank['icon']; // Store the icon component itself
+  rankIcon?: PlayerRank['icon'];
+}
+
+// Data structure for localStorage to avoid storing functions
+interface StoredUser {
+  username: string;
+  email?: string;
+  score?: number;
+  rankTitle?: string;
 }
 
 export function useAuth() {
@@ -21,48 +29,65 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const updateUserRankAndScore = useCallback(async (username: string, baseUser?: Partial<User>) => {
+  const updateUserStateWithRank = useCallback((userData: StoredUser): User => {
+    const rank = userData.rankTitle
+      ? playerRanks.find(r => r.title === userData.rankTitle) || getRankByScore(userData.score || 0)
+      : getRankByScore(userData.score || 0);
+    return {
+      username: userData.username,
+      email: userData.email,
+      score: userData.score || 0,
+      rankTitle: rank.title,
+      rankIcon: rank.icon,
+    };
+  }, []);
+
+  const updateUserRankAndScore = useCallback(async (username: string, baseUser?: Partial<StoredUser>) => {
     try {
       const leaderboardEntry = await getUserLeaderboardEntry(username);
-      if (leaderboardEntry) {
-        const rank = getRankByScore(leaderboardEntry.score);
-        const updatedUser: User = {
-          username: username,
-          email: baseUser?.email || leaderboardEntry.name === username ? undefined : leaderboardEntry.name, // A bit of guesswork for email if not provided
-          score: leaderboardEntry.score,
-          rankTitle: rank.title,
-          rankIcon: rank.icon,
-        };
-        setUser(updatedUser);
-        localStorage.setItem(AUTH_KEY, JSON.stringify(updatedUser));
-        return updatedUser;
-      } else {
-         // Fallback for a new user or if leaderboard entry not found
-        const defaultRank = getRankByScore(0);
-        const newUser: User = {
-            username: username,
-            email: baseUser?.email,
-            score: 0,
-            rankTitle: defaultRank.title,
-            rankIcon: defaultRank.icon,
-        };
-        setUser(newUser);
-        localStorage.setItem(AUTH_KEY, JSON.stringify(newUser));
-        return newUser;
-      }
+      const currentScore = leaderboardEntry?.score ?? baseUser?.score ?? 0;
+      const currentRankTitle = leaderboardEntry?.rankTitle ?? baseUser?.rankTitle;
+
+      const rank = currentRankTitle
+        ? playerRanks.find(r => r.title === currentRankTitle) || getRankByScore(currentScore)
+        : getRankByScore(currentScore);
+
+      const updatedUser: User = {
+        username: username,
+        email: baseUser?.email || (leaderboardEntry?.name === username ? undefined : leaderboardEntry?.name),
+        score: currentScore,
+        rankTitle: rank.title,
+        rankIcon: rank.icon,
+      };
+      setUser(updatedUser);
+
+      // Store only serializable data
+      const userToStore: StoredUser = {
+        username: updatedUser.username,
+        email: updatedUser.email,
+        score: updatedUser.score,
+        rankTitle: updatedUser.rankTitle,
+      };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(userToStore));
+      return updatedUser;
     } catch (error) {
       console.error("Failed to update user rank and score:", error);
-      // Fallback if fetching leaderboard entry fails
-      const defaultRank = getRankByScore(0);
+      const defaultRank = getRankByScore(baseUser?.score || 0);
       const fallbackUser: User = {
         username: username,
         email: baseUser?.email,
-        score: 0,
-        rankTitle: defaultRank.title,
-        rankIcon: defaultRank.icon,
+        score: baseUser?.score || 0,
+        rankTitle: baseUser?.rankTitle || defaultRank.title,
+        rankIcon: playerRanks.find(r => r.title === (baseUser?.rankTitle || defaultRank.title))?.icon || defaultRank.icon,
       };
-      setUser(fallbackUser); // Set a default user state
-      localStorage.setItem(AUTH_KEY, JSON.stringify(fallbackUser)); // Save default state
+      setUser(fallbackUser);
+      const userToStore: StoredUser = {
+        username: fallbackUser.username,
+        email: fallbackUser.email,
+        score: fallbackUser.score,
+        rankTitle: fallbackUser.rankTitle,
+      };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(userToStore));
       return fallbackUser;
     }
   }, []);
@@ -73,32 +98,33 @@ export function useAuth() {
     try {
       const storedUserString = localStorage.getItem(AUTH_KEY);
       if (storedUserString) {
-        const storedUser: User = JSON.parse(storedUserString);
-        // Attempt to refresh rank and score on initial load
-        updateUserRankAndScore(storedUser.username, storedUser).finally(() => setLoading(false));
+        const storedUserData = JSON.parse(storedUserString) as StoredUser;
+        // Set user state with properly derived icon first
+        setUser(updateUserStateWithRank(storedUserData));
+        // Then, refresh from DB
+        updateUserRankAndScore(storedUserData.username, storedUserData).finally(() => setLoading(false));
       } else {
+        setUser(null);
         setLoading(false);
       }
     } catch (error) {
       console.error("Failed to parse user from localStorage or update rank:", error);
       localStorage.removeItem(AUTH_KEY);
+      setUser(null);
       setLoading(false);
     }
-  }, [updateUserRankAndScore]);
+  }, [updateUserRankAndScore, updateUserStateWithRank]);
 
   const login = useCallback(async (username: string) => {
     setLoading(true);
-    // Simulate API call for login if needed
-    // For now, primary action is to fetch/update rank & score
-    await updateUserRankAndScore(username);
+    // Passing a minimal StoredUser object for baseUser
+    await updateUserRankAndScore(username, { username });
     setLoading(false);
     router.push('/dashboard');
   }, [router, updateUserRankAndScore]);
 
   const register = useCallback(async (username: string, email: string) => {
     setLoading(true);
-    // Simulate API call for registration
-    // Store basic info, then update rank/score
     const defaultRank = getRankByScore(0);
     const newUser: User = {
       username,
@@ -107,10 +133,14 @@ export function useAuth() {
       rankTitle: defaultRank.title,
       rankIcon: defaultRank.icon,
     };
-    localStorage.setItem(AUTH_KEY, JSON.stringify(newUser));
-    setUser(newUser); 
-    // Optionally, immediately create a leaderboard entry, or let TriviaGame handle it.
-    // For simplicity, TriviaGame will create/update it on first game completion.
+    setUser(newUser);
+    const userToStore: StoredUser = {
+      username: newUser.username,
+      email: newUser.email,
+      score: newUser.score,
+      rankTitle: newUser.rankTitle,
+    };
+    localStorage.setItem(AUTH_KEY, JSON.stringify(userToStore));
     setLoading(false);
     router.push('/dashboard');
   }, [router]);
@@ -124,7 +154,14 @@ export function useAuth() {
   const refreshUser = useCallback(async () => {
     if (user) {
       setLoading(true);
-      await updateUserRankAndScore(user.username, user);
+      // Pass the current user's serializable parts
+      const storableUserParts: StoredUser = {
+        username: user.username,
+        email: user.email,
+        score: user.score,
+        rankTitle: user.rankTitle
+      };
+      await updateUserRankAndScore(user.username, storableUserParts);
       setLoading(false);
     }
   }, [user, updateUserRankAndScore]);

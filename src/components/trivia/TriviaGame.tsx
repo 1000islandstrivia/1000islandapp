@@ -13,11 +13,17 @@ import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw } from 'lucide-react';
+import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, Shield } from 'lucide-react'; // Added Shield for fallback
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 
 const QUESTIONS_PER_GAME = 10;
+
+// Interface for storing achievement progress in localStorage
+interface StoredAchievementProgress {
+  id: string;
+  unlocked: boolean;
+}
 
 const updateAchievementProgress = (
   achievementsList: Achievement[],
@@ -45,9 +51,7 @@ export default function TriviaGame() {
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
-  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(() =>
-    initialAchievementsData.map(a => ({ ...a, unlocked: false }))
-  );
+  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData);
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
@@ -66,21 +70,17 @@ export default function TriviaGame() {
 
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
+      // Storyline progress
       const storedProgressKey = `storyProgress_${user.username}`;
       const storedProgress = localStorage.getItem(storedProgressKey);
-      let currentUnlockedKeys: string[] = [];
-
+      let currentUnlockedKeys: string[] = initialStoryline.filter(h => h.unlocked).map(h => h.key);
       if (storedProgress) {
         try {
           currentUnlockedKeys = JSON.parse(storedProgress);
         } catch (e) {
-          console.error(`Failed to parse storyline progress for ${user.username} from localStorage in TriviaGame:`, e);
-          currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key);
+          console.error(`Failed to parse storyline progress for ${user.username} from localStorage:`, e);
         }
-      } else {
-        currentUnlockedKeys = initialStoryline.filter(h => h.unlocked).map(h => h.key);
       }
-
       setUnlockedStoryHints(
         initialStoryline.map(hint => ({
           ...hint,
@@ -88,28 +88,36 @@ export default function TriviaGame() {
         }))
       );
 
-      const achievementsKey = `achievements_${user.username}`;
-      const storedAchievements = localStorage.getItem(achievementsKey);
-      if (storedAchievements) {
+      // Achievements progress
+      const achievementsKey = `achievements_progress_${user.username}`; // New key for progress only
+      const storedAchievementsProgressString = localStorage.getItem(achievementsKey);
+      let storedProgressData: StoredAchievementProgress[] = [];
+      if (storedAchievementsProgressString) {
         try {
-          setCurrentAchievements(JSON.parse(storedAchievements));
+          storedProgressData = JSON.parse(storedAchievementsProgressString);
         } catch (e) {
-          console.error("Failed to parse achievements from localStorage", e);
-          setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
+          console.error("Failed to parse achievements progress from localStorage", e);
         }
-      } else {
-        setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
       }
-
+      // Rehydrate achievements with icons and other static data from initialAchievementsData
+      const rehydratedAchievements = initialAchievementsData.map(masterAch => {
+        const progress = storedProgressData.find(p => p.id === masterAch.id);
+        return {
+          ...masterAch,
+          unlocked: progress ? progress.unlocked : masterAch.unlocked, // Use stored unlocked status or default
+        };
+      });
+      setCurrentAchievements(rehydratedAchievements);
 
     } else if (!user && typeof window !== 'undefined') {
       setUnlockedStoryHints(initialStoryline.map(hint => ({
         ...hint,
         unlocked: initialStoryline.find(h => h.key === hint.key)?.unlocked || false,
       })));
-      setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
+      setCurrentAchievements(initialAchievementsData); // Reset to default if no user
     }
   }, [user]);
+
 
   useEffect(() => {
     if (user && typeof window !== 'undefined' && unlockedStoryHints.length > 0) {
@@ -120,7 +128,12 @@ export default function TriviaGame() {
 
   useEffect(() => {
     if (user && typeof window !== 'undefined' && currentAchievements.some(a => a.unlocked)) {
-      localStorage.setItem(`achievements_${user.username}`, JSON.stringify(currentAchievements));
+      // Save only the progress (id and unlocked status)
+      const achievementsProgressToStore: StoredAchievementProgress[] = currentAchievements.map(ach => ({
+        id: ach.id,
+        unlocked: ach.unlocked,
+      }));
+      localStorage.setItem(`achievements_progress_${user.username}`, JSON.stringify(achievementsProgressToStore));
     }
   }, [currentAchievements, user]);
 
@@ -132,19 +145,23 @@ export default function TriviaGame() {
     setGameOver(false);
 
     if (user) {
-        const achievementsKey = `achievements_${user.username}`;
-        const storedAchievements = localStorage.getItem(achievementsKey);
-        if (storedAchievements) {
+        const achievementsKey = `achievements_progress_${user.username}`;
+        const storedAchievementsProgressString = localStorage.getItem(achievementsKey);
+        let storedProgressData: StoredAchievementProgress[] = [];
+        if (storedAchievementsProgressString) {
             try {
-                setCurrentAchievements(JSON.parse(storedAchievements));
+                storedProgressData = JSON.parse(storedAchievementsProgressString);
             } catch (e) {
-                setCurrentAchievements(initialAchievementsData.map(a => ({...a, unlocked: false})));
+                console.error("Failed to parse achievements progress from localStorage on reset", e);
             }
-        } else {
-            setCurrentAchievements(initialAchievementsData.map(a => ({...a, unlocked: false})));
         }
+        const rehydratedAchievements = initialAchievementsData.map(masterAch => {
+            const progress = storedProgressData.find(p => p.id === masterAch.id);
+            return { ...masterAch, unlocked: progress ? progress.unlocked : masterAch.unlocked };
+        });
+        setCurrentAchievements(rehydratedAchievements);
     } else {
-        setCurrentAchievements(initialAchievementsData.map(a => ({...a, unlocked: false})));
+        setCurrentAchievements(initialAchievementsData.map(a => ({...a}))); // Fresh copy
     }
 
     setShowFeedback(null);
@@ -212,7 +229,7 @@ export default function TriviaGame() {
       }
       if (currentQuestion.storylineHintKey.includes("boldt") && !currentAchievements.find(a=>a.id === 'all_hints_category1')?.unlocked) {
         const boldtHintsUnlocked = unlockedStoryHints.filter(h => h.key.startsWith("boldt_") && h.unlocked).length;
-        if (boldtHintsUnlocked >= 2) {
+        if (boldtHintsUnlocked >= 2) { // Assuming 2 Boldt hints means "all" for this category for now
            updateAchievementProgress(currentAchievements, 'all_hints_category1', setCurrentAchievements);
         }
       }
@@ -266,7 +283,6 @@ export default function TriviaGame() {
       playSound('/sounds/fog-horn.mp3');
     }
 
-    const currentRankDetails = getRankByScore(newScore);
     const pettyOfficerRank = playerRanks.find(r => r.title === "Petty Officer Third Class");
     const chiefRank = playerRanks.find(r => r.title === "Chief Petty Officer");
     const officerRank = playerRanks.find(r => r.title === "Ensign");
@@ -285,7 +301,7 @@ export default function TriviaGame() {
         updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
     }
 
-  }, [currentQuestion, score, toast, unlockedStoryHints, currentAchievements, playSound, setCurrentAchievements]);
+  }, [currentQuestion, score, toast, unlockedStoryHints, currentAchievements, playSound]);
 
   const handleProceedToNext = useCallback(async () => {
     setShowFeedback(null);
@@ -295,12 +311,12 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score;
+      const finalScore = score; // Use the score state which was updated in handleAnswerSubmit
 
       if (user) {
         try {
           await updateUserScore(user.username, user.username, finalScore);
-          await refreshUser();
+          await refreshUser(); // This will fetch the latest score and rank for the user context
         } catch (error) {
           console.error("Failed to update score on leaderboard:", error);
           toast({
@@ -317,7 +333,7 @@ export default function TriviaGame() {
   useEffect(() => {
     currentAchievements.forEach(ach => {
       if (ach.unlocked && !toastedAchievementIds.has(ach.id)) {
-        const AchIcon = ach.icon; // Capitalize for JSX
+        const AchIcon = ach.icon;
         toast({
           title: "Achievement Unlocked!",
           description: (
@@ -420,3 +436,4 @@ export default function TriviaGame() {
     </div>
   );
 }
+
