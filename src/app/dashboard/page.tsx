@@ -7,23 +7,34 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react'; // Import React and useRef
 import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react'; // Import React for React.createElement
 
 export default function DashboardPage() {
-  const { user, loading, refreshUser } = useAuth(); // Added refreshUser
+  const { user, loading, refreshUser } = useAuth();
   const router = useRouter();
+  const initialRefreshCalledRef = useRef(false); // Ref to track if initial refresh has been called
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
-    } else if (user) {
-      // Refresh user data to get latest score/rank when dashboard loads or user changes
+    } else if (user && !loading && !initialRefreshCalledRef.current) {
+      // Refresh user data to get latest score/rank ONCE when dashboard loads with a user
       refreshUser();
+      initialRefreshCalledRef.current = true;
     }
   }, [user, loading, router, refreshUser]);
+
+  // If the user logs out, initialRefreshCalledRef should be reset if the component instance persists.
+  // However, a logout typically navigates away, and logging in as a new user would likely remount DashboardPage,
+  // naturally resetting the ref. If more complex scenarios arise, this reset logic might need enhancement.
+  useEffect(() => {
+      if (!user) {
+          initialRefreshCalledRef.current = false;
+      }
+  }, [user]);
+
 
   if (loading || !user) {
     return (
