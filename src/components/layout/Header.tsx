@@ -38,7 +38,7 @@ export default function Header() {
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-black/20 text-sm mr-2">
                   {(() => {
                     const RankIcon = user.rankIcon;
-                    return <RankIcon className="w-24 h-24 text-accent" />;
+                    return <RankIcon className="w-12 h-12 text-accent" />;
                   })()}
                   <span className="font-semibold">{user.rankTitle}</span>
                   <span className="opacity-80">{user.username}</span>
@@ -88,7 +88,7 @@ export default function Header() {
                   <div className="flex items-center gap-2 p-2 rounded-md bg-black/20 text-sm mb-3">
                     {(() => {
                       const RankIcon = user.rankIcon;
-                      return <RankIcon className="w-24 h-24 text-accent" />;
+                      return <RankIcon className="w-12 h-12 text-accent" />;
                     })()}
                     <div>
                       <span className="font-semibold block">{user.rankTitle}</span>
