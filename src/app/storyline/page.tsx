@@ -4,7 +4,7 @@
 import MainLayout from '@/components/layout/MainLayout';
 import StoryProgress from '@/components/storyline/StoryProgress';
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'; // Import usePathname
 import { useEffect, useState } from 'react';
 import { BookOpen, HelpCircle } from 'lucide-react';
 import { storyline as initialStoryline, type StorylineHint } from '@/lib/trivia-data';
@@ -12,6 +12,7 @@ import { storyline as initialStoryline, type StorylineHint } from '@/lib/trivia-
 export default function StorylinePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname(); // Get current pathname
 
   // Initialize with hints that are marked as initially unlocked in the data
   const [unlockedHintKeys, setUnlockedHintKeys] = useState<string[]>(() =>
@@ -40,7 +41,7 @@ export default function StorylinePage() {
                 setUnlockedHintKeys(initialStoryline.filter(h => h.unlocked).map(h => h.key));
             }
         } else {
-            // If no stored progress for this specific user, set to default 
+            // If no stored progress for this specific user, set to default
             setUnlockedHintKeys(initialStoryline.filter(h => h.unlocked).map(h => h.key));
         }
     } else if (!user && typeof window !== 'undefined' && !loading) {
@@ -50,7 +51,7 @@ export default function StorylinePage() {
   }, [user, loading]);
 
 
-  if (loading || (!user && router.pathname !== '/login')) { // Ensure we don't show loading if redirecting
+  if (loading || (!user && pathname !== '/login')) { // Ensure we don't show loading if redirecting
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <HelpCircle className="w-12 h-12 animate-spin text-primary" />
