@@ -12,9 +12,9 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { getLeaderboard } from '@/services/leaderboardService';
 import { useToast } from "@/hooks/use-toast";
-import React from 'react'; // Import React for React.createElement
+import React from 'react';
 
-type SortKey = keyof LeaderboardEntry | 'rankDisplay'; // Use 'rankDisplay' for numerical rank
+type SortKey = keyof LeaderboardEntry | 'rankDisplay';
 type SortOrder = 'asc' | 'dsc';
 
 export default function LeaderboardTable() {
@@ -34,9 +34,9 @@ export default function LeaderboardTable() {
         const playerRankDetails = getRankByScore(entry.score);
         return {
           ...entry,
-          rank: index + 1, // Numerical leaderboard rank
-          rankTitle: entry.rankTitle || playerRankDetails.title, // Use stored or calculate
-          rankIcon: playerRankDetails.icon, // Add icon for display
+          rank: index + 1,
+          rankTitle: entry.rankTitle || playerRankDetails.title,
+          rankIcon: playerRankDetails.icon,
         };
       });
       setLeaderboard(rankedData as LeaderboardEntry[] & {rankIcon: PlayerRank['icon']}[] );
@@ -45,7 +45,7 @@ export default function LeaderboardTable() {
       setError(err.message || "Could not load leaderboard. Please try again later.");
       toast({
         title: "Leaderboard Error",
-        description: "Failed to fetch leaderboard data.",
+        description: `Failed to fetch leaderboard data. Original error: ${err.message || String(err)}`,
         variant: "destructive",
       });
       setLeaderboard([]);
@@ -62,7 +62,7 @@ export default function LeaderboardTable() {
     let sortableItems = [...leaderboard];
     if (sortConfig.key) {
       sortableItems.sort((a, b) => {
-        if (sortConfig.key === 'rankDisplay') { // Ensure this matches actual property if different
+        if (sortConfig.key === 'rankDisplay') {
           return sortConfig.order === 'asc' ? (a.rank ?? 0) - (b.rank ?? 0) : (b.rank ?? 0) - (a.rank ?? 0);
         }
 
@@ -94,7 +94,7 @@ export default function LeaderboardTable() {
     }
     setSortConfig({ key, order });
   };
-  
+
   const getSortIcon = (key: SortKey) => {
     if (sortConfig.key !== key) {
       return <ChevronsUpDown className="ml-1 h-3 w-3 opacity-50" />;
@@ -160,8 +160,8 @@ export default function LeaderboardTable() {
         </TableHeader>
         <TableBody>
           {displayData.map((entry: LeaderboardEntry & { rankIcon?: PlayerRank['icon'] } , index) => (
-            <TableRow 
-              key={entry.id} 
+            <TableRow
+              key={entry.id}
               className={cn(
                 "transition-all duration-300 ease-in-out hover:bg-primary/10",
                 (entry.rank ?? Infinity) <= 3 && "bg-accent/10 hover:bg-accent/20",
@@ -174,9 +174,9 @@ export default function LeaderboardTable() {
                     <Award
                       className={cn(
                         "w-6 h-6 sm:w-7 sm:h-7",
-                        entry.rank === 1 && "text-yellow-400", 
-                        entry.rank === 2 && "text-slate-400", 
-                        entry.rank === 3 && "text-yellow-600"  
+                        entry.rank === 1 && "text-yellow-400",
+                        entry.rank === 2 && "text-slate-400",
+                        entry.rank === 3 && "text-yellow-600"
                       )}
                     />
                   ) : (
@@ -195,7 +195,10 @@ export default function LeaderboardTable() {
               </TableCell>
               <TableCell className="text-center hidden sm:table-cell">
                 <div className="flex items-center justify-center gap-1">
-                 {entry.rankIcon && React.createElement(entry.rankIcon, { className: "w-4 h-4 text-muted-foreground" })}
+                 {entry.rankIcon && (() => {
+                   const RankIcon = entry.rankIcon;
+                   return <RankIcon className="w-4 h-4 text-muted-foreground" />;
+                 })()}
                  <span className="text-xs text-muted-foreground">{entry.rankTitle}</span>
                 </div>
               </TableCell>

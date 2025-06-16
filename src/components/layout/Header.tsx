@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { ScrollText, LogOut, Menu } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
-import React from 'react'; // Import React for React.createElement
+import React from 'react';
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -36,7 +36,10 @@ export default function Header() {
             <>
               {user.rankIcon && user.rankTitle && (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-black/20 text-sm mr-2">
-                  {React.createElement(user.rankIcon, { className: "w-5 h-5 text-accent" })}
+                  {(() => {
+                    const RankIcon = user.rankIcon;
+                    return <RankIcon className="w-5 h-5 text-accent" />;
+                  })()}
                   <span className="font-semibold">{user.rankTitle}</span>
                   <span className="opacity-80">{user.username}</span>
                 </div>
@@ -83,7 +86,10 @@ export default function Header() {
                 </Link>
                 {user && user.rankIcon && user.rankTitle && (
                   <div className="flex items-center gap-2 p-2 rounded-md bg-black/20 text-sm mb-3">
-                    {React.createElement(user.rankIcon, { className: "w-5 h-5 text-accent" })}
+                    {(() => {
+                      const RankIcon = user.rankIcon;
+                      return <RankIcon className="w-5 h-5 text-accent" />;
+                    })()}
                     <div>
                       <span className="font-semibold block">{user.rankTitle}</span>
                       <span className="opacity-80 text-xs">{user.username}</span>
@@ -127,9 +133,9 @@ export default function Header() {
               {user && (
                 <div className="mt-auto p-4 border-t border-primary-foreground/20">
                   <SheetClose asChild>
-                    <Button 
-                      variant="ghost" 
-                      onClick={logout} 
+                    <Button
+                      variant="ghost"
+                      onClick={logout}
                       className="w-full justify-start p-3 bg-accent text-accent-foreground hover:bg-accent/90 active:bg-accent/80 text-base"
                     >
                       <LogOut className="mr-3 h-5 w-5" /> Logout

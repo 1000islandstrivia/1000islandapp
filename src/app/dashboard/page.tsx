@@ -7,28 +7,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react'; // Import React and useRef
+import React, { useEffect, useRef } from 'react'; // Import React
 import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
   const router = useRouter();
-  const initialRefreshCalledRef = useRef(false); // Ref to track if initial refresh has been called
+  const initialRefreshCalledRef = useRef(false);
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     } else if (user && !loading && !initialRefreshCalledRef.current) {
-      // Refresh user data to get latest score/rank ONCE when dashboard loads with a user
       refreshUser();
       initialRefreshCalledRef.current = true;
     }
   }, [user, loading, router, refreshUser]);
 
-  // If the user logs out, initialRefreshCalledRef should be reset if the component instance persists.
-  // However, a logout typically navigates away, and logging in as a new user would likely remount DashboardPage,
-  // naturally resetting the ref. If more complex scenarios arise, this reset logic might need enhancement.
   useEffect(() => {
       if (!user) {
           initialRefreshCalledRef.current = false;
@@ -51,8 +47,10 @@ export default function DashboardPage() {
         <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
           <CardHeader>
             <CardTitle className="font-headline text-3xl sm:text-4xl text-primary">
-              Welcome, {user.rankTitle && user.rankIcon && 
-                React.createElement(user.rankIcon, { className: "w-7 h-7 inline-block mr-2 text-accent"})}
+              Welcome, {user.rankTitle && user.rankIcon && (() => {
+                const RankIcon = user.rankIcon;
+                return <RankIcon className="w-7 h-7 inline-block mr-2 text-accent" />;
+              })()}
               {user.rankTitle || 'Captain'} {user.username}!
             </CardTitle>
             <CardDescription className="text-md sm:text-lg">
@@ -62,9 +60,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="relative aspect-[2/1] w-full rounded-lg overflow-hidden mb-6 shadow-md">
-              <Image 
-                src="https://i.imgur.com/VwypPaT.png" 
-                alt="Thousand Islands scenic view with a bridge" 
+              <Image
+                src="https://i.imgur.com/VwypPaT.png"
+                alt="Thousand Islands scenic view with a bridge"
                 fill
                 style={{objectFit: "cover"}}
                 data-ai-hint="islands river"
