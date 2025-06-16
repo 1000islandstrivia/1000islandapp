@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AchievementsDisplay from '@/components/achievements/AchievementsDisplay';
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'; // Import usePathname
 import { achievements as allAchievementsData, type Achievement } from '@/lib/trivia-data';
 import { Trophy, HelpCircle } from 'lucide-react';
 
@@ -17,6 +17,7 @@ interface StoredAchievementProgress {
 export default function AchievementsPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname(); // Get current pathname
   const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
   const [pageLoading, setPageLoading] = useState(true);
 
@@ -58,7 +59,7 @@ export default function AchievementsPage() {
     }
   }, [user, authLoading]);
 
-  if (authLoading || pageLoading || (!user && router.pathname !== '/login')) {
+  if (authLoading || pageLoading || (!user && pathname !== '/login')) { // Use pathname here
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <HelpCircle className="w-12 h-12 animate-spin text-primary" />
