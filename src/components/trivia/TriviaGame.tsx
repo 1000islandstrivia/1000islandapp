@@ -13,13 +13,12 @@ import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, Shield } from 'lucide-react'; // Added Shield for fallback
+import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 
 const QUESTIONS_PER_GAME = 10;
 
-// Interface for storing achievement progress in localStorage
 interface StoredAchievementProgress {
   id: string;
   unlocked: boolean;
@@ -43,15 +42,15 @@ export default function TriviaGame() {
   const { toast } = useToast();
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(0); // This score is for the current game session
 
-  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
+  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(initialStoryline.map(h => ({ ...h, unlocked: h.unlocked })));
 
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
-  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData);
+  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData.map(a => ({ ...a })));
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
@@ -70,7 +69,6 @@ export default function TriviaGame() {
 
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
-      // Storyline progress
       const storedProgressKey = `storyProgress_${user.username}`;
       const storedProgress = localStorage.getItem(storedProgressKey);
       let currentUnlockedKeys: string[] = initialStoryline.filter(h => h.unlocked).map(h => h.key);
@@ -88,8 +86,7 @@ export default function TriviaGame() {
         }))
       );
 
-      // Achievements progress
-      const achievementsKey = `achievements_progress_${user.username}`; // New key for progress only
+      const achievementsKey = `achievements_progress_${user.username}`;
       const storedAchievementsProgressString = localStorage.getItem(achievementsKey);
       let storedProgressData: StoredAchievementProgress[] = [];
       if (storedAchievementsProgressString) {
@@ -99,12 +96,13 @@ export default function TriviaGame() {
           console.error("Failed to parse achievements progress from localStorage", e);
         }
       }
-      // Rehydrate achievements with icons and other static data from initialAchievementsData
       const rehydratedAchievements = initialAchievementsData.map(masterAch => {
         const progress = storedProgressData.find(p => p.id === masterAch.id);
+        const AchIcon = masterAch.icon; // Get icon constructor
         return {
           ...masterAch,
-          unlocked: progress ? progress.unlocked : masterAch.unlocked, // Use stored unlocked status or default
+          icon: AchIcon, // Ensure icon is the component itself
+          unlocked: progress ? progress.unlocked : masterAch.unlocked,
         };
       });
       setCurrentAchievements(rehydratedAchievements);
@@ -114,7 +112,7 @@ export default function TriviaGame() {
         ...hint,
         unlocked: initialStoryline.find(h => h.key === hint.key)?.unlocked || false,
       })));
-      setCurrentAchievements(initialAchievementsData); // Reset to default if no user
+      setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, icon: a.icon })));
     }
   }, [user]);
 
@@ -128,7 +126,6 @@ export default function TriviaGame() {
 
   useEffect(() => {
     if (user && typeof window !== 'undefined' && currentAchievements.some(a => a.unlocked)) {
-      // Save only the progress (id and unlocked status)
       const achievementsProgressToStore: StoredAchievementProgress[] = currentAchievements.map(ach => ({
         id: ach.id,
         unlocked: ach.unlocked,
@@ -157,11 +154,12 @@ export default function TriviaGame() {
         }
         const rehydratedAchievements = initialAchievementsData.map(masterAch => {
             const progress = storedProgressData.find(p => p.id === masterAch.id);
-            return { ...masterAch, unlocked: progress ? progress.unlocked : masterAch.unlocked };
+            const AchIcon = masterAch.icon;
+            return { ...masterAch, icon: AchIcon, unlocked: progress ? progress.unlocked : masterAch.unlocked };
         });
         setCurrentAchievements(rehydratedAchievements);
     } else {
-        setCurrentAchievements(initialAchievementsData.map(a => ({...a}))); // Fresh copy
+        setCurrentAchievements(initialAchievementsData.map(a => ({...a, icon: a.icon}))); 
     }
 
     setShowFeedback(null);
@@ -211,11 +209,11 @@ export default function TriviaGame() {
     if (!currentQuestion) return;
 
     const isCorrect = answer === currentQuestion.answer;
-    let newScore = score;
+    let newSessionScore = score;
 
     if (isCorrect) {
-      newScore = score + 100;
-      setScore(newScore);
+      newSessionScore = score + 100;
+      setScore(newSessionScore);
       setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
       playSound('/sounds/pirate-correct.mp3');
       toast({
@@ -224,12 +222,12 @@ export default function TriviaGame() {
         variant: "default",
       });
 
-      if (newScore >= 500 && !currentAchievements.find(a=>a.id === 'five_correct')?.unlocked) {
+      if (newSessionScore >= 500 && !currentAchievements.find(a=>a.id === 'five_correct')?.unlocked) {
          updateAchievementProgress(currentAchievements, 'five_correct', setCurrentAchievements);
       }
       if (currentQuestion.storylineHintKey.includes("boldt") && !currentAchievements.find(a=>a.id === 'all_hints_category1')?.unlocked) {
         const boldtHintsUnlocked = unlockedStoryHints.filter(h => h.key.startsWith("boldt_") && h.unlocked).length;
-        if (boldtHintsUnlocked >= 2) { // Assuming 2 Boldt hints means "all" for this category for now
+        if (boldtHintsUnlocked >= 2) { 
            updateAchievementProgress(currentAchievements, 'all_hints_category1', setCurrentAchievements);
         }
       }
@@ -279,29 +277,51 @@ export default function TriviaGame() {
         setIsHintLoading(false);
       }
     } else {
+      newSessionScore = score - 500; // Deduct points for wrong answer
+      setScore(newSessionScore);
       setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
       playSound('/sounds/fog-horn.mp3');
+      toast({
+        title: "Walk the Plank!",
+        description: "Ye lost 500 points for that blunder, scallywag!",
+        variant: "destructive",
+      });
     }
 
+    // Check achievements based on the newSessionScore in relation to the *user's total score* if possible,
+    // or estimate based on session score for ranks if total score isn't immediately available without async.
+    // For now, rank achievements are based on the session score potentially adding to a base.
+    // A more accurate way would be to get the user's current total score here.
+    // However, refreshUser is async. So, we make do or pass a predicted total score to achievement checks.
+
+    // Let's assume for simplicity, the achievement check for ranks uses the session score as a proxy
+    // for "progress towards next rank in this session". Ideally, this logic would be more robust.
     const pettyOfficerRank = playerRanks.find(r => r.title === "Petty Officer Third Class");
     const chiefRank = playerRanks.find(r => r.title === "Chief Petty Officer");
     const officerRank = playerRanks.find(r => r.title === "Ensign");
     const admiralRank = playerRanks.find(r => r.title === "Admiral");
+    
+    // This part of rank achievement might need rethinking if newSessionScore alone isn't representative
+    // of reaching a total score threshold.
+    if (user && user.score !== undefined) {
+        const potentialTotalScore = (user.score - (score - newSessionScore)) ; // old total + points change in this step.
+        
+        if (pettyOfficerRank && potentialTotalScore >= pettyOfficerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'rank_petty_officer', setCurrentAchievements);
+        }
+        if (chiefRank && potentialTotalScore >= chiefRank.minScore && !currentAchievements.find(a=>a.id === 'rank_chief')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'rank_chief', setCurrentAchievements);
+        }
+        if (officerRank && potentialTotalScore >= officerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_officer')?.unlocked) {
+           updateAchievementProgress(currentAchievements, 'rank_officer', setCurrentAchievements);
+        }
+        if (admiralRank && potentialTotalScore >= admiralRank.minScore && !currentAchievements.find(a=>a.id === 'rank_admiral')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
+        }
+    }
 
-    if (pettyOfficerRank && newScore >= pettyOfficerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
-        updateAchievementProgress(currentAchievements, 'rank_petty_officer', setCurrentAchievements);
-    }
-    if (chiefRank && newScore >= chiefRank.minScore && !currentAchievements.find(a=>a.id === 'rank_chief')?.unlocked) {
-        updateAchievementProgress(currentAchievements, 'rank_chief', setCurrentAchievements);
-    }
-    if (officerRank && newScore >= officerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_officer')?.unlocked) {
-       updateAchievementProgress(currentAchievements, 'rank_officer', setCurrentAchievements);
-    }
-    if (admiralRank && newScore >= admiralRank.minScore && !currentAchievements.find(a=>a.id === 'rank_admiral')?.unlocked) {
-        updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
-    }
 
-  }, [currentQuestion, score, toast, unlockedStoryHints, currentAchievements, playSound]);
+  }, [currentQuestion, score, toast, unlockedStoryHints, currentAchievements, playSound, user]);
 
   const handleProceedToNext = useCallback(async () => {
     setShowFeedback(null);
@@ -311,12 +331,12 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score; // Use the score state which was updated in handleAnswerSubmit
+      const finalSessionScore = score; 
 
       if (user) {
         try {
-          await updateUserScore(user.username, user.username, finalScore);
-          await refreshUser(); // This will fetch the latest score and rank for the user context
+          await updateUserScore(user.username, user.username, finalSessionScore);
+          await refreshUser(); 
         } catch (error) {
           console.error("Failed to update score on leaderboard:", error);
           toast({
@@ -333,7 +353,7 @@ export default function TriviaGame() {
   useEffect(() => {
     currentAchievements.forEach(ach => {
       if (ach.unlocked && !toastedAchievementIds.has(ach.id)) {
-        const AchIcon = ach.icon;
+        const AchIcon = ach.icon as LucideIcon | undefined; // Ensure ach.icon is treated as a component
         toast({
           title: "Achievement Unlocked!",
           description: (
@@ -364,7 +384,7 @@ export default function TriviaGame() {
           <CardTitle className="font-headline text-4xl text-primary">Adventure Complete, Captain!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-2xl">Your Final Score: <span className="font-bold text-accent">{score}</span> pieces o' eight!</p>
+          <p className="text-2xl">Your Score this Game: <span className="font-bold text-accent">{score}</span> pieces o' eight!</p>
           <p className="text-lg text-foreground/80">
             Ye've navigated the treacherous waters of Thousand Islands trivia. Check yer treasure map (storyline) and see how ye rank against other pirates on the leaderboard!
           </p>
@@ -400,7 +420,7 @@ export default function TriviaGame() {
     <div className="space-y-8">
       <Card className="bg-card/80 backdrop-blur-sm shadow-md p-4">
         <div className="flex justify-between items-center mb-2">
-          <p className="text-lg font-semibold text-primary">Score: <span className="text-accent">{score}</span></p>
+          <p className="text-lg font-semibold text-primary">Session Score: <span className="text-accent">{score}</span></p>
           <p className="text-sm text-muted-foreground">Question Progress</p>
         </div>
         <Progress value={progressPercentage} className="w-full h-3 [&>div]:bg-accent" />
@@ -436,4 +456,3 @@ export default function TriviaGame() {
     </div>
   );
 }
-

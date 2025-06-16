@@ -41,13 +41,13 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
     );
     const querySnapshot = await getDocs(q);
     const leaderboard: LeaderboardEntry[] = [];
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
+    querySnapshot.forEach((docSnap) => { // Renamed doc to docSnap to avoid conflict
+      const data = docSnap.data();
       leaderboard.push({
-        id: doc.id,
+        id: docSnap.id,
         name: data.name,
         score: data.score,
-        rankTitle: data.rankTitle || getRankByScore(data.score).title, // Fallback if rankTitle not stored
+        rankTitle: data.rankTitle || getRankByScore(data.score).title,
         avatar: data.avatar,
         lastUpdated: (data.lastUpdated as Timestamp)?.toDate()
       } as LeaderboardEntry);
@@ -55,17 +55,17 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
     return leaderboard.map((entry, index) => ({ ...entry, rank: index + 1 }));
   } catch (error: any) {
     console.error("Error fetching leaderboard:", error);
-    // Throw a more specific error message
     throw new Error(`Could not fetch leaderboard data. Original error: ${error.message || String(error)}`);
   }
 }
 
 /**
  * Updates a user's score on the leaderboard in Firestore by adding the score from the current game.
+ * Ensures the total score does not go below zero.
  * Also updates the user's rank title based on the new total score.
  * @param userId - The user's unique ID (username).
  * @param username - The user's display name.
- * @param scoreEarnedThisGame - The score achieved by the user in the current game session.
+ * @param scoreEarnedThisGame - The score achieved by the user in the current game session (can be negative).
  * @returns A promise that resolves when the update is complete.
  */
 export async function updateUserScore(userId: string, username: string, scoreEarnedThisGame: number): Promise<void> {
@@ -81,11 +81,13 @@ export async function updateUserScore(userId: string, username: string, scoreEar
       const currentTotalScore = currentData.score || 0;
       newTotalScore = currentTotalScore + scoreEarnedThisGame;
     } else {
-      // New user, their total score is just what they earned this game
       newTotalScore = scoreEarnedThisGame;
     }
 
-    const finalRank = getRankByScore(newTotalScore); // Calculate rank based on the new total score
+    // Ensure the total score does not go below 0
+    newTotalScore = Math.max(0, newTotalScore);
+
+    const finalRank = getRankByScore(newTotalScore);
 
     await setDoc(userDocRef, {
       name: username,
@@ -114,17 +116,18 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
     if (userDocSnap.exists()) {
       const data = userDocSnap.data();
       const score = data.score || 0;
-      const rankTitle = data.rankTitle || getRankByScore(score).title;
+      // Ensure score is not negative when retrieving for display/rank calculation
+      const displayScore = Math.max(0, score); 
+      const rankTitle = data.rankTitle || getRankByScore(displayScore).title;
       return {
         id: userDocSnap.id,
         name: data.name,
-        score: score,
+        score: displayScore,
         rankTitle: rankTitle,
         avatar: data.avatar,
         lastUpdated: (data.lastUpdated as Timestamp)?.toDate(),
       } as LeaderboardEntry;
     } else {
-      // User doesn't have a leaderboard entry yet, create a default one (score 0)
       const defaultRank = getRankByScore(0);
       return {
         id: userId,
@@ -137,7 +140,6 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
     }
   } catch (error: any) {
     console.error("Error fetching user leaderboard entry:", error);
-    // Return a default structure or null, allowing auth/UI to handle gracefully
     const defaultRank = getRankByScore(0);
       return {
         id: userId,
