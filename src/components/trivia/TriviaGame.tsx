@@ -2,8 +2,8 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { triviaQuestions as allTriviaQuestions, storyline as initialStoryline, achievements as initialAchievementsData } from '@/lib/trivia-data';
-import type { TriviaQuestion, StorylineHint, Achievement } from '@/lib/trivia-data';
+import { triviaQuestions as allTriviaQuestions, storyline as initialStoryline, achievements as initialAchievementsData, getRankByScore } from '@/lib/trivia-data';
+import type { TriviaQuestion, StorylineHint, Achievement, PlayerRank } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import HintDisplay from './HintDisplay';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth'; 
 import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
-import { updateUserScore } from '@/services/leaderboardService'; // Import Firestore service
+import { updateUserScore } from '@/services/leaderboardService';
 
 const QUESTIONS_PER_GAME = 10; 
 
@@ -33,7 +33,7 @@ const updateAchievementProgress = (
 
 
 export default function TriviaGame() {
-  const { user } = useAuth(); 
+  const { user, refreshUser } = useAuth(); 
   const { toast } = useToast();
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -44,7 +44,8 @@ export default function TriviaGame() {
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [achievements, setAchievements] = useState<Achievement[]>(() =>
+  
+  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(() =>
     initialAchievementsData.map(a => ({ ...a, unlocked: false }))
   );
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
@@ -86,12 +87,28 @@ export default function TriviaGame() {
           unlocked: currentUnlockedKeys.includes(hint.key),
         }))
       );
+
+      // Load achievements state from localStorage or default
+      const achievementsKey = `achievements_${user.username}`;
+      const storedAchievements = localStorage.getItem(achievementsKey);
+      if (storedAchievements) {
+        try {
+          setCurrentAchievements(JSON.parse(storedAchievements));
+        } catch (e) {
+          console.error("Failed to parse achievements from localStorage", e);
+          setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
+        }
+      } else {
+        setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
+      }
+
+
     } else if (!user && typeof window !== 'undefined') {
-      // Revert to default unlocked if no user
       setUnlockedStoryHints(initialStoryline.map(hint => ({
         ...hint,
         unlocked: initialStoryline.find(h => h.key === hint.key)?.unlocked || false,
       })));
+      setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
     }
   }, [user]);
 
@@ -102,18 +119,39 @@ export default function TriviaGame() {
     }
   }, [unlockedStoryHints, user]);
 
+  useEffect(() => {
+    if (user && typeof window !== 'undefined' && currentAchievements.some(a => a.unlocked)) {
+      localStorage.setItem(`achievements_${user.username}`, JSON.stringify(currentAchievements));
+    }
+  }, [currentAchievements, user]);
+
 
   const resetGame = useCallback(() => {
     shuffleAndSelectQuestions();
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
-    // Reset achievements based on user's potentially stored progress (not implemented here, would need storage)
-    setAchievements(initialAchievementsData.map(a => ({ ...a, unlocked: false })));
+    
+    if (user) {
+        const achievementsKey = `achievements_${user.username}`;
+        const storedAchievements = localStorage.getItem(achievementsKey);
+        if (storedAchievements) {
+            try {
+                setCurrentAchievements(JSON.parse(storedAchievements));
+            } catch (e) {
+                setCurrentAchievements(initialAchievementsData.map(a => ({...a, unlocked: false})));
+            }
+        } else {
+            setCurrentAchievements(initialAchievementsData.map(a => ({...a, unlocked: false})));
+        }
+    } else {
+        setCurrentAchievements(initialAchievementsData.map(a => ({...a, unlocked: false})));
+    }
+
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
-    setToastedAchievementIds(new Set()); // Reset toasted achievements
-  }, [shuffleAndSelectQuestions]);
+    setToastedAchievementIds(new Set());
+  }, [shuffleAndSelectQuestions, user]);
 
   useEffect(() => {
     resetGame();
@@ -137,33 +175,33 @@ export default function TriviaGame() {
           }
         }
         console.error("Audio element error:", errorMessage, e, audio.error);
-        toast({ title: "Audio Playback Issue", description: errorMessage, variant: "destructive" });
+        // toast({ title: "Audio Playback Issue", description: errorMessage, variant: "destructive" });
       };
       
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(playError => {
           console.error(`Error playing ${soundPath}:`, playError);
-          // Don't toast for NotAllowedError (autoplay policy) or NotSupportedError (handled by onerror)
           if (playError.name !== 'NotAllowedError' && playError.name !== 'NotSupportedError') {
-            toast({ title: "Sound Playback Error", description: `Could not play ${soundPath}. ${playError.message}`, variant: "destructive" });
+            // toast({ title: "Sound Playback Error", description: `Could not play ${soundPath}. ${playError.message}`, variant: "destructive" });
           }
         });
       }
     } catch (error: any) {
       console.error(`Error setting up sound ${soundPath}:`, error);
-      toast({ title: "Audio Setup Error", description: `Issue with ${soundPath}: ${error.message}`, variant: "destructive" });
+      // toast({ title: "Audio Setup Error", description: `Issue with ${soundPath}: ${error.message}`, variant: "destructive" });
     }
-  }, [toast]);
+  }, []);
 
 
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     if (!currentQuestion) return;
 
     const isCorrect = answer === currentQuestion.answer;
+    let newScore = score;
 
     if (isCorrect) {
-      const newScore = score + 100;
+      newScore = score + 100;
       setScore(newScore);
       setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
       playSound('/sounds/pirate-correct.mp3'); 
@@ -173,15 +211,23 @@ export default function TriviaGame() {
         variant: "default",
       });
 
-      if (newScore >= 300 && newScore < 500) { 
-         updateAchievementProgress(achievements, 'five_correct', setAchievements);
+      // --- Achievement Logic based on score and question ---
+      if (newScore >= 500 && !currentAchievements.find(a=>a.id === 'five_correct')?.unlocked) { 
+         updateAchievementProgress(currentAchievements, 'five_correct', setCurrentAchievements);
       }
-       if (currentQuestion.storylineHintKey.includes("boldt")) { 
-        updateAchievementProgress(achievements, 'all_hints_category1', setAchievements);
+      if (currentQuestion.storylineHintKey.includes("boldt") && !currentAchievements.find(a=>a.id === 'all_hints_category1')?.unlocked) { 
+        // This is a simplified check. A more robust check would verify ALL Boldt hints are unlocked.
+        // For now, answering any Boldt question after first_hint might trigger it.
+        const boldtHintsUnlocked = unlockedStoryHints.filter(h => h.key.startsWith("boldt_") && h.unlocked).length;
+        if (boldtHintsUnlocked >= 2) { // Example: unlock after 2 Boldt hints
+           updateAchievementProgress(currentAchievements, 'all_hints_category1', setCurrentAchievements);
+        }
       }
-      if (currentQuestion.storylineHintKey === "fish_expert_clue") {
-        updateAchievementProgress(achievements, 'fish_expert', setAchievements);
+      if (currentQuestion.storylineHintKey === "fish_expert_clue" && !currentAchievements.find(a=>a.id === 'fish_expert')?.unlocked) {
+        updateAchievementProgress(currentAchievements, 'fish_expert', setCurrentAchievements);
       }
+      // --- End Achievement Logic ---
+
 
       setIsHintLoading(true);
       try {
@@ -199,17 +245,19 @@ export default function TriviaGame() {
             const updatedHints = prevHints.map(h => 
               h.key === storyHintKey ? { ...h, unlocked: true, text: hintResult.hint } : h
             );
-            // Check for story completion after updating hints
+            
             const allNonFinalUnlocked = updatedHints
-                .filter(h => h.key !== 'final_revelation') // Exclude final revelation from this check
+                .filter(h => h.key !== 'final_revelation')
                 .every(h => h.unlocked);
-            if (allNonFinalUnlocked) {
-                // If all main hints are unlocked, potentially unlock a final one or an achievement
-                updateAchievementProgress(achievements, 'story_complete', setAchievements);
+
+            if (allNonFinalUnlocked && !currentAchievements.find(a=>a.id === 'story_complete')?.unlocked) {
+                updateAchievementProgress(currentAchievements, 'story_complete', setCurrentAchievements);
             }
             return updatedHints;
           });
-          updateAchievementProgress(achievements, 'first_hint', setAchievements); // Achievement for first hint
+          if (!currentAchievements.find(a=>a.id === 'first_hint')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'first_hint', setCurrentAchievements);
+          }
         } else if (hintIndex === -1) {
           console.warn(`Storyline hint key "${storyHintKey}" not found in initial storyline data.`);
         }
@@ -224,9 +272,25 @@ export default function TriviaGame() {
     } else {
       setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
       playSound('/sounds/fog-horn.mp3'); 
-      // Toast for incorrect answer already removed based on previous request
     }
-  }, [currentQuestion, score, toast, unlockedStoryHints, achievements, playSound]);
+
+    // Rank-based achievements
+    const currentRankDetails = getRankByScore(newScore);
+    if (currentRankDetails.title === "Petty Officer Third Class" && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
+        updateAchievementProgress(currentAchievements, 'rank_petty_officer', setCurrentAchievements);
+    }
+    if (currentRankDetails.title === "Chief Petty Officer" && !currentAchievements.find(a=>a.id === 'rank_chief')?.unlocked) {
+        updateAchievementProgress(currentAchievements, 'rank_chief', setCurrentAchievements);
+    }
+    if (currentRankDetails.minScore >= getRankByScore(0).minScore && playerRanks.find(r => r.title === "Ensign" && currentRankDetails.minScore >= r.minScore) && !currentAchievements.find(a=>a.id === 'rank_officer')?.unlocked) {
+       updateAchievementProgress(currentAchievements, 'rank_officer', setCurrentAchievements);
+    }
+    if (currentRankDetails.title === "Admiral" && !currentAchievements.find(a=>a.id === 'rank_admiral')?.unlocked) {
+        updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
+    }
+
+
+  }, [currentQuestion, score, toast, unlockedStoryHints, currentAchievements, playSound, setCurrentAchievements]);
 
   const handleProceedToNext = useCallback(async () => {
     setShowFeedback(null);
@@ -236,19 +300,12 @@ export default function TriviaGame() {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalScore = score; // Capture score at game end
+      const finalScore = score; 
 
       if (user) {
         try {
           await updateUserScore(user.username, user.username, finalScore);
-          // Achievement for Top Leaderboard (if applicable) would require fetching leaderboard after update
-          // This logic is complex for client-side and best handled after leaderboard page refetches
-          // For now, we assume 'top_leaderboard' achievement is granted based on client-side check if score is high.
-          // A more robust system would check rank after Firestore update.
-          if (finalScore > 500) { // Example: If score > 500, check for top rank (placeholder)
-            // This is a simplified check. Real rank check would be against fetched leaderboard data.
-            // updateAchievementProgress(achievements, 'top_leaderboard', setAchievements);
-          }
+          await refreshUser(); // Refresh user data in useAuth to update rank displayed in header
         } catch (error) {
           console.error("Failed to update score on leaderboard:", error);
           toast({
@@ -259,11 +316,11 @@ export default function TriviaGame() {
         }
       }
     }
-  }, [currentQuestionIndex, activeQuestions.length, score, user, toast]);
+  }, [currentQuestionIndex, activeQuestions.length, score, user, toast, refreshUser]);
 
 
   useEffect(() => {
-    achievements.forEach(ach => {
+    currentAchievements.forEach(ach => {
       if (ach.unlocked && !toastedAchievementIds.has(ach.id)) {
         toast({
           title: "Achievement Unlocked!",
@@ -284,7 +341,7 @@ export default function TriviaGame() {
         setToastedAchievementIds(prev => new Set(prev).add(ach.id));
       }
     });
-  }, [achievements, toast, toastedAchievementIds]);
+  }, [currentAchievements, toast, toastedAchievementIds]);
 
 
   if (gameOver) {

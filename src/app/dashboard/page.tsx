@@ -10,16 +10,20 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
+import React from 'react'; // Import React for React.createElement
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUser } = useAuth(); // Added refreshUser
   const router = useRouter();
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
+    } else if (user) {
+      // Refresh user data to get latest score/rank when dashboard loads or user changes
+      refreshUser();
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, refreshUser]);
 
   if (loading || !user) {
     return (
@@ -35,11 +39,14 @@ export default function DashboardPage() {
       <div className="space-y-8">
         <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
           <CardHeader>
-            <CardTitle className="font-headline text-4xl text-primary">
-              Welcome, {user.username}!
+            <CardTitle className="font-headline text-3xl sm:text-4xl text-primary">
+              Welcome, {user.rankTitle && user.rankIcon && 
+                React.createElement(user.rankIcon, { className: "w-7 h-7 inline-block mr-2 text-accent"})}
+              {user.rankTitle || 'Captain'} {user.username}!
             </CardTitle>
-            <CardDescription className="text-lg">
-              Your Thousand Islands adventure awaits. What would you like to explore today?
+            <CardDescription className="text-md sm:text-lg">
+              Your Thousand Islands adventure awaits. Current Score: <span className="text-accent font-semibold">{user.score?.toLocaleString() || 0}</span>.
+              What would you like to explore today?
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -119,14 +126,14 @@ function DashboardCard({ title, description, href, icon: Icon, buttonText, disab
       <CardHeader className="flex-row items-center gap-4 pb-4">
         <Icon className="w-10 h-10 text-accent" />
         <div>
-          <CardTitle className="font-headline text-2xl text-primary">{title}</CardTitle>
+          <CardTitle className="font-headline text-xl sm:text-2xl text-primary">{title}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p className="text-foreground/70">{description}</p>
+        <p className="text-foreground/70 text-sm sm:text-base">{description}</p>
       </CardContent>
       <CardContent>
-         <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={disabled}>
+         <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base" disabled={disabled}>
           <Link href={href}>{buttonText}</Link>
         </Button>
       </CardContent>

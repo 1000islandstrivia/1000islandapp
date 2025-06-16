@@ -4,15 +4,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { LeaderboardEntry } from '@/lib/trivia-data';
+import type { LeaderboardEntry, PlayerRank } from '@/lib/trivia-data';
+import { playerRanks, getRankByScore } from '@/lib/trivia-data'; // Import ranks
 import { Award, ChevronDown, ChevronUp, ChevronsUpDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { getLeaderboard } from '@/services/leaderboardService'; // Import Firestore service
+import { getLeaderboard } from '@/services/leaderboardService';
 import { useToast } from "@/hooks/use-toast";
+import React from 'react'; // Import React for React.createElement
 
-type SortKey = keyof LeaderboardEntry | 'rank'; // Add 'rank' as a possible sort key
+type SortKey = keyof LeaderboardEntry | 'rankDisplay'; // Use 'rankDisplay' for numerical rank
 type SortOrder = 'asc' | 'dsc';
 
 export default function LeaderboardTable() {
@@ -28,18 +30,25 @@ export default function LeaderboardTable() {
     setError(null);
     try {
       const data = await getLeaderboard();
-      // Add rank to each entry before sorting locally if needed
-      const rankedData = data.map((entry, index) => ({ ...entry, rank: index + 1 }));
-      setLeaderboard(rankedData);
-    } catch (err) {
+      const rankedData = data.map((entry, index) => {
+        const playerRankDetails = getRankByScore(entry.score);
+        return {
+          ...entry,
+          rank: index + 1, // Numerical leaderboard rank
+          rankTitle: entry.rankTitle || playerRankDetails.title, // Use stored or calculate
+          rankIcon: playerRankDetails.icon, // Add icon for display
+        };
+      });
+      setLeaderboard(rankedData as LeaderboardEntry[] & {rankIcon: PlayerRank['icon']}[] );
+    } catch (err: any) {
       console.error("Failed to fetch leaderboard:", err);
-      setError("Could not load leaderboard. Please try again later.");
+      setError(err.message || "Could not load leaderboard. Please try again later.");
       toast({
         title: "Leaderboard Error",
         description: "Failed to fetch leaderboard data.",
         variant: "destructive",
       });
-      setLeaderboard([]); // Ensure leaderboard is empty on error
+      setLeaderboard([]);
     } finally {
       setLoading(false);
     }
@@ -53,19 +62,8 @@ export default function LeaderboardTable() {
     let sortableItems = [...leaderboard];
     if (sortConfig.key) {
       sortableItems.sort((a, b) => {
-        // Handle rank separately as it's pre-calculated based on score
-        if (sortConfig.key === 'rank') {
-           // Ranks are usually pre-sorted by score desc by the service.
-           // If sorting by rank asc, we invert the comparison for b.rank vs a.rank
-           // For desc rank, it's more complex, usually tied to score.
-           // For simplicity, if sortKey is 'rank', we assume it's based on the order from DB.
-           // If 'rank' asc, means lower number is better. If 'rank' dsc, higher number is better (unusual for ranks)
-           // The service already orders by score desc, so rank is implicitly asc.
-          if (sortConfig.order === 'asc') {
-            return (a.rank ?? 0) - (b.rank ?? 0);
-          } else {
-            return (b.rank ?? 0) - (a.rank ?? 0);
-          }
+        if (sortConfig.key === 'rankDisplay') { // Ensure this matches actual property if different
+          return sortConfig.order === 'asc' ? (a.rank ?? 0) - (b.rank ?? 0) : (b.rank ?? 0) - (a.rank ?? 0);
         }
 
         const valA = a[sortConfig.key as keyof LeaderboardEntry];
@@ -84,24 +82,24 @@ export default function LeaderboardTable() {
   }, [leaderboard, sortConfig]);
 
   const requestSort = (key: SortKey) => {
-    let order: SortOrder = 'dsc'; 
+    let order: SortOrder = 'dsc';
     if (sortConfig.key === key && sortConfig.order === 'dsc') {
       order = 'asc';
     } else if (sortConfig.key === key && sortConfig.order === 'asc') {
       order = 'dsc';
     } else if (key === 'name') {
-      order = 'asc'; 
-    } else if (key === 'rank') {
-      order = 'asc'; // Default rank sort is ascending
+      order = 'asc';
+    } else if (key === 'rankDisplay') {
+      order = 'asc';
     }
     setSortConfig({ key, order });
   };
   
   const getSortIcon = (key: SortKey) => {
     if (sortConfig.key !== key) {
-      return <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />;
+      return <ChevronsUpDown className="ml-1 h-3 w-3 opacity-50" />;
     }
-    return sortConfig.order === 'asc' ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />;
+    return sortConfig.order === 'asc' ? <ChevronUp className="ml-1 h-3 w-3" /> : <ChevronDown className="ml-1 h-3 w-3" />;
   };
 
   if (loading) {
@@ -139,41 +137,46 @@ export default function LeaderboardTable() {
         <TableHeader>
           <TableRow className="hover:bg-muted/0">
             <TableHead className="w-[80px] text-center">
-                 <Button variant="ghost" onClick={() => requestSort('rank')} className="px-0 hover:bg-transparent text-primary font-semibold">
-                    Rank {getSortIcon('rank')}
+                 <Button variant="ghost" onClick={() => requestSort('rankDisplay')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
+                    Rank {getSortIcon('rankDisplay')}
                 </Button>
             </TableHead>
             <TableHead>
-                <Button variant="ghost" onClick={() => requestSort('name')} className="px-0 hover:bg-transparent text-primary font-semibold">
+                <Button variant="ghost" onClick={() => requestSort('name')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
                     Player {getSortIcon('name')}
                 </Button>
             </TableHead>
+            <TableHead className="text-center hidden sm:table-cell">
+                 <Button variant="ghost" onClick={() => requestSort('rankTitle')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
+                    Title {getSortIcon('rankTitle')}
+                </Button>
+            </TableHead>
             <TableHead className="text-right">
-                 <Button variant="ghost" onClick={() => requestSort('score')} className="px-0 hover:bg-transparent text-primary font-semibold">
+                 <Button variant="ghost" onClick={() => requestSort('score')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
                     Score {getSortIcon('score')}
                 </Button>
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {displayData.map((entry, index) => (
+          {displayData.map((entry: LeaderboardEntry & { rankIcon?: PlayerRank['icon'] } , index) => (
             <TableRow 
               key={entry.id} 
               className={cn(
                 "transition-all duration-300 ease-in-out hover:bg-primary/10",
-                (entry.rank ?? Infinity) <= 3 && "bg-accent/10 hover:bg-accent/20", // Use entry.rank
-                user && entry.id === user.username && "bg-primary/20 ring-2 ring-primary font-bold"
+                (entry.rank ?? Infinity) <= 3 && "bg-accent/10 hover:bg-accent/20",
+                user && entry.id === user.username && "bg-primary/20 ring-2 ring-primary"
               )}
             >
-              <TableCell className="text-center font-medium text-lg">
+              <TableCell className="text-center font-medium text-base sm:text-lg">
                 <div className="flex items-center justify-center">
                   {(entry.rank ?? Infinity) <= 3 ? (
                     <Award
                       className={cn(
-                        "w-7 h-7",
-                        entry.rank === 1 && "text-yellow-500", 
-                        entry.rank === 2 && "text-slate-500", 
-                        entry.rank === 3 && "text-yellow-700"  
+                        "w-6 h-6 sm:w-7 sm:h-7",
+                        entry.rank === 1 && "text-yellow-400", 
+                        entry.rank === 2 && "text-slate-400", 
+                        entry.rank === 3 && "text-yellow-600"  
                       )}
                     />
                   ) : (
@@ -182,15 +185,21 @@ export default function LeaderboardTable() {
                 </div>
               </TableCell>
               <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10 border-2 border-primary/50">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/50">
                     <AvatarImage src={entry.avatar || `https://placehold.co/40x40.png?text=${entry.name.substring(0,2).toUpperCase()}`} alt={entry.name} data-ai-hint="player avatar"/>
                     <AvatarFallback>{entry.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <span className={cn("font-medium", user && entry.id === user.username && "text-primary")}>{entry.name}</span>
+                  <span className={cn("font-medium text-sm sm:text-base", user && entry.id === user.username && "text-primary font-bold")}>{entry.name}</span>
                 </div>
               </TableCell>
-              <TableCell className={cn("text-right font-semibold text-lg", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>
+              <TableCell className="text-center hidden sm:table-cell">
+                <div className="flex items-center justify-center gap-1">
+                 {entry.rankIcon && React.createElement(entry.rankIcon, { className: "w-4 h-4 text-muted-foreground" })}
+                 <span className="text-xs text-muted-foreground">{entry.rankTitle}</span>
+                </div>
+              </TableCell>
+              <TableCell className={cn("text-right font-semibold text-base sm:text-lg", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>

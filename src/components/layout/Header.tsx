@@ -4,9 +4,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { ScrollText, LogOut, Menu } from 'lucide-react'; // Added Menu icon
+import { ScrollText, LogOut, Menu } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'; // Added Sheet components
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import React from 'react'; // Import React for React.createElement
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -26,31 +27,38 @@ export default function Header() {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-2">
           <ScrollText className="h-8 w-8 text-accent" />
-          <h1 className="text-2xl font-headline font-bold">1000 Islands RiverRat Lore</h1>
+          <h1 className="text-xl md:text-2xl font-headline font-bold">1000 Islands RiverRat Lore</h1>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden md:flex items-center gap-1">
           {user ? (
             <>
+              {user.rankIcon && user.rankTitle && (
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-black/20 text-sm mr-2">
+                  {React.createElement(user.rankIcon, { className: "w-5 h-5 text-accent" })}
+                  <span className="font-semibold">{user.rankTitle}</span>
+                  <span className="opacity-80">{user.username}</span>
+                </div>
+              )}
               {navItems.map(item => (
-                <Button key={item.href} variant="ghost" asChild className={pathname === item.href ? 'bg-primary-foreground/20 hover:bg-primary-foreground/30' : 'hover:bg-primary-foreground/10'}>
+                <Button key={item.href} variant="ghost" asChild className={`text-sm ${pathname === item.href ? 'bg-primary-foreground/20 hover:bg-primary-foreground/30' : 'hover:bg-primary-foreground/10'}`}>
                   <Link href={item.href}>{item.label}</Link>
                 </Button>
               ))}
-              <Button variant="ghost" onClick={logout} className="text-accent-foreground bg-accent hover:bg-accent/90">
+              <Button variant="ghost" onClick={logout} className="text-accent-foreground bg-accent hover:bg-accent/90 text-sm">
                 <LogOut className="mr-2 h-4 w-4" /> Logout
               </Button>
             </>
           ) : (
             <>
               {pathname !== '/login' && (
-                <Button variant="outline" onClick={() => router.push('/login')} className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                <Button variant="outline" onClick={() => router.push('/login')} className="border-accent text-accent hover:bg-accent hover:text-accent-foreground text-sm">
                   Login
                 </Button>
               )}
               {pathname !== '/register' && (
-                <Button onClick={() => router.push('/register')} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                <Button onClick={() => router.push('/register')} className="bg-accent text-accent-foreground hover:bg-accent/90 text-sm">
                   Register
                 </Button>
               )}
@@ -73,6 +81,15 @@ export default function Header() {
                   <ScrollText className="h-7 w-7 text-accent" />
                   <h2 className="text-xl font-headline font-bold">RiverRat Lore</h2>
                 </Link>
+                {user && user.rankIcon && user.rankTitle && (
+                  <div className="flex items-center gap-2 p-2 rounded-md bg-black/20 text-sm mb-3">
+                    {React.createElement(user.rankIcon, { className: "w-5 h-5 text-accent" })}
+                    <div>
+                      <span className="font-semibold block">{user.rankTitle}</span>
+                      <span className="opacity-80 text-xs">{user.username}</span>
+                    </div>
+                  </div>
+                )}
               </div>
               <nav className="flex-grow flex flex-col gap-1 px-3">
                 {user ? (
