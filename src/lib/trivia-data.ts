@@ -920,6 +920,286 @@ export const triviaQuestions: TriviaQuestion[] = [
     options: ["It's where the river ends", "It's near where Lake Ontario flows into the St. Lawrence River", "It's famous for its suspension bridge", "It's primarily an industrial port"],
     answer: "It's near where Lake Ontario flows into the St. Lawrence River",
     storylineHintKey: "river_origin_clue",
+  },
+  {
+    id: '131',
+    question: "What does one short blast of a ship's horn typically mean when vessels are in sight of one another?",
+    options: ["I am altering my course to starboard (right).", "I am altering my course to port (left).", "I am operating astern propulsion (backing up).", "Danger, I cannot understand your intentions."],
+    answer: "I am altering my course to starboard (right).",
+    storylineHintKey: "seaway_journey_1"
+  },
+  {
+    id: '132',
+    question: "What signal does a vessel make if it does not understand the intention or action of an approaching vessel?",
+    options: ["One prolonged blast.", "Two short blasts.", "Five or more short and rapid blasts.", "One short blast followed by one prolonged blast."],
+    answer: "Five or more short and rapid blasts.",
+    storylineHintKey: "shoal_definition_1"
+  },
+  {
+    id: '133',
+    question: "On the St. Lawrence Seaway, what is a \"Laker\"?",
+    options: ["A type of small pleasure boat.", "A large cargo ship designed for the Great Lakes and Seaway.", "A migratory bird.", "A resident of the Thousand Islands."],
+    answer: "A large cargo ship designed for the Great Lakes and Seaway.",
+    storylineHintKey: "laker_definition_1"
+  },
+  {
+    id: '134',
+    question: "Two short blasts from a ship's horn generally indicate:",
+    options: ["I intend to leave you on my starboard side.", "I am altering my course to port (left).", "I am stopped and making no way through the water.", "My vessel is in distress."],
+    answer: "I am altering my course to port (left).",
+    storylineHintKey: "seaway_journey_1"
+  },
+  {
+    id: '135',
+    question: "What does one prolonged blast followed by two short blasts from a ship in restricted visibility (like fog) typically indicate?",
+    options: ["A power-driven vessel underway making way.", "A vessel at anchor.", "A sailing vessel.", "A vessel towing or pushing another ahead."],
+    answer: "A vessel towing or pushing another ahead.",
+    storylineHintKey: "shoal_definition_1"
+  },
+  {
+    id: '136',
+    question: "In New York State, what is the minimum age to operate a Personal Watercraft (PWC) alone after completing a safety course?",
+    options: ["12 years old", "14 years old", "16 years old", "18 years old"],
+    answer: "14 years old",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '137',
+    question: "What color are nun buoys, and how should you pass them when returning from sea (upstream)?",
+    options: ["Green, pass on your port (left) side.", "Red, pass on your starboard (right) side.", "Black, pass on your starboard (right) side.", "Yellow, pass on either side."],
+    answer: "Red, pass on your starboard (right) side.",
+    storylineHintKey: "lighthouse_legend_clue"
+  },
+  {
+    id: '138',
+    question: "Which of these is a U.S. Coast Guard approved Personal Flotation Device (PFD) Type I designed for?",
+    options: ["Calm inland waters, provides minimal buoyancy.", "Offshore use where rescue may be slow, turns most unconscious wearers face-up.", "Throwable device.", "Flotation aid for watersports, not for rough water."],
+    answer: "Offshore use where rescue may be slow, turns most unconscious wearers face-up.",
+    storylineHintKey: "skiff_life_1"
+  },
+  {
+    id: '139',
+    question: "What is the legal blood alcohol concentration (BAC) limit for boating under the influence (BUI) in New York State for adults?",
+    options: ["0.02%", "0.05%", "0.08%", "0.10%"],
+    answer: "0.08%",
+    storylineHintKey: "island_traditions_clue"
+  },
+  {
+    id: '140',
+    question: "When two power-driven vessels are meeting head-on, what action should both vessels take?",
+    options: ["Both alter course to starboard (right) and pass port-to-port.", "Both alter course to port (left) and pass starboard-to-starboard.", "The smaller vessel gives way.", "The vessel on the right has the right-of-way."],
+    answer: "Both alter course to starboard (right) and pass port-to-port.",
+    storylineHintKey: "shoal_definition_1"
+  },
+  {
+    id: '141',
+    question: "What does a white buoy with a blue band indicate in New York waters?",
+    options: ["Danger area", "Information or regulatory marker", "Mooring buoy", "Channel marker"],
+    answer: "Mooring buoy",
+    storylineHintKey: "lighthouse_legend_clue"
+  },
+  {
+    id: '142',
+    question: "According to New York State law, children under what age must wear a USCG-approved PFD when on a vessel less than 65 feet?",
+    options: ["Under 6 years old", "Under 10 years old", "Under 12 years old", "Under 16 years old"],
+    answer: "Under 12 years old",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '143',
+    question: "What is the primary purpose of a boat's ventilation system for gasoline engines?",
+    options: ["To cool the engine.", "To remove explosive fuel vapors from the bilge.", "To provide fresh air to the cabin.", "To reduce engine noise."],
+    answer: "To remove explosive fuel vapors from the bilge.",
+    storylineHintKey: "skiff_life_1"
+  },
+  {
+    id: '144',
+    question: "If you see a red flag with a white diagonal stripe on the water, what does it signify?",
+    options: ["Racing event in progress.", "Divers down, keep well clear.", "Fishing nets deployed.", "Vessel in distress."],
+    answer: "Divers down, keep well clear.",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '145',
+    question: "When operating a boat near a swimming area, what is a crucial safety practice?",
+    options: ["Maintain high speed for quick passage.", "Operate at slow, no-wake speed and keep a lookout.", "Sound your horn continuously.", "Anchor directly in the swimming area."],
+    answer: "Operate at slow, no-wake speed and keep a lookout.",
+    storylineHintKey: "skiff_life_1"
+  },
+  {
+    id: '146',
+    question: "What is a \"capacity plate\" on a boat primarily used for?",
+    options: ["To display the boat's name and home port.", "To indicate the maximum weight capacity and/or number of people the boat can safely carry.", "To list the boat's engine specifications.", "To show the boat's registration number."],
+    answer: "To indicate the maximum weight capacity and/or number of people the boat can safely carry.",
+    storylineHintKey: "boat_museum_1"
+  },
+  {
+    id: '147',
+    question: "What type of fire extinguisher is generally required on motorboats with enclosed fuel or engine compartments?",
+    options: ["Type A (for wood and paper fires)", "Type B (for flammable liquids like gasoline and oil)", "Type C (for electrical fires)", "Type K (for kitchen grease fires)"],
+    answer: "Type B (for flammable liquids like gasoline and oil)",
+    storylineHintKey: "smugglers_run_1"
+  },
+  {
+    id: '148',
+    question: "When anchoring, what is a common recommended scope (ratio of anchor rode length to water depth plus freeboard)?",
+    options: ["1:1", "3:1", "5:1 to 7:1", "10:1"],
+    answer: "5:1 to 7:1",
+    storylineHintKey: "anchor"
+  },
+  {
+    id: '149',
+    question: "If your boat capsizes, what is generally the safest course of action if the boat remains afloat?",
+    options: ["Swim to the nearest shore immediately.", "Stay with the boat to be more easily spotted by rescuers.", "Try to right the boat by yourself, even in rough water.", "Signal other boats by waving your PFD."],
+    answer: "Stay with the boat to be more easily spotted by rescuers.",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '150',
+    question: "In New York, a boat's registration numbers must be displayed on which part of the vessel?",
+    options: ["On the stern (back) only.", "On both sides of the forward half (bow) of the vessel.", "On the cabin roof.", "Anywhere visible."],
+    answer: "On both sides of the forward half (bow) of the vessel.",
+    storylineHintKey: "boat_museum_1"
+  },
+  {
+    id: '151',
+    question: "What is the term for the front edge of a sail?",
+    options: ["Leech", "Luff", "Foot", "Tack"],
+    answer: "Luff",
+    storylineHintKey: "skiff_life_1"
+  },
+  {
+    id: '152',
+    question: "When a sailboat is sailing \"close-hauled,\" what is its general direction relative to the wind?",
+    options: ["Sailing directly downwind.", "Sailing as close to the direction the wind is coming from as possible.", "Sailing with the wind directly on its side (beam reach).", "Sailing away from the wind at a wide angle."],
+    answer: "Sailing as close to the direction the wind is coming from as possible.",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '153',
+    question: "What is the \"boom\" on a sailboat?",
+    options: ["The main body of the boat.", "The horizontal spar at the bottom of the mainsail.", "The rope used to raise the mainsail.", "The forwardmost point of the boat."],
+    answer: "The horizontal spar at the bottom of the mainsail.",
+    storylineHintKey: "skiff_life_1"
+  },
+  {
+    id: '154',
+    question: "When two sailboats on opposite tacks are approaching each other, which boat generally has the right-of-way?",
+    options: ["The boat on port tack (wind coming over its port side).", "The boat on starboard tack (wind coming over its starboard side).", "The faster boat.", "The larger boat."],
+    answer: "The boat on starboard tack (wind coming over its starboard side).",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '155',
+    question: "What is \"tacking\" in sailing?",
+    options: ["Turning the stern of the boat through the wind.", "Turning the bow of the boat through the wind so the wind changes from one side to the other.", "Lowering the sails quickly.", "Anchoring the boat."],
+    answer: "Turning the bow of the boat through the wind so the wind changes from one side to the other.",
+    storylineHintKey: "water_activity_1"
+  },
+  {
+    id: '156',
+    question: "Which large, toothy predator, known as the \"fish of 10,000 casts,\" is a prized game fish in the Thousand Islands?",
+    options: ["Walleye", "Yellow Perch", "Muskellunge (Muskie)", "Smallmouth Bass"],
+    answer: "Muskellunge (Muskie)",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '157',
+    question: "This fish has a long, slender body, a duckbill-shaped snout, and sharp teeth, often ambushing prey from weedy areas.",
+    options: ["Channel Catfish", "Northern Pike", "Lake Trout", "Common Carp"],
+    answer: "Northern Pike",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '158',
+    question: "Known for its delicious white flesh and large, opaque eyes that help it see in low light, this fish is popular among anglers.",
+    options: ["Brown Bullhead", "Walleye", "Rock Bass", "Pumpkinseed Sunfish"],
+    answer: "Walleye",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '159',
+    question: "A feisty fighter, this bronze-backed fish with vertical bars on its sides prefers rocky and gravelly areas.",
+    options: ["Largemouth Bass", "Smallmouth Bass", "Yellow Perch", "Atlantic Salmon"],
+    answer: "Smallmouth Bass",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '160',
+    question: "This fish has a large mouth extending beyond its eye and a prominent dark horizontal stripe along its side, often found near submerged vegetation.",
+    options: ["Smallmouth Bass", "Largemouth Bass", "Steelhead", "Brown Trout"],
+    answer: "Largemouth Bass",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '161',
+    question: "A smaller, schooling fish with yellow sides and dark vertical bands, often a target for ice fishing.",
+    options: ["Muskellunge", "Yellow Perch", "Lake Sturgeon", "Channel Catfish"],
+    answer: "Yellow Perch",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '162',
+    question: "This cold-water fish, typically found in deeper parts of Lake Ontario and the St. Lawrence, has a deeply forked tail and light spots on a dark background.",
+    options: ["Brown Trout", "Lake Trout", "Rainbow Trout", "Brook Trout"],
+    answer: "Lake Trout",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '163',
+    question: "Introduced from Europe, this salmonid is known for its buttery-yellow to brown color and prominent black and red spots, some haloed.",
+    options: ["Atlantic Salmon", "Steelhead", "Brown Trout", "Coho Salmon"],
+    answer: "Brown Trout",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '164',
+    question: "This anadromous fish (migrates from saltwater to freshwater to spawn) is a silver-colored, sea-run form of Rainbow Trout.",
+    options: ["Chinook Salmon", "Steelhead", "Pink Salmon", "Lake Whitefish"],
+    answer: "Steelhead",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '165',
+    question: "Once nearly extirpated from Lake Ontario, this \"king of fish\" is making a comeback and is known for its leaping ability.",
+    options: ["American Eel", "Atlantic Salmon", "Common Carp", "Sheepshead"],
+    answer: "Atlantic Salmon",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '166',
+    question: "This smooth-skinned fish with barbels (\"whiskers\") around its mouth is a bottom-dweller, often caught at night.",
+    options: ["Northern Pike", "Walleye", "Channel Catfish", "Yellow Perch"],
+    answer: "Channel Catfish",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '167',
+    question: "A smaller cousin of the Channel Catfish, this dark-colored catfish has a square or slightly rounded tail.",
+    options: ["Blue Catfish", "Flathead Catfish", "Brown Bullhead", "White Catfish"],
+    answer: "Brown Bullhead",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '168',
+    question: "This scrappy panfish has a large mouth, red eyes, and a dark, blotchy appearance, often found around rocks and submerged structures.",
+    options: ["Bluegill", "Pumpkinseed Sunfish", "Rock Bass", "Black Crappie"],
+    answer: "Rock Bass",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '169',
+    question: "A colorful sunfish with an orange spot on its gill cover (operculum) and wavy blue lines on its cheeks.",
+    options: ["Green Sunfish", "Longear Sunfish", "Pumpkinseed Sunfish", "Warmouth"],
+    answer: "Pumpkinseed Sunfish",
+    storylineHintKey: "fish_expert_clue"
+  },
+  {
+    id: '170',
+    question: "An invasive species originally from Asia, this large, coarse-scaled fish is known for its hardiness and ability to tolerate poor water quality.",
+    options: ["Goldfish", "Common Carp", "Grass Carp", "Bighead Carp"],
+    answer: "Common Carp",
+    storylineHintKey: "fish_expert_clue"
   }
 ];
 
