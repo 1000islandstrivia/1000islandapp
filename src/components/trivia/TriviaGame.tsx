@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { triviaQuestions as allTriviaQuestions, storyline as initialStoryline, achievements as initialAchievementsData, getRankByScore, playerRanks } from '@/lib/trivia-data';
+import { storyline as initialStoryline, achievements as initialAchievementsData, getRankByScore, playerRanks } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, PlayerRank } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import HintDisplay from './HintDisplay';
@@ -13,9 +13,10 @@ import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, type LucideIcon } from 'lucide-react';
+import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, type LucideIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
+import { getTriviaQuestions } from '@/services/triviaService'; // Import the new service
 
 const QUESTIONS_PER_GAME = 10;
 
@@ -40,23 +41,53 @@ const updateAchievementProgress = (
 export default function TriviaGame() {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
+  const [allTriviaQuestions, setAllTriviaQuestions] = useState<TriviaQuestion[]>([]);
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0); // This score is for the current game session
+  const [score, setScore] = useState(0);
 
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(initialStoryline.map(h => ({ ...h, unlocked: h.unlocked })));
 
   const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
 
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData.map(a => ({ ...a })));
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
+  const fetchAndSetQuestions = useCallback(async () => {
+    setIsLoadingQuestions(true);
+    try {
+      const questions = await getTriviaQuestions();
+      setAllTriviaQuestions(questions);
+    } catch (error) {
+      console.error("Failed to fetch trivia questions:", error);
+      toast({
+        title: "Error Loading Questions",
+        description: "Could not load trivia questions. Please try again later.",
+        variant: "destructive",
+      });
+      setAllTriviaQuestions([]); // Set to empty to prevent errors
+    } finally {
+      setIsLoadingQuestions(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
+    fetchAndSetQuestions();
+  }, [fetchAndSetQuestions]);
+
+
   const shuffleAndSelectQuestions = useCallback(() => {
+    if (allTriviaQuestions.length === 0) {
+      setActiveQuestions([]);
+      return;
+    }
     const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
     const selectedQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+    
     if (selectedQuestions.length < QUESTIONS_PER_GAME && allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
        setActiveQuestions(allTriviaQuestions.slice(0, QUESTIONS_PER_GAME));
     } else if (selectedQuestions.length === 0 && allTriviaQuestions.length > 0) {
@@ -65,7 +96,7 @@ export default function TriviaGame() {
     else {
       setActiveQuestions(selectedQuestions);
     }
-  }, []);
+  }, [allTriviaQuestions]);
 
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
@@ -98,11 +129,11 @@ export default function TriviaGame() {
       }
       const rehydratedAchievements = initialAchievementsData.map(masterAch => {
         const progress = storedProgressData.find(p => p.id === masterAch.id);
-        const AchIcon = masterAch.icon; // Get icon constructor
+        const AchIconComponent = masterAch.icon;
         return {
           ...masterAch,
-          icon: AchIcon, // Ensure icon is the component itself
-          unlocked: progress ? progress.unlocked : masterAch.unlocked,
+          icon: AchIconComponent,
+          unlocked: progress ? progress.unlocked : (masterAch.unlocked || false),
         };
       });
       setCurrentAchievements(rehydratedAchievements);
@@ -112,7 +143,10 @@ export default function TriviaGame() {
         ...hint,
         unlocked: initialStoryline.find(h => h.key === hint.key)?.unlocked || false,
       })));
-      setCurrentAchievements(initialAchievementsData.map(a => ({ ...a, icon: a.icon })));
+      setCurrentAchievements(initialAchievementsData.map(a => {
+        const AchIconComponent = a.icon;
+        return ({ ...a, icon: AchIconComponent });
+      }));
     }
   }, [user]);
 
@@ -136,7 +170,9 @@ export default function TriviaGame() {
 
 
   const resetGame = useCallback(() => {
-    shuffleAndSelectQuestions();
+    if (allTriviaQuestions.length > 0) {
+      shuffleAndSelectQuestions();
+    }
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
@@ -154,22 +190,28 @@ export default function TriviaGame() {
         }
         const rehydratedAchievements = initialAchievementsData.map(masterAch => {
             const progress = storedProgressData.find(p => p.id === masterAch.id);
-            const AchIcon = masterAch.icon;
-            return { ...masterAch, icon: AchIcon, unlocked: progress ? progress.unlocked : masterAch.unlocked };
+            const AchIconComponent = masterAch.icon;
+            return { ...masterAch, icon: AchIconComponent, unlocked: progress ? progress.unlocked : (masterAch.unlocked || false) };
         });
         setCurrentAchievements(rehydratedAchievements);
     } else {
-        setCurrentAchievements(initialAchievementsData.map(a => ({...a, icon: a.icon}))); 
+         setCurrentAchievements(initialAchievementsData.map(a => {
+           const AchIconComponent = a.icon;
+           return ({...a, icon: AchIconComponent});
+         }));
     }
 
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
     setToastedAchievementIds(new Set());
-  }, [shuffleAndSelectQuestions, user]);
+  }, [shuffleAndSelectQuestions, user, allTriviaQuestions]);
 
   useEffect(() => {
-    resetGame();
-  }, [resetGame]);
+    // Only reset game if questions are loaded
+    if (!isLoadingQuestions && allTriviaQuestions.length > 0) {
+      resetGame();
+    }
+  }, [isLoadingQuestions, allTriviaQuestions, resetGame]);
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
@@ -213,7 +255,7 @@ export default function TriviaGame() {
 
     if (isCorrect) {
       newSessionScore = score + 100;
-      setScore(newSessionScore);
+      // setScore(newSessionScore); // Score state updated later after all calcs
       setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
       playSound('/sounds/pirate-correct.mp3');
       toast({
@@ -278,7 +320,7 @@ export default function TriviaGame() {
       }
     } else {
       newSessionScore = score - 500; // Deduct points for wrong answer
-      setScore(newSessionScore);
+      // setScore(newSessionScore); // Score state updated later
       setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
       playSound('/sounds/fog-horn.mp3');
       toast({
@@ -287,35 +329,29 @@ export default function TriviaGame() {
         variant: "destructive",
       });
     }
+    setScore(newSessionScore); // Update score state here after all calculations for this answer
 
-    // Check achievements based on the newSessionScore in relation to the *user's total score* if possible,
-    // or estimate based on session score for ranks if total score isn't immediately available without async.
-    // For now, rank achievements are based on the session score potentially adding to a base.
-    // A more accurate way would be to get the user's current total score here.
-    // However, refreshUser is async. So, we make do or pass a predicted total score to achievement checks.
 
-    // Let's assume for simplicity, the achievement check for ranks uses the session score as a proxy
-    // for "progress towards next rank in this session". Ideally, this logic would be more robust.
-    const pettyOfficerRank = playerRanks.find(r => r.title === "Petty Officer Third Class");
-    const chiefRank = playerRanks.find(r => r.title === "Chief Petty Officer");
-    const officerRank = playerRanks.find(r => r.title === "Ensign");
-    const admiralRank = playerRanks.find(r => r.title === "Admiral");
-    
-    // This part of rank achievement might need rethinking if newSessionScore alone isn't representative
-    // of reaching a total score threshold.
     if (user && user.score !== undefined) {
-        const potentialTotalScore = (user.score - (score - newSessionScore)) ; // old total + points change in this step.
+        const potentialTotalScoreAfterThisAnswer = (user.score + (newSessionScore - score)); // User's total score PLUS the change from this single answer
         
-        if (pettyOfficerRank && potentialTotalScore >= pettyOfficerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
+        const pettyOfficerRank = playerRanks.find(r => r.title === "Petty Officer Third Class");
+        if (pettyOfficerRank && potentialTotalScoreAfterThisAnswer >= pettyOfficerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
             updateAchievementProgress(currentAchievements, 'rank_petty_officer', setCurrentAchievements);
         }
-        if (chiefRank && potentialTotalScore >= chiefRank.minScore && !currentAchievements.find(a=>a.id === 'rank_chief')?.unlocked) {
+        
+        const chiefRank = playerRanks.find(r => r.title === "Chief Petty Officer");
+        if (chiefRank && potentialTotalScoreAfterThisAnswer >= chiefRank.minScore && !currentAchievements.find(a=>a.id === 'rank_chief')?.unlocked) {
             updateAchievementProgress(currentAchievements, 'rank_chief', setCurrentAchievements);
         }
-        if (officerRank && potentialTotalScore >= officerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_officer')?.unlocked) {
+
+        const officerRank = playerRanks.find(r => r.title === "Ensign");
+        if (officerRank && potentialTotalScoreAfterThisAnswer >= officerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_officer')?.unlocked) {
            updateAchievementProgress(currentAchievements, 'rank_officer', setCurrentAchievements);
         }
-        if (admiralRank && potentialTotalScore >= admiralRank.minScore && !currentAchievements.find(a=>a.id === 'rank_admiral')?.unlocked) {
+
+        const admiralRank = playerRanks.find(r => r.title === "Admiral");
+        if (admiralRank && potentialTotalScoreAfterThisAnswer >= admiralRank.minScore && !currentAchievements.find(a=>a.id === 'rank_admiral')?.unlocked) {
             updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
         }
     }
@@ -353,12 +389,12 @@ export default function TriviaGame() {
   useEffect(() => {
     currentAchievements.forEach(ach => {
       if (ach.unlocked && !toastedAchievementIds.has(ach.id)) {
-        const AchIcon = ach.icon as LucideIcon | undefined; // Ensure ach.icon is treated as a component
+        const AchIconComponent = ach.icon as LucideIcon | undefined;
         toast({
           title: "Achievement Unlocked!",
           description: (
             <div className="flex items-center">
-              {AchIcon && <AchIcon className="w-5 h-5 mr-2 text-accent" />}
+              {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
               <span>{ach.name}: {ach.description}</span>
             </div>
           ),
@@ -375,6 +411,15 @@ export default function TriviaGame() {
     });
   }, [currentAchievements, toast, toastedAchievementIds]);
 
+
+  if (isLoadingQuestions) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="ml-4 text-xl">Loading Trivia Questions...</p>
+      </div>
+    );
+  }
 
   if (gameOver) {
     return (
@@ -406,9 +451,13 @@ export default function TriviaGame() {
 
   if (!activeQuestions.length || !currentQuestion) {
     return (
-      <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
-        <Zap className="w-12 h-12 animate-pulse text-primary" />
-        <p className="ml-4 text-xl">Loading Questions, Captain...</p>
+      <div className="flex flex-col items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
+        <Zap className="w-12 h-12 text-primary mb-4" />
+        <p className="ml-4 text-xl text-primary">No Trivia Questions Available</p>
+        <p className="text-muted-foreground mt-2">Could not load questions. Please try refreshing or check back later.</p>
+        <Button onClick={fetchAndSetQuestions} className="mt-4">
+            <RefreshCw className="mr-2 h-4 w-4" /> Try Reloading Questions
+        </Button>
       </div>
     );
   }
@@ -456,3 +505,5 @@ export default function TriviaGame() {
     </div>
   );
 }
+
+    
