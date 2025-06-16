@@ -3,10 +3,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { getUserLeaderboardEntry } from '@/services/leaderboardService';
+import { getUserLeaderboardEntry, updateUserScore } from '@/services/leaderboardService';
 import { getRankByScore, playerRanks, type PlayerRank } from '@/lib/trivia-data';
 
-const AUTH_KEY = 'riverrat_lore_auth_v2'; // Changed key to avoid conflicts with old structure
+const AUTH_KEY = 'riverrat_lore_auth_v2';
 
 interface User {
   username: string;
@@ -16,7 +16,6 @@ interface User {
   rankIcon?: PlayerRank['icon'];
 }
 
-// Data structure for localStorage to avoid storing functions
 interface StoredUser {
   username: string;
   email?: string;
@@ -42,26 +41,25 @@ export function useAuth() {
     };
   }, []);
 
-  const updateUserRankAndScore = useCallback(async (username: string, baseUser?: Partial<StoredUser>) => {
+  const fetchAndUpdateUserSession = useCallback(async (username: string, baseUser?: Partial<StoredUser>) => {
     try {
       const leaderboardEntry = await getUserLeaderboardEntry(username);
       const currentScore = leaderboardEntry?.score ?? baseUser?.score ?? 0;
-      const currentRankTitle = leaderboardEntry?.rankTitle ?? baseUser?.rankTitle;
-
-      const rank = currentRankTitle
-        ? playerRanks.find(r => r.title === currentRankTitle) || getRankByScore(currentScore)
+      
+      const rank = leaderboardEntry?.rankTitle
+        ? playerRanks.find(r => r.title === leaderboardEntry.rankTitle) || getRankByScore(currentScore)
         : getRankByScore(currentScore);
 
       const updatedUser: User = {
         username: username,
-        email: baseUser?.email || (leaderboardEntry?.name === username ? undefined : leaderboardEntry?.name),
+        // Prioritize email from baseUser (localStorage during initial load/register), then from leaderboard
+        email: baseUser?.email || leaderboardEntry?.email,
         score: currentScore,
         rankTitle: rank.title,
         rankIcon: rank.icon,
       };
       setUser(updatedUser);
 
-      // Store only serializable data
       const userToStore: StoredUser = {
         username: updatedUser.username,
         email: updatedUser.email,
@@ -72,6 +70,7 @@ export function useAuth() {
       return updatedUser;
     } catch (error) {
       console.error("Failed to update user rank and score:", error);
+      // Fallback if DB fetch fails, rely on baseUser or defaults
       const defaultRank = getRankByScore(baseUser?.score || 0);
       const fallbackUser: User = {
         username: username,
@@ -99,10 +98,8 @@ export function useAuth() {
       const storedUserString = localStorage.getItem(AUTH_KEY);
       if (storedUserString) {
         const storedUserData = JSON.parse(storedUserString) as StoredUser;
-        // Set user state with properly derived icon first
-        setUser(updateUserStateWithRank(storedUserData));
-        // Then, refresh from DB
-        updateUserRankAndScore(storedUserData.username, storedUserData).finally(() => setLoading(false));
+        // Fetch fresh data from DB and update session
+        fetchAndUpdateUserSession(storedUserData.username, storedUserData).finally(() => setLoading(false));
       } else {
         setUser(null);
         setLoading(false);
@@ -113,37 +110,44 @@ export function useAuth() {
       setUser(null);
       setLoading(false);
     }
-  }, [updateUserRankAndScore, updateUserStateWithRank]);
+  }, [fetchAndUpdateUserSession]);
 
   const login = useCallback(async (username: string) => {
     setLoading(true);
-    // Passing a minimal StoredUser object for baseUser
-    await updateUserRankAndScore(username, { username });
+    await fetchAndUpdateUserSession(username, { username }); // Pass minimal baseUser for initial state
     setLoading(false);
     router.push('/dashboard');
-  }, [router, updateUserRankAndScore]);
+  }, [router, fetchAndUpdateUserSession]);
 
   const register = useCallback(async (username: string, email: string) => {
     setLoading(true);
     const defaultRank = getRankByScore(0);
-    const newUser: User = {
+    const initialUserData: StoredUser = { // StoredUser for consistency
       username,
       email,
       score: 0,
       rankTitle: defaultRank.title,
-      rankIcon: defaultRank.icon,
     };
-    setUser(newUser);
-    const userToStore: StoredUser = {
-      username: newUser.username,
-      email: newUser.email,
-      score: newUser.score,
-      rankTitle: newUser.rankTitle,
-    };
-    localStorage.setItem(AUTH_KEY, JSON.stringify(userToStore));
-    setLoading(false);
-    router.push('/dashboard');
-  }, [router]);
+
+    // Set local state and localStorage first
+    setUser(updateUserStateWithRank(initialUserData));
+    localStorage.setItem(AUTH_KEY, JSON.stringify(initialUserData));
+
+    try {
+      // Create/update Firestore entry with email and initial score of 0
+      await updateUserScore(username, username, 0, email);
+      // Refresh user session from DB to ensure consistency, though it might be redundant here
+      // as updateUserScore already sets the initial state in DB.
+      // However, fetchAndUpdateUserSession also updates localStorage and local state correctly.
+      await fetchAndUpdateUserSession(username, initialUserData);
+    } catch (error) {
+      console.error("Failed to create/update leaderboard entry during registration:", error);
+      // Potentially revert local changes or notify user
+    } finally {
+      setLoading(false);
+      router.push('/dashboard');
+    }
+  }, [router, updateUserStateWithRank, fetchAndUpdateUserSession]);
 
   const logout = useCallback(() => {
     localStorage.removeItem(AUTH_KEY);
@@ -154,17 +158,18 @@ export function useAuth() {
   const refreshUser = useCallback(async () => {
     if (user) {
       setLoading(true);
-      // Pass the current user's serializable parts
       const storableUserParts: StoredUser = {
         username: user.username,
         email: user.email,
         score: user.score,
         rankTitle: user.rankTitle
       };
-      await updateUserRankAndScore(user.username, storableUserParts);
+      await fetchAndUpdateUserSession(user.username, storableUserParts);
       setLoading(false);
     }
-  }, [user, updateUserRankAndScore]);
+  }, [user, fetchAndUpdateUserSession]);
 
   return { user, loading, login, register, logout, refreshUser };
 }
+
+    

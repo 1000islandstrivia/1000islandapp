@@ -639,7 +639,7 @@ export const triviaQuestions: TriviaQuestion[] = [
     question: "What is the primary industry that historically sustained many small communities in the Thousand Islands before large-scale tourism?",
     options: ["Tech startups", "Manufacturing", "Fishing, logging, and small-scale farming", "Aerospace engineering"],
     answer: "Fishing, logging, and small-scale farming",
-    storylineHintKey: "island_traditions_clue" 
+    storylineHintKey: "island_traditions_clue"
   },
   {
     id: '91',
@@ -667,7 +667,7 @@ export const triviaQuestions: TriviaQuestion[] = [
     question: "Many islands have names like 'Grindstone', 'Sugar', or 'Picton'. What do these names often reflect?",
     options: ["Random choices by mapmakers", "Names of famous racehorses", "Historical uses, local legends, or early settlers/owners", "Alien languages"],
     answer: "Historical uses, local legends, or early settlers/owners",
-    storylineHintKey: "river_origin_clue" 
+    storylineHintKey: "river_origin_clue"
   },
   {
     id: '95',
@@ -884,6 +884,7 @@ export function getRankByScore(score: number): PlayerRank {
 export interface LeaderboardEntry {
   id: string;
   name: string;
+  email?: string;
   score: number;
   rankTitle?: string; // Title of the rank e.g., "Admiral"
   avatar?: string;
@@ -896,9 +897,9 @@ export interface Achievement {
   id: string;
   name: string;
   description: string;
-  icon: LucideIcon;
+  icon: LucideIcon; // This should be the component itself, not an object
   unlocked: boolean;
-  criteria: string; 
+  criteria: string;
 }
 
 export const achievements: Achievement[] = [
@@ -949,3 +950,5 @@ export const areCategoryHintsUnlocked = (categoryPrefix: string, unlockedStoryHi
     if (categoryHints.length === 0) return false; // No hints in this category
     return categoryHints.every(hint => unlockedStoryHints.find(unlockedHint => unlockedHint.key === hint.key && unlockedHint.unlocked));
 };
+
+    

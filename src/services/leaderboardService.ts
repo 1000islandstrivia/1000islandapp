@@ -41,11 +41,12 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
     );
     const querySnapshot = await getDocs(q);
     const leaderboard: LeaderboardEntry[] = [];
-    querySnapshot.forEach((docSnap) => { // Renamed doc to docSnap to avoid conflict
+    querySnapshot.forEach((docSnap) => {
       const data = docSnap.data();
       leaderboard.push({
         id: docSnap.id,
         name: data.name,
+        email: data.email,
         score: data.score,
         rankTitle: data.rankTitle || getRankByScore(data.score).title,
         avatar: data.avatar,
@@ -63,12 +64,14 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
  * Updates a user's score on the leaderboard in Firestore by adding the score from the current game.
  * Ensures the total score does not go below zero.
  * Also updates the user's rank title based on the new total score.
+ * If an email is provided, it will be saved or updated.
  * @param userId - The user's unique ID (username).
  * @param username - The user's display name.
  * @param scoreEarnedThisGame - The score achieved by the user in the current game session (can be negative).
+ * @param email - Optional email address of the user.
  * @returns A promise that resolves when the update is complete.
  */
-export async function updateUserScore(userId: string, username: string, scoreEarnedThisGame: number): Promise<void> {
+export async function updateUserScore(userId: string, username: string, scoreEarnedThisGame: number, email?: string): Promise<void> {
   try {
     const userDocRef = doc(db, LEADERBOARD_COLLECTION, userId);
     const userDocSnap = await getDoc(userDocRef);
@@ -84,18 +87,22 @@ export async function updateUserScore(userId: string, username: string, scoreEar
       newTotalScore = scoreEarnedThisGame;
     }
 
-    // Ensure the total score does not go below 0
     newTotalScore = Math.max(0, newTotalScore);
-
     const finalRank = getRankByScore(newTotalScore);
 
-    await setDoc(userDocRef, {
+    const dataToSet: Partial<LeaderboardEntry & { lastUpdated: any }> = {
       name: username,
       score: newTotalScore,
       rankTitle: finalRank.title,
       avatar: userAvatar,
       lastUpdated: serverTimestamp(),
-    }, { merge: true });
+    };
+
+    if (email) {
+      dataToSet.email = email;
+    }
+
+    await setDoc(userDocRef, dataToSet, { merge: true });
 
   } catch (error: any) {
     console.error("Error updating user score:", error);
@@ -116,12 +123,12 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
     if (userDocSnap.exists()) {
       const data = userDocSnap.data();
       const score = data.score || 0;
-      // Ensure score is not negative when retrieving for display/rank calculation
-      const displayScore = Math.max(0, score); 
+      const displayScore = Math.max(0, score);
       const rankTitle = data.rankTitle || getRankByScore(displayScore).title;
       return {
         id: userDocSnap.id,
         name: data.name,
+        email: data.email,
         score: displayScore,
         rankTitle: rankTitle,
         avatar: data.avatar,
@@ -131,11 +138,12 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
       const defaultRank = getRankByScore(0);
       return {
         id: userId,
-        name: userId, 
+        name: userId,
+        email: undefined,
         score: 0,
         rankTitle: defaultRank.title,
         avatar: `https://placehold.co/40x40.png?text=${userId.substring(0, 2).toUpperCase()}`,
-        lastUpdated: new Date() 
+        lastUpdated: new Date()
       };
     }
   } catch (error: any) {
@@ -144,6 +152,7 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
       return {
         id: userId,
         name: userId,
+        email: undefined,
         score: 0,
         rankTitle: defaultRank.title,
         avatar: `https://placehold.co/40x40.png?text=${userId.substring(0, 2).toUpperCase()}`,
@@ -151,3 +160,5 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
       };
   }
 }
+
+    
