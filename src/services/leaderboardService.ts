@@ -36,7 +36,7 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
     const q = query(
       collection(db, LEADERBOARD_COLLECTION),
       orderBy('score', 'desc'),
-      orderBy('lastUpdated', 'desc'), 
+      orderBy('lastUpdated', 'desc'),
       limit(LEADERBOARD_LIMIT)
     );
     const querySnapshot = await getDocs(q);
@@ -55,46 +55,46 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
     return leaderboard.map((entry, index) => ({ ...entry, rank: index + 1 }));
   } catch (error: any) {
     console.error("Error fetching leaderboard:", error);
+    // Throw a more specific error message
     throw new Error(`Could not fetch leaderboard data. Original error: ${error.message || String(error)}`);
   }
 }
 
 /**
- * Updates a user's score on the leaderboard in Firestore.
- * Only updates if the new score is higher or if the user is new.
- * Also updates the user's rank title.
+ * Updates a user's score on the leaderboard in Firestore by adding the score from the current game.
+ * Also updates the user's rank title based on the new total score.
  * @param userId - The user's unique ID (username).
  * @param username - The user's display name.
- * @param newScore - The new score achieved by the user.
+ * @param scoreEarnedThisGame - The score achieved by the user in the current game session.
  * @returns A promise that resolves when the update is complete.
  */
-export async function updateUserScore(userId: string, username: string, newScore: number): Promise<void> {
+export async function updateUserScore(userId: string, username: string, scoreEarnedThisGame: number): Promise<void> {
   try {
     const userDocRef = doc(db, LEADERBOARD_COLLECTION, userId);
     const userDocSnap = await getDoc(userDocRef);
 
     const userAvatar = `https://placehold.co/40x40.png?text=${username.substring(0, 2).toUpperCase()}`;
-    const newRank = getRankByScore(newScore);
+    let newTotalScore: number;
 
-    let shouldUpdate = false;
     if (userDocSnap.exists()) {
       const currentData = userDocSnap.data();
-      if (newScore > currentData.score) {
-        shouldUpdate = true;
-      }
+      const currentTotalScore = currentData.score || 0;
+      newTotalScore = currentTotalScore + scoreEarnedThisGame;
     } else {
-      shouldUpdate = true; // New user
+      // New user, their total score is just what they earned this game
+      newTotalScore = scoreEarnedThisGame;
     }
 
-    if (shouldUpdate) {
-      await setDoc(userDocRef, {
-        name: username,
-        score: newScore,
-        rankTitle: newRank.title,
-        avatar: userAvatar,
-        lastUpdated: serverTimestamp(),
-      }, { merge: true });
-    }
+    const finalRank = getRankByScore(newTotalScore); // Calculate rank based on the new total score
+
+    await setDoc(userDocRef, {
+      name: username,
+      score: newTotalScore,
+      rankTitle: finalRank.title,
+      avatar: userAvatar,
+      lastUpdated: serverTimestamp(),
+    }, { merge: true });
+
   } catch (error: any) {
     console.error("Error updating user score:", error);
     throw new Error(`Could not update user score. Original error: ${error.message || String(error)}`);
@@ -125,20 +125,27 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
       } as LeaderboardEntry;
     } else {
       // User doesn't have a leaderboard entry yet, create a default one (score 0)
-      // This is useful for new users or if data is missing
       const defaultRank = getRankByScore(0);
       return {
         id: userId,
-        name: userId, // Default to userId if name not found, auth hook should provide better name
+        name: userId, 
         score: 0,
         rankTitle: defaultRank.title,
         avatar: `https://placehold.co/40x40.png?text=${userId.substring(0, 2).toUpperCase()}`,
-        lastUpdated: new Date() // Or serverTimestamp if you were to write this entry
+        lastUpdated: new Date() 
       };
     }
   } catch (error: any) {
     console.error("Error fetching user leaderboard entry:", error);
-    // Don't throw here, allow auth to proceed with default/null user rank
-    return null;
+    // Return a default structure or null, allowing auth/UI to handle gracefully
+    const defaultRank = getRankByScore(0);
+      return {
+        id: userId,
+        name: userId,
+        score: 0,
+        rankTitle: defaultRank.title,
+        avatar: `https://placehold.co/40x40.png?text=${userId.substring(0, 2).toUpperCase()}`,
+        lastUpdated: new Date()
+      };
   }
 }
