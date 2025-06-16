@@ -6,7 +6,7 @@ import LeaderboardTable from '@/components/leaderboard/LeaderboardTable';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { ListOrdered, HelpCircle, Star, Shield, ShieldHalf, ShieldCheck, Gem, Award, Medal, Crown, Zap, type LucideIcon } from 'lucide-react';
+import { ListOrdered, HelpCircle } from 'lucide-react';
 import { playerRanks, type PlayerRank } from '@/lib/trivia-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -58,25 +58,30 @@ export default function LeaderboardPage() {
             <CardContent>
               <ScrollArea className="h-[400px] sm:h-[500px] pr-3">
                 <div className="space-y-3">
-                  {playerRanks.map((rank: PlayerRank) => (
-                    <div
-                      key={rank.title}
-                      className={cn(
-                        "flex items-center justify-between p-3 rounded-lg border transition-all",
-                        user && user.rankTitle === rank.title
-                          ? "bg-primary/20 border-primary ring-2 ring-primary shadow-md"
-                          : "bg-card/50 border-border hover:bg-muted/60 hover:border-primary/50"
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        {React.createElement(rank.icon, { className: cn("w-6 h-6", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-accent") })}
-                        <span className={cn("font-medium", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-card-foreground")}>{rank.title}</span>
+                  {playerRanks.map((rank: PlayerRank) => {
+                    const IconComponent = rank.icon;
+                    return (
+                      <div
+                        key={rank.title}
+                        className={cn(
+                          "flex items-center justify-between p-3 rounded-lg border transition-all",
+                          user && user.rankTitle === rank.title
+                            ? "bg-primary/20 border-primary ring-2 ring-primary shadow-md"
+                            : "bg-card/50 border-border hover:bg-muted/60 hover:border-primary/50"
+                        )}
+                      >
+                        <div className="flex items-center gap-3">
+                          {IconComponent && (
+                            <IconComponent className={cn("w-6 h-6 shrink-0", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-accent")} />
+                          )}
+                          <span className={cn("font-medium", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-card-foreground")}>{rank.title}</span>
+                        </div>
+                        <span className={cn("text-xs sm:text-sm", user && user.rankTitle === rank.title ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                          {rank.minScore.toLocaleString()}+ pts
+                        </span>
                       </div>
-                      <span className={cn("text-xs sm:text-sm", user && user.rankTitle === rank.title ? "text-primary-foreground/80" : "text-muted-foreground")}>
-                        {rank.minScore.toLocaleString()}+ pts
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </ScrollArea>
             </CardContent>
@@ -86,3 +91,5 @@ export default function LeaderboardPage() {
     </MainLayout>
   );
 }
+
+    
