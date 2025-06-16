@@ -78,11 +78,13 @@ export async function updateUserScore(userId: string, username: string, scoreEar
 
     const userAvatar = `https://placehold.co/40x40.png?text=${username.substring(0, 2).toUpperCase()}`;
     let newTotalScore: number;
+    let existingEmail: string | undefined = undefined;
 
     if (userDocSnap.exists()) {
       const currentData = userDocSnap.data();
       const currentTotalScore = currentData.score || 0;
       newTotalScore = currentTotalScore + scoreEarnedThisGame;
+      existingEmail = currentData.email;
     } else {
       newTotalScore = scoreEarnedThisGame;
     }
@@ -98,9 +100,15 @@ export async function updateUserScore(userId: string, username: string, scoreEar
       lastUpdated: serverTimestamp(),
     };
 
-    if (email) {
-      dataToSet.email = email;
+    // Preserve existing email if new one isn't provided, otherwise use new one
+    dataToSet.email = email || existingEmail;
+    
+    // If it's a new user (no existing email) and no new email is provided during an update (e.g. guest play), don't set email.
+    // This case might not be hit often with current registration flow, but good for robustness.
+    if (!existingEmail && !email) {
+      delete dataToSet.email;
     }
+
 
     await setDoc(userDocRef, dataToSet, { merge: true });
 
@@ -111,54 +119,42 @@ export async function updateUserScore(userId: string, username: string, scoreEar
 }
 
 /**
- * Fetches a single user's leaderboard entry from Firestore.
+ * Fetches a single user's leaderboard entry from Firestore for login validation.
+ * Throws an error if the user is not found or not fully registered (lacks an email).
  * @param userId - The user's unique ID (username).
- * @returns A promise that resolves to the LeaderboardEntry or null if not found.
+ * @returns A promise that resolves to the LeaderboardEntry.
+ * @throws Error if user not found or not fully registered.
  */
-export async function getUserLeaderboardEntry(userId: string): Promise<LeaderboardEntry | null> {
+export async function getUserLeaderboardEntry(userId: string): Promise<LeaderboardEntry> {
   try {
     const userDocRef = doc(db, LEADERBOARD_COLLECTION, userId);
     const userDocSnap = await getDoc(userDocRef);
 
     if (userDocSnap.exists()) {
       const data = userDocSnap.data();
+      // For a user to be considered "registered" for login, they must have an email.
+      if (!data.email) {
+        throw new Error("User not found or not fully registered. Please register an account.");
+      }
       const score = data.score || 0;
-      const displayScore = Math.max(0, score);
+      const displayScore = Math.max(0, score); // Ensure score is not negative
       const rankTitle = data.rankTitle || getRankByScore(displayScore).title;
       return {
         id: userDocSnap.id,
         name: data.name,
-        email: data.email,
+        email: data.email, // Email must exist at this point
         score: displayScore,
         rankTitle: rankTitle,
         avatar: data.avatar,
         lastUpdated: (data.lastUpdated as Timestamp)?.toDate(),
       } as LeaderboardEntry;
     } else {
-      const defaultRank = getRankByScore(0);
-      return {
-        id: userId,
-        name: userId,
-        email: undefined,
-        score: 0,
-        rankTitle: defaultRank.title,
-        avatar: `https://placehold.co/40x40.png?text=${userId.substring(0, 2).toUpperCase()}`,
-        lastUpdated: new Date()
-      };
+      throw new Error("User not found. Please check your username or register for an account.");
     }
   } catch (error: any) {
-    console.error("Error fetching user leaderboard entry:", error);
-    const defaultRank = getRankByScore(0);
-      return {
-        id: userId,
-        name: userId,
-        email: undefined,
-        score: 0,
-        rankTitle: defaultRank.title,
-        avatar: `https://placehold.co/40x40.png?text=${userId.substring(0, 2).toUpperCase()}`,
-        lastUpdated: new Date()
-      };
+    // Log the original error for server-side debugging if needed
+    // console.error(`Error fetching user entry for '${userId}':`, error.message);
+    // Re-throw the error to be handled by the calling function (useAuth)
+    throw error;
   }
 }
-
-    
