@@ -42,14 +42,12 @@ export function useAuth() {
   }, []);
 
   const fetchAndUpdateUserSession = useCallback(async (username: string, baseUserProperties?: Partial<StoredUser>) => {
-    // This function now assumes a successful fetch from getUserLeaderboardEntry,
-    // as errors (user not found/registered) are thrown by getUserLeaderboardEntry itself.
     try {
-      const leaderboardEntry = await getUserLeaderboardEntry(username); // This will throw if user not found/not fully registered
+      const leaderboardEntry = await getUserLeaderboardEntry(username);
 
       const updatedUser: User = {
-        username: leaderboardEntry.name, // Use name from DB as source of truth
-        email: leaderboardEntry.email,   // Use email from DB
+        username: leaderboardEntry.name,
+        email: leaderboardEntry.email,
         score: leaderboardEntry.score,
         rankTitle: leaderboardEntry.rankTitle,
         rankIcon: playerRanks.find(r => r.title === leaderboardEntry.rankTitle)?.icon || getRankByScore(leaderboardEntry.score).icon,
@@ -57,7 +55,7 @@ export function useAuth() {
       
       setUser(updatedUser);
 
-      const userToStore: StoredUser = { // Store the DB-verified details
+      const userToStore: StoredUser = {
         username: updatedUser.username,
         email: updatedUser.email,
         score: updatedUser.score,
@@ -67,11 +65,8 @@ export function useAuth() {
       return updatedUser;
 
     } catch (error) {
-      // If getUserLeaderboardEntry throws, or any other error occurs
-      console.error("Error in fetchAndUpdateUserSession:", error);
-      // For login, this error will be caught by the login function and re-thrown to UI.
-      // For refreshUser, it might mean the user was deleted or local state is stale.
-      throw error; // Re-throw to be handled by caller
+      // console.error("Error in fetchAndUpdateUserSession:", error); // Removed for cleaner error propagation
+      throw error;
     }
   }, []);
 
@@ -82,16 +77,14 @@ export function useAuth() {
     if (storedUserString) {
       try {
         const storedUserData = JSON.parse(storedUserString) as StoredUser;
-        // Attempt to refresh user session from DB using stored username
         fetchAndUpdateUserSession(storedUserData.username, storedUserData)
           .catch(() => {
-            // If refresh fails (e.g., user deleted from DB), log out
             localStorage.removeItem(AUTH_KEY);
             setUser(null);
           })
           .finally(() => setLoading(false));
       } catch (error) {
-        console.error("Failed to parse user from localStorage or refresh session:", error);
+        // console.error("Failed to parse user from localStorage or refresh session:", error); // Can be restored if needed for debug
         localStorage.removeItem(AUTH_KEY);
         setUser(null);
         setLoading(false);
@@ -105,15 +98,13 @@ export function useAuth() {
   const login = useCallback(async (username: string) => {
     setLoading(true);
     try {
-      // fetchAndUpdateUserSession will call getUserLeaderboardEntry.
-      // If user is not found/registered, an error will be thrown and caught here.
       await fetchAndUpdateUserSession(username);
-      setLoading(false); // Only set loading false here if successful
-      router.push('/dashboard'); // Proceed to dashboard only on successful login
+      setLoading(false); 
+      router.push('/dashboard');
     } catch (err) {
       setLoading(false);
-      console.error("Login failed in useAuth:", err); // Optional: log for debugging
-      throw err; // Re-throw the error to be caught by LoginForm.tsx
+      // console.error("Login failed in useAuth:", err); // Removed for cleaner error propagation
+      throw err; 
     }
   }, [router, fetchAndUpdateUserSession]);
 
@@ -127,24 +118,17 @@ export function useAuth() {
       rankTitle: defaultRank.title,
     };
 
-    // Optimistically set local state and localStorage
     setUser(updateUserStateWithRankDetails(initialUserDataForStorage));
     localStorage.setItem(AUTH_KEY, JSON.stringify(initialUserDataForStorage));
 
     try {
-      // Create/update Firestore entry with email and initial score of 0
-      // This will also set lastUpdated timestamp
       await updateUserScore(username, username, 0, email);
-      // No need to call fetchAndUpdateUserSession here again as register implies new/verified data.
       setLoading(false);
       router.push('/dashboard');
     } catch (error) {
-      console.error("Failed to create/update leaderboard entry during registration:", error);
-      // Potentially revert local changes or notify user
-      // For simplicity, we'll let the optimistic update stand for now,
-      // but a more robust solution might clear localStorage and user state here.
+      // console.error("Failed to create/update leaderboard entry during registration:", error); // Can be restored
       setLoading(false);
-      throw error; // Re-throw to be handled by RegisterForm.tsx if needed
+      throw error; 
     }
   }, [router, updateUserStateWithRankDetails]);
 
@@ -158,16 +142,15 @@ export function useAuth() {
     if (user) {
       setLoading(true);
       try {
-        await fetchAndUpdateUserSession(user.username, { // Pass current local user as base
+        await fetchAndUpdateUserSession(user.username, {
             username: user.username,
             email: user.email,
             score: user.score,
             rankTitle: user.rankTitle
         });
       } catch (error) {
-         // If refresh fails (e.g. user deleted from DB after initial load)
-        console.error("Failed to refresh user, logging out:", error);
-        logout(); // Log out the user as their session is no longer valid
+        // console.error("Failed to refresh user, logging out:", error); // Can be restored
+        logout(); 
       } finally {
         setLoading(false);
       }

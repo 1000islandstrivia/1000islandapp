@@ -30,12 +30,15 @@ export default function LoginForm() {
       await login(username);
       // useRouter().push('/dashboard') is handled by useAuth hook
     } catch (err: any) {
-      // Display specific error from auth hook, or a generic one
-      if (err.message && (err.message.includes("User not found") || err.message.includes("not fully registered"))) {
-        setError(err.message);
-      } else {
-        setError('Failed to login. An unexpected error occurred.');
+      console.log("Error caught in LoginForm handleSubmit:", err); // Log the caught error
+      let errorMessage = 'Failed to login. An unexpected error occurred.';
+      if (err && typeof err.message === 'string' && err.message.length > 0) {
+        errorMessage = err.message;
+      } else if (typeof err === 'string' && err.length > 0) {
+        // Fallback if err is a string itself (less common for Error objects)
+        errorMessage = err;
       }
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
