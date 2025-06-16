@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -26,11 +27,15 @@ export default function LoginForm() {
       return;
     }
     try {
-      // In a real app, you'd validate credentials against a backend
       await login(username);
       // useRouter().push('/dashboard') is handled by useAuth hook
-    } catch (err) {
-      setError('Failed to login. Please check your credentials.');
+    } catch (err: any) {
+      // Display specific error from auth hook, or a generic one
+      if (err.message && (err.message.includes("User not found") || err.message.includes("not fully registered"))) {
+        setError(err.message);
+      } else {
+        setError('Failed to login. An unexpected error occurred.');
+      }
     } finally {
       setLoading(false);
     }
