@@ -254,86 +254,89 @@ export default function TriviaGame() {
     let newSessionScore = score;
 
     if (isCorrect) {
-      newSessionScore = score + 100;
-      // setScore(newSessionScore); // Score state updated later after all calcs
-      setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
-      playSound('/sounds/pirate-correct.mp3');
-      toast({
-        title: "Shiver me timbers! Correct!",
-        description: "Ye be a true captain o' this quiz!",
-        variant: "default",
-      });
-
-      if (newSessionScore >= 500 && !currentAchievements.find(a=>a.id === 'five_correct')?.unlocked) {
-         updateAchievementProgress(currentAchievements, 'five_correct', setCurrentAchievements);
-      }
-      if (currentQuestion.storylineHintKey.includes("boldt") && !currentAchievements.find(a=>a.id === 'all_hints_category1')?.unlocked) {
-        const boldtHintsUnlocked = unlockedStoryHints.filter(h => h.key.startsWith("boldt_") && h.unlocked).length;
-        if (boldtHintsUnlocked >= 2) { 
-           updateAchievementProgress(currentAchievements, 'all_hints_category1', setCurrentAchievements);
-        }
-      }
-      if (currentQuestion.storylineHintKey === "fish_expert_clue" && !currentAchievements.find(a=>a.id === 'fish_expert')?.unlocked) {
-        updateAchievementProgress(currentAchievements, 'fish_expert', setCurrentAchievements);
-      }
-
-
-      setIsHintLoading(true);
-      try {
-        const hintResult = await generateHint({
-          question: currentQuestion.question,
-          answer: currentQuestion.answer,
+        newSessionScore = score + 100;
+        setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
+        playSound('/sounds/pirate-correct.mp3');
+        toast({
+            title: "Shiver me timbers! Correct!",
+            description: "Ye be a true captain o' this quiz!",
+            variant: "default",
         });
-        setCurrentGeneratedHint(hintResult);
 
+        // Unlock storyline hint immediately, regardless of AI call success
         const storyHintKey = currentQuestion.storylineHintKey;
         const hintIndex = unlockedStoryHints.findIndex(h => h.key === storyHintKey);
-
         if (hintIndex !== -1 && !unlockedStoryHints[hintIndex].unlocked) {
-          setUnlockedStoryHints(prevHints => {
-            const updatedHints = prevHints.map(h =>
-              h.key === storyHintKey ? { ...h, unlocked: true, text: hintResult.hint } : h
+            setUnlockedStoryHints(prevHints =>
+                prevHints.map(h => (h.key === storyHintKey ? { ...h, unlocked: true } : h))
             );
-
-            const allNonFinalUnlocked = updatedHints
-                .filter(h => h.key !== 'final_revelation')
-                .every(h => h.unlocked);
-
-            if (allNonFinalUnlocked && !currentAchievements.find(a=>a.id === 'story_complete')?.unlocked) {
-                updateAchievementProgress(currentAchievements, 'story_complete', setCurrentAchievements);
+            if (!currentAchievements.find(a => a.id === 'first_hint')?.unlocked) {
+                updateAchievementProgress(currentAchievements, 'first_hint', setCurrentAchievements);
             }
-            return updatedHints;
-          });
-          if (!currentAchievements.find(a=>a.id === 'first_hint')?.unlocked) {
-            updateAchievementProgress(currentAchievements, 'first_hint', setCurrentAchievements);
-          }
-        } else if (hintIndex === -1) {
-          console.warn(`Storyline hint key "${storyHintKey}" not found in initial storyline data.`);
         }
 
-      } catch (error) {
-        console.error("Error generating hint:", error);
-        toast({ title: "Hint Error", description: "Could not generate a hint at this time.", variant: "destructive" });
-        setCurrentGeneratedHint(null);
-      } finally {
-        setIsHintLoading(false);
-      }
-    } else {
-      newSessionScore = score - 500; // Deduct points for wrong answer
-      // setScore(newSessionScore); // Score state updated later
-      setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
-      playSound('/sounds/fog-horn.mp3');
-      toast({
-        title: "Walk the Plank!",
-        description: "Ye lost 500 points for that blunder, scallywag!",
-        variant: "destructive",
-      });
-    }
-    setScore(newSessionScore); // Update score state here after all calculations for this answer
+        setIsHintLoading(true);
+        try {
+            const hintResult = await generateHint({
+                question: currentQuestion.question,
+                answer: currentQuestion.answer,
+            });
+            setCurrentGeneratedHint(hintResult);
+            // Also update the master list with the AI-generated text for the storyline page
+            setUnlockedStoryHints(prevHints =>
+                prevHints.map(h =>
+                    h.key === storyHintKey ? { ...h, text: hintResult.hint } : h
+                )
+            );
+        } catch (error) {
+            console.error("Error generating hint:", error);
+            const fallbackHint = initialStoryline.find(h => h.key === storyHintKey);
+            if (fallbackHint) {
+                setCurrentGeneratedHint({ hint: fallbackHint.text });
+            }
+            toast({
+                title: "Hint Offline",
+                description: "Couldn't fetch live hint. Showing original clue.",
+                variant: "default",
+            });
+        } finally {
+            setIsHintLoading(false);
+        }
 
+        // Achievement checks that depend on session score or unlocked hints
+        if (newSessionScore >= 500 && !currentAchievements.find(a => a.id === 'five_correct')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'five_correct', setCurrentAchievements);
+        }
+        if (storyHintKey.includes("boldt") && !currentAchievements.find(a => a.id === 'all_hints_category1')?.unlocked) {
+            const boldtHintsUnlocked = unlockedStoryHints.filter(h => h.key.startsWith("boldt_") && h.unlocked).length;
+            if (boldtHintsUnlocked >= 2) {
+                updateAchievementProgress(currentAchievements, 'all_hints_category1', setCurrentAchievements);
+            }
+        }
+        if (storyHintKey === "fish_expert_clue" && !currentAchievements.find(a => a.id === 'fish_expert')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'fish_expert', setCurrentAchievements);
+        }
+        const allNonFinalUnlocked = unlockedStoryHints
+            .filter(h => h.key !== 'final_revelation')
+            .every(h => h.unlocked);
+        if (allNonFinalUnlocked && !currentAchievements.find(a => a.id === 'story_complete')?.unlocked) {
+            updateAchievementProgress(currentAchievements, 'story_complete', setCurrentAchievements);
+        }
+
+    } else {
+        newSessionScore = score - 500; // Deduct points for wrong answer
+        setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer, scallywag! The correct answer was: ${currentQuestion.answer}` });
+        playSound('/sounds/fog-horn.mp3');
+        toast({
+            title: "Walk the Plank!",
+            description: "Ye lost 500 points for that blunder, scallywag!",
+            variant: "destructive",
+        });
+    }
+    setScore(newSessionScore);
 
     if (user && user.score !== undefined) {
-        const potentialTotalScoreAfterThisAnswer = (user.score + (newSessionScore - score)); // User's total score PLUS the change from this single answer
+        const potentialTotalScoreAfterThisAnswer = (user.score + (newSessionScore - score));
         
         const pettyOfficerRank = playerRanks.find(r => r.title === "Petty Officer Third Class");
         if (pettyOfficerRank && potentialTotalScoreAfterThisAnswer >= pettyOfficerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
@@ -355,7 +358,6 @@ export default function TriviaGame() {
             updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
         }
     }
-
 
   }, [currentQuestion, score, toast, unlockedStoryHints, currentAchievements, playSound, user]);
 
@@ -505,5 +507,3 @@ export default function TriviaGame() {
     </div>
   );
 }
-
-    
