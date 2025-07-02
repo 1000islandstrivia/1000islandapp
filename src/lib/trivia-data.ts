@@ -8,6 +8,7 @@ export interface TriviaQuestion {
   options: string[];
   answer: string;
   storylineHintKey: string;
+  fallbackHint?: string;
 }
 
 export interface StorylineHint {

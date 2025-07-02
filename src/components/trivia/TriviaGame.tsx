@@ -290,13 +290,19 @@ export default function TriviaGame() {
             );
         } catch (error) {
             console.error("Error generating hint:", error);
-            const fallbackHint = initialStoryline.find(h => h.key === storyHintKey);
-            if (fallbackHint) {
-                setCurrentGeneratedHint({ hint: fallbackHint.text });
+            const fallbackHintText = currentQuestion.fallbackHint;
+            if (fallbackHintText) {
+              setCurrentGeneratedHint({ hint: fallbackHintText });
+              // Also update the master list with the fallback text for the storyline page
+              setUnlockedStoryHints(prevHints =>
+                  prevHints.map(h =>
+                      h.key === storyHintKey ? { ...h, text: fallbackHintText } : h
+                  )
+              );
             }
             toast({
                 title: "Hint Offline",
-                description: "Couldn't fetch live hint. Showing original clue.",
+                description: "Couldn't fetch live hint. Showing stored clue instead.",
                 variant: "default",
             });
         } finally {
