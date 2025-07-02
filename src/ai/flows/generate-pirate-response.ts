@@ -23,6 +23,7 @@ export type GeneratePirateResponseInput = z.infer<typeof GeneratePirateResponseI
 
 // Output Schema
 const GeneratePirateResponseOutputSchema = z.object({
+  script: z.string().describe('The full pirate script that was spoken.'),
   audioDataUri: z.string().describe("The generated pirate audio response as a data URI. Format: 'data:audio/wav;base64,<encoded_data>'."),
 });
 export type GeneratePirateResponseOutput = z.infer<typeof GeneratePirateResponseOutputSchema>;
@@ -148,8 +149,9 @@ const generatePirateResponseFlow = ai.defineFlow(
     
     const wavBase64 = await toWav(audioBuffer);
 
-    // Step 3: Return the audio data
+    // Step 3: Return both the script and audio data
     return {
+      script: pirateScript,
       audioDataUri: 'data:audio/wav;base64,' + wavBase64,
     };
   }
