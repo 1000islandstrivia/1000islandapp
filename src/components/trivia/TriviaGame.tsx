@@ -18,21 +18,52 @@ import { getTriviaQuestions } from '@/services/triviaService';
 
 const QUESTIONS_PER_GAME = 10;
 
-const correctLoadingMessages = [
-  "🏴‍☠️ By the black flag, ye got it! The spirits be pleased...",
-  "⚓ Well blow me down! A clue be comin' through the fog...",
-  "🦜 The parrot squawks in approval! Listen for the whisper...",
-  "💎 A treasure of knowledge! The ghost is revealin' more...",
-  "🗺️ Ye be on the right course! A secret is unfurlin'...",
+// Pirate loading messages to show while waiting for the detailed AI hint
+const pirateLoadingMessages = [
+  "☠️ Hold fast, matey... a cursed clue be brewin’...",
+  "⚓ Summonin’ the ghost of a river pirate...",
+  "🦜 Squawk! The parrot’s whisperin’ secrets...",
+  "🗺️ Unfurlin’ the scroll of shame...",
+  "💀 Dredgin’ up facts from Davy Jones’s locker...",
+  "🎣 Fishin’ for the truth in haunted waters...",
+  "🧜‍♂️ Consultin’ the mermaid oracles...",
+  "🕯️ Lightin’ the lanterns of lost legends...",
+  "🏴‍☠️ Readin’ yer fortune in the river fog...",
+  "📚 Flippin’ through the haunted captain’s log..."
 ];
 
-const wrongLoadingMessages = [
-  "💀 To Davy Jones' Locker with that answer! But a ghost has pity...",
-  "럼 Walk the plank! Still, a clue drifts from the depths...",
-  "👻 That be wronger than a three-legged pirate! But listen closely...",
-  "⛓️ To the brig with ye! Though a whisper escapes the gloom...",
-  "⛈️ Barnacles! That ain't it. The river spirits offer a hint anyway...",
+// Pre-recorded audio clips for instant feedback
+const correctMaleAudio = [
+  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_1.mp3?alt=media&token=e5f3fdb6-aaec-4616-b9b5-c1c37eba1898',
+  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_2.mp3?alt=media&token=ea2cb0fa-6299-4db4-bb7b-0d163526f5ba',
+  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_3.mp3?alt=media&token=c444e71e-b9da-4962-89a2-a8c3c5ea56c7',
+  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_4.mp3?alt=media&token=5609da46-1448-4fae-8a60-d2ee2971686e',
+  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_5.mp3?alt=media&token=5886b949-0c15-46fb-936b-21e2cdca2ced'
 ];
+const correctFemaleAudio = [
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_1.mp3?alt=media&token=abc518be-b949-407e-9faf-1e33487fd580',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_2.mp3?alt=media&token=946c0515-67ed-40e9-b342-d01127622da5',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_3.mp3?alt=media&token=12cb05a5-6a89-49d6-8ccf-c9176affad94',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_4.mp3?alt=media&token=8da50af1-c6dc-416f-b1c9-4008129a09e0',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_5.mp3?alt=media&token=926275c9-9914-404d-9e63-b433a66614a5'
+];
+const wrongMaleAudio = [
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_1.mp3?alt=media&token=3ba1a143-3475-4fd4-bd30-448045bbc9f3',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_2.mp3?alt=media&token=78c97623-b600-4a25-aa3a-d6ebea857a3e',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_3.mp3?alt=media&token=ff958b5d-de42-43a5-a0d8-8968cde64d73',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_4.mp3?alt=media&token=e166ab82-318c-455e-b5da-4fe13bcf834a',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_5.mp3?alt=media&token=9ec1a31c-8da3-4fa1-99e5-36ccbea0cdcc'
+];
+const wrongFemaleAudio = [
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_1.mp3?alt=media&token=7d9158f9-5839-4eb2-985c-5ed7a67573c7',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_2.mp3?alt=media&token=6257a8c3-943b-47f8-8003-58e62dfb5d8c',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_3.mp3?alt=media&token=2b5b6ee1-83a9-4142-8213-0e82343ffb7f',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_4.mp3?alt=media&token=aeeb0fcb-c2d7-48de-b006-b52428afa81f',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_5.mp3?alt=media&token=bf43a337-1cec-49a2-92b8-c8000dcb8830'
+];
+
+const correctResponses = [...correctMaleAudio, ...correctFemaleAudio];
+const wrongResponses = [...wrongMaleAudio, ...wrongFemaleAudio];
 
 interface StoredAchievementProgress {
   id: string;
@@ -239,9 +270,15 @@ export default function TriviaGame() {
 
     const isCorrect = answer === currentQuestion.answer;
     
+    // Play instant audio feedback
+    const responseAudios = isCorrect ? correctResponses : wrongResponses;
+    const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
+    if (typeof window !== 'undefined') {
+        new Audio(randomAudioUrl).play();
+    }
+    
     setShowAnswerResult(true);
-    const messages = isCorrect ? correctLoadingMessages : wrongLoadingMessages;
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
     setLoadingMessage(randomMessage);
     setIsResponseLoading(true);
 
