@@ -74,7 +74,7 @@ export default function StorylinePage() {
       </div>
       <StoryProgress unlockedHintKeys={unlockedHintKeys} />
        <div className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Hints are unlocked as you correctly answer trivia questions.</p>
+        <p>Lore is unlocked as you correctly answer trivia questions.</p>
       </div>
     </MainLayout>
   );

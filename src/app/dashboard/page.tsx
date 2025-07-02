@@ -94,7 +94,7 @@ export default function DashboardPage() {
           />
           <DashboardCard
             title="Storyline Progress"
-            description="Track your journey and unlocked hints."
+            description="Track your journey and unlocked lore."
             href="/storyline"
             icon={BookOpen}
             buttonText="View Story"

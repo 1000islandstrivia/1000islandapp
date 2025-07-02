@@ -1,3 +1,4 @@
+
 "use client";
 
 import { storyline as initialStoryline, StorylineHint } from '@/lib/trivia-data';
@@ -33,8 +34,8 @@ export default function StoryProgress({ unlockedHintKeys = [] }: StoryProgressPr
 
 
   const unlockedCount = currentStoryline.filter(h => h.unlocked).length;
-  const totalHints = currentStoryline.length;
-  const progressPercentage = totalHints > 0 ? (unlockedCount / totalHints) * 100 : 0;
+  const totalLoreItems = currentStoryline.length;
+  const progressPercentage = totalLoreItems > 0 ? (unlockedCount / totalLoreItems) * 100 : 0;
 
   return (
     <div className="space-y-6">
@@ -45,7 +46,7 @@ export default function StoryProgress({ unlockedHintKeys = [] }: StoryProgressPr
             The River's Secrets
           </CardTitle>
           <CardDescription>
-            You've uncovered {unlockedCount} of {totalHints} pieces of the Thousand Islands lore.
+            You've uncovered {unlockedCount} of {totalLoreItems} pieces of the Thousand Islands lore.
           </CardDescription>
         </CardHeader>
         <CardContent>

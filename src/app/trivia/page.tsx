@@ -1,3 +1,4 @@
+
 "use client";
 
 import MainLayout from '@/components/layout/MainLayout';
@@ -13,18 +14,18 @@ import { Label } from "@/components/ui/label";
 export default function TriviaPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [isAiHintEnabled, setIsAiHintEnabled] = useState(true);
+  const [isAiLoreEnabled, setIsAiLoreEnabled] = useState(true);
 
   useEffect(() => {
-    const savedPreference = localStorage.getItem('aiHintEnabled');
+    const savedPreference = localStorage.getItem('aiLoreEnabled');
     if (savedPreference !== null) {
-      setIsAiHintEnabled(JSON.parse(savedPreference));
+      setIsAiLoreEnabled(JSON.parse(savedPreference));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('aiHintEnabled', JSON.stringify(isAiHintEnabled));
-  }, [isAiHintEnabled]);
+    localStorage.setItem('aiLoreEnabled', JSON.stringify(isAiLoreEnabled));
+  }, [isAiLoreEnabled]);
 
 
   useEffect(() => {
@@ -51,16 +52,16 @@ export default function TriviaPage() {
       
       <div className="flex items-center justify-center space-x-3 mb-8">
         <Sparkles className="w-5 h-5 text-accent" />
-        <Label htmlFor="ai-hint-switch" className="font-medium">Enable AI Pirate Hints</Label>
+        <Label htmlFor="ai-lore-switch" className="font-medium">Enable AI Pirate Lore</Label>
         <Switch
-          id="ai-hint-switch"
-          checked={isAiHintEnabled}
-          onCheckedChange={setIsAiHintEnabled}
-          aria-label="Toggle AI Pirate Hints"
+          id="ai-lore-switch"
+          checked={isAiLoreEnabled}
+          onCheckedChange={setIsAiLoreEnabled}
+          aria-label="Toggle AI Pirate Lore"
         />
       </div>
 
-      <TriviaGame isAiHintEnabled={isAiHintEnabled} />
+      <TriviaGame isAiLoreEnabled={isAiLoreEnabled} />
     </MainLayout>
   );
 }

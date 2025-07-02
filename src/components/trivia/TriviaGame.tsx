@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -89,10 +90,10 @@ const updateAchievementProgress = (
 };
 
 interface TriviaGameProps {
-  isAiHintEnabled: boolean;
+  isAiLoreEnabled: boolean;
 }
 
-export default function TriviaGame({ isAiHintEnabled }: TriviaGameProps) {
+export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
   
@@ -326,7 +327,7 @@ export default function TriviaGame({ isAiHintEnabled }: TriviaGameProps) {
       }
     }
 
-    if (isAiHintEnabled) {
+    if (isAiLoreEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       if (typeof window !== 'undefined') {
@@ -378,7 +379,7 @@ export default function TriviaGame({ isAiHintEnabled }: TriviaGameProps) {
         setLoadingMessage(null);
     }
 
-  }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast, isAiHintEnabled]);
+  }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast, isAiLoreEnabled]);
 
   const handleProceedToNext = useCallback(async () => {
     setShowAnswerResult(false);
@@ -502,7 +503,7 @@ export default function TriviaGame({ isAiHintEnabled }: TriviaGameProps) {
 
       {showAnswerResult ? (
         <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px]">
-          {isAiHintEnabled ? (
+          {isAiLoreEnabled ? (
             <>
               {(isResponseLoading || loadingMessage) && (
                 <div className="animate-fadeIn space-y-4 flex flex-col justify-center items-center text-center h-full">
