@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions } from '@/services/triviaService';
 import HintDisplay from './HintDisplay';
+import SimpleHintDisplay from './SimpleHintDisplay';
 
 const QUESTIONS_PER_GAME = 10;
 
@@ -87,8 +88,11 @@ const updateAchievementProgress = (
   );
 };
 
+interface TriviaGameProps {
+  isAiHintEnabled: boolean;
+}
 
-export default function TriviaGame() {
+export default function TriviaGame({ isAiHintEnabled }: TriviaGameProps) {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
   
@@ -99,6 +103,7 @@ export default function TriviaGame() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
+  const [answerCorrectness, setAnswerCorrectness] = useState(false);
 
   // Response & Feedback State
   const [isResponseLoading, setIsResponseLoading] = useState(false);
@@ -277,26 +282,13 @@ export default function TriviaGame() {
     if (!currentQuestion) return;
 
     const isCorrect = answer === currentQuestion.answer;
-    
-    // Play instant audio feedback
-    const responseAudios = isCorrect ? correctResponses : wrongResponses;
-    const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
-    if (typeof window !== 'undefined') {
-        new Audio(randomAudioUrl).play();
-    }
+    setAnswerCorrectness(isCorrect);
     
     setShowAnswerResult(true);
-    const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
-    setLoadingMessage(randomMessage);
-    setIsResponseLoading(true);
-    setPirateResponse(null);
-    setPirateAudioUri(null);
 
     let newSessionScore = score;
-
     if (isCorrect) {
         newSessionScore = score + 100;
-
         const storyHintKey = currentQuestion.storylineHintKey;
         const hintIndex = unlockedStoryHints.findIndex(h => h.key === storyHintKey);
         if (hintIndex !== -1 && !unlockedStoryHints[hintIndex].unlocked) {
@@ -333,42 +325,60 @@ export default function TriviaGame() {
           updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
       }
     }
-    
-    try {
-        const scriptResult = await generatePirateScript({
-            question: currentQuestion.question,
-            playerAnswer: answer,
-            correctAnswer: currentQuestion.answer,
-            fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
-        });
-        
-        setPirateResponse(scriptResult);
-        setIsResponseLoading(false);
-        setLoadingMessage(null);
-        setIsAudioLoading(true);
 
-        // Fetch audio in the background
-        generateSpokenPirateAudio({ script: scriptResult.script })
-            .then(audioResult => {
-                setPirateAudioUri(audioResult.audioDataUri);
-            })
-            .catch(err => {
-                console.error("Failed to generate pirate audio:", err);
-                toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
-            })
-            .finally(() => {
-                setIsAudioLoading(false);
-            });
+    if (isAiHintEnabled) {
+      const responseAudios = isCorrect ? correctResponses : wrongResponses;
+      const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
+      if (typeof window !== 'undefined') {
+          new Audio(randomAudioUrl).play();
+      }
+      
+      const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
+      setLoadingMessage(randomMessage);
+      setIsResponseLoading(true);
+      setPirateResponse(null);
+      setPirateAudioUri(null);
+      
+      try {
+          const scriptResult = await generatePirateScript({
+              question: currentQuestion.question,
+              playerAnswer: answer,
+              correctAnswer: currentQuestion.answer,
+              fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
+          });
+          
+          setPirateResponse(scriptResult);
+          setIsResponseLoading(false);
+          setLoadingMessage(null);
+          setIsAudioLoading(true);
 
-    } catch (error) {
-        console.error("Failed to generate pirate script:", error);
-        toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
-        setPirateResponse({ script: currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing..." });
+          generateSpokenPirateAudio({ script: scriptResult.script })
+              .then(audioResult => {
+                  setPirateAudioUri(audioResult.audioDataUri);
+              })
+              .catch(err => {
+                  console.error("Failed to generate pirate audio:", err);
+                  toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
+              })
+              .finally(() => {
+                  setIsAudioLoading(false);
+              });
+
+      } catch (error) {
+          console.error("Failed to generate pirate script:", error);
+          toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
+          setPirateResponse({ script: currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing..." });
+          setIsResponseLoading(false);
+          setLoadingMessage(null);
+      }
+    } else {
+        setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
         setIsResponseLoading(false);
+        setPirateAudioUri(null);
         setLoadingMessage(null);
     }
 
-  }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast]);
+  }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast, isAiHintEnabled]);
 
   const handleProceedToNext = useCallback(async () => {
     setShowAnswerResult(false);
@@ -492,19 +502,31 @@ export default function TriviaGame() {
 
       {showAnswerResult ? (
         <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px]">
-          {(isResponseLoading || loadingMessage) && (
-            <div className="animate-fadeIn space-y-4 flex flex-col justify-center items-center text-center h-full">
-              <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
-              <p className="text-lg font-semibold text-primary font-headline">{loadingMessage}</p>
-            </div>
-          )}
-          {pirateResponse && !isResponseLoading && (
-            <HintDisplay
-                script={pirateResponse.script}
-                isAudioLoading={isAudioLoading}
-                pirateAudioUri={pirateAudioUri}
-                onProceed={handleProceedToNext}
-                isLastQuestion={currentQuestionIndex >= totalQuestionsToDisplay - 1}
+          {isAiHintEnabled ? (
+            <>
+              {(isResponseLoading || loadingMessage) && (
+                <div className="animate-fadeIn space-y-4 flex flex-col justify-center items-center text-center h-full">
+                  <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
+                  <p className="text-lg font-semibold text-primary font-headline">{loadingMessage}</p>
+                </div>
+              )}
+              {pirateResponse && !isResponseLoading && (
+                <HintDisplay
+                    script={pirateResponse.script}
+                    isAudioLoading={isAudioLoading}
+                    pirateAudioUri={pirateAudioUri}
+                    onProceed={handleProceedToNext}
+                    isLastQuestion={currentQuestionIndex >= totalQuestionsToDisplay - 1}
+                />
+              )}
+            </>
+          ) : (
+            pirateResponse && <SimpleHintDisplay 
+              script={pirateResponse.script}
+              isCorrect={answerCorrectness}
+              correctAnswer={currentQuestion.answer}
+              onProceed={handleProceedToNext}
+              isLastQuestion={currentQuestionIndex >= totalQuestionsToDisplay - 1}
             />
           )}
         </Card>
