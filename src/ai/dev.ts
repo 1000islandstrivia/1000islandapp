@@ -1,7 +1,8 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/generate-pirate-response.ts';
-import '@/ai/flows/generate-audio-hint.ts';
-import '@/ai/flows/generate-wrong-answer-audio.ts';
+import '@/ai/flows/generate-pirate-script.ts';
+import '@/ai/flows/generate-spoken-pirate-audio.ts';
+
+// The original hint flow is kept for reference but is not used in the main game loop.
 import '@/ai/flows/generate-hint.ts';

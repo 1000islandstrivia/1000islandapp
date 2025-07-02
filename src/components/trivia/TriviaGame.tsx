@@ -8,7 +8,8 @@ import QuestionCard from './QuestionCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress";
-import { generatePirateResponse } from '@/ai/flows/generate-pirate-response';
+import { generatePirateScript } from '@/ai/flows/generate-pirate-script';
+import { generateSpokenPirateAudio } from '@/ai/flows/generate-spoken-pirate-audio';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
 import { Award, ChevronRight, RefreshCw, type LucideIcon, Loader2, Volume2, Skull } from 'lucide-react';
@@ -72,7 +73,6 @@ interface StoredAchievementProgress {
 
 interface PirateResponse {
   script: string;
-  audioDataUri: string;
 }
 
 const updateAchievementProgress = (
@@ -102,8 +102,10 @@ export default function TriviaGame() {
 
   // Response & Feedback State
   const [isResponseLoading, setIsResponseLoading] = useState(false);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [pirateResponse, setPirateResponse] = useState<PirateResponse | null>(null);
+  const [pirateAudioUri, setPirateAudioUri] = useState<string | null>(null);
   const [showAnswerResult, setShowAnswerResult] = useState(false);
 
   // User Progress State
@@ -234,6 +236,7 @@ export default function TriviaGame() {
     setIsResponseLoading(false);
     setLoadingMessage(null);
     setPirateResponse(null);
+    setPirateAudioUri(null);
 
     if (user) {
         const achievementsKey = `achievements_progress_${user.username}`;
@@ -286,6 +289,8 @@ export default function TriviaGame() {
     const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
     setLoadingMessage(randomMessage);
     setIsResponseLoading(true);
+    setPirateResponse(null);
+    setPirateAudioUri(null);
 
     let newSessionScore = score;
 
@@ -330,18 +335,36 @@ export default function TriviaGame() {
     }
     
     try {
-        const result = await generatePirateResponse({
+        const scriptResult = await generatePirateScript({
             question: currentQuestion.question,
             playerAnswer: answer,
             correctAnswer: currentQuestion.answer,
             fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
         });
-        setPirateResponse(result);
+        
+        setPirateResponse(scriptResult);
+        setIsResponseLoading(false);
+        setLoadingMessage(null);
+        setIsAudioLoading(true);
+
+        // Fetch audio in the background
+        generateSpokenPirateAudio({ script: scriptResult.script })
+            .then(audioResult => {
+                setPirateAudioUri(audioResult.audioDataUri);
+            })
+            .catch(err => {
+                console.error("Failed to generate pirate audio:", err);
+                toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
+            })
+            .finally(() => {
+                setIsAudioLoading(false);
+            });
+
     } catch (error) {
-        console.error("Failed to generate pirate response:", error);
-        toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Try again!", variant: "destructive" });
-        setPirateResponse(null);
-    } finally {
+        console.error("Failed to generate pirate script:", error);
+        toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
+        setPirateResponse({ script: currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing..." });
+        setIsResponseLoading(false);
         setLoadingMessage(null);
     }
 
@@ -350,7 +373,9 @@ export default function TriviaGame() {
   const handleProceedToNext = useCallback(async () => {
     setShowAnswerResult(false);
     setIsResponseLoading(false);
+    setIsAudioLoading(false);
     setPirateResponse(null);
+    setPirateAudioUri(null);
     setLoadingMessage(null);
 
     if (currentQuestionIndex < (activeQuestions.length > 0 ? activeQuestions.length : QUESTIONS_PER_GAME) - 1) {
@@ -467,22 +492,27 @@ export default function TriviaGame() {
 
       {showAnswerResult ? (
         <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px] flex flex-col justify-center items-center text-center">
-          {loadingMessage && (
+          {(isResponseLoading || loadingMessage) && (
             <div className="animate-fadeIn space-y-4">
               <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
               <p className="text-lg font-semibold text-primary font-headline">{loadingMessage}</p>
             </div>
           )}
-          {pirateResponse && !loadingMessage && (
+          {pirateResponse && !isResponseLoading && (
              <div className="animate-fadeIn space-y-4 w-full">
-               <Volume2 className="w-12 h-12 text-accent mx-auto" />
+               <div className="flex justify-center items-center gap-4">
+                <Volume2 className="w-12 h-12 text-accent mx-auto" />
+                {isAudioLoading && <Loader2 className="w-6 h-6 text-accent animate-spin" />}
+               </div>
                 <Card className="bg-secondary/30 p-4 max-h-48 overflow-y-auto">
                   <p className="text-secondary-foreground/90 italic text-center">"{pirateResponse.script}"</p>
                 </Card>
-               <audio controls autoPlay key={pirateResponse.audioDataUri} className="w-full max-w-sm mx-auto mt-4">
-                 <source src={pirateResponse.audioDataUri} type="audio/wav" />
-                 Your browser does not support the audio element.
-               </audio>
+               {pirateAudioUri && (
+                  <audio controls autoPlay key={pirateAudioUri} className="w-full max-w-sm mx-auto mt-4">
+                    <source src={pirateAudioUri} type="audio/wav" />
+                    Your browser does not support the audio element.
+                  </audio>
+                )}
                <Button onClick={handleProceedToNext} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground">
                 {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
                 <ChevronRight className="ml-2 h-5 w-5" />
