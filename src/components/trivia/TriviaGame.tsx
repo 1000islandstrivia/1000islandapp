@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -12,7 +11,7 @@ import { generatePirateScript } from '@/ai/flows/generate-pirate-script';
 import { generateSpokenPirateAudio } from '@/ai/flows/generate-spoken-pirate-audio';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, ChevronRight, RefreshCw, type LucideIcon, Loader2, Skull } from 'lucide-react';
+import { Award, RefreshCw, type LucideIcon, Loader2, Skull } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions } from '@/services/triviaService';
@@ -500,17 +499,13 @@ export default function TriviaGame() {
             </div>
           )}
           {pirateResponse && !isResponseLoading && (
-            <div className="w-full flex flex-col items-center">
-              <HintDisplay
+            <HintDisplay
                 script={pirateResponse.script}
                 isAudioLoading={isAudioLoading}
                 pirateAudioUri={pirateAudioUri}
-              />
-              <Button onClick={handleProceedToNext} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground">
-                {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
+                onProceed={handleProceedToNext}
+                isLastQuestion={currentQuestionIndex >= totalQuestionsToDisplay - 1}
+            />
           )}
         </Card>
       ) : (
