@@ -54,7 +54,7 @@ export default function DashboardPage() {
               {user.rankTitle || 'Captain'} {user.username}!
             </CardTitle>
             <CardDescription className="text-md sm:text-lg">
-              Your Thousand Islands adventure awaits. Current Score: <span className="text-accent font-semibold">{user.score?.toLocaleString() || 0}</span>.
+              Your Thousand Islands adventure awaits. Total Gold: <span className="text-accent font-semibold">{user.score?.toLocaleString() || 0}</span>.
               What would you like to explore today?
             </CardDescription>
           </CardHeader>

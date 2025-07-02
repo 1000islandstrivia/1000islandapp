@@ -101,7 +101,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [allTriviaQuestions, setAllTriviaQuestions] = useState<TriviaQuestion[]>([]);
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(10);
   const [gameOver, setGameOver] = useState(false);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [answerCorrectness, setAnswerCorrectness] = useState(false);
@@ -236,7 +236,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       shuffleAndSelectQuestions();
     }
     setCurrentQuestionIndex(0);
-    setScore(0);
+    setScore(10);
     setGameOver(false);
     setShowAnswerResult(false);
     setIsResponseLoading(false);
@@ -289,7 +289,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
     let newSessionScore = score;
     if (isCorrect) {
-        newSessionScore = score + 100;
+        newSessionScore = score + 10;
         const storyHintKey = currentQuestion.storylineHintKey;
         const hintIndex = unlockedStoryHints.findIndex(h => h.key === storyHintKey);
         if (hintIndex !== -1 && !unlockedStoryHints[hintIndex].unlocked) {
@@ -393,11 +393,11 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     } else {
       setGameOver(true);
-      const finalSessionScore = score; 
+      const scoreDelta = score - 10;
 
       if (user) {
         try {
-          await updateUserScore(user.username, user.username, finalSessionScore);
+          await updateUserScore(user.username, user.username, scoreDelta);
           await refreshUser(); 
         } catch (error) {
           console.error("Failed to update score on leaderboard:", error);
@@ -448,6 +448,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }
 
   if (gameOver) {
+    const finalSessionScore = score - 10;
     return (
       <Card className="w-full max-w-lg mx-auto text-center p-8 shadow-xl bg-card/90 backdrop-blur-sm animate-slideUp">
         <CardHeader>
@@ -455,7 +456,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           <CardTitle className="font-headline text-4xl text-primary">Adventure Complete, Captain!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-2xl">Your Score this Game: <span className="font-bold text-accent">{score}</span> pieces o' eight!</p>
+          <p className="text-2xl">Your haul this game: <span className="font-bold text-accent">{finalSessionScore}</span> gold coins!</p>
           <p className="text-lg text-foreground/80">
             Ye've navigated the treacherous waters of Thousand Islands trivia. Check yer treasure map (storyline) and see how ye rank against other pirates on the leaderboard!
           </p>
@@ -489,16 +490,19 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }
 
   const totalQuestionsToDisplay = activeQuestions.length > 0 ? activeQuestions.length : QUESTIONS_PER_GAME;
-  const progressPercentage = (currentQuestionIndex / totalQuestionsToDisplay) * 100;
+  const progressPercentage = ((currentQuestionIndex + 1) / totalQuestionsToDisplay) * 100;
 
   return (
     <div className="space-y-8">
       <Card className="bg-card/80 backdrop-blur-sm shadow-md p-4">
         <div className="flex justify-between items-center mb-2">
-          <p className="text-lg font-semibold text-primary">Session Score: <span className="text-accent">{score}</span></p>
-          <p className="text-sm text-muted-foreground">Question Progress</p>
+            <p className="text-lg font-semibold text-primary">Gold Coins: <span className="text-accent">{score}</span></p>
+            <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {totalQuestionsToDisplay}</p>
         </div>
         <Progress value={progressPercentage} className="w-full h-3 [&>div]:bg-accent" />
+        <p className="text-xs text-muted-foreground italic mt-2 text-center">
+            Earn gold for each right answer, lose it for wrong ones. Rack up gold to <Link href="/leaderboard" className="underline hover:text-accent">rise in rank!</Link>
+        </p>
       </Card>
 
       {showAnswerResult ? (

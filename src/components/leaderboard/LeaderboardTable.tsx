@@ -153,7 +153,7 @@ export default function LeaderboardTable() {
             </TableHead>
             <TableHead className="text-right">
                  <Button variant="ghost" onClick={() => requestSort('score')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
-                    Score {getSortIcon('score')}
+                    Gold {getSortIcon('score')}
                 </Button>
             </TableHead>
           </TableRow>

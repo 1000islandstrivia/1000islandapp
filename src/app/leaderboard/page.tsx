@@ -45,7 +45,7 @@ export default function LeaderboardPage() {
         <div className="flex-grow lg:w-3/5 xl:w-2/3">
           <LeaderboardTable />
           <div className="mt-8 text-center text-sm text-muted-foreground">
-            <p>Scores are updated in real-time. Keep playing to climb the ranks!</p>
+            <p>Gold is updated in real-time. Keep playing to climb the ranks!</p>
           </div>
         </div>
 
@@ -77,7 +77,7 @@ export default function LeaderboardPage() {
                           <span className={cn("font-medium", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-card-foreground")}>{rank.title}</span>
                         </div>
                         <span className={cn("text-xs sm:text-sm", user && user.rankTitle === rank.title ? "text-primary-foreground/80" : "text-muted-foreground")}>
-                          {rank.minScore.toLocaleString()}+ pts
+                          {rank.minScore.toLocaleString()}+ Gold
                         </span>
                       </div>
                     );
@@ -91,5 +91,3 @@ export default function LeaderboardPage() {
     </MainLayout>
   );
 }
-
-    
