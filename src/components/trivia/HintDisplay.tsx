@@ -16,8 +16,8 @@ interface HintDisplayProps {
 }
 
 export default function HintDisplay({ script, isAudioLoading, pirateAudioUri, onProceed, isLastQuestion }: HintDisplayProps) {
-  // Use the typewriter hook with a 4-second delay and 60% slower speed (40ms * 1.6 = 64ms)
-  const typedScript = useTypewriter(script, 64, 4000);
+  // Use the typewriter hook with NO delay, and 60% slower speed (40ms * 1.6 = 64ms)
+  const typedScript = useTypewriter(script, 64, 0);
   const isTyping = typedScript.length < script.length;
 
   return (

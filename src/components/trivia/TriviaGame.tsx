@@ -353,6 +353,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
               fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
           });
           
+          // Delay before showing the result to keep the loading message visible longer
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
           setPirateResponse(scriptResult);
           setIsResponseLoading(false);
           setLoadingMessage(null);
