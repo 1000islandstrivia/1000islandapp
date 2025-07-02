@@ -1,10 +1,10 @@
 'use server';
 /**
- * @fileOverview An AI agent that converts hint text to pirate-themed speech.
+ * @fileOverview An AI agent that generates a text hint and converts it to pirate-themed speech.
  *
- * - generateAudioHint - A function that handles the text-to-speech process.
- * - GenerateAudioHintInput - The input type for the generateAudioHint function.
- * - GenerateAudioHintOutput - The return type for the generateAudioHint function.
+ * - generateSpokenHint - A function that handles the hint and text-to-speech process.
+ * - GenerateSpokenHintInput - The input type for the generateSpokenHint function.
+ * - GenerateSpokenHintOutput - The return type for the generateSpokenHint function.
  */
 
 import {ai} from '@/ai/genkit';
@@ -12,19 +12,23 @@ import {z} from 'genkit';
 import wav from 'wav';
 import {googleAI} from '@genkit-ai/googleai';
 
-// Input schema is a simple string
-const GenerateAudioHintInputSchema = z.string().describe('The hint text to be converted to speech.');
-export type GenerateAudioHintInput = z.infer<typeof GenerateAudioHintInputSchema>;
+// New Input Schema
+const GenerateSpokenHintInputSchema = z.object({
+  question: z.string().describe('The trivia question to generate a hint for.'),
+  answer: z.string().describe('The correct answer to the trivia question.'),
+});
+export type GenerateSpokenHintInput = z.infer<typeof GenerateSpokenHintInputSchema>;
 
-// Output schema will contain the base64 encoded WAV data URI
-const GenerateAudioHintOutputSchema = z.object({
+// New Output Schema
+const GenerateSpokenHintOutputSchema = z.object({
+  hint: z.string().describe('A subtle hint related to the trivia question.'),
   audioDataUri: z.string().describe("The generated audio as a data URI. Format: 'data:audio/wav;base64,<encoded_data>'."),
 });
-export type GenerateAudioHintOutput = z.infer<typeof GenerateAudioHintOutputSchema>;
+export type GenerateSpokenHintOutput = z.infer<typeof GenerateSpokenHintOutputSchema>;
 
 // Exported wrapper function
-export async function generateAudioHint(input: GenerateAudioHintInput): Promise<GenerateAudioHintOutput> {
-  return generateAudioHintFlow(input);
+export async function generateSpokenHint(input: GenerateSpokenHintInput): Promise<GenerateSpokenHintOutput> {
+  return generateSpokenHintFlow(input);
 }
 
 /**
@@ -57,18 +61,40 @@ async function toWav(
   });
 }
 
+// Prompt for generating the text hint (from generate-hint.ts)
+const generateHintTextPrompt = ai.definePrompt({
+  name: 'generateHintTextPrompt',
+  input: {schema: GenerateSpokenHintInputSchema},
+  output: {schema: z.object({ hint: z.string().describe('A subtle hint related to the trivia question.') })},
+  prompt: `You are a helpful game master providing subtle hints to players answering trivia questions.
 
-const generateAudioHintFlow = ai.defineFlow(
+  Generate a hint for the following trivia question, without giving away the answer directly. The hint should be related to the correct answer and advance the central storyline.
+
+  Question: {{{question}}}
+  Answer: {{{answer}}}
+
+  Hint:`,
+});
+
+const generateSpokenHintFlow = ai.defineFlow(
   {
-    name: 'generateAudioHintFlow',
-    inputSchema: GenerateAudioHintInputSchema,
-    outputSchema: GenerateAudioHintOutputSchema,
+    name: 'generateSpokenHintFlow',
+    inputSchema: GenerateSpokenHintInputSchema,
+    outputSchema: GenerateSpokenHintOutputSchema,
   },
-  async (hintText) => {
-    // Randomly select a pirate voice
+  async (input) => {
+    // Step 1: Generate the text hint.
+    const hintResult = await generateHintTextPrompt(input);
+    const hintText = hintResult.output?.hint;
+
+    if (!hintText) {
+        throw new Error('Failed to generate hint text.');
+    }
+
+    // Step 2: Generate the audio from the text hint.
     const speakers = ['MalePirate', 'FemalePirate'];
     const selectedSpeaker = speakers[Math.floor(Math.random() * speakers.length)];
-    const prompt = `${selectedSpeaker}: ${hintText}`;
+    const ttsPrompt = `${selectedSpeaker}: ${hintText}`;
 
     const { media } = await ai.generate({
       model: googleAI.model('gemini-2.5-flash-preview-tts'),
@@ -89,7 +115,7 @@ const generateAudioHintFlow = ai.defineFlow(
           },
         },
       },
-      prompt: prompt,
+      prompt: ttsPrompt,
     });
 
     if (!media) {
@@ -103,7 +129,9 @@ const generateAudioHintFlow = ai.defineFlow(
     
     const wavBase64 = await toWav(audioBuffer);
 
+    // Step 3: Return both text and audio data
     return {
+      hint: hintText,
       audioDataUri: 'data:audio/wav;base64,' + wavBase64,
     };
   }

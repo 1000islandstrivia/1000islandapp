@@ -9,9 +9,7 @@ import HintDisplay from './HintDisplay';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress";
-import { generateHint } from '@/ai/flows/generate-hint';
-import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
-import { generateAudioHint } from '@/ai/flows/generate-audio-hint';
+import { generateSpokenHint } from '@/ai/flows/generate-audio-hint';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
 import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, type LucideIcon, Loader2 } from 'lucide-react';
@@ -49,7 +47,7 @@ export default function TriviaGame() {
 
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(initialStoryline.map(h => ({ ...h, unlocked: h.unlocked })));
 
-  const [currentGeneratedHint, setCurrentGeneratedHint] = useState<GenerateHintOutput | null>(null);
+  const [currentGeneratedHint, setCurrentGeneratedHint] = useState<{ hint: string } | null>(null);
   const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
@@ -59,7 +57,6 @@ export default function TriviaGame() {
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
   const [audioHint, setAudioHint] = useState<string | null>(null);
-  const [isAudioLoading, setIsAudioLoading] = useState(false);
 
   const fetchAndSetQuestions = useCallback(async () => {
     setIsLoadingQuestions(true);
@@ -281,23 +278,20 @@ export default function TriviaGame() {
         }
 
         setIsHintLoading(true);
-        setIsAudioLoading(true);
         try {
-            const hintResult = await generateHint({
+            const spokenHintResult = await generateSpokenHint({
                 question: currentQuestion.question,
                 answer: currentQuestion.answer,
             });
-            setCurrentGeneratedHint(hintResult);
+            setCurrentGeneratedHint({ hint: spokenHintResult.hint });
+            setAudioHint(spokenHintResult.audioDataUri);
+
             // Also update the master list with the AI-generated text for the storyline page
             setUnlockedStoryHints(prevHints =>
                 prevHints.map(h =>
-                    h.key === storyHintKey ? { ...h, text: hintResult.hint } : h
+                    h.key === storyHintKey ? { ...h, text: spokenHintResult.hint } : h
                 )
             );
-
-            // Now, generate the audio for the hint text
-            const audioResult = await generateAudioHint(hintResult.hint);
-            setAudioHint(audioResult.audioDataUri);
 
         } catch (error) {
             console.error("Error generating hint or audio:", error);
@@ -317,7 +311,6 @@ export default function TriviaGame() {
             });
         } finally {
             setIsHintLoading(false);
-            setIsAudioLoading(false);
         }
 
         // Achievement checks that depend on session score or unlocked hints
@@ -508,7 +501,6 @@ export default function TriviaGame() {
             hint={currentGeneratedHint} 
             isLoading={isHintLoading}
             audioHint={audioHint}
-            isAudioLoading={isAudioLoading}
           />
           <Button onClick={handleProceedToNext} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
             {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
@@ -526,7 +518,7 @@ export default function TriviaGame() {
         />
       )}
 
-      {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} audioHint={audioHint} isAudioLoading={isAudioLoading} />}
+      {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} audioHint={audioHint} />}
     </div>
   );
 }
