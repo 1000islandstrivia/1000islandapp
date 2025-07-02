@@ -354,7 +354,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           });
           
           // Delay before showing the result to keep the loading message visible longer
-          await new Promise(resolve => setTimeout(resolve, 3000));
+          await new Promise(resolve => setTimeout(resolve, 5000));
 
           setPirateResponse(scriptResult);
           setIsResponseLoading(false);
@@ -554,3 +554,5 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     </div>
   );
 }
+
+    
