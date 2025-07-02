@@ -5,20 +5,31 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { storyline as initialStoryline, achievements as initialAchievementsData, getRankByScore, playerRanks } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, PlayerRank } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
-import HintDisplay from './HintDisplay';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress";
-import { generateSpokenHint } from '@/ai/flows/generate-audio-hint';
-import { generateWrongAnswerAudio } from '@/ai/flows/generate-wrong-answer-audio'; // Import the new flow
+import { generatePirateResponse } from '@/ai/flows/generate-pirate-response';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, type LucideIcon, Loader2, Volume2 } from 'lucide-react';
+import { Award, ChevronRight, RefreshCw, type LucideIcon, Loader2, Volume2, Skull } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions } from '@/services/triviaService';
 
 const QUESTIONS_PER_GAME = 10;
+
+const pirateLoadingMessages = [
+  "☠️ Hold fast, matey... a cursed clue be brewin’...",
+  "⚓ Summonin’ the ghost of a river pirate...",
+  "🦜 Squawk! The parrot’s whisperin’ secrets...",
+  "🗺️ Unfurlin’ the scroll of shame...",
+  "💀 Dredgin’ up facts from Davy Jones’s locker...",
+  "🎣 Fishin’ for the truth in haunted waters...",
+  "🧜‍♂️ Consultin’ the mermaid oracles...",
+  "🕯️ Lightin’ the lanterns of lost legends...",
+  "🏴‍☠️ Readin’ yer fortune in the river fog...",
+  "📚 Flippin’ through the haunted captain’s log..."
+];
 
 interface StoredAchievementProgress {
   id: string;
@@ -41,25 +52,25 @@ const updateAchievementProgress = (
 export default function TriviaGame() {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
+  
+  // Core Game State
   const [allTriviaQuestions, setAllTriviaQuestions] = useState<TriviaQuestion[]>([]);
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-
-  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(initialStoryline.map(h => ({ ...h, unlocked: h.unlocked })));
-
-  const [currentGeneratedHint, setCurrentGeneratedHint] = useState<{ hint: string } | null>(null);
-  const [isHintLoading, setIsHintLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
 
-  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData.map(a => ({ ...a })));
-  const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
-  const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
+  // Response & Feedback State
+  const [isResponseLoading, setIsResponseLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
+  const [responseAudioUri, setResponseAudioUri] = useState<string | null>(null);
+  const [showAnswerResult, setShowAnswerResult] = useState(false);
 
-  const [audioHint, setAudioHint] = useState<string | null>(null);
-  const [wrongAnswerAudio, setWrongAnswerAudio] = useState<string | null>(null);
-  const [isWrongAnswerAudioLoading, setIsWrongAnswerAudioLoading] = useState(false);
+  // User Progress State
+  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(initialStoryline.map(h => ({ ...h, unlocked: h.unlocked })));
+  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData.map(a => ({ ...a })));
+  const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
 
   const fetchAndSetQuestions = useCallback(async () => {
     setIsLoadingQuestions(true);
@@ -180,6 +191,10 @@ export default function TriviaGame() {
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
+    setShowAnswerResult(false);
+    setIsResponseLoading(false);
+    setLoadingMessage(null);
+    setResponseAudioUri(null);
 
     if (user) {
         const achievementsKey = `achievements_progress_${user.username}`;
@@ -205,12 +220,7 @@ export default function TriviaGame() {
          }));
     }
 
-    setShowFeedback(null);
-    setCurrentGeneratedHint(null);
     setToastedAchievementIds(new Set());
-    setAudioHint(null);
-    setWrongAnswerAudio(null);
-    setIsWrongAnswerAudioLoading(false);
   }, [shuffleAndSelectQuestions, user, allTriviaQuestions]);
 
   useEffect(() => {
@@ -221,46 +231,19 @@ export default function TriviaGame() {
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
-  const playSound = useCallback((soundPath: string) => {
-    if (typeof window === 'undefined' || !soundPath) return;
-    try {
-      const audio = new Audio(soundPath);
-      audio.onerror = (e) => {
-        let errorMessage = `Failed to load audio: ${soundPath}.`;
-        if (audio.error) {
-          switch (audio.error.code) {
-            case audio.error.MEDIA_ERR_ABORTED: errorMessage += ' Playback aborted by user.'; break;
-            case audio.error.MEDIA_ERR_NETWORK: errorMessage += ' Network error during loading.'; break;
-            case audio.error.MEDIA_ERR_DECODE: errorMessage += ' Error decoding the media.'; break;
-            case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED: errorMessage += ' Source format not supported or file not found.'; break;
-            default: errorMessage += ` Unknown error code: ${audio.error.code}.`;
-          }
-        }
-        console.error("Audio element error:", errorMessage, e, audio.error);
-      };
-
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(playError => {
-          console.error(`Error playing ${soundPath}:`, playError);
-        });
-      }
-    } catch (error: any) {
-      console.error(`Error setting up sound ${soundPath}:`, error);
-    }
-  }, []);
-
-
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     if (!currentQuestion) return;
+
+    setShowAnswerResult(true);
+    const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
+    setLoadingMessage(randomMessage);
+    setIsResponseLoading(true);
 
     const isCorrect = answer === currentQuestion.answer;
     let newSessionScore = score;
 
     if (isCorrect) {
         newSessionScore = score + 100;
-        setShowFeedback({ type: 'correct', message: "Arr, well done, matey! That be correct!" });
-        playSound('/sounds/pirate-correct.mp3');
 
         const storyHintKey = currentQuestion.storylineHintKey;
         const hintIndex = unlockedStoryHints.findIndex(h => h.key === storyHintKey);
@@ -272,60 +255,10 @@ export default function TriviaGame() {
                 updateAchievementProgress(currentAchievements, 'first_hint', setCurrentAchievements);
             }
         }
-
-        setIsHintLoading(true);
-        try {
-            const spokenHintResult = await generateSpokenHint({
-                question: currentQuestion.question,
-                answer: currentQuestion.answer,
-            });
-            setCurrentGeneratedHint({ hint: spokenHintResult.hint });
-            setAudioHint(spokenHintResult.audioDataUri);
-            setUnlockedStoryHints(prevHints =>
-                prevHints.map(h =>
-                    h.key === storyHintKey ? { ...h, text: spokenHintResult.hint } : h
-                )
-            );
-        } catch (error) {
-            console.error("Error generating hint or audio:", error);
-            const fallbackHintText = currentQuestion.fallbackHint;
-            if (fallbackHintText) {
-              setCurrentGeneratedHint({ hint: fallbackHintText });
-              setUnlockedStoryHints(prevHints =>
-                  prevHints.map(h =>
-                      h.key === storyHintKey ? { ...h, text: fallbackHintText } : h
-                  )
-              );
-            }
-            toast({
-                title: "Hint Offline",
-                description: "Couldn't fetch live hint or audio. Showing stored clue instead.",
-                variant: "default",
-            });
-        } finally {
-            setIsHintLoading(false);
-        }
     } else {
-        newSessionScore = score - 500;
-        setShowFeedback({ type: 'incorrect', message: `Avast! That be the wrong answer! The correct answer was: ${currentQuestion.answer}` });
-        
-        setIsWrongAnswerAudioLoading(true);
-        try {
-          const result = await generateWrongAnswerAudio({
-            question: currentQuestion.question,
-            playerAnswer: answer,
-            correctAnswer: currentQuestion.answer,
-            fallbackHint: currentQuestion.fallbackHint || "No fallback hint available for this scurvy dog.",
-          });
-          setWrongAnswerAudio(result.audioDataUri);
-        } catch (error) {
-          console.error("Failed to generate wrong answer audio:", error);
-          playSound('/sounds/fog-horn.mp3'); // Fallback to old sound if AI fails
-        } finally {
-          setIsWrongAnswerAudioLoading(false);
-        }
+        newSessionScore = score - 50;
     }
-    setScore(newSessionScore);
+    setScore(Math.max(0, newSessionScore));
 
     if (user && user.score !== undefined) {
       const pointsChange = newSessionScore - score;
@@ -335,30 +268,43 @@ export default function TriviaGame() {
       if (pettyOfficerRank && potentialTotalScoreAfterThisAnswer >= pettyOfficerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_petty_officer')?.unlocked) {
           updateAchievementProgress(currentAchievements, 'rank_petty_officer', setCurrentAchievements);
       }
-      
       const chiefRank = playerRanks.find(r => r.title === "Chief Petty Officer");
       if (chiefRank && potentialTotalScoreAfterThisAnswer >= chiefRank.minScore && !currentAchievements.find(a=>a.id === 'rank_chief')?.unlocked) {
           updateAchievementProgress(currentAchievements, 'rank_chief', setCurrentAchievements);
       }
-
       const officerRank = playerRanks.find(r => r.title === "Ensign");
       if (officerRank && potentialTotalScoreAfterThisAnswer >= officerRank.minScore && !currentAchievements.find(a=>a.id === 'rank_officer')?.unlocked) {
          updateAchievementProgress(currentAchievements, 'rank_officer', setCurrentAchievements);
       }
-
       const admiralRank = playerRanks.find(r => r.title === "Admiral");
       if (admiralRank && potentialTotalScoreAfterThisAnswer >= admiralRank.minScore && !currentAchievements.find(a=>a.id === 'rank_admiral')?.unlocked) {
           updateAchievementProgress(currentAchievements, 'rank_admiral', setCurrentAchievements);
       }
     }
+    
+    try {
+        const result = await generatePirateResponse({
+            question: currentQuestion.question,
+            playerAnswer: answer,
+            correctAnswer: currentQuestion.answer,
+            fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
+        });
+        setResponseAudioUri(result.audioDataUri);
+    } catch (error) {
+        console.error("Failed to generate pirate response:", error);
+        toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Try again!", variant: "destructive" });
+        setResponseAudioUri(null);
+    } finally {
+        setLoadingMessage(null);
+    }
 
-  }, [currentQuestion, score, unlockedStoryHints, currentAchievements, playSound, user, toast]);
+  }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast]);
 
   const handleProceedToNext = useCallback(async () => {
-    setShowFeedback(null);
-    setCurrentGeneratedHint(null);
-    setAudioHint(null);
-    setWrongAnswerAudio(null);
+    setShowAnswerResult(false);
+    setIsResponseLoading(false);
+    setResponseAudioUri(null);
+    setLoadingMessage(null);
 
     if (currentQuestionIndex < (activeQuestions.length > 0 ? activeQuestions.length : QUESTIONS_PER_GAME) - 1) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
@@ -449,7 +395,7 @@ export default function TriviaGame() {
   if (!activeQuestions.length || !currentQuestion) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
-        <Zap className="w-12 h-12 text-primary mb-4" />
+        <Skull className="w-12 h-12 text-primary mb-4" />
         <p className="ml-4 text-xl text-primary">No Trivia Questions Available</p>
         <p className="text-muted-foreground mt-2">Could not load questions. Please try refreshing or check back later.</p>
         <Button onClick={fetchAndSetQuestions} className="mt-4">
@@ -472,60 +418,30 @@ export default function TriviaGame() {
         <Progress value={progressPercentage} className="w-full h-3 [&>div]:bg-accent" />
       </Card>
 
-      {showFeedback && (
-        <div className="animate-fadeIn space-y-4">
-          <Card className={`p-4 text-center ${showFeedback.type === 'correct' ? 'bg-green-100/80 border-green-500' : 'bg-red-100/80 border-red-500'}`}>
-            <CardHeader className="p-2">
-              <div className="flex items-center justify-center gap-2">
-                {showFeedback.type === 'correct' ?
-                  <CheckCircle className="w-8 h-8 text-green-600" /> :
-                  <XCircle className="w-8 h-8 text-red-600" />
-                }
-                <CardTitle className={`text-xl font-headline ${showFeedback.type === 'correct' ? 'text-green-800' : 'text-red-800'}`}>
-                  {showFeedback.type === 'correct' ? "Correct!" : "Wrong Answer!"}
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="p-2">
-              <p className={`font-semibold ${showFeedback.type === 'correct' ? 'text-green-700' : 'text-red-700'}`}>{showFeedback.message}</p>
-              {showFeedback.type === 'incorrect' && (
-                <div className="mt-4">
-                  {isWrongAnswerAudioLoading && (
-                    <div className="flex items-center justify-center text-sm text-muted-foreground">
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Loading pirate's retort...
-                    </div>
-                  )}
-                  {wrongAnswerAudio && (
-                    <div className="flex flex-col items-center gap-2">
-                      <Volume2 className="w-6 h-6 text-primary" />
-                      <audio controls autoPlay key={wrongAnswerAudio} className="w-full max-w-sm">
-                        <source src={wrongAnswerAudio} type="audio/wav" />
-                        Your browser does not support the audio element.
-                      </audio>
-                    </div>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-          
-          {showFeedback.type === 'correct' && (
-            <HintDisplay 
-              hint={currentGeneratedHint} 
-              isLoading={isHintLoading}
-              audioHint={audioHint}
-            />
+      {showAnswerResult ? (
+        <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px] flex flex-col justify-center items-center text-center">
+          {loadingMessage && (
+            <div className="animate-fadeIn space-y-4">
+              <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
+              <p className="text-lg font-semibold text-primary font-headline">{loadingMessage}</p>
+            </div>
           )}
-
-          <Button onClick={handleProceedToNext} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-            {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
-            <ChevronRight className="ml-2 h-5 w-5" />
-          </Button>
-        </div>
-      )}
-
-      {!showFeedback && currentQuestion && (
+          {responseAudioUri && !loadingMessage && (
+             <div className="animate-fadeIn space-y-4 w-full">
+               <Volume2 className="w-12 h-12 text-accent mx-auto" />
+               <p className="text-xl font-headline text-accent-foreground">A pirate's whisper...</p>
+               <audio controls autoPlay key={responseAudioUri} className="w-full max-w-sm mx-auto mt-4">
+                 <source src={responseAudioUri} type="audio/wav" />
+                 Your browser does not support the audio element.
+               </audio>
+               <Button onClick={handleProceedToNext} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground">
+                {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+             </div>
+          )}
+        </Card>
+      ) : (
         <QuestionCard
           question={currentQuestion}
           onAnswerSubmit={handleAnswerSubmit}
@@ -533,8 +449,6 @@ export default function TriviaGame() {
           totalQuestions={totalQuestionsToDisplay}
         />
       )}
-
-      {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} audioHint={audioHint} />}
     </div>
   );
 }
