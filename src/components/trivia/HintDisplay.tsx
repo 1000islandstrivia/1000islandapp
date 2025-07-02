@@ -13,8 +13,8 @@ interface HintDisplayProps {
 }
 
 export default function HintDisplay({ script, isAudioLoading, pirateAudioUri }: HintDisplayProps) {
-  // Use the typewriter hook for the spooky effect
-  const typedScript = useTypewriter(script, 40);
+  // Use the typewriter hook with a 3-second delay and 60% slower speed (40ms * 1.6 = 64ms)
+  const typedScript = useTypewriter(script, 64, 3000);
   const isTyping = typedScript.length < script.length;
 
   return (
