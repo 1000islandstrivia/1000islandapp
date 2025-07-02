@@ -331,11 +331,13 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
 
     if (isAiLoreEnabled) {
-      const responseAudios = isCorrect ? correctResponses : wrongResponses;
-      const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
-      if (typeof window !== 'undefined') {
-          new Audio(randomAudioUrl).play();
-      }
+      setTimeout(() => {
+        const responseAudios = isCorrect ? correctResponses : wrongResponses;
+        const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
+        if (typeof window !== 'undefined') {
+            new Audio(randomAudioUrl).play();
+        }
+      }, 3000);
       
       const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
       setLoadingMessage(randomMessage);
