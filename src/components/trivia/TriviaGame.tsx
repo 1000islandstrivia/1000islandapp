@@ -12,10 +12,11 @@ import { generatePirateScript } from '@/ai/flows/generate-pirate-script';
 import { generateSpokenPirateAudio } from '@/ai/flows/generate-spoken-pirate-audio';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, ChevronRight, RefreshCw, type LucideIcon, Loader2, Volume2, Skull } from 'lucide-react';
+import { Award, ChevronRight, RefreshCw, type LucideIcon, Loader2, Skull } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions } from '@/services/triviaService';
+import HintDisplay from './HintDisplay';
 
 const QUESTIONS_PER_GAME = 10;
 
@@ -491,33 +492,25 @@ export default function TriviaGame() {
       </Card>
 
       {showAnswerResult ? (
-        <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px] flex flex-col justify-center items-center text-center">
+        <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px]">
           {(isResponseLoading || loadingMessage) && (
-            <div className="animate-fadeIn space-y-4">
+            <div className="animate-fadeIn space-y-4 flex flex-col justify-center items-center text-center h-full">
               <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
               <p className="text-lg font-semibold text-primary font-headline">{loadingMessage}</p>
             </div>
           )}
           {pirateResponse && !isResponseLoading && (
-             <div className="animate-fadeIn space-y-4 w-full">
-               <div className="flex justify-center items-center gap-4">
-                <Volume2 className="w-12 h-12 text-accent mx-auto" />
-                {isAudioLoading && <Loader2 className="w-6 h-6 text-accent animate-spin" />}
-               </div>
-                <Card className="bg-secondary/30 p-4 max-h-48 overflow-y-auto">
-                  <p className="text-secondary-foreground/90 italic text-center">"{pirateResponse.script}"</p>
-                </Card>
-               {pirateAudioUri && (
-                  <audio controls autoPlay key={pirateAudioUri} className="w-full max-w-sm mx-auto mt-4">
-                    <source src={pirateAudioUri} type="audio/wav" />
-                    Your browser does not support the audio element.
-                  </audio>
-                )}
-               <Button onClick={handleProceedToNext} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground">
+            <div className="w-full flex flex-col items-center">
+              <HintDisplay
+                script={pirateResponse.script}
+                isAudioLoading={isAudioLoading}
+                pirateAudioUri={pirateAudioUri}
+              />
+              <Button onClick={handleProceedToNext} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground">
                 {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-             </div>
+            </div>
           )}
         </Card>
       ) : (

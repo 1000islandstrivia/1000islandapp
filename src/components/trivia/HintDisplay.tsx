@@ -1,54 +1,44 @@
+
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lightbulb, Loader2, Volume2 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Volume2, Loader2 } from 'lucide-react';
+import { useTypewriter } from '@/hooks/useTypewriter';
+import React from 'react';
 
 interface HintDisplayProps {
-  hint: { hint: string } | null;
-  isLoading: boolean;
-  audioHint: string | null;
+  script: string;
+  isAudioLoading: boolean;
+  pirateAudioUri: string | null;
 }
 
-export default function HintDisplay({ hint, isLoading, audioHint }: HintDisplayProps) {
-  if (isLoading) {
-    return (
-      <Card className="mt-6 bg-secondary/70 backdrop-blur-sm animate-pulse">
-        <CardHeader>
-          <CardTitle className="font-headline text-xl flex items-center gap-2 text-secondary-foreground">
-            <Lightbulb className="w-6 h-6 animate-pulse" />
-            Generating Hint...
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-4 bg-muted rounded w-3/4"></div>
-          <div className="h-4 bg-muted rounded w-1/2 mt-2"></div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!hint?.hint) {
-    return null; // Don't display if no hint or not loading
-  }
+export default function HintDisplay({ script, isAudioLoading, pirateAudioUri }: HintDisplayProps) {
+  // Use the typewriter hook for the spooky effect
+  const typedScript = useTypewriter(script, 40);
+  const isTyping = typedScript.length < script.length;
 
   return (
-    <Card className="mt-6 shadow-lg bg-secondary/80 backdrop-blur-sm border-accent animate-fadeIn">
-      <CardHeader>
-        <CardTitle className="font-headline text-xl flex items-center gap-2 text-accent-foreground">
-          <Lightbulb className="w-6 h-6 text-accent" />
-          A Clue Emerges...
-          {audioHint && <Volume2 className="w-5 h-5 ml-auto text-accent" />}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-secondary-foreground/90 italic">{hint.hint}</p>
-        {audioHint && (
-          <audio controls autoPlay key={audioHint} className="w-full mt-4">
-            <source src={audioHint} type="audio/wav" />
-            Your browser does not support the audio element.
-          </audio>
-        )}
-      </CardContent>
-    </Card>
+    <div className="animate-fadeIn space-y-4 w-full">
+      <div className="flex justify-center items-center gap-4">
+        <Volume2 className="w-10 h-10 sm:w-12 sm:h-12 text-accent" />
+        {isAudioLoading && <Loader2 className="w-6 h-6 text-accent animate-spin" />}
+      </div>
+      <Card className="bg-secondary/30 p-4 w-full min-h-[120px] flex items-center justify-center">
+        <CardContent className="p-2">
+            <p className="text-secondary-foreground/90 italic text-center font-serif text-lg sm:text-xl">
+            "{typedScript}"
+            {isTyping && (
+                <span className="inline-block w-2 h-5 bg-secondary-foreground/70 ml-1 animate-ping" aria-hidden="true" />
+            )}
+            </p>
+        </CardContent>
+      </Card>
+      {pirateAudioUri && !isAudioLoading && (
+        <audio controls autoPlay key={pirateAudioUri} className="w-full max-w-sm mx-auto mt-4">
+          <source src={pirateAudioUri} type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
+      )}
+    </div>
   );
 }
