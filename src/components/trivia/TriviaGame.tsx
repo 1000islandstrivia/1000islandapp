@@ -18,17 +18,20 @@ import { getTriviaQuestions } from '@/services/triviaService';
 
 const QUESTIONS_PER_GAME = 10;
 
-const pirateLoadingMessages = [
-  "☠️ Hold fast, matey... a cursed clue be brewin’...",
-  "⚓ Summonin’ the ghost of a river pirate...",
-  "🦜 Squawk! The parrot’s whisperin’ secrets...",
-  "🗺️ Unfurlin’ the scroll of shame...",
-  "💀 Dredgin’ up facts from Davy Jones’s locker...",
-  "🎣 Fishin’ for the truth in haunted waters...",
-  "🧜‍♂️ Consultin’ the mermaid oracles...",
-  "🕯️ Lightin’ the lanterns of lost legends...",
-  "🏴‍☠️ Readin’ yer fortune in the river fog...",
-  "📚 Flippin’ through the haunted captain’s log..."
+const correctLoadingMessages = [
+  "🏴‍☠️ By the black flag, ye got it! The spirits be pleased...",
+  "⚓ Well blow me down! A clue be comin' through the fog...",
+  "🦜 The parrot squawks in approval! Listen for the whisper...",
+  "💎 A treasure of knowledge! The ghost is revealin' more...",
+  "🗺️ Ye be on the right course! A secret is unfurlin'...",
+];
+
+const wrongLoadingMessages = [
+  "💀 To Davy Jones' Locker with that answer! But a ghost has pity...",
+  "럼 Walk the plank! Still, a clue drifts from the depths...",
+  "👻 That be wronger than a three-legged pirate! But listen closely...",
+  "⛓️ To the brig with ye! Though a whisper escapes the gloom...",
+  "⛈️ Barnacles! That ain't it. The river spirits offer a hint anyway...",
 ];
 
 interface StoredAchievementProgress {
@@ -234,12 +237,14 @@ export default function TriviaGame() {
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     if (!currentQuestion) return;
 
+    const isCorrect = answer === currentQuestion.answer;
+    
     setShowAnswerResult(true);
-    const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
+    const messages = isCorrect ? correctLoadingMessages : wrongLoadingMessages;
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     setLoadingMessage(randomMessage);
     setIsResponseLoading(true);
 
-    const isCorrect = answer === currentQuestion.answer;
     let newSessionScore = score;
 
     if (isCorrect) {
