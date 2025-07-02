@@ -6,7 +6,7 @@
  * - getTriviaQuestions - Fetches trivia questions.
  */
 
-import { triviaQuestions as allTriviaQuestionsFromData } from '@/lib/trivia-data';
+import allTriviaQuestionsFromData from '@/lib/trivia_questions.json';
 import type { TriviaQuestion } from '@/lib/trivia-data';
 
 // TODO: Implement fetching questions from Firestore
@@ -32,10 +32,10 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
     // });
     // return questions;
 
-    // For now, returning local data
+    // For now, returning local data from the JSON file
     return new Promise((resolve) => {
       setTimeout(() => { // Simulate network delay
-        resolve(allTriviaQuestionsFromData);
+        resolve(allTriviaQuestionsFromData as TriviaQuestion[]);
       }, 500);
     });
   } catch (error: any) {
@@ -44,5 +44,3 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
     throw new Error(`Could not fetch trivia questions. Original error: ${error.message || String(error)}`);
   }
 }
-
-    
