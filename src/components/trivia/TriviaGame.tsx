@@ -304,6 +304,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
             }
         }
     } else {
+        if (typeof window !== 'undefined') {
+          new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play();
+        }
         newSessionScore = score - 50;
     }
     setScore(Math.max(0, newSessionScore));
@@ -554,5 +557,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     </div>
   );
 }
+
+    
 
     
