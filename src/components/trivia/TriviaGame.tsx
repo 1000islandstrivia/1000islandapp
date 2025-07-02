@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress";
 import { generateHint } from '@/ai/flows/generate-hint';
 import type { GenerateHintOutput } from '@/ai/flows/generate-hint';
+import { generateAudioHint } from '@/ai/flows/generate-audio-hint';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
 import { Award, CheckCircle, XCircle, Zap, ChevronRight, RefreshCw, type LucideIcon, Loader2 } from 'lucide-react';
@@ -56,6 +57,9 @@ export default function TriviaGame() {
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData.map(a => ({ ...a })));
   const [showFeedback, setShowFeedback] = useState<{ type: 'correct' | 'incorrect'; message: string } | null>(null);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
+
+  const [audioHint, setAudioHint] = useState<string | null>(null);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
 
   const fetchAndSetQuestions = useCallback(async () => {
     setIsLoadingQuestions(true);
@@ -204,6 +208,7 @@ export default function TriviaGame() {
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
     setToastedAchievementIds(new Set());
+    setAudioHint(null);
   }, [shuffleAndSelectQuestions, user, allTriviaQuestions]);
 
   useEffect(() => {
@@ -276,6 +281,7 @@ export default function TriviaGame() {
         }
 
         setIsHintLoading(true);
+        setIsAudioLoading(true);
         try {
             const hintResult = await generateHint({
                 question: currentQuestion.question,
@@ -288,12 +294,16 @@ export default function TriviaGame() {
                     h.key === storyHintKey ? { ...h, text: hintResult.hint } : h
                 )
             );
+
+            // Now, generate the audio for the hint text
+            const audioResult = await generateAudioHint(hintResult.hint);
+            setAudioHint(audioResult.audioDataUri);
+
         } catch (error) {
-            console.error("Error generating hint:", error);
+            console.error("Error generating hint or audio:", error);
             const fallbackHintText = currentQuestion.fallbackHint;
             if (fallbackHintText) {
               setCurrentGeneratedHint({ hint: fallbackHintText });
-              // Also update the master list with the fallback text for the storyline page
               setUnlockedStoryHints(prevHints =>
                   prevHints.map(h =>
                       h.key === storyHintKey ? { ...h, text: fallbackHintText } : h
@@ -302,11 +312,12 @@ export default function TriviaGame() {
             }
             toast({
                 title: "Hint Offline",
-                description: "Couldn't fetch live hint. Showing stored clue instead.",
+                description: "Couldn't fetch live hint or audio. Showing stored clue instead.",
                 variant: "default",
             });
         } finally {
             setIsHintLoading(false);
+            setIsAudioLoading(false);
         }
 
         // Achievement checks that depend on session score or unlocked hints
@@ -370,6 +381,7 @@ export default function TriviaGame() {
   const handleProceedToNext = useCallback(async () => {
     setShowFeedback(null);
     setCurrentGeneratedHint(null);
+    setAudioHint(null);
 
     if (currentQuestionIndex < (activeQuestions.length > 0 ? activeQuestions.length : QUESTIONS_PER_GAME) - 1) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
@@ -492,7 +504,12 @@ export default function TriviaGame() {
             }
             <p className={`font-semibold ${showFeedback.type === 'correct' ? 'text-green-700' : 'text-red-700'}`}>{showFeedback.message}</p>
           </Card>
-          <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />
+          <HintDisplay 
+            hint={currentGeneratedHint} 
+            isLoading={isHintLoading}
+            audioHint={audioHint}
+            isAudioLoading={isAudioLoading}
+          />
           <Button onClick={handleProceedToNext} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
             {currentQuestionIndex < totalQuestionsToDisplay - 1 ? 'Next Question, Arr!' : 'Finish Voyage!'}
             <ChevronRight className="ml-2 h-5 w-5" />
@@ -509,7 +526,7 @@ export default function TriviaGame() {
         />
       )}
 
-      {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} />}
+      {!showFeedback && <HintDisplay hint={currentGeneratedHint} isLoading={isHintLoading} audioHint={audioHint} isAudioLoading={isAudioLoading} />}
     </div>
   );
 }
