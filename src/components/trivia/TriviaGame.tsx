@@ -289,6 +289,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
     let newSessionScore = score;
     if (isCorrect) {
+        if (typeof window !== 'undefined') {
+            new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play();
+        }
         newSessionScore = score + 10;
         const storyHintKey = currentQuestion.storylineHintKey;
         const hintIndex = unlockedStoryHints.findIndex(h => h.key === storyHintKey);
