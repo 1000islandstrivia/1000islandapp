@@ -22,6 +22,8 @@ export default function Header() {
     { href: '/achievements', label: 'Achievements' },
   ];
 
+  const RankIcon = user?.rankIcon;
+
   return (
     <header className="bg-primary/90 text-primary-foreground shadow-md backdrop-blur-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -34,12 +36,9 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-1">
           {user ? (
             <>
-              {user.rankIcon && user.rankTitle && (
+              {RankIcon && user.rankTitle && (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-black/20 text-sm mr-2">
-                  {(() => {
-                    const RankIcon = user.rankIcon;
-                    return <RankIcon className="w-12 h-12 text-accent" />;
-                  })()}
+                  <RankIcon className="w-6 h-6 text-accent" />
                   <span className="font-semibold">{user.rankTitle}</span>
                   <span className="opacity-80">{user.username}</span>
                 </div>
@@ -84,12 +83,9 @@ export default function Header() {
                   <ScrollText className="h-7 w-7 text-accent" />
                   <h2 className="text-xl font-headline font-bold">RiverRat Lore</h2>
                 </Link>
-                {user && user.rankIcon && user.rankTitle && (
+                {user && RankIcon && user.rankTitle && (
                   <div className="flex items-center gap-2 p-2 rounded-md bg-black/20 text-sm mb-3">
-                    {(() => {
-                      const RankIcon = user.rankIcon;
-                      return <RankIcon className="w-12 h-12 text-accent" />;
-                    })()}
+                    <RankIcon className="w-6 h-6 text-accent" />
                     <div>
                       <span className="font-semibold block">{user.rankTitle}</span>
                       <span className="opacity-80 text-xs">{user.username}</span>
