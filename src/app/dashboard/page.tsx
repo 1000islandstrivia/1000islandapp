@@ -11,6 +11,7 @@ import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type Luci
 import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
 import { runDeduplication } from '@/actions/deduplicateAction';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
@@ -206,14 +207,6 @@ interface DashboardCardProps {
 }
 
 function DashboardCard({ title, description, href, icon: Icon, buttonText, disabled }: DashboardCardProps) {
-  const router = useRouter();
-  
-  const handleClick = () => {
-    if (!disabled && href && href !== '#') {
-      router.push(href);
-    }
-  };
-  
   return (
     <Card className="bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <CardHeader className="flex-row items-center gap-4 pb-4">
@@ -226,12 +219,8 @@ function DashboardCard({ title, description, href, icon: Icon, buttonText, disab
         <p className="text-foreground/70 text-sm sm:text-base">{description}</p>
       </CardContent>
       <CardContent>
-         <Button 
-            onClick={handleClick} 
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base" 
-            disabled={disabled}
-         >
-            {buttonText}
+        <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base" disabled={disabled}>
+           <Link href={!disabled ? href : '#'}>{buttonText}</Link>
         </Button>
       </CardContent>
     </Card>
