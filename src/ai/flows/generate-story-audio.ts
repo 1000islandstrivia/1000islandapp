@@ -2,6 +2,7 @@
 'use server';
 /**
  * @fileOverview An AI agent that converts longer story text to pirate-themed speech with a selectable voice.
+ * This flow now breaks text into smaller chunks to avoid timeouts on long stories.
  *
  * - generateStoryAudio - A function that handles the text-to-speech process for lore.
  * - GenerateStoryAudioInput - The input type for the function.
@@ -12,20 +13,20 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import wav from 'wav';
 
-// Input Schema
+// Input Schema (remains the same)
 const GenerateStoryAudioInputSchema = z.object({
   text: z.string().describe('The story text to be converted to audio.'),
   voice: z.enum(['male', 'female']).describe("The desired pirate voice, either 'male' or 'female'."),
 });
 export type GenerateStoryAudioInput = z.infer<typeof GenerateStoryAudioInputSchema>;
 
-// Output Schema
+// Output Schema (changed to return an array of audio URIs)
 const GenerateStoryAudioOutputSchema = z.object({
-  audioDataUri: z.string().describe("The generated audio as a data URI. Format: 'data:audio/wav;base64,<encoded_data>'."),
+  audioDataUris: z.array(z.string()).describe("An array of generated audio clips as data URIs. Format: 'data:audio/wav;base64,<encoded_data>'."),
 });
 export type GenerateStoryAudioOutput = z.infer<typeof GenerateStoryAudioOutputSchema>;
 
-// Exported wrapper function
+// Exported wrapper function (remains the same)
 export async function generateStoryAudio(input: GenerateStoryAudioInput): Promise<GenerateStoryAudioOutput> {
   return generateStoryAudioFlow(input);
 }
@@ -60,6 +61,51 @@ async function toWav(
   });
 }
 
+/**
+ * Generates a single audio clip for a chunk of text.
+ */
+async function generateAudioChunk(textChunk: string, voice: 'male' | 'female'): Promise<string> {
+  const speakerId = voice === 'male' ? 'MalePirate' : 'FemalePirate';
+  const ttsPrompt = `${speakerId}: ${textChunk}`;
+
+  const { media } = await ai.generate({
+    model: 'googleai/gemini-2.5-flash-preview-tts',
+    config: {
+      responseModalities: ['AUDIO'],
+      speechConfig: {
+        multiSpeakerVoiceConfig: {
+          speakerVoiceConfigs: [
+            {
+              speaker: 'MalePirate',
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Achernar' } }, // Gruff and Bold
+            },
+            {
+              speaker: 'FemalePirate',
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Algenib' } }, // Sly and Clever
+            },
+          ],
+        },
+      },
+    },
+    prompt: ttsPrompt,
+  });
+
+  if (!media) {
+    // Return an empty string or throw a specific error for this chunk
+    console.error(`TTS generation failed for chunk: "${textChunk.substring(0, 30)}..."`);
+    return '';
+  }
+
+  const audioBuffer = Buffer.from(
+    media.url.substring(media.url.indexOf(',') + 1),
+    'base64'
+  );
+
+  const wavBase64 = await toWav(audioBuffer);
+  return 'data:audio/wav;base64,' + wavBase64;
+}
+
+
 // The main flow for generating story audio
 const generateStoryAudioFlow = ai.defineFlow(
   {
@@ -68,45 +114,24 @@ const generateStoryAudioFlow = ai.defineFlow(
     outputSchema: GenerateStoryAudioOutputSchema,
   },
   async ({ text, voice }) => {
-    // Determine which speaker and prompt to use based on voice selection
-    const speakerId = voice === 'male' ? 'MalePirate' : 'FemalePirate';
-    const ttsPrompt = `${speakerId}: ${text}`;
+    // Split the text into paragraphs. This is a simple way to chunk it.
+    // We filter out any empty strings that might result from multiple newlines.
+    const textChunks = text.split(/\n+/).filter(chunk => chunk.trim().length > 0);
 
-    const { media } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-preview-tts',
-      config: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          multiSpeakerVoiceConfig: {
-            speakerVoiceConfigs: [
-              {
-                speaker: 'MalePirate',
-                voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Achernar' } }, // Gruff and Bold
-              },
-              {
-                speaker: 'FemalePirate',
-                voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Algenib' } }, // Sly and Clever
-              },
-            ],
-          },
-        },
-      },
-      prompt: ttsPrompt,
-    });
+    // Generate audio for each chunk concurrently to save time.
+    const audioPromises = textChunks.map(chunk => generateAudioChunk(chunk, voice));
 
-    if (!media) {
-      throw new Error('No audio media was returned from the TTS model.');
+    const audioResults = await Promise.all(audioPromises);
+    
+    // Filter out any failed generations (which return as empty strings)
+    const successfulAudioUris = audioResults.filter(uri => uri.length > 0);
+
+    if (successfulAudioUris.length === 0) {
+      throw new Error('All audio chunk generations failed.');
     }
-    
-    const audioBuffer = Buffer.from(
-      media.url.substring(media.url.indexOf(',') + 1),
-      'base64'
-    );
-    
-    const wavBase64 = await toWav(audioBuffer);
 
     return {
-      audioDataUri: 'data:audio/wav;base64,' + wavBase64,
+      audioDataUris: successfulAudioUris,
     };
   }
 );
