@@ -1,7 +1,7 @@
 
 /**
- * @fileOverview A one-time script to seed the Firestore database with trivia questions.
- * To run this script, use the command: `npm run db:seed`
+ * @fileOverview A script to seed the Firestore database with trivia questions.
+ * This can be run from the command line with `npm run db:seed` or triggered by a server action.
  * This script will check if the 'triviaQuestions' collection is empty before seeding
  * to prevent creating duplicate data.
  */
@@ -14,8 +14,9 @@ const COLLECTION_NAME = 'triviaQuestions';
 
 /**
  * Seeds the Firestore database with trivia questions from the local JSON file.
+ * @returns A promise that resolves to an object with success status and a message.
  */
-async function seedDatabase() {
+export async function seedDatabase(): Promise<{ success: boolean; message: string }> {
   console.log('Starting Firestore seeding process...');
   
   try {
@@ -26,9 +27,9 @@ async function seedDatabase() {
     const snapshot = await getDocs(questionsCollection);
     
     if (!snapshot.empty) {
-      console.log(`The '${COLLECTION_NAME}' collection is not empty (${snapshot.size} documents found).`);
-      console.log('Seeding is not required. Exiting script.');
-      return;
+      const message = `The '${COLLECTION_NAME}' collection is not empty (${snapshot.size} documents found). Seeding is not required.`;
+      console.log(message);
+      return { success: true, message: message };
     }
     
     console.log('Collection is empty. Proceeding with seeding...');
@@ -41,22 +42,15 @@ async function seedDatabase() {
       await addDoc(questionsCollection, question);
     }
     
-    console.log('\n✅ Firestore seeding completed successfully!');
-    console.log(`${triviaQuestions.length} questions have been added to the '${COLLECTION_NAME}' collection.`);
+    const successMessage = `✅ Firestore seeding completed successfully! ${triviaQuestions.length} questions have been added to the '${COLLECTION_NAME}' collection.`;
+    console.log(successMessage);
+    return { success: true, message: successMessage };
     
-  } catch (error) {
-    console.error('\n❌ An error occurred during the seeding process:');
+  } catch (error: any) {
+    const errorMessage = `❌ An error occurred during the seeding process: ${error.message}`;
+    console.error(errorMessage);
     console.error(error);
     console.log('\nPlease ensure your Firebase configuration in src/lib/firebaseConfig.ts is correct and you have read/write permissions.');
+    return { success: false, message: errorMessage };
   }
 }
-
-// Execute the seeding function
-seedDatabase().then(() => {
-    // The script will exit automatically.
-    // In some environments, you might need process.exit(0) but it's often not necessary.
-}).catch(() => {
-    // Error is already logged in the function.
-});
-
-    
