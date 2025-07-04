@@ -8,7 +8,7 @@ export default function LoginPage() {
         src="https://i.imgur.com/U8X6gGq.png"
         alt="Scenic river and mountains background"
         fill
-        objectFit="cover"
+        style={{objectFit: "cover"}}
         quality={85}
         className="fixed inset-0 z-[-1] opacity-30"
         data-ai-hint="river mountains"
