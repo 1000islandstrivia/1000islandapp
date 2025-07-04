@@ -799,5 +799,565 @@
     "answer": "That the river's story is the true treasure",
     "storylineHintKey": "final_revelation",
     "fallbackHint": "The real treasure isn't something you can hold, but something you become a part of."
+  },
+  {
+    "id": "TQ101",
+    "question": "What is the primary purpose of the Thousand Islands Bridge?",
+    "options": ["Scenic views only", "Connecting Ontario and New York", "Pedestrian traffic only", "Railroad transport"],
+    "answer": "Connecting Ontario and New York",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "The Thousand Islands Bridge is a series of bridges connecting Interstate 81 in New York with Highway 401 in Ontario, facilitating international travel and commerce."
+  },
+  {
+    "id": "TQ102",
+    "question": "Approximately how many islands are there in the 'Thousand Islands' archipelago?",
+    "options": ["Exactly 1000", "Around 500", "Over 1800", "Less than 700"],
+    "answer": "Over 1800",
+    "storylineHintKey": "island_count_1",
+    "fallbackHint": "To be counted as one of the Thousand Islands, a piece of land must be above water year-round and support at least two living trees. There are 1,864 such islands."
+  },
+  {
+    "id": "TQ103",
+    "question": "Dark Island is home to what historic structure?",
+    "options": ["A lighthouse", "Singer Castle", "A modern art museum", "A nature preserve"],
+    "answer": "Singer Castle",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Singer Castle, built by Commodore Frederick Bourne of the Singer Sewing Machine Company, is known for its intricate architecture and secret passages."
+  },
+  {
+    "id": "TQ104",
+    "question": "The Clayton Antique Boat Museum showcases what type of vessels?",
+    "options": ["Modern speedboats", "Freshwater antique and classic wooden boats", "Viking longships", "Submarines"],
+    "answer": "Freshwater antique and classic wooden boats",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "The Antique Boat Museum in Clayton, NY, holds the largest collection of freshwater antique and classic boats in North America."
+  },
+  {
+    "id": "TQ105",
+    "question": "What does the term 'River Rat' affectionately refer to in this region?",
+    "options": ["A type of invasive rodent", "Locals who are knowledgeable about the river", "A famous steamboat", "A mythical river creature"],
+    "answer": "Locals who are knowledgeable about the river",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "A 'River Rat' is a fond nickname for someone who grew up on or is intimately familiar with the life and lore of the St. Lawrence River."
+  },
+  {
+    "id": "TQ106",
+    "question": "The Great Lakes Seaway Trail is what type of scenic byway?",
+    "options": ["A hiking trail", "The Great Lakes Seaway Trail", "Island View Drive", "The King's Highway"],
+    "answer": "The Great Lakes Seaway Trail",
+    "storylineHintKey": "scenic_byway_1",
+    "fallbackHint": "The Great Lakes Seaway Trail is a National Scenic Byway in the U.S. that follows the shores of the St. Lawrence River and lakes Ontario, and Lake Erie."
+  },
+  {
+    "id": "TQ107",
+    "question": "Which island is known for having a U.S. Post Office that is the smallest in the U.S.?",
+    "options": ["Wellesley Island", "Grindstone Island", "Sugar Island (unofficial)", "Picton Island"],
+    "answer": "Sugar Island (unofficial)",
+    "storylineHintKey": "smallest_post_office_1",
+    "fallbackHint": "While not officially a post office building, the small structure on Sugar Island serves as a mail drop-off and is humorously called the smallest in the U.S."
+  },
+  {
+    "id": "TQ108",
+    "question": "The 'Lost Ships of the 1000 Islands' refers to what?",
+    "options": ["A fictional novel series", "A collection of well-preserved shipwrecks", "A fleet that vanished mysteriously", "A type of mirage seen on the water"],
+    "answer": "A collection of well-preserved shipwrecks",
+    "storylineHintKey": "lost_ships_1",
+    "fallbackHint": "Due to the cold, fresh water, numerous shipwrecks from the past two centuries are remarkably preserved on the riverbed, creating a 'museum' for divers."
+  },
+  {
+    "id": "TQ109",
+    "question": "What material was primarily used for the exterior of Singer Castle?",
+    "options": ["Imported Italian marble", "Local granite", "Red brick", "Timber"],
+    "answer": "Local granite",
+    "storylineHintKey": "singer_castle_material_1",
+    "fallbackHint": "Singer Castle was constructed using granite quarried from a nearby island, Oak Island, giving it a strong, local character."
+  },
+  {
+    "id": "TQ110",
+    "question": "The story of 'Just Room Enough Island' involves a family named?",
+    "options": ["The Boldts", "The Webers", "The Sizelands", "The Johnstons"],
+    "answer": "The Sizelands",
+    "storylineHintKey": "just_room_enough_family_1",
+    "fallbackHint": "The Sizeland family bought the tiny island, originally named Hub Island, in the 1950s, and built a house that covers nearly every square foot of it."
+  },
+  {
+    "id": "TQ111",
+    "question": "What important international agreement led to the creation of the St. Lawrence Seaway?",
+    "options": ["The Treaty of Paris", "The Webster-Ashburton Treaty", "The St. Lawrence Seaway Agreement", "The Jay Treaty"],
+    "answer": "The St. Lawrence Seaway Agreement",
+    "storylineHintKey": "seaway_agreement_1",
+    "fallbackHint": "In 1954, Canada and the United States signed an agreement to jointly construct the St. Lawrence Seaway, a monumental engineering project."
+  },
+  {
+    "id": "TQ112",
+    "question": "Bill Johnston, the 'Pirate of the Thousand Islands', aided which side during the Patriot War?",
+    "options": ["The British Crown", "The American Rebels/Patriots", "He remained neutral", "The French forces"],
+    "answer": "The American Rebels/Patriots",
+    "storylineHintKey": "bill_johnston_allegiance_1",
+    "fallbackHint": "During the Patriot War of 1837-38, Bill Johnston used his intimate knowledge of the islands to help Canadian rebels seeking independence from Britain."
+  },
+  {
+    "id": "TQ113",
+    "question": "What is the Power Authority's visitor center near Massena, NY, that offers views of the St. Lawrence-FDR Power Project?",
+    "options": ["The Boldt Castle Visitor Center", "The Hawkins Point Visitors Center", "Minna Anthony Common Nature Center", "An aquatarium"],
+    "answer": "The Hawkins Point Visitors Center",
+    "storylineHintKey": "power_authority_center_1",
+    "fallbackHint": "The Hawkins Point Visitors Center provides panoramic views of the massive St. Lawrence-FDR hydroelectric dam, a key part of the seaway project."
+  },
+  {
+    "id": "TQ114",
+    "question": "Which Great Lake is the primary source of the St. Lawrence River?",
+    "options": ["Lake Superior", "Lake Huron", "Lake Ontario", "Lake Erie"],
+    "answer": "Lake Ontario",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "The St. Lawrence River begins at the northeastern end of Lake Ontario, flowing northeast towards the Atlantic Ocean."
+  },
+  {
+    "id": "TQ115",
+    "question": "What type of bridge is the international span of the Thousand Islands Bridge?",
+    "options": ["Cantilever bridge", "Suspension bridge", "Arch bridge", "Cable-stayed bridge"],
+    "answer": "Suspension bridge",
+    "storylineHintKey": "bridge_type_1",
+    "fallbackHint": "The main part of the Thousand Islands Bridge is a suspension bridge to allow large ocean-going vessels to pass underneath, the main part of the Thousand Islands Bridge is a suspension bridge."
+  },
+  {
+    "id": "TQ116",
+    "question": "Which famous American president owned a summer home on Campobello Island, near the Thousand Islands?",
+    "options": ["Theodore Roosevelt", "Franklin D. Roosevelt", "John F. Kennedy", "Abraham Lincoln"],
+    "answer": "Franklin D. Roosevelt",
+    "storylineHintKey": "historical_figure_clue",
+    "fallbackHint": "While not in the Thousand Islands, Franklin D. Roosevelt's beloved summer home on Campobello Island, NB, reflects the region's history as a retreat for the influential."
+  },
+  {
+    "id": "TQ117",
+    "question": "What is the approximate length of the Thousand Islands region along the St. Lawrence River?",
+    "options": ["10 miles", "50 miles", "100 miles", "200 miles"],
+    "answer": "50 miles",
+    "storylineHintKey": "region_geography_clue",
+    "fallbackHint": "The Thousand Islands archipelago stretches for about 50 miles (80 km) downstream from Kingston, Ontario."
+  },
+  {
+    "id": "TQ118",
+    "question": "The Alster Tower on Boldt Castle's Heart Island was inspired by a structure from what country?",
+    "options": ["Germany", "France", "England", "Scotland"],
+    "answer": "Germany",
+    "storylineHintKey": "alster_tower_inspiration_1",
+    "fallbackHint": "The Alster Tower's design is based on a castle described in the novel 'Woodstock' by Sir Walter Scott, which was set in Germany."
+  },
+  {
+    "id": "TQ119",
+    "question": "What unique geological feature characterizes many of the Thousand Islands?",
+    "options": ["Volcanic craters", "Glacial sculpting", "Coral reefs", "Meteor impact sites"],
+    "answer": "Glacial sculpting",
+    "storylineHintKey": "geology_mystery_clue",
+    "fallbackHint": "Massive glaciers carved and shaped the landscape, exposing the hard granite hills and creating the rugged beauty of the islands."
+  },
+  {
+    "id": "TQ120",
+    "question": "The Thousand Islands National Park is managed by which country?",
+    "options": ["United States", "Canada", "Jointly by U.S. & Canada", "United Nations"],
+    "answer": "Canada",
+    "storylineHintKey": "national_park_management_1",
+    "fallbackHint": "Established in 1904, Thousand Islands National Park is one of Canada's oldest national parks."
+  },
+  {
+    "id": "TQ121",
+    "question": "What is the primary species of pine tree commonly found on the islands?",
+    "options": ["Loblolly Pine", "Ponderosa Pine", "Eastern White Pine", "Scots Pine"],
+    "answer": "Eastern White Pine",
+    "storylineHintKey": "flora_fauna_clue",
+    "fallbackHint": "The tall, distinctive Eastern White Pine is a signature tree of the region's ecosystem."
+  },
+  {
+    "id": "TQ122",
+    "question": "Rock Island Lighthouse State Park features a lighthouse built in what century?",
+    "options": ["17th Century", "18th Century", "19th Century", "20th Century"],
+    "answer": "19th Century",
+    "storylineHintKey": "lighthouse_legend_clue",
+    "fallbackHint": "The historic Rock Island lighthouse was first lit in 1847 to guide ships through the treacherous waters."
+  },
+  {
+    "id": "TQ123",
+    "question": "Which of these towns is NOT considered a major hub for Thousand Islands tourism?",
+    "options": ["Alexandria Bay, NY", "Gananoque, ON", "Syracuse, NY", "Clayton, NY"],
+    "answer": "Syracuse, NY",
+    "storylineHintKey": "us_tourism_hub_1",
+    "fallbackHint": "While a major city in Central New York, Syracuse is not located on the St. Lawrence River and is not a direct hub for island tourism."
+  },
+  {
+    "id": "TQ124",
+    "question": "The Frederic Remington Art Museum, featuring works of the famous 'Cowboy Artist', is located in which nearby town?",
+    "options": ["Watertown, NY", "Kingston, ON", "Ogdensburg, NY", "Syracuse, NY"],
+    "answer": "Ogdensburg, NY",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "Located in Ogdensburg, NY, the museum is dedicated to Frederic Remington, who was famous for his depictions of the American Old West."
+  },
+  {
+    "id": "TQ125",
+    "question": "During the War of 1812, which strategic naval base was located near the Thousand Islands?",
+    "options": ["Fort Niagara", "Fort Ticonderoga", "Sackets Harbor, NY", "West Point"],
+    "answer": "Sackets Harbor, NY",
+    "storylineHintKey": "war_history_clue",
+    "fallbackHint": "Sackets Harbor was the center of American naval and military operations on Lake Ontario during the War of 1812."
+  },
+  {
+    "id": "TQ126",
+    "question": "What is the name of the large, migratory bird of prey often seen soaring above the St. Lawrence River?",
+    "options": ["Golden Eagle", "Osprey", "Bald Eagle", "Peregrine Falcon"],
+    "answer": "Bald Eagle",
+    "storylineHintKey": "bird_of_prey_1",
+    "fallbackHint": "The region is known for its large nests near the water throughout the islands."
+  },
+  {
+    "id": "TQ127",
+    "question": "The Boldt Castle Yacht House is notable for housing what?",
+    "options": ["Modern luxury yachts", "A collection of historic houseboats", "A submarine", "A seaplane hangar"],
+    "answer": "A collection of historic houseboats",
+    "storylineHintKey": "boldt_yacht_house_1",
+    "fallbackHint": "The enormous Boldt Yacht House on Wellesley Island now houses a rare collection of historic wooden boats, including a luxurious houseboat."
+  },
+  {
+    "id": "TQ128",
+    "question": "What is the common name for 'Esox masquinongy', a large predatory fish native to the St. Lawrence River?",
+    "options": ["Northern Pike", "Walleye", "Muskellunge", "Lake Sturgeon"],
+    "answer": "Muskellunge",
+    "storylineHintKey": "muskellunge_name_1",
+    "fallbackHint": "Esox masquinongy is the scientific name for the Muskellunge, often called a 'muskie' for short."
+  },
+  {
+    "id": "TQ129",
+    "question": "The term 'cottage country' is often used to describe the Thousand Islands. What does this term refer to?",
+    "options": ["Small, rustic shacks", "Modern one-room cabins", "Seasonal vacation homes, often of large or elaborate design", "Quaint rural farmhouses"],
+    "answer": "Seasonal vacation homes, often of large or elaborate design",
+    "storylineHintKey": "cottage_country_1",
+    "fallbackHint": "In this region, 'cottage' is a term used for any seasonal home, many of which are large, elaborate mansions built during the Gilded Age."
+  },
+  {
+    "id": "TQ130",
+    "question": "Which of the Thousand Islands is home to the Half Moon Bay, known for its weekly non-denominational Sunday services from boats?",
+    "options": ["Grindstone Island", "Wellesley Island", "Carleton Island", "Howe Island"],
+    "answer": "Wellesley Island",
+    "storylineHintKey": "half_moon_bay_1",
+    "fallbackHint": "Half Moon Bay is a scenic cove on Wellesley Island where it is traditional for boaters to attend non-denominational Sunday services from their boats."
+  },
+  {
+    "id": "TQ131",
+    "question": "The International Rift is a narrow, deep section of the river located between what two islands?",
+    "options": ["Wellesley Island (US) and Hill Island (Canada)", "Grindstone Island and Wolfe Island", "Just Room Enough Island and Heart Island", "Picton Island and Grindstone Island"],
+    "answer": "Wellesley Island (US) and Hill Island (Canada)",
+    "storylineHintKey": "international_rift_1",
+    "fallbackHint": "The International Rift is a very narrow channel where the US-Canada border runs, located under the main span of the Thousand Islands Bridge."
+  },
+  {
+    "id": "TQ132",
+    "question": "What is 'skiff life,' a term associated with the region?",
+    "options": ["A type of fishing lure", "A lifestyle centered around small, versatile wooden boats", "A competitive rowing sport", "A local theater production"],
+    "answer": "A lifestyle centered around small, versatile wooden boats",
+    "storylineHintKey": "skiff_life_1",
+    "fallbackHint": "'Skiff life' refers to the local culture of using small, versatile St. Lawrence Skiffs for transportation, fishing, and recreation among the islands."
+  },
+  {
+    "id": "TQ133",
+    "question": "The Cornwall-Massena International Bridge is another major crossing in the region. What does it span?",
+    "options": ["A walking path", "A high-speed rail", "The St. Lawrence River and Seaway", "A bicycle tour"],
+    "answer": "The St. Lawrence River and Seaway",
+    "storylineHintKey": "cornwall_bridge_1",
+    "fallbackHint": "This bridge is crucial for international trade and crosses over the St. Lawrence-FDR Power Project dam."
+  },
+  {
+    "id": "TQ134",
+    "question": "What does 'Iroquoian' refer to in the context of the Thousand Islands' history?",
+    "options": ["A group of Indigenous peoples native to the region", "A type of sailing ship", "A French colonial fort", "A style of architecture"],
+    "answer": "A group of Indigenous peoples native to the region",
+    "storylineHintKey": "native_history_clue",
+    "fallbackHint": "The Iroquoian peoples, including the Haudenosaunee Confederacy, have inhabited this region for centuries before European arrival."
+  },
+  {
+    "id": "TQ135",
+    "question": "Devil's Oven on Grindstone Island is what kind of natural feature?",
+    "options": ["A hot spring", "A large cave or rock shelter", "A volcanic vent", "A meteor crater"],
+    "answer": "A large cave or rock shelter",
+    "storylineHintKey": "devils_oven_1",
+    "fallbackHint": "Devil's Oven is a large cave rumored to have been used by the pirate Bill Johnston as a hideout."
+  },
+  {
+    "id": "TQ136",
+    "question": "The Frontenac Arch Biosphere Reserve encompasses the Thousand Islands and what major theme?",
+    "options": ["A military exclusion zone", "An area promoting sustainable development", "A theme park", "A private hunting ground"],
+    "answer": "An area promoting sustainable development",
+    "storylineHintKey": "biosphere_reserve_1",
+    "fallbackHint": "A UNESCO Biosphere Reserve is an area recognized for its unique ecosystem and its commitment to balancing conservation and sustainable human activity."
+  },
+  {
+    "id": "TQ137",
+    "question": "Before European settlement, the region was primarily the territory of which Indigenous nation?",
+    "options": ["The Cherokee Nation", "The Haudenosaunee (Iroquois) Confederacy", "The Anishinaabe", "The Sioux Nation"],
+    "answer": "The Haudenosaunee (Iroquois) Confederacy",
+    "storylineHintKey": "haudenosaunee_territory_1",
+    "fallbackHint": "The Haudenosaunee, also known as the Iroquois Confederacy or Six Nations, have ancestral ties to the Thousand Islands region."
+  },
+  {
+    "id": "TQ138",
+    "question": "What is the 'Thousand Islands Winery' known for, besides wine?",
+    "options": ["Its historic castle", "Its extensive cave system", "Its scenic location and local products", "Its Olympic-sized swimming pool"],
+    "answer": "Its scenic location and local products",
+    "storylineHintKey": "winery_known_for_1",
+    "fallbackHint": "As one of the first wineries in the region, it's a popular stop on the Thousand Islands Seaway Wine Trail."
+  },
+  {
+    "id": "TQ139",
+    "question": "What famous Canadian city is often considered the eastern gateway to the Thousand Islands?",
+    "options": ["Montreal", "Toronto", "Ottawa", "Quebec City"],
+    "answer": "Montreal",
+    "storylineHintKey": "canadian_gateway_1",
+    "fallbackHint": "Montreal's proximity to the eastern end of the Thousand Islands makes it a popular starting point for many visitors."
+  },
+  {
+    "id": "TQ140",
+    "question": "Which of these is a popular type of recreational boat in the region?",
+    "options": ["Jet ski", "Pontoon boat", "Kayak", "Airboat"],
+    "answer": "Pontoon boat",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Pontoon boats are a common sight, offering a comfortable way for groups to enjoy the scenic beauty of the islands."
+  },
+  {
+    "id": "TQ141",
+    "question": "The Thousand Islands Parkway in Canada runs parallel to which major highway?",
+    "options": ["Highway 401", "The Trans-Canada Highway", "Queen Elizabeth Way", "Highway 416"],
+    "answer": "Highway 401",
+    "storylineHintKey": "parkway_location_1",
+    "fallbackHint": "The scenic parkway provides a more leisurely alternative to the busy Highway 401 for a portion of its route."
+  },
+  {
+    "id": "TQ142",
+    "question": "What does the 'TI' in 'TIBS' (Thousand Islands Biological Station) stand for?",
+    "options": ["Thousand Inlets", "Thousand Islands", "Tidal Inlet", "Tectonic Intersection"],
+    "answer": "Thousand Islands",
+    "storylineHintKey": "tibs_focus_1",
+    "fallbackHint": "TIBS is dedicated to the scientific study and preservation of the Thousand Islands ecosystem."
+  },
+  {
+    "id": "TQ143",
+    "question": "What is the name of the American scenic byway that runs along the St. Lawrence River?",
+    "options": ["The Adirondack Trail", "The Great Lakes Seaway Trail", "The Black River Trail", "The Mohawk Trail"],
+    "answer": "The Great Lakes Seaway Trail",
+    "storylineHintKey": "scenic_byway_1",
+    "fallbackHint": "The Great Lakes Seaway Trail is a National Scenic Byway that offers stunning views of the river and access to many historic sites."
+  },
+  {
+    "id": "TQ144",
+    "question": "The construction of the St. Lawrence Seaway led to the creation of what large, man-made lake?",
+    "options": ["Lake Placid", "Lake St. Lawrence", "Great Sacandaga Lake", "Oneida Lake"],
+    "answer": "Lake St. Lawrence",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "Lake St. Lawrence was formed by the construction of the Moses-Saunders Power Dam, submerging several villages in the process."
+  },
+  {
+    "id": "TQ145",
+    "question": "Which of these is a characteristic feature of a St. Lawrence Skiff?",
+    "options": ["A flat bottom", "A pointed bow and stern", "A large sail", "An inboard motor"],
+    "answer": "A pointed bow and stern",
+    "storylineHintKey": "skiff_life_1",
+    "fallbackHint": "The double-ended design of the St. Lawrence Skiff makes it a versatile and efficient boat for rowing and sailing."
+  },
+  {
+    "id": "TQ146",
+    "question": "The Thousand Islands region is part of which larger North American watershed?",
+    "options": ["The Mississippi River Watershed", "The Hudson Bay Watershed", "The Great Lakes-St. Lawrence Watershed", "The Atlantic Coastal Watershed"],
+    "answer": "The Great Lakes-St. Lawrence Watershed",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "This vast watershed drains a significant portion of the North American continent into the Atlantic Ocean."
+  },
+  {
+    "id": "TQ147",
+    "question": "Which of these is a traditional craft often associated with the Haudenosaunee people of the region?",
+    "options": ["Pottery making", "Elaborate beadwork", "Metal smithing", "Glass blowing"],
+    "answer": "Elaborate beadwork",
+    "storylineHintKey": "native_history_clue",
+    "fallbackHint": "The Haudenosaunee are known for their intricate and meaningful beadwork, a tradition that continues to this day."
+  },
+  {
+    "id": "TQ148",
+    "question": "What is the primary industry that shaped the Gilded Age development of the Thousand Islands?",
+    "options": ["Logging", "Farming", "Tourism and recreation for the wealthy", "Commercial fishing"],
+    "answer": "Tourism and recreation for the wealthy",
+    "storylineHintKey": "cottage_country_1",
+    "fallbackHint": "The late 19th and early 20th centuries saw the Thousand Islands become a premier summer destination for America's wealthiest families."
+  },
+  {
+    "id": "TQ149",
+    "question": "The St. Lawrence Seaway is jointly operated by the U.S. and which other country?",
+    "options": ["Great Britain", "France", "Mexico", "Canada"],
+    "answer": "Canada",
+    "storylineHintKey": "seaway_agreement_1",
+    "fallbackHint": "The Seaway is a marvel of international cooperation between the United States and Canada."
+  },
+  {
+    "id": "TQ150",
+    "question": "What is the main geological reason for the abundance of islands in this region?",
+    "options": ["Volcanic activity", "A resistant granite ridge (The Frontenac Arch)", "River delta formation", "Tectonic plate collision"],
+    "answer": "A resistant granite ridge (The Frontenac Arch)",
+    "storylineHintKey": "geology_rock_1",
+    "fallbackHint": "The islands are the exposed peaks of the Frontenac Arch, an ancient granite ridge that withstood glacial erosion."
+  },
+  {
+    "id": "TQ151",
+    "question": "The annual antique boat show in Clayton, NY, is hosted by what museum?",
+    "options": ["The Maritime Museum of the Great Lakes", "The Antique Boat Museum", "The H. Lee White Maritime Museum", "The Great Lakes Shipwreck Museum"],
+    "answer": "The Antique Boat Museum",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "The Antique Boat Museum in Clayton is a world-renowned institution dedicated to preserving freshwater boating history."
+  },
+  {
+    "id": "TQ152",
+    "question": "What is the significance of the year 1959 for the St. Lawrence River?",
+    "options": ["The first steamboat was launched", "The Thousand Islands Bridge opened", "The St. Lawrence Seaway officially opened", "The last major shipwreck occurred"],
+    "answer": "The St. Lawrence Seaway officially opened",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "The opening of the St. Lawrence Seaway in 1959 transformed the river into a major international shipping route."
+  },
+  {
+    "id": "TQ153",
+    "question": "What is the title of the person who is a local expert and enthusiast of the St. Lawrence River?",
+    "options": ["River Warden", "River Rat", "River Master", "River Keeper"],
+    "answer": "River Rat",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "The term 'River Rat' is an affectionate nickname for those with a deep love and knowledge of the river."
+  },
+  {
+    "id": "TQ154",
+    "question": "What is the name of the castle on Dark Island?",
+    "options": ["Boldt Castle", "Jorstadt Castle", "Singer Castle", "Calumet Castle"],
+    "answer": "Singer Castle",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Singer Castle, a historic landmark, is located on Dark Island and is open to the public for tours."
+  },
+  {
+    "id": "TQ155",
+    "question": "The Thousand Islands region is a popular destination for viewing what natural phenomenon in the fall?",
+    "options": ["The northern lights", "Meteor showers", "The fall foliage", "Bird migrations"],
+    "answer": "The fall foliage",
+    "storylineHintKey": "flora_fauna_clue",
+    "fallbackHint": "The vibrant colors of the fall foliage attract many visitors to the region each year."
+  },
+  {
+    "id": "TQ156",
+    "question": "What is the primary function of the Iroquois National Wildlife Refuge, located near the Thousand Islands?",
+    "options": ["To provide a habitat for migratory birds", "To preserve a historic battleground", "To protect a rare species of fish", "To manage a herd of wild horses"],
+    "answer": "To provide a habitat for migratory birds",
+    "storylineHintKey": "duck_migration_1",
+    "fallbackHint": "The refuge is a crucial stopover for birds migrating along the Atlantic Flyway."
+  },
+  {
+    "id": "TQ157",
+    "question": "What is the purpose of the 'No Wake' zones in the Thousand Islands?",
+    "options": ["To protect wildlife habitats", "To prevent shoreline erosion", "To ensure the safety of swimmers and small boats", "All of the above"],
+    "answer": "All of the above",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "'No Wake' zones are implemented to protect the environment and ensure the safety of all river users."
+  },
+  {
+    "id": "TQ158",
+    "question": "Which of these is a key feature of the Thousand Islands National Park in Canada?",
+    "options": ["A large amusement park", "A chain of over 20 islands", "A replica of a historic fort", "A world-class golf course"],
+    "answer": "A chain of over 20 islands",
+    "storylineHintKey": "national_park_management_1",
+    "fallbackHint": "The park is composed of numerous islands, offering opportunities for hiking, camping, and boating."
+  },
+  {
+    "id": "TQ159",
+    "question": "The Thousand Islands Arts Center in Clayton, NY, is known for its collection of what?",
+    "options": ["Modern sculpture", "Antique textiles and handcrafts", "Impressionist paintings", "Contemporary photography"],
+    "answer": "Antique textiles and handcrafts",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "The center preserves and promotes traditional arts and crafts, with a focus on textiles."
+  },
+  {
+    "id": "TQ160",
+    "question": "What is the name of the Canadian town known as the 'Gateway to the Thousand Islands'?",
+    "options": ["Brockville", "Kingston", "Cornwall", "Gananoque"],
+    "answer": "Gananoque",
+    "storylineHintKey": "gananoque_boat_line_1",
+    "fallbackHint": "Gananoque is a popular starting point for tours of the Thousand Islands from the Canadian side."
+  },
+  {
+    "id": "TQ161",
+    "question": "The St. Lawrence River is one of the world's major sources of what type of energy?",
+    "options": ["Solar power", "Wind power", "Geothermal energy", "Hydroelectric power"],
+    "answer": "Hydroelectric power",
+    "storylineHintKey": "power_authority_center_1",
+    "fallbackHint": "The river's powerful current is harnessed by several large dams to generate electricity."
+  },
+  {
+    "id": "TQ162",
+    "question": "What is the name of the international peace monument located on the US-Canada border in the region?",
+    "options": ["The Peace Arch", "The International Peace Garden", "The Friendship Monument", "The hands across the border monument"],
+    "answer": "The Friendship Monument",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "The monument symbolizes the long history of peace and cooperation between the two nations."
+  },
+  {
+    "id": "TQ163",
+    "question": "Which of these is a common activity for visitors to the Thousand Islands?",
+    "options": ["Mountain climbing", "Desert hiking", "Island hopping by boat", "Surfing"],
+    "answer": "Island hopping by boat",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Exploring the numerous islands by boat is a quintessential Thousand Islands experience."
+  },
+  {
+    "id": "TQ164",
+    "question": "The Thousand Islands region is known for its numerous what?",
+    "options": ["Skyscrapers", "Suspension bridges", "Lighthouses", "Subway systems"],
+    "answer": "Lighthouses",
+    "storylineHintKey": "lighthouse_legend_clue",
+    "fallbackHint": "Many historic lighthouses dot the islands, guiding ships through the treacherous waters."
+  },
+  {
+    "id": "TQ165",
+    "question": "What is the primary purpose of the Clayton Opera House?",
+    "options": ["To host political debates", "To serve as a movie theater", "To present live performances", "To function as a museum"],
+    "answer": "To present live performances",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "The historic opera house is a vibrant venue for concerts, plays, and other cultural events."
+  },
+  {
+    "id": "TQ166",
+    "question": "What is the name of the organization that works to protect and conserve the natural environment of the Thousand Islands?",
+    "options": ["The Nature Conservancy", "The Sierra Club", "The Thousand Islands Land Trust (TILT)", "Greenpeace"],
+    "answer": "The Thousand Islands Land Trust (TILT)",
+    "storylineHintKey": "tilt_mission_1",
+    "fallbackHint": "TILT plays a crucial role in preserving the unique landscapes and habitats of the region."
+  },
+  {
+    "id": "TQ167",
+    "question": "What is the name of the bay on Wellesley Island known for its public beach and marina?",
+    "options": ["French Bay", "Fisher Bay", "Eel Bay", "Lake of the Isles"],
+    "answer": "Eel Bay",
+    "storylineHintKey": "eel_fishing_1",
+    "fallbackHint": "Eel Bay is a popular spot for swimming, boating, and fishing on Wellesley Island."
+  },
+  {
+    "id": "TQ168",
+    "question": "Which of these is a key ingredient in the original Thousand Island dressing?",
+    "options": ["Blue cheese", "Mayonnaise", "Anchovies", "Olive oil"],
+    "answer": "Mayonnaise",
+    "storylineHintKey": "dressing_origin_1",
+    "fallbackHint": "The original recipe is said to be based on mayonnaise, with various other ingredients added for flavor."
+  },
+  {
+    "id": "TQ169",
+    "question": "What is the name of the state park located on the US side of the Thousand Islands?",
+    "options": ["Wellesley Island State Park", "Letchworth State Park", "Allegany State Park", "Niagara Falls State Park"],
+    "answer": "Wellesley Island State Park",
+    "storylineHintKey": "minna_anthony_location_1",
+    "fallbackHint": "Wellesley Island State Park offers camping, hiking, and boating opportunities in the heart of the Thousand Islands."
+  },
+  {
+    "id": "TQ170",
+    "question": "The Thousand Islands region is a popular destination for what type of fishing?",
+    "options": ["Ice fishing", "Fly fishing", "Deep sea fishing", "Bass and pike fishing"],
+    "answer": "Bass and pike fishing",
+    "storylineHintKey": "fish_expert_clue",
+    "fallbackHint": "The river's diverse habitats make it an ideal location for catching a variety of freshwater game fish."
   }
 ]
