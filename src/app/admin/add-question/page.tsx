@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { HelpCircle, ShieldAlert } from 'lucide-react';
 import AddQuestionForm from '@/components/admin/AddQuestionForm';
+import { Button } from '@/components/ui/button';
 
 export default function AddQuestionAdminPage() {
   const { user, loading } = useAuth();
