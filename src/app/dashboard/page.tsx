@@ -1,3 +1,4 @@
+
 "use client";
 
 import MainLayout from '@/components/layout/MainLayout';
@@ -7,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database } from 'lucide-react';
+import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle } from 'lucide-react';
 import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
 
@@ -96,24 +97,7 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-
-        <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
-          <CardHeader>
-            <CardTitle className="font-headline text-xl text-primary">Database Setup</CardTitle>
-            <CardDescription>
-              Click this button once to populate your Firestore database with all the trivia questions.
-              You can ask me to remove this card after it's done.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button onClick={handleSeedDatabase} disabled={isSeeding} className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Database className="mr-2 h-4 w-4" />
-              {isSeeding ? 'Seeding...' : 'Seed Trivia Questions'}
-            </Button>
-            {seedStatus && <p className="mt-4 text-sm text-muted-foreground">{seedStatus}</p>}
-          </CardContent>
-        </Card>
-
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <DashboardCard
             title="Start Trivia"
@@ -151,7 +135,34 @@ export default function DashboardPage() {
             buttonText="Learn More"
             disabled
           />
+           {user.username === 'Dan' && (
+              <DashboardCard
+                title="Admin: Add Question"
+                description="Add a new trivia question to the database."
+                href="/admin/add-question"
+                icon={PlusCircle}
+                buttonText="Add Question"
+              />
+            )}
         </div>
+
+        {user.username === 'Dan' && (
+          <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
+            <CardHeader>
+              <CardTitle className="font-headline text-xl text-primary">Database Setup</CardTitle>
+              <CardDescription>
+                Click this button to populate your Firestore database with any missing trivia questions from the source file.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button onClick={handleSeedDatabase} disabled={isSeeding} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                <Database className="mr-2 h-4 w-4" />
+                {isSeeding ? 'Seeding...' : 'Seed Trivia Questions'}
+              </Button>
+              {seedStatus && <p className="mt-4 text-sm text-muted-foreground">{seedStatus}</p>}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </MainLayout>
   );
