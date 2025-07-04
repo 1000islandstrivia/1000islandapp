@@ -1,4 +1,3 @@
-
 "use client";
 
 import MainLayout from '@/components/layout/MainLayout';
@@ -37,8 +36,13 @@ export default function DashboardPage() {
 
   const handleSeedDatabase = async () => {
     setIsSeeding(true);
-    setSeedStatus('Seeding in progress... This may take a moment. You can check the server logs for progress.');
-    const result = await runDatabaseSeed();
+    setSeedStatus('Seeding in progress... This may take a moment.');
+    if (!user) {
+        setSeedStatus('Error: You must be logged in to seed the database.');
+        setIsSeeding(false);
+        return;
+    }
+    const result = await runDatabaseSeed(user.username);
     if (result.success) {
       setSeedStatus(result.message);
     } else {
