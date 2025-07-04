@@ -556,7 +556,7 @@
     "id": "TQ070",
     "question": "The 'Lost Villages' are nine communities in Ontario that were flooded to create what?",
     "options": ["A nature preserve", "A larger shipping channel for the St. Lawrence Seaway", "A hydroelectric reservoir", "A new national park"],
-    "answer": "A larger shipping channel for the St.Lawrence Seaway",
+    "answer": "A larger shipping channel for the St. Lawrence Seaway",
     "storylineHintKey": "seaway_journey_1",
     "fallbackHint": "The creation of the modern seaway required the permanent flooding of these towns."
   },
@@ -668,7 +668,7 @@
     "id": "TQ084",
     "question": "What is a 'Laker's Tan'?",
     "options": ["A type of boat paint", "A sunburn on only one side of the body", "A brand of local beer", "A type of leather used in boat shoes"],
-    "answer": "A sunburn on only one side of thebody",
+    "answer": "A sunburn on only one side of the body",
     "storylineHintKey": "river_rat_meaning_1",
     "fallbackHint": "This humorous term refers to getting sun only on the side of your body facing the sun while boating all day."
   },
@@ -801,4 +801,3 @@
     "fallbackHint": "The real treasure isn't something you can hold, but something you become a part of."
   }
 ]
-    
