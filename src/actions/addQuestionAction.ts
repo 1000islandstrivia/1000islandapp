@@ -30,7 +30,7 @@ export async function addQuestionAction(
   username: string
 ): Promise<{ success: boolean; message?: string; questionId?: string }> {
   // Security check: Only allow admin user to add questions.
-  if (username !== 'Dan') {
+  if (username.toLowerCase() !== 'dan') {
     return { success: false, message: 'Permission denied. You are not authorized.' };
   }
 

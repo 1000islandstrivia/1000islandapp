@@ -41,9 +41,9 @@ export function useAuth() {
     };
   }, []);
 
-  const fetchAndUpdateUserSession = useCallback(async (username: string, baseUserProperties?: Partial<StoredUser>) => {
+  const fetchAndUpdateUserSession = useCallback(async (userId: string, baseUserProperties?: Partial<StoredUser>) => {
     try {
-      const leaderboardEntry = await getUserLeaderboardEntry(username);
+      const leaderboardEntry = await getUserLeaderboardEntry(userId);
 
       const updatedUser: User = {
         username: leaderboardEntry.name,
@@ -77,7 +77,7 @@ export function useAuth() {
     if (storedUserString) {
       try {
         const storedUserData = JSON.parse(storedUserString) as StoredUser;
-        fetchAndUpdateUserSession(storedUserData.username, storedUserData)
+        fetchAndUpdateUserSession(storedUserData.username.toLowerCase(), storedUserData)
           .catch(() => {
             localStorage.removeItem(AUTH_KEY);
             setUser(null);
@@ -98,7 +98,7 @@ export function useAuth() {
   const login = useCallback(async (username: string) => {
     setLoading(true);
     try {
-      await fetchAndUpdateUserSession(username);
+      await fetchAndUpdateUserSession(username.toLowerCase());
       setLoading(false); 
       router.push('/dashboard');
     } catch (err) {
@@ -122,7 +122,8 @@ export function useAuth() {
     localStorage.setItem(AUTH_KEY, JSON.stringify(initialUserDataForStorage));
 
     try {
-      await updateUserScore(username, username, 0, email);
+      // Use lowercase for the ID, but the original casing for the display name
+      await updateUserScore(username.toLowerCase(), username, 0, email);
       setLoading(false);
       router.push('/dashboard');
     } catch (error) {
@@ -142,7 +143,7 @@ export function useAuth() {
     if (user) {
       setLoading(true);
       try {
-        await fetchAndUpdateUserSession(user.username, {
+        await fetchAndUpdateUserSession(user.username.toLowerCase(), {
             username: user.username,
             email: user.email,
             score: user.score,
