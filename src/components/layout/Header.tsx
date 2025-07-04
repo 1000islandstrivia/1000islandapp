@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { ScrollText, LogOut, Menu } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from '@/components/ui/sheet';
 import React from 'react';
 
 export default function Header() {
@@ -81,7 +80,9 @@ export default function Header() {
               <div className="px-4 mb-6">
                  <Link href={user ? "/dashboard" : "/"} className="flex items-center gap-2 mb-4">
                   <ScrollText className="h-7 w-7 text-accent" />
-                  <h2 className="text-xl font-headline font-bold">RiverRat Lore</h2>
+                  <SheetTitle asChild>
+                    <h2 className="text-xl font-headline font-bold">RiverRat Lore</h2>
+                  </SheetTitle>
                 </Link>
                 {user && RankIcon && user.rankTitle && (
                   <div className="flex items-center gap-2 p-2 rounded-md bg-black/20 text-sm mb-3">
