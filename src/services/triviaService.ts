@@ -5,11 +5,12 @@
  *
  * - getTriviaQuestions - Fetches trivia questions from Firestore.
  * - addTriviaQuestion - Adds a new trivia question to Firestore.
+ * - cachePirateScriptForQuestion - Caches a generated pirate script for a question.
  */
 
 import { db } from '@/lib/firebase';
 import type { TriviaQuestion } from '@/lib/trivia-data';
-import { collection, getDocs, query, addDoc } from 'firebase/firestore';
+import { collection, getDocs, query, addDoc, doc, setDoc } from 'firebase/firestore';
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
 
@@ -40,7 +41,7 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
 }
 
 /**
- * Adds a new trivia question to the Firestore database.
+ * Adds a new trivia question to the Firestore database using a custom ID.
  * @param questionData The data for the new question, without an ID.
  * @returns The ID of the newly created question document.
  */
@@ -49,23 +50,29 @@ export async function addTriviaQuestion(questionData: Omit<TriviaQuestion, 'id'>
     const newId = `TQ${Date.now()}`;
     const questionWithId = { ...questionData, id: newId };
     
-    // addDoc creates a document with an auto-generated ID, but we want to control it.
-    // Instead we will use setDoc with a new document reference.
-    // For simplicity with server actions and returning the ID, we'll use addDoc and let Firestore handle it,
-    // then update our own data structure. However, it's often better to control the ID.
-    // Let's stick to the prompt of adding a question.
-    // A better approach is to generate our own ID and use setDoc.
+    const questionDocRef = doc(db, TRIVIA_COLLECTION, newId);
+    await setDoc(questionDocRef, questionWithId);
     
-    // We will generate an ID and add it to the document before saving.
-    const collectionRef = collection(db, TRIVIA_COLLECTION);
-    const docRef = await addDoc(collectionRef, questionWithId);
-    
-    // Firestore will actually generate its own ID. We return our generated ID for consistency.
-    // The document in firestore will have BOTH a Firestore ID and our custom `id` field.
-    return questionWithId.id;
+    return newId;
 
   } catch (error: any) {
     console.error("Error adding trivia question to Firestore:", error);
     throw new Error(`Could not add question. Original error: ${error.message || String(error)}`);
   }
+}
+
+/**
+ * Caches a generated pirate script for a specific trivia question in Firestore.
+ * @param questionId The ID of the question to update.
+ * @param script The pirate script to cache.
+ * @returns A promise that resolves when the cache is updated.
+ */
+export async function cachePirateScriptForQuestion(questionId: string, script: string): Promise<void> {
+    try {
+        const questionDocRef = doc(db, TRIVIA_COLLECTION, questionId);
+        await setDoc(questionDocRef, { cachedPirateScript: script }, { merge: true });
+    } catch (error: any) {
+        // Log the error but don't throw, as this is a non-critical background task.
+        console.error(`Error caching script for question ${questionId}:`, error);
+    }
 }

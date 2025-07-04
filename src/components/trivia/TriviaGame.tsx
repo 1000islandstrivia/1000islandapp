@@ -18,6 +18,7 @@ import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions } from '@/services/triviaService';
 import HintDisplay from './HintDisplay';
 import SimpleHintDisplay from './SimpleHintDisplay';
+import { cacheHintAction } from '@/actions/cacheHintAction';
 
 const QUESTIONS_PER_GAME = 10;
 
@@ -347,41 +348,52 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       setIsResponseLoading(true);
       setPirateResponse(null);
       setPirateAudioUri(null);
+
+      const handleHintGeneration = async (script: string) => {
+        setPirateResponse({ script });
+        setIsResponseLoading(false);
+        setLoadingMessage(null);
+        setIsAudioLoading(true);
+
+        try {
+          const audioResult = await generateSpokenPirateAudio({ script });
+          setPirateAudioUri(audioResult.audioDataUri);
+        } catch (err) {
+          console.error("Failed to generate pirate audio:", err);
+          toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
+        } finally {
+          setIsAudioLoading(false);
+        }
+      };
       
-      try {
-          const scriptResult = await generatePirateScript({
-              question: currentQuestion.question,
-              playerAnswer: answer,
-              correctAnswer: currentQuestion.answer,
-              fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
-          });
-          
-          // Delay before showing the result to keep the loading message visible longer
-          await new Promise(resolve => setTimeout(resolve, 5000));
+      if (currentQuestion.cachedPirateScript) {
+        // Use cached script
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        handleHintGeneration(currentQuestion.cachedPirateScript);
+      } else {
+        // Generate new script and cache it
+        try {
+            const scriptResult = await generatePirateScript({
+                question: currentQuestion.question,
+                playerAnswer: answer,
+                correctAnswer: currentQuestion.answer,
+                fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
+            });
+            
+            // Fire-and-forget caching
+            cacheHintAction(currentQuestion.id, scriptResult.script).catch(err => {
+                console.error("Failed to cache hint:", err);
+            });
+            
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            handleHintGeneration(scriptResult.script);
 
-          setPirateResponse(scriptResult);
-          setIsResponseLoading(false);
-          setLoadingMessage(null);
-          setIsAudioLoading(true);
-
-          generateSpokenPirateAudio({ script: scriptResult.script })
-              .then(audioResult => {
-                  setPirateAudioUri(audioResult.audioDataUri);
-              })
-              .catch(err => {
-                  console.error("Failed to generate pirate audio:", err);
-                  toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
-              })
-              .finally(() => {
-                  setIsAudioLoading(false);
-              });
-
-      } catch (error) {
-          console.error("Failed to generate pirate script:", error);
-          toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
-          setPirateResponse({ script: currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing..." });
-          setIsResponseLoading(false);
-          setLoadingMessage(null);
+        } catch (error) {
+            console.error("Failed to generate pirate script:", error);
+            toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
+            const fallbackScript = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
+            handleHintGeneration(fallbackScript);
+        }
       }
     } else {
         setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
@@ -557,7 +569,3 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     </div>
   );
 }
-
-    
-
-    

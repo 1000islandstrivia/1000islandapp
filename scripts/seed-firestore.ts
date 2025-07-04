@@ -6,7 +6,7 @@
  */
 
 import { db } from '@/lib/firebase';
-import { collection, getDocs, addDoc, query, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, query, deleteDoc } from 'firebase/firestore';
 import triviaQuestions from '../data/trivia_questions.json';
 
 const COLLECTION_NAME = 'triviaQuestions';
@@ -44,12 +44,13 @@ export async function seedDatabase(): Promise<{ success: boolean; message: strin
         console.log(`(${duplicateQuestionsInFile} questions from the file were already present in the database and will be skipped.)`);
     }
     
-    // 3. Loop through the new questions and add each one
+    // 3. Loop through the new questions and add each one using its 'id' as the document ID
     let count = 0;
     for (const question of newQuestions) {
       count++;
       console.log(`Adding new question ${count} of ${newQuestions.length}: "${question.id} - ${question.question.substring(0, 30)}..."`);
-      await addDoc(questionsCollection, question);
+      const questionDocRef = doc(db, COLLECTION_NAME, question.id);
+      await setDoc(questionDocRef, question);
     }
     
     const finalCount = existingQuestionIds.size + newQuestions.length;

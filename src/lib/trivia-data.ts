@@ -9,6 +9,7 @@ export interface TriviaQuestion {
   answer: string;
   storylineHintKey: string;
   fallbackHint?: string;
+  cachedPirateScript?: string;
 }
 
 export interface StorylineHint {
@@ -400,5 +401,3 @@ export const areCategoryHintsUnlocked = (categoryPrefix: string, unlockedStoryHi
     if (categoryHints.length === 0) return false; // No hints in this category
     return categoryHints.every(hint => unlockedStoryHints.find(unlockedHint => unlockedHint.key === hint.key && unlockedHint.unlocked));
 };
-
-    
