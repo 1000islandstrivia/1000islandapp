@@ -119,6 +119,30 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(initialStoryline.map(h => ({ ...h, unlocked: h.unlocked })));
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(initialAchievementsData.map(a => ({ ...a })));
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
+  const [answeredQuestionIds, setAnsweredQuestionIds] = useState<string[]>([]);
+
+  // Load answered questions from localStorage
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      const storedIds = localStorage.getItem(`answered_questions_${user.username}`);
+      if (storedIds) {
+        try {
+          setAnsweredQuestionIds(JSON.parse(storedIds));
+        } catch (e) {
+          console.error("Failed to parse answered questions from localStorage", e);
+          setAnsweredQuestionIds([]);
+        }
+      }
+    }
+  }, [user]);
+
+  // Save answered questions to localStorage
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      localStorage.setItem(`answered_questions_${user.username}`, JSON.stringify(answeredQuestionIds));
+    }
+  }, [answeredQuestionIds, user]);
+
 
   const fetchAndSetQuestions = useCallback(async () => {
     setIsLoadingQuestions(true);
@@ -148,18 +172,24 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       setActiveQuestions([]);
       return;
     }
-    const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
-    const selectedQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+
+    // Filter out questions the user has already answered.
+    let availableQuestions = allTriviaQuestions.filter(q => !answeredQuestionIds.includes(q.id));
+
+    // If there aren't enough fresh questions for a full game, reset the pool.
+    if (availableQuestions.length < QUESTIONS_PER_GAME) {
+      toast({
+        title: "You've seen it all!",
+        description: "Resetting the question pool since you've answered most of them. Well done!",
+      });
+      availableQuestions = allTriviaQuestions;
+      setAnsweredQuestionIds([]); // Clear the answered list for the next session
+    }
     
-    if (selectedQuestions.length < QUESTIONS_PER_GAME && allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
-       setActiveQuestions(allTriviaQuestions.slice(0, QUESTIONS_PER_GAME));
-    } else if (selectedQuestions.length === 0 && allTriviaQuestions.length > 0) {
-      setActiveQuestions(allTriviaQuestions.slice(0, Math.min(QUESTIONS_PER_GAME, allTriviaQuestions.length)));
-    }
-    else {
-      setActiveQuestions(selectedQuestions);
-    }
-  }, [allTriviaQuestions]);
+    const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+    setActiveQuestions(shuffled.slice(0, QUESTIONS_PER_GAME));
+
+  }, [allTriviaQuestions, answeredQuestionIds, toast]);
 
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
@@ -405,6 +435,15 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast, isAiLoreEnabled]);
 
   const handleProceedToNext = useCallback(async () => {
+    // Add the just-answered question to the answered list
+    if (currentQuestion) {
+      setAnsweredQuestionIds(prevIds => {
+        const newIds = new Set(prevIds);
+        newIds.add(currentQuestion.id);
+        return Array.from(newIds);
+      });
+    }
+
     setShowAnswerResult(false);
     setIsResponseLoading(false);
     setIsAudioLoading(false);
@@ -432,7 +471,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         }
       }
     }
-  }, [currentQuestionIndex, activeQuestions.length, score, user, toast, refreshUser]);
+  }, [currentQuestion, currentQuestionIndex, activeQuestions.length, score, user, toast, refreshUser]);
 
 
   useEffect(() => {
