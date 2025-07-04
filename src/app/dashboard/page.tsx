@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle } from 'lucide-react';
+import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
+import { runDeduplication } from '@/actions/deduplicateAction';
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
@@ -18,6 +19,8 @@ export default function DashboardPage() {
 
   const [seedStatus, setSeedStatus] = useState('');
   const [isSeeding, setIsSeeding] = useState(false);
+  const [dedupStatus, setDedupStatus] = useState('');
+  const [isDeduplicating, setIsDeduplicating] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -43,14 +46,22 @@ export default function DashboardPage() {
         return;
     }
     const result = await runDatabaseSeed(user.username);
-    if (result.success) {
-      setSeedStatus(result.message);
-    } else {
-      setSeedStatus(`Error: ${result.message}`);
-    }
+    setSeedStatus(result.message);
     setIsSeeding(false);
   };
 
+  const handleDeduplicate = async () => {
+    setIsDeduplicating(true);
+    setDedupStatus('Scanning for duplicates... This may take a moment.');
+    if (!user) {
+      setDedupStatus('Error: You must be logged in.');
+      setIsDeduplicating(false);
+      return;
+    }
+    const result = await runDeduplication(user.username);
+    setDedupStatus(result.message);
+    setIsDeduplicating(false);
+  };
 
   if (loading || !user) {
     return (
@@ -146,21 +157,39 @@ export default function DashboardPage() {
         </div>
 
         {user.username === 'Dan' && (
-          <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-headline text-xl text-primary">Database Setup</CardTitle>
-              <CardDescription>
-                Click this button to populate your Firestore database with any missing trivia questions from the source file.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button onClick={handleSeedDatabase} disabled={isSeeding} className="bg-accent text-accent-foreground hover:bg-accent/90">
-                <Database className="mr-2 h-4 w-4" />
-                {isSeeding ? 'Seeding...' : 'Seed Trivia Questions'}
-              </Button>
-              {seedStatus && <p className="mt-4 text-sm text-muted-foreground">{seedStatus}</p>}
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl text-primary">Database Setup</CardTitle>
+                <CardDescription>
+                  Click this button to populate your Firestore database with any missing trivia questions from the source file.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button onClick={handleSeedDatabase} disabled={isSeeding} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Database className="mr-2 h-4 w-4" />
+                  {isSeeding ? 'Seeding...' : 'Seed Trivia Questions'}
+                </Button>
+                {seedStatus && <p className="mt-4 text-sm text-muted-foreground">{seedStatus}</p>}
+              </CardContent>
+            </Card>
+
+            <Card className="bg-destructive/10 backdrop-blur-sm shadow-lg">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl text-destructive">Database Cleanup</CardTitle>
+                <CardDescription>
+                  This will scan the entire database and permanently remove any questions with duplicate text. Use with care.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button onClick={handleDeduplicate} disabled={isDeduplicating} variant="destructive">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {isDeduplicating ? 'Cleaning...' : 'Remove Duplicates'}
+                </Button>
+                {dedupStatus && <p className="mt-4 text-sm text-muted-foreground">{dedupStatus}</p>}
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
     </MainLayout>

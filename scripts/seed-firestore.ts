@@ -6,7 +6,7 @@
  */
 
 import { db } from '@/lib/firebase';
-import { collection, getDocs, addDoc, query } from 'firebase/firestore';
+import { collection, getDocs, addDoc, query, doc, deleteDoc } from 'firebase/firestore';
 import triviaQuestions from '../data/trivia_questions.json';
 
 const COLLECTION_NAME = 'triviaQuestions';
@@ -62,6 +62,60 @@ export async function seedDatabase(): Promise<{ success: boolean; message: strin
     console.error(errorMessage);
     console.error(error);
     console.log('\nPlease ensure your Firebase configuration in src/lib/firebaseConfig.ts is correct and you have read/write permissions for the collection.');
+    return { success: false, message: errorMessage };
+  }
+}
+
+/**
+ * Scans the triviaQuestions collection and removes documents with duplicate 'question' fields.
+ * @returns A promise that resolves to an object with success status and a message.
+ */
+export async function removeDuplicateQuestions(): Promise<{ success: boolean; message: string }> {
+  console.log('Starting duplicate question removal process...');
+  try {
+    const questionsCollection = collection(db, 'triviaQuestions');
+    const snapshot = await getDocs(query(questionsCollection));
+
+    if (snapshot.empty) {
+      return { success: true, message: 'Collection is empty. No duplicates to remove.' };
+    }
+
+    const seenQuestions = new Map<string, string>(); // Map question text to first doc ID seen
+    const docsToDelete: string[] = []; // Array of doc IDs to delete
+
+    for (const docSnap of snapshot.docs) {
+      const questionText = docSnap.data().question;
+      const docId = docSnap.id;
+
+      if (seenQuestions.has(questionText)) {
+        // This is a duplicate.
+        docsToDelete.push(docId);
+        console.log(`Marking duplicate for deletion: "${questionText.substring(0, 50)}..." (ID: ${docId})`);
+      } else {
+        // First time seeing this question.
+        seenQuestions.set(questionText, docId);
+      }
+    }
+
+    if (docsToDelete.length === 0) {
+      const message = `✅ No duplicate questions found. Your database is clean! Total questions: ${snapshot.size}.`;
+      console.log(message);
+      return { success: true, message };
+    }
+
+    console.log(`Found ${docsToDelete.length} duplicates. Deleting now...`);
+    for (const docId of docsToDelete) {
+      await deleteDoc(doc(db, 'triviaQuestions', docId));
+    }
+    
+    const finalCount = snapshot.size - docsToDelete.length;
+    const successMessage = `✅ Successfully removed ${docsToDelete.length} duplicate questions. Your database now contains ${finalCount} unique questions.`;
+    console.log(successMessage);
+    return { success: true, message: successMessage };
+
+  } catch (error: any) {
+    const errorMessage = `❌ An error occurred during the deduplication process: ${error.message}`;
+    console.error(errorMessage, error);
     return { success: false, message: errorMessage };
   }
 }
