@@ -1,0 +1,165 @@
+
+[
+  {
+    "id": "TQ001",
+    "question": "What is the name of the famous, unfinished castle on Heart Island, built by George C. Boldt?",
+    "options": ["Singer Castle", "Boldt Castle", "Dark Island Castle", "Castle Rest"],
+    "answer": "Boldt Castle",
+    "storylineHintKey": "boldt_secret_1",
+    "fallbackHint": "This Gilded Age marvel was built as a testament to a husband's love for his wife, Louise."
+  },
+  {
+    "id": "TQ002",
+    "question": "The St. Lawrence River forms the international border between the USA and which other country?",
+    "options": ["Mexico", "France", "Canada", "Greenland"],
+    "answer": "Canada",
+    "storylineHintKey": "border_mystery_1",
+    "fallbackHint": "Our northern neighbors share this magnificent waterway with the United States."
+  },
+  {
+    "id": "TQ003",
+    "question": "What is the humorous name of the smallest inhabited island in the Thousand Islands, part of the U.S.?",
+    "options": ["Tiny Town", "No Yard Inn", "A-B-C Island", "Just Room Enough Island"],
+    "answer": "Just Room Enough Island",
+    "storylineHintKey": "small_island_clue_1",
+    "fallbackHint": "The family who owns it wanted just enough space for a small house and a tree."
+  },
+  {
+    "id": "TQ004",
+    "question": "The St. Lawrence Seaway allows huge ocean-going vessels, often called what, to travel to the Great Lakes?",
+    "options": ["River Rats", "Lakers", "Seadogs", "Freighters"],
+    "answer": "Lakers",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "These long, narrow cargo ships are specifically designed to fit through the Seaway's locks."
+  },
+  {
+    "id": "TQ005",
+    "question": "What famous pirate and smuggler used the Thousand Islands as his base of operations during the Patriot War?",
+    "options": ["Blackbeard", "Calico Jack", "Bill Johnston", "Captain Kidd"],
+    "answer": "Bill Johnston",
+    "storylineHintKey": "pirate_treasure_1",
+    "fallbackHint": "This river pirate famously burned the British steamer 'Sir Robert Peel'."
+  },
+  {
+    "id": "TQ006",
+    "question": "What elusive, predatory fish is known as the 'King of the River' and is a prized catch for anglers?",
+    "options": ["Northern Pike", "Largemouth Bass", "Muskellunge", "Walleye"],
+    "answer": "Muskellunge",
+    "storylineHintKey": "fish_expert_clue",
+    "fallbackHint": "Often called 'Muskie,' it's known as the fish of ten thousand casts."
+  },
+  {
+    "id": "TQ007",
+    "question": "The St. Lawrence River is the primary outflow for what massive freshwater system?",
+    "options": ["The Mississippi River", "The Great Lakes", "The Hudson Bay", "The Amazon River"],
+    "answer": "The Great Lakes",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "It drains the combined waters of Superior, Michigan, Huron, Erie, and Ontario."
+  },
+  {
+    "id": "TQ008",
+    "question": "Which U.S. President was instrumental in the creation of the St. Lawrence Seaway?",
+    "options": ["Franklin D. Roosevelt", "John F. Kennedy", "Theodore Roosevelt", "Dwight D. Eisenhower"],
+    "answer": "Dwight D. Eisenhower",
+    "storylineHintKey": "seaway_president_1",
+    "fallbackHint": "A former general, he saw the strategic importance of the deep waterway."
+  },
+  {
+    "id": "TQ009",
+    "question": "By official count, how many islands make up the 'Thousand Islands' region?",
+    "options": ["Exactly 1,000", "Over 2,000", "1,864", "About 800"],
+    "answer": "1,864",
+    "storylineHintKey": "island_count_1",
+    "fallbackHint": "To be an island, it must stay above water year-round and have at least two living trees."
+  },
+  {
+    "id": "TQ010",
+    "question": "What popular salad dressing is said to have originated in the Thousand Islands?",
+    "options": ["Ranch", "Caesar", "Italian", "Thousand Island"],
+    "answer": "Thousand Island",
+    "storylineHintKey": "dressing_origin_1",
+    "fallbackHint": "Legend says it was created by a fishing guide's wife, Sophie LaLonde."
+  },
+  {
+    "id": "TQ011",
+    "question": "Singer Castle on Dark Island features secret passages and was built for the president of what company?",
+    "options": ["Ford Motor Company", "US Steel", "Singer Sewing Machine Company", "The Ritz-Carlton"],
+    "answer": "Singer Sewing Machine Company",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Its owner, Frederick Bourne, wanted a surprise-filled hunting lodge for his family."
+  },
+  {
+    "id": "TQ012",
+    "question": "The islands are the exposed tops of an ancient granite mountain range called the:",
+    "options": ["Appalachian Mountains", "Adirondack Mountains", "Rocky Mountains", "Frontenac Arch"],
+    "answer": "Frontenac Arch",
+    "storylineHintKey": "geology_rock_1",
+    "fallbackHint": "This bridge of ancient rock connects the Canadian Shield to the Adirondacks."
+  },
+  {
+    "id": "TQ013",
+    "question": "In what U.S. village would you find the Antique Boat Museum, dedicated to preserving the region's boating heritage?",
+    "options": ["Alexandria Bay", "Cape Vincent", "Clayton", "Sackets Harbor"],
+    "answer": "Clayton",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "This museum boasts the largest collection of freshwater antique boats in North America."
+  },
+  {
+    "id": "TQ014",
+    "question": "What is the affectionate nickname for a person who is a local expert on the St. Lawrence River?",
+    "options": ["River Person", "Seawolf", "River Rat", "Islander"],
+    "answer": "River Rat",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "It's considered a badge of honor, signifying deep knowledge of the river's secrets."
+  },
+  {
+    "id": "TQ015",
+    "question": "In what year did construction on Boldt Castle famously halt due to a personal tragedy?",
+    "options": ["1920", "1899", "1904", "1941"],
+    "answer": "1904",
+    "storylineHintKey": "boldt_construction_1",
+    "fallbackHint": "A telegram bearing news of his wife's death stopped all work on the castle."
+  },
+  {
+    "id": "TQ016",
+    "question": "What is a 'shore dinner,' a traditional meal for fishermen in the Thousand Islands?",
+    "options": ["A picnic on the beach", "A fish fry with salt pork and potatoes cooked outdoors", "A formal dinner at a riverside restaurant", "A potluck supper at the yacht club"],
+    "answer": "A fish fry with salt pork and potatoes cooked outdoors",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "It's a rustic tradition of cooking the day's catch right on the riverbank."
+  },
+  {
+    "id": "TQ017",
+    "question": "The cold, clear waters of the St. Lawrence are a popular destination for what type of recreational activity?",
+    "options": ["Surfing", "Freshwater Scuba Diving", "Whitewater Rafting", "Water Skiing Competitions"],
+    "answer": "Freshwater Scuba Diving",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Divers come to explore the many well-preserved shipwrecks on the river bottom."
+  },
+  {
+    "id": "TQ018",
+    "question": "What does the term 'The Lost Channel' refer to?",
+    "options": ["A TV station that went off the air", "A sunken boat carrying gold", "A section of the river where a British army got lost", "A popular fishing spot"],
+    "answer": "A section of the river where a British army got lost",
+    "storylineHintKey": "lost_channel_1",
+    "fallbackHint": "This confusing passage of water famously bewildered British forces in 1760."
+  },
+  {
+    "id": "TQ019",
+    "question": "The annual Poker Run event features what type of boats racing between checkpoints?",
+    "options": ["Sailboats", "Kayaks", "High-performance speedboats", "Antique wooden boats"],
+    "answer": "High-performance speedboats",
+    "storylineHintKey": "poker_run_1",
+    "fallbackHint": "Participants collect playing cards at various stops to build the best hand."
+  },
+  {
+    "id": "TQ020",
+    "question": "Which historic Canadian city, known as the 'Limestone City,' is located at the gateway to the Thousand Islands?",
+    "options": ["Toronto", "Ottawa", "Montreal", "Kingston"],
+    "answer": "Kingston",
+    "storylineHintKey": "canadian_gateway_1",
+    "fallbackHint": "This city is home to Fort Henry and the southern end of the Rideau Canal."
+  }
+]
+
+    
