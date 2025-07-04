@@ -5,7 +5,6 @@ import MainLayout from '@/components/layout/MainLayout';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle } from 'lucide-react';
@@ -178,6 +177,14 @@ interface DashboardCardProps {
 }
 
 function DashboardCard({ title, description, href, icon: Icon, buttonText, disabled }: DashboardCardProps) {
+  const router = useRouter();
+  
+  const handleClick = () => {
+    if (!disabled && href && href !== '#') {
+      router.push(href);
+    }
+  };
+  
   return (
     <Card className="bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <CardHeader className="flex-row items-center gap-4 pb-4">
@@ -190,8 +197,12 @@ function DashboardCard({ title, description, href, icon: Icon, buttonText, disab
         <p className="text-foreground/70 text-sm sm:text-base">{description}</p>
       </CardContent>
       <CardContent>
-         <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base" disabled={disabled}>
-          <Link href={href}>{buttonText}</Link>
+         <Button 
+            onClick={handleClick} 
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-sm sm:text-base" 
+            disabled={disabled}
+         >
+            {buttonText}
         </Button>
       </CardContent>
     </Card>
