@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI agent that converts longer story text to pirate-themed speech with a selectable voice.
@@ -10,7 +11,6 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import wav from 'wav';
-import { googleAI } from '@genkit-ai/googleai';
 
 // Input Schema
 const GenerateStoryAudioInputSchema = z.object({
@@ -73,7 +73,7 @@ const generateStoryAudioFlow = ai.defineFlow(
     const ttsPrompt = `${speakerId}: ${text}`;
 
     const { media } = await ai.generate({
-      model: googleAI.model('gemini-2.5-flash-preview-tts'),
+      model: 'googleai/gemini-2.5-flash-preview-tts',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {

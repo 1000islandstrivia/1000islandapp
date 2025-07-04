@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI agent that converts a given script to pirate-themed speech.
@@ -10,7 +11,6 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import wav from 'wav';
-import {googleAI} from '@genkit-ai/googleai';
 
 // Input Schema
 const GenerateSpokenPirateAudioInputSchema = z.object({
@@ -72,7 +72,7 @@ const generateSpokenPirateAudioFlow = ai.defineFlow(
     const ttsPrompt = `${selectedSpeaker}: ${input.script}`;
 
     const { media } = await ai.generate({
-      model: googleAI.model('gemini-2.5-flash-preview-tts'),
+      model: 'googleai/gemini-2.5-flash-preview-tts',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
