@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ScrollText, Lock, Unlock } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useEffect, useState } from 'react';
+import LorePlayback from './LorePlayback'; // Import the new component
 
 // This component will now manage its own state for unlocked hints based on local storage or props.
 // For this scaffold, we'll assume `unlockedHints` are passed if TriviaGame page passes its state.
@@ -75,7 +76,10 @@ export default function StoryProgress({ unlockedHintKeys = [] }: StoryProgressPr
             </AccordionTrigger>
             <AccordionContent className="px-6 py-4 border-t border-border bg-background/50">
               {hint.unlocked ? (
-                <p className="text-foreground/80 italic animate-fadeIn">{hint.text}</p>
+                <div>
+                  <p className="text-foreground/80 italic animate-fadeIn whitespace-pre-line">{hint.text}</p>
+                  <LorePlayback text={hint.text} />
+                </div>
               ) : (
                 <p className="text-muted-foreground italic">Answer more trivia questions to unlock this piece of the story.</p>
               )}
