@@ -29,15 +29,20 @@ export async function seedDatabase(): Promise<{ success: boolean; message: strin
     console.log(`Found ${existingQuestionIds.size} existing questions in the database.`);
 
     // 2. Filter out questions that already exist
-    const newQuestions = triviaQuestions.filter(q => !existingQuestionIds.has(q.id));
+    const allFileQuestions = triviaQuestions;
+    const newQuestions = allFileQuestions.filter(q => !existingQuestionIds.has(q.id));
+    const duplicateQuestionsInFile = allFileQuestions.length - newQuestions.length;
 
     if (newQuestions.length === 0) {
-      const message = `✅ All ${triviaQuestions.length} questions from the data file already exist in the database. No new questions were added. Total questions: ${existingQuestionIds.size}.`;
+      const message = `✅ Database is up to date. All ${allFileQuestions.length} questions from the data file already exist in the database. Total questions: ${existingQuestionIds.size}.`;
       console.log(message);
       return { success: true, message: message };
     }
     
     console.log(`Found ${newQuestions.length} new questions to add.`);
+    if (duplicateQuestionsInFile > 0) {
+        console.log(`(${duplicateQuestionsInFile} questions from the file were already present in the database and will be skipped.)`);
+    }
     
     // 3. Loop through the new questions and add each one
     let count = 0;
