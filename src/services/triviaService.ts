@@ -3,44 +3,35 @@
 /**
  * @fileOverview Service for managing trivia questions.
  *
- * - getTriviaQuestions - Fetches trivia questions.
+ * - getTriviaQuestions - Fetches trivia questions from Firestore.
  */
 
-import allTriviaQuestionsFromData from '@/lib/trivia_questions.json';
+import { db } from '@/lib/firebase';
 import type { TriviaQuestion } from '@/lib/trivia-data';
-
-// TODO: Implement fetching questions from Firestore
-// For now, this service returns questions from the local data file.
-// You should replace this with a Firestore query.
-// Example Firestore structure:
-// Collection: 'triviaQuestions'
-// Document: { id: string, question: string, options: string[], answer: string, storylineHintKey: string, category?: string, difficulty?: string }
+import { collection, getDocs, query } from 'firebase/firestore';
 
 /**
- * Fetches trivia questions.
+ * Fetches trivia questions from the 'triviaQuestions' collection in Firestore.
  * @returns A promise that resolves to an array of TriviaQuestion.
  */
 export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   try {
-    // Simulating an async fetch, replace with actual Firestore call
-    // For example:
-    // const q = query(collection(db, 'triviaQuestions'));
-    // const querySnapshot = await getDocs(q);
-    // const questions: TriviaQuestion[] = [];
-    // querySnapshot.forEach((doc) => {
-    //   questions.push({ id: doc.id, ...doc.data() } as TriviaQuestion);
-    // });
-    // return questions;
-
-    // For now, returning local data from the JSON file
-    return new Promise((resolve) => {
-      setTimeout(() => { // Simulate network delay
-        resolve(allTriviaQuestionsFromData as TriviaQuestion[]);
-      }, 500);
+    const q = query(collection(db, 'triviaQuestions'));
+    const querySnapshot = await getDocs(q);
+    const questions: TriviaQuestion[] = [];
+    querySnapshot.forEach((doc) => {
+      // The doc.id is the unique ID for the question document.
+      // We spread the rest of the data from the document.
+      questions.push({ id: doc.id, ...doc.data() } as TriviaQuestion);
     });
+
+    if (questions.length === 0) {
+        console.warn("Heads up: The 'triviaQuestions' collection in Firestore is empty. The game won't have any questions until you add some.");
+    }
+
+    return questions;
   } catch (error: any) {
-    console.error("Error fetching trivia questions:", error);
-    // In a real scenario, you might want to throw the error or return a default set / empty array
+    console.error("Error fetching trivia questions from Firestore:", error);
     throw new Error(`Could not fetch trivia questions. Original error: ${error.message || String(error)}`);
   }
 }
