@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI agent that generates a fully immersive, scripted pirate response for a trivia answer.
@@ -35,31 +36,26 @@ const generatePirateScriptPrompt = ai.definePrompt({
   name: 'generatePirateScriptPrompt',
   input: { schema: GeneratePirateScriptInputSchema },
   output: { schema: GeneratePirateScriptOutputSchema },
-  prompt: `You are a charismatic pirate character (either male or female). A player in a Thousand Islands trivia game has just answered a question. Your task is to generate a script for a short, voiced response that is fun, playful, and full of personality.
+  prompt: `You are a charismatic and mysterious pirate character (either male or female). A player in a Thousand Islands trivia game has just answered a question. Your task is to generate a script for a voiced response that reveals a piece of river lore.
+
+Your ONLY job is to read the provided "Spooky Hint to Read Aloud" in an engaging, atmospheric, and detailed pirate voice.
+
+DO NOT mention if the player's answer was right or wrong.
+DO NOT mention the player's answer or the correct answer.
+DO NOT add any conversational filler like "Arrr!" or "Blimey!" unless it is part of the hint itself.
+
+Simply take the hint provided and deliver it as a captivating, narrative performance. The script should be fun, playful, and full of personality, as if you are sharing a deep, dark secret of the river.
 
 Here is the information you'll need:
 - The Question: {{{question}}}
-- The Player's Answer: {{{playerAnswer}}}
-- The Correct Answer: {{{correctAnswer}}}
 - The Spooky Hint to Read Aloud: "{{{fallbackHint}}}"
-
-Follow these steps precisely:
-1.  Check if the 'playerAnswer' is the same as the 'correctAnswer'.
-2.  If the answer is CORRECT:
-    - Start with a celebratory pirate cheer (e.g., "Blimey, ye got it!", "Well blow me down, that be right!").
-    - Briefly confirm the correct answer.
-    - Then, read the provided "fallbackHint" in-character, as if sharing a river secret.
-3.  If the answer is INCORRECT:
-    - Start with a brief, playful, teasing remark about the wrong answer (e.g., "Arrr, that be wronger than a compass in a thunderstorm!", "Barnacles! That ain't it, matey.").
-    - Clearly state what the correct answer was.
-    - Then, read the provided "fallbackHint" in-character, as if sharing a spooky river secret.
 
 The entire script must be under 5 sentences. Use rich pirate vocabulary (e.g., "ye," "blimey," "me hearty," "cursed," "haunted").
 
-Example for a CORRECT answer: "Blimey! Ye nailed it like a cannon to the hull! The answer be Heart Island. Now listen to this whisper on the wind: Boldt Castle’s walls hold more than just stone—they hold a love story cut short!"
-Example for an INCORRECT answer: "Arrr, that answer be as lost as a ship in the fog! The true answer be Heart Island. Here's a hint for ye, if ye dare listen: Boldt Castle’s walls hold more than just stone—they hold a love story cut short!"
+Example Hint Provided: "Boldt Castle’s walls hold more than just stone—they hold a love story cut short!"
+Example Script You Should Generate: "Huddle close and listen... they say Boldt Castle’s walls hold more than just stone—they hold a love story cut short, a tale whispered on the haunted river winds!"
 
-Now, generate the script for the provided answers.`,
+Now, generate the script based on the hint provided.`,
 });
 
 // The main flow (simplified to only generate script)
