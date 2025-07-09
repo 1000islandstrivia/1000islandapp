@@ -51,7 +51,8 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
       if (result.audioDataUris && result.audioDataUris.length > 0) {
         setAudioSrcs(result.audioDataUris);
         setCurrentTrackIndex(0);
-        setIsPlaying(true); // Auto-play the first track
+        // Do not autoplay here to comply with mobile browser policies
+        // setIsPlaying(true); 
       } else {
         throw new Error("Received no audio clips.");
       }
@@ -94,14 +95,18 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
   };
   
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && audioSrcs) { // Ensure audioSrcs is not null
         if(isPlaying) {
-            audioRef.current.play().catch(e => console.error("Audio play failed:", e));
+            audioRef.current.play().catch(e => {
+              // This catch block is important for handling autoplay restrictions
+              console.error("Audio play failed:", e);
+              setIsPlaying(false); // Reset playing state if autoplay is blocked
+            });
         } else {
             audioRef.current.pause();
         }
     }
-  }, [currentTrackIndex, isPlaying]);
+  }, [currentTrackIndex, isPlaying, audioSrcs]);
 
 
   return (

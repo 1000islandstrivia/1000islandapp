@@ -365,13 +365,12 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
 
     if (isAiLoreEnabled) {
-      setTimeout(() => {
-        const responseAudios = isCorrect ? correctResponses : wrongResponses;
-        const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
-        if (typeof window !== 'undefined') {
-            new Audio(randomAudioUrl).play();
-        }
-      }, 3000);
+      // Play instant feedback sound immediately on user interaction
+      const responseAudios = isCorrect ? correctResponses : wrongResponses;
+      const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
+      if (typeof window !== 'undefined') {
+          new Audio(randomAudioUrl).play();
+      }
       
       const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
       setLoadingMessage(randomMessage);
@@ -396,35 +395,35 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         }
       };
       
-      if (currentQuestion.cachedPirateScript) {
-        // Use cached script
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        handleHintGeneration(currentQuestion.cachedPirateScript);
-      } else {
-        // Generate new script and cache it
-        try {
-            const scriptResult = await generatePirateScript({
-                question: currentQuestion.question,
-                playerAnswer: answer,
-                correctAnswer: currentQuestion.answer,
-                fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
-            });
-            
-            // Fire-and-forget caching
-            cacheHintAction(currentQuestion.id, scriptResult.script).catch(err => {
-                console.error("Failed to cache hint:", err);
-            });
-            
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            handleHintGeneration(scriptResult.script);
+      const processHint = async () => {
+         if (currentQuestion.cachedPirateScript) {
+            handleHintGeneration(currentQuestion.cachedPirateScript);
+        } else {
+            try {
+                const scriptResult = await generatePirateScript({
+                    question: currentQuestion.question,
+                    playerAnswer: answer,
+                    correctAnswer: currentQuestion.answer,
+                    fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
+                });
+                
+                cacheHintAction(currentQuestion.id, scriptResult.script).catch(err => {
+                    console.error("Failed to cache hint:", err);
+                });
+                
+                handleHintGeneration(scriptResult.script);
 
-        } catch (error) {
-            console.error("Failed to generate pirate script:", error);
-            toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
-            const fallbackScript = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
-            handleHintGeneration(fallbackScript);
+            } catch (error) {
+                console.error("Failed to generate pirate script:", error);
+                toast({ title: "The spirits be quiet...", description: "Couldn't get a response from the pirate ghost. Using a fallback hint!", variant: "destructive" });
+                const fallbackScript = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
+                handleHintGeneration(fallbackScript);
+            }
         }
       }
+      // Use a short timeout to let the card animation play out, but not long enough to be disconnected from user action on desktop
+      setTimeout(processHint, 500);
+
     } else {
         setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
         setIsResponseLoading(false);
