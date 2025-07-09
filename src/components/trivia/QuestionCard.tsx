@@ -41,7 +41,7 @@ export default function QuestionCard({ question, onAnswerSubmit, questionNumber,
             onValueChange={setSelectedOption}
             className="space-y-3 mb-6"
           >
-            {question.options.map((option, index) => (
+            {question.options && question.options.map((option, index) => (
               <Label 
                 key={index}
                 htmlFor={`option-${index}`}
