@@ -120,8 +120,8 @@ export async function updateUserScore(userId: string, username: string, scoreEar
 
 /**
  * Fetches a single user's leaderboard entry from Firestore for login validation.
- * Throws an error if the user is not found or not fully registered (lacks an email).
- * An exception is made for the admin user 'dan'.
+ * If the user is 'dan' and doesn't exist, it creates the admin user automatically.
+ * For other users, it throws an error if the user is not found or not fully registered.
  * @param userId - The user's unique ID (username, expected to be lowercase).
  * @returns A promise that resolves to the LeaderboardEntry.
  * @throws Error if user not found or not fully registered.
@@ -129,7 +129,24 @@ export async function updateUserScore(userId: string, username: string, scoreEar
 export async function getUserLeaderboardEntry(userId: string): Promise<LeaderboardEntry> {
   try {
     const userDocRef = doc(db, LEADERBOARD_COLLECTION, userId);
-    const userDocSnap = await getDoc(userDocRef);
+    let userDocSnap = await getDoc(userDocRef);
+
+    // If user is 'dan' and doesn't exist, create the admin user on the fly.
+    if (!userDocSnap.exists() && userId === 'dan') {
+      console.log("Admin user 'dan' not found. Creating entry...");
+      const defaultRank = getRankByScore(0);
+      const adminData = {
+        name: 'Dan', // Use original casing for display
+        score: 0,
+        rankTitle: defaultRank.title,
+        avatar: `https://placehold.co/40x40.png?text=D`,
+        lastUpdated: serverTimestamp(),
+        // No email is intentionally set for the admin user
+      };
+      await setDoc(userDocRef, adminData);
+      userDocSnap = await getDoc(userDocRef); // Re-fetch the newly created doc
+      console.log("Admin user 'dan' created successfully.");
+    }
 
     if (userDocSnap.exists()) {
       const data = userDocSnap.data();
