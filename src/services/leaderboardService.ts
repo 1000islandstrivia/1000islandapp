@@ -121,7 +121,8 @@ export async function updateUserScore(userId: string, username: string, scoreEar
 /**
  * Fetches a single user's leaderboard entry from Firestore for login validation.
  * Throws an error if the user is not found or not fully registered (lacks an email).
- * @param userId - The user's unique ID (username).
+ * An exception is made for the admin user 'dan'.
+ * @param userId - The user's unique ID (username, expected to be lowercase).
  * @returns A promise that resolves to the LeaderboardEntry.
  * @throws Error if user not found or not fully registered.
  */
@@ -133,7 +134,8 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
     if (userDocSnap.exists()) {
       const data = userDocSnap.data();
       // For a user to be considered "registered" for login, they must have an email.
-      if (!data.email) {
+      // We make an exception for the admin user 'dan'.
+      if (!data.email && userId !== 'dan') {
         throw new Error("User not found or not fully registered. Please register an account.");
       }
       const score = data.score || 0;
@@ -142,7 +144,7 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
       return {
         id: userDocSnap.id,
         name: data.name,
-        email: data.email, // Email must exist at this point
+        email: data.email, // Email can be undefined for the admin
         score: displayScore,
         rankTitle: rankTitle,
         avatar: data.avatar,
@@ -152,8 +154,6 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
       throw new Error("User not found. Please check your username or register for an account.");
     }
   } catch (error: any) {
-    // Log the original error for server-side debugging if needed
-    // console.error(`Error fetching user entry for '${userId}':`, error.message);
     // Re-throw the error to be handled by the calling function (useAuth)
     throw error;
   }
