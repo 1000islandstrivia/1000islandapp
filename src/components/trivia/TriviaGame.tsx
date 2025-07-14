@@ -369,7 +369,8 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       if (typeof window !== 'undefined') {
-          new Audio(randomAudioUrl).play();
+          const audio = new Audio(randomAudioUrl);
+          audio.play().catch(e => console.error("Error playing feedback audio:", e));
       }
       
       const randomMessage = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
@@ -421,8 +422,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
             }
         }
       }
-      // Use a short timeout to let the card animation play out, but not long enough to be disconnected from user action on desktop
-      setTimeout(processHint, 500);
+      processHint();
 
     } else {
         setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
@@ -567,7 +567,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       </Card>
 
       {showAnswerResult ? (
-        <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/90 backdrop-blur-sm animate-fadeIn p-6 min-h-[300px]">
+        <div className="w-full max-w-2xl mx-auto min-h-[300px] flex justify-center items-center">
           {isAiLoreEnabled ? (
             <>
               {(isResponseLoading || loadingMessage) && (
@@ -593,9 +593,11 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
               correctAnswer={currentQuestion.answer}
               onProceed={handleProceedToNext}
               isLastQuestion={currentQuestionIndex >= totalQuestionsToDisplay - 1}
+              questionNumber={currentQuestionIndex + 1}
+              totalQuestions={totalQuestionsToDisplay}
             />
           )}
-        </Card>
+        </div>
       ) : (
         <QuestionCard
           question={currentQuestion}
