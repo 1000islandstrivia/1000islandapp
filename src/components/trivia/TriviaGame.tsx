@@ -234,23 +234,33 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     if (!currentQuestion) return;
 
     const isCorrect = answer === currentQuestion.answer;
+    let newScore = score;
+    
+    // Update score and play immediate sound
+    if (isCorrect) {
+        newScore += 10;
+        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error(e));
+        
+        const storyHintKey = currentQuestion.storylineHintKey;
+        setUnlockedStoryHints(prev => {
+            const isAlreadyUnlocked = prev.some(h => h.key === storyHintKey && h.unlocked);
+            if (!isAlreadyUnlocked) {
+                return prev.map(h => (h.key === storyHintKey ? { ...h, unlocked: true } : h));
+            }
+            return prev;
+        });
+    } else {
+        newScore = Math.max(0, newScore - 5);
+        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error(e));
+    }
+    setScore(newScore);
+
+    // Update answered questions ID list
+    setAnsweredQuestionIds(prev => Array.from(new Set([...prev, currentQuestion.id])));
+
+    // Show result screen
     setAnswerCorrectness(isCorrect);
     setShowAnswerResult(true);
-
-    if (isCorrect) {
-        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error(e));
-        setScore(prev => prev + 10);
-        const storyHintKey = currentQuestion.storylineHintKey;
-        if (!unlockedStoryHintsRef.current.find(h => h.key === storyHintKey)?.unlocked) {
-            setUnlockedStoryHints(prev => prev.map(h => (h.key === storyHintKey ? { ...h, unlocked: true } : h)));
-            if (!currentAchievementsRef.current.find(a => a.id === 'first_hint')?.unlocked) {
-              updateAchievementProgress(currentAchievementsRef.current, 'first_hint', setCurrentAchievements);
-            }
-        }
-    } else {
-        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error(e));
-        setScore(prev => Math.max(0, prev - 5));
-    }
 
     if (isAiLoreEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
@@ -299,22 +309,18 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     } else {
       setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
     }
-  }, [currentQuestion, isAiLoreEnabled, toast]);
+  }, [currentQuestion, isAiLoreEnabled, toast, score]);
 
   const handleProceedToNext = useCallback(async () => {
-    if (currentQuestion) {
-      setAnsweredQuestionIds(prevIds => Array.from(new Set([...prevIds, currentQuestion.id])));
-    }
-
-    const nextIndex = currentQuestionIndex + 1;
-
-    // Reset feedback UI
+    // Reset feedback UI state for the next question
     setShowAnswerResult(false);
-    setIsResponseLoading(false);
-    setIsAudioLoading(false);
     setPirateResponse(null);
     setPirateAudioUri(null);
     setLoadingMessage(null);
+    setIsResponseLoading(false);
+    setIsAudioLoading(false);
+
+    const nextIndex = currentQuestionIndex + 1;
 
     if (nextIndex < activeQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
@@ -331,7 +337,28 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         }
       }
     }
-  }, [currentQuestion, currentQuestionIndex, activeQuestions.length, user, toast, refreshUser]);
+  }, [currentQuestionIndex, activeQuestions.length, user, toast, refreshUser]);
+
+
+  useEffect(() => {
+    // Check for achievement unlocks whenever the score or unlocked hints change
+    const newAchievements = [...currentAchievementsRef.current];
+    let changed = false;
+
+    // Example: First hint achievement
+    const firstHintAch = newAchievements.find(a => a.id === 'first_hint');
+    if (firstHintAch && !firstHintAch.unlocked && unlockedStoryHintsRef.current.some(h => h.unlocked)) {
+      firstHintAch.unlocked = true;
+      changed = true;
+    }
+    
+    // You can add more achievement checks here based on score, etc.
+
+    if (changed) {
+        setCurrentAchievements(newAchievements);
+    }
+  }, [score, unlockedStoryHints]);
+
 
   useEffect(() => {
     currentAchievements.forEach(ach => {
@@ -404,7 +431,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }
 
   const totalQuestionsToDisplay = activeQuestions.length;
-  const progressPercentage = ((currentQuestionIndex + 1) / totalQuestionsToDisplay) * 100;
+  const progressPercentage = ((currentQuestionIndex) / totalQuestionsToDisplay) * 100;
   const totalUserScore = (user?.score || 0) + score;
 
   return (
