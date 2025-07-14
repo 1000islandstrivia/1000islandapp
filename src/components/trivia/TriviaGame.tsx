@@ -315,13 +315,12 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
     const isCorrect = answer === currentQuestion.answer;
     setAnswerCorrectness(isCorrect);
-    
-    setShowAnswerResult(true);
+    setShowAnswerResult(true); // Show result card immediately
 
     let newSessionScore = score;
     if (isCorrect) {
         if (typeof window !== 'undefined') {
-            new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play();
+            new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error("Error playing sound:", e));
         }
         newSessionScore = score + 10;
         const storyHintKey = currentQuestion.storylineHintKey;
@@ -336,7 +335,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         }
     } else {
         if (typeof window !== 'undefined') {
-          new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play();
+          new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error("Error playing sound:", e));
         }
         newSessionScore = score - 50;
     }
@@ -365,7 +364,6 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
 
     if (isAiLoreEnabled) {
-      // Play instant feedback sound immediately on user interaction
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       if (typeof window !== 'undefined') {
@@ -425,12 +423,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       processHint();
 
     } else {
-        setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
-        setIsResponseLoading(false);
-        setPirateAudioUri(null);
-        setLoadingMessage(null);
+      // Logic for when AI lore is disabled
+      setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
     }
-
   }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast, isAiLoreEnabled]);
 
   const handleProceedToNext = useCallback(async () => {
@@ -587,7 +582,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
               )}
             </>
           ) : (
-            pirateResponse && <SimpleHintDisplay 
+             pirateResponse && <SimpleHintDisplay 
               script={pirateResponse.script}
               isCorrect={answerCorrectness}
               correctAnswer={currentQuestion.answer}
