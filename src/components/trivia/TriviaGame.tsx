@@ -315,7 +315,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
     const isCorrect = answer === currentQuestion.answer;
     setAnswerCorrectness(isCorrect);
-    setShowAnswerResult(true); // Show result card immediately
+    setShowAnswerResult(true);
 
     let newSessionScore = score;
     if (isCorrect) {
@@ -425,6 +425,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     } else {
       // Logic for when AI lore is disabled
       setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
+      setShowAnswerResult(true); // Explicitly show the result card
     }
   }, [currentQuestion, score, unlockedStoryHints, currentAchievements, user, toast, isAiLoreEnabled]);
 
@@ -453,7 +454,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
       if (user) {
         try {
-          await updateUserScore(user.username, user.username, scoreDelta);
+          await updateUserScore(user.username.toLowerCase(), user.username, scoreDelta);
           await refreshUser(); 
         } catch (error) {
           console.error("Failed to update score on leaderboard:", error);
@@ -512,7 +513,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           <CardTitle className="font-headline text-4xl text-primary">Adventure Complete, Captain!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-2xl">Your haul this game: <span className="font-bold text-accent">{finalSessionScore}</span> gold coins!</p>
+          <p className="text-2xl">Your haul this game: <span className="font-bold text-accent">{finalSessionScore.toLocaleString()}</span> gold coins!</p>
           <p className="text-lg text-foreground/80">
             Ye've navigated the treacherous waters of Thousand Islands trivia. Check yer treasure map (storyline) and see how ye rank against other pirates on the leaderboard!
           </p>
@@ -552,7 +553,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     <div className="space-y-8">
       <Card className="bg-card/80 backdrop-blur-sm shadow-md p-4">
         <div className="flex justify-between items-center mb-2">
-            <p className="text-lg font-semibold text-primary">Gold Coins: <span className="text-accent">{score}</span></p>
+            <p className="text-lg font-semibold text-primary">Gold Coins: <span className="text-accent">{score.toLocaleString()}</span></p>
             <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {totalQuestionsToDisplay}</p>
         </div>
         <Progress value={progressPercentage} className="w-full h-3 [&>div]:bg-accent" />
