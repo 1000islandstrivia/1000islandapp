@@ -23,7 +23,7 @@ export default function HomePage() {
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center container mx-auto px-4 py-12 text-center">
         <ScrollText className="w-24 h-24 text-primary mb-6" />
-        <h1 className="text-5xl md:text-6xl font-headline font-bold text-primary mb-4">
+        <h1 className="text-5xl md:text-6xl font-headline font-black text-primary mb-4">
           1000 Islands RiverRat Lore
         </h1>
         <p className="text-xl text-foreground/80 mb-8 max-w-2xl">
