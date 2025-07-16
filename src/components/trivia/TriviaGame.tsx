@@ -293,16 +293,23 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         setPirateResponse({ script });
         setIsResponseLoading(false);
         setLoadingMessage(null);
-        setIsAudioLoading(true);
-
-        try {
-          const audioResult = await generateSpokenPirateAudio({ script });
-          setPirateAudioUri(audioResult.audioDataUri);
-        } catch (err) {
-          console.error("Failed to generate pirate audio:", err);
-          toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
-        } finally {
-          setIsAudioLoading(false);
+        
+        // Only attempt to generate audio if the script is valid
+        if (script && script.trim().length > 0) {
+          setIsAudioLoading(true);
+          try {
+            const audioResult = await generateSpokenPirateAudio({ script });
+            setPirateAudioUri(audioResult.audioDataUri);
+          } catch (err) {
+            console.error("Failed to generate pirate audio:", err);
+            toast({ title: "The parrot be shy...", description: "Couldn't generate the pirate's voice.", variant: "destructive" });
+          } finally {
+            setIsAudioLoading(false);
+          }
+        } else {
+            // Handle cases where the script is empty or invalid
+            console.warn("Skipping audio generation due to empty script.");
+            setIsAudioLoading(false);
         }
       };
       processHint();
