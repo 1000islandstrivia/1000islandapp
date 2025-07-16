@@ -1179,16 +1179,11 @@
   },
   {
     "id": "TQ135",
-    "question": "Devil's Oven on Grindstone Island is what kind of natural feature?",
-    "options": [
-      "A hot spring",
-      "A large cave or rock shelter",
-      "A volcanic vent",
-      "A meteor crater"
-    ],
-    "answer": "A large cave or rock shelter",
+    "question": "What island is home to a natural feature called the Devil's Oven, rumored to have been a pirate hideout?",
+    "options": ["Heart Island", "Wellesley Island", "Grindstone Island", "Dark Island"],
+    "answer": "Grindstone Island",
     "storylineHintKey": "devils_oven_1",
-    "fallbackHint": "Devil's Oven is a large cave rumored to have been used by the pirate Bill Johnston as a hideout."
+    "fallbackHint": "This rugged island, with its legendary cave, has a long history as a pirate hideaway."
   },
   {
     "id": "TQ136",
@@ -2034,7 +2029,405 @@
     "answer": "Your anchor",
     "storylineHintKey": "survival_scenario_2",
     "fallbackHint": "Dropping an anchor immediately stops your boat from being pushed by wind or current into rocks or the shipping channel."
+  },
+  {
+    "id": "TQ226",
+    "question": "What architectural feature was planned for Boldt Castle's Power House that was never completed, leaving it silent?",
+    "options": ["A pipe organ", "A carillon of bells", "A drawbridge", "A water-powered clock"],
+    "answer": "A carillon of bells",
+    "storylineHintKey": "architecture_clue_4",
+    "fallbackHint": "The grand clock tower on the Power House was meant to ring out across the water with a chime of bells, but they were never installed."
+  },
+  {
+    "id": "TQ227",
+    "question": "On a boat, what does the term 'starboard' refer to?",
+    "options": ["The left side", "The right side", "The front", "The back"],
+    "answer": "The right side",
+    "storylineHintKey": "boating_safety_7",
+    "fallbackHint": "A simple trick for a River Rat: 'starboard' has an 'R', and so does 'right'."
+  },
+  {
+    "id": "TQ228",
+    "question": "What is the common name of the invasive fish, native to the Black and Caspian seas, that competes with native species for food?",
+    "options": ["Round Goby", "Piranha", "Snakehead", "Lionfish"],
+    "answer": "Round Goby",
+    "storylineHintKey": "environmental_fact_4",
+    "fallbackHint": "This small, bottom-dwelling invader arrived in ballast water and has had a significant impact on the river's ecosystem."
+  },
+  {
+    "id": "TQ229",
+    "question": "The 'Navy' group of islands was so named because they were set aside for veterans of which war?",
+    "options": ["The American Revolution", "The War of 1812", "The French and Indian War", "The Civil War"],
+    "answer": "The French and Indian War",
+    "storylineHintKey": "island_names_2",
+    "fallbackHint": "The British Crown granted these islands to loyal naval veterans for their service long before the American Revolution."
+  },
+  {
+    "id": "TQ230",
+    "question": "Which hotel, not on the river itself, played a crucial role in popularizing Thousand Island dressing?",
+    "options": ["The Plaza Hotel", "The Ritz-Carlton", "The Waldorf-Astoria Hotel", "The Savoy"],
+    "answer": "The Waldorf-Astoria Hotel",
+    "storylineHintKey": "food_dining_2",
+    "fallbackHint": "George Boldt, owner of Boldt Castle, introduced the dressing to the world at his famous New York City hotel."
+  },
+  {
+    "id": "TQ231",
+    "question": "What does the term 'abaft' mean on a boat?",
+    "options": ["Toward the front", "On the left side", "Toward the rear", "Above the deck"],
+    "answer": "Toward the rear",
+    "storylineHintKey": "boating_safety_8",
+    "fallbackHint": "Knowing your 'fore' from your 'aft' is day-one stuff for a true River Rat."
+  },
+  {
+    "id": "TQ232",
+    "question": "The Sunken Rock Lighthouse is known for being located where?",
+    "options": ["On a large island", "On the mainland", "On a tiny, dangerous shoal in the middle of the channel", "At the entrance to a bay"],
+    "answer": "On a tiny, dangerous shoal in the middle of the channel",
+    "storylineHintKey": "lighthouse_legend_4",
+    "fallbackHint": "This lighthouse is a stark warning, built directly on top of the hazard it marks for passing ships."
+  },
+  {
+    "id": "TQ233",
+    "question": "What is the purpose of a 'limber hole' in the frame of a wooden boat?",
+    "options": ["To hold a fishing rod", "To allow water to drain to the lowest point of the hull", "To tie a rope to", "A place for decoration"],
+    "answer": "To allow water to drain to the lowest point of the hull",
+    "storylineHintKey": "boating_history_2",
+    "fallbackHint": "These small but crucial holes prevent water from getting trapped in the boat's ribs, a key detail in classic boat building."
+  },
+  {
+    "id": "TQ234",
+    "question": "The 'Lake Fleet' group of islands is named after what?",
+    "options": ["A fleet of ghost ships", "A famous brand of boat", "The ships of the British fleet from the War of 1812", "A local fishing fleet"],
+    "answer": "The ships of the British fleet from the War of 1812",
+    "storylineHintKey": "war_history_clue_4",
+    "fallbackHint": "Many islands in this Canadian group are named after the warships that fought on the Great Lakes."
+  },
+  {
+    "id": "TQ235",
+    "question": "What is the primary sign of a 'no-wake zone' on the river?",
+    "options": ["A red flag on a dock", "A flashing light on an island", "A white buoy with orange markings and 'NO WAKE' text", "A loud siren"],
+    "answer": "A white buoy with orange markings and 'NO WAKE' text",
+    "storylineHintKey": "boating_safety_9",
+    "fallbackHint": "These buoys signal boaters to slow to idle speed to protect shorelines, docks, and other vessels from damaging wakes."
+  },
+  {
+    "id": "TQ236",
+    "question": "The construction of Singer Castle was overseen by which famous artist and designer?",
+    "options": ["Frank Lloyd Wright", "Louis Comfort Tiffany", "Ernest Flagg", "Stanford White"],
+    "answer": "Ernest Flagg",
+    "storylineHintKey": "architecture_clue_5",
+    "fallbackHint": "This notable American architect, known for the Singer Building in New York City, designed the castle on Dark Island."
+  },
+  {
+    "id": "TQ237",
+    "question": "What is the main purpose of the 'Save The River' organization?",
+    "options": ["To promote boat racing", "To restore old castles", "To advocate for the river's environmental protection", "To stock the river with fish"],
+    "answer": "To advocate for the river's environmental protection",
+    "storylineHintKey": "conservation_2",
+    "fallbackHint": "This group is a leading voice for the health of the St. Lawrence River ecosystem."
+  },
+  {
+    "id": "TQ238",
+    "question": "What is the term for a chart that shows water depths and navigational information?",
+    "options": ["A topographic map", "A globe", "An atlas", "A nautical chart"],
+    "answer": "A nautical chart",
+    "storylineHintKey": "boating_safety_10",
+    "fallbackHint": "No wise captain would dare navigate the river's maze without one of these detailed maps of the world beneath the waves."
+  },
+  {
+    "id": "TQ239",
+    "question": "The wreck of the 'Iroquoi', a passenger steamship, is a popular dive site. What was its fate?",
+    "options": ["It hit a shoal and sank", "It was burned by Bill Johnston", "It was intentionally scuttled", "It caught fire and was beached"],
+    "answer": "It caught fire and was beached",
+    "storylineHintKey": "shipwreck_lore_3",
+    "fallbackHint": "A fire broke out on this vessel, and its captain bravely beached it to save the passengers, leaving a wreck for future divers to explore."
+  },
+  {
+    "id": "TQ240",
+    "question": "If you are on a boat and hear one prolonged horn blast from another boat, what might it indicate?",
+    "options": ["They are in distress", "They are leaving a dock or a blind bend", "They are turning to the right", "They are stopping"],
+    "answer": "They are leaving a dock or a blind bend",
+    "storylineHintKey": "boating_safety_11",
+    "fallbackHint": "This is a common warning signal to alert other boaters of their presence when their view is obstructed."
+  },
+  {
+    "id": "TQ241",
+    "question": "The 'Thousand Islands National Park' was the first Canadian national park established where?",
+    "options": ["In the Rocky Mountains", "In the Maritimes", "East of the Rocky Mountains", "In the Arctic"],
+    "answer": "East of the Rocky Mountains",
+    "storylineHintKey": "environmental_fact_5",
+    "fallbackHint": "Established in 1904, this park was a pioneering conservation effort in Eastern Canada."
+  },
+  {
+    "id": "TQ242",
+    "question": "What does the term 'draft' refer to in boating?",
+    "options": ["The speed of the boat", "The height of the mast", "The depth of water a boat needs to float", "The wind direction"],
+    "answer": "The depth of water a boat needs to float",
+    "storylineHintKey": "boating_safety_12",
+    "fallbackHint": "Knowing your boat's draft is crucial for avoiding the river's many treacherous shoals."
+  },
+  {
+    "id": "TQ243",
+    "question": "The historic 'King's Highway 2' on the Canadian side is also known by what commemorative name?",
+    "options": ["The Seaway Trail", "The Loyalist Parkway", "The Heritage Highway", "The Queen's Way"],
+    "answer": "The Loyalist Parkway",
+    "storylineHintKey": "local_history_3",
+    "fallbackHint": "This scenic route follows the path of United Empire Loyalists who settled along the river after the American Revolution."
+  },
+  {
+    "id": "TQ244",
+    "question": "What is the name of the strait that separates Wolfe Island from the Canadian mainland?",
+    "options": ["The Bateau Channel", "The International Rift", "The Lost Channel", "The Grand Narrows"],
+    "answer": "The Bateau Channel",
+    "storylineHintKey": "island_geography_4",
+    "fallbackHint": "This channel is the main route for the ferry connecting the largest of the Thousand Islands to Kingston."
+  },
+  {
+    "id": "TQ245",
+    "question": "A 'bilge pump' is a critical piece of equipment on a boat for what purpose?",
+    "options": ["To play music", "To cool the engine", "To pump out unwanted water from inside the hull", "To inflate rafts"],
+    "answer": "To pump out unwanted water from inside the hull",
+    "storylineHintKey": "boating_safety_13",
+    "fallbackHint": "Every good River Rat makes sure this device is in working order before leaving the dock."
+  },
+  {
+    "id": "TQ246",
+    "question": "The 'Great Waterway' is a tourism region in Ontario that prominently features which river?",
+    "options": ["The Ottawa River", "The Hudson River", "The St. Lawrence River", "The Mississippi River"],
+    "answer": "The St. Lawrence River",
+    "storylineHintKey": "cross_border_culture_2",
+    "fallbackHint": "This branding highlights the river's central role in the history and culture of southeastern Ontario."
+  },
+  {
+    "id": "TQ247",
+    "question": "What is the common term for the front of a boat?",
+    "options": ["The stern", "The aft", "The bow", "The port"],
+    "answer": "The bow",
+    "storylineHintKey": "boating_safety_14",
+    "fallbackHint": "A true mariner always knows their bow from their stern."
+  },
+  {
+    "id": "TQ248",
+    "question": "In the early 20th century, what industry on Grindstone Island was known for its high-quality stone?",
+    "options": ["Diamond mining", "Granite quarrying", "Sandstone quarrying for grindstones", "Marble quarrying"],
+    "answer": "Sandstone quarrying for grindstones",
+    "storylineHintKey": "island_names_3",
+    "fallbackHint": "The island's name is a direct link to its past as a source of stone for sharpening tools."
+  },
+  {
+    "id": "TQ249",
+    "question": "The '4th of July' fireworks in Alexandria Bay are traditionally launched from where?",
+    "options": ["The top of Boldt Castle", "A barge in the middle of the river", "The Thousand Islands Bridge", "The town docks"],
+    "answer": "A barge in the middle of the river",
+    "storylineHintKey": "local_events_3",
+    "fallbackHint": "This allows for spectacular views and reflections on the water for the crowds gathered on both shores."
+  },
+  {
+    "id": "TQ250",
+    "question": "If your boat capsizes in the river, what is the safest thing to do if you can't get to shore?",
+    "options": ["Swim for the nearest island, no matter how far", "Try to climb on top of the overturned hull", "Tread water and wait for help", "Dive under the boat to stay out of the wind"],
+    "answer": "Try to climb on top of the overturned hull",
+    "storylineHintKey": "survival_scenario_3",
+    "fallbackHint": "Staying with your boat, even if it's upside down, makes you a much larger target for rescuers to spot."
+  },
+  {
+    "id": "TQ251",
+    "question": "What is the common name for the Double-crested bird, often seen drying its wings on buoys and islands?",
+    "options": ["Loon", "Cormorant", "Gull", "Puffin"],
+    "answer": "Cormorant",
+    "storylineHintKey": "wildlife_nature_5",
+    "fallbackHint": "These dark, prehistoric-looking birds lack waterproof feathers, so they must spread their wings to dry in the sun."
+  },
+  {
+    "id": "TQ252",
+    "question": "A 'cleat' on a dock or boat is used for what purpose?",
+    "options": ["A decorative ornament", "A step to get on board", "To securely tie a rope or line", "To hold a flag"],
+    "answer": "To securely tie a rope or line",
+    "storylineHintKey": "boating_safety_15",
+    "fallbackHint": "Knowing how to properly secure a line to this simple piece of hardware is a fundamental boating skill."
+  },
+  {
+    "id": "TQ253",
+    "question": "What is the main ingredient in the local delicacy known as 'fried cheese curds'?",
+    "options": ["Mozzarella", "Cheddar", "Swiss", "It's a special curd cheese"],
+    "answer": "It's a special curd cheese",
+    "storylineHintKey": "food_dining_3",
+    "fallbackHint": "This squeaky, fresh cheese is a regional favorite, especially when battered and fried."
+  },
+  {
+    "id": "TQ254",
+    "question": "The wreck of the 'Keystorm', a large steel freighter, lies near which lighthouse?",
+    "options": ["Rock Island Lighthouse", "Tibbetts Point Lighthouse", "Sunken Rock Lighthouse", "Sister Island Lighthouse"],
+    "answer": "Rock Island Lighthouse",
+    "storylineHintKey": "shipwreck_lore_4",
+    "fallbackHint": "This massive wreck is one of the most popular advanced scuba diving sites in the region, resting in the shadow of a historic light."
+  },
+  {
+    "id": "TQ255",
+    "question": "What is the primary difference between a 'bay' and a 'cove'?",
+    "options": ["There is no difference", "Bays are on the US side, coves on the Canadian", "A cove is a type of small, sheltered bay", "Bays have fresh water, coves have salt water"],
+    "answer": "A cove is a type of small, sheltered bay",
+    "storylineHintKey": "island_geography_5",
+    "fallbackHint": "River Rats know that the coziest, most protected anchorages are found in the river's many coves."
+  },
+  {
+    "id": "TQ256",
+    "question": "The firm of 'Lawlor & Son' in Clayton was famous for building what type of vessel?",
+    "options": ["Steam yachts", "Houseboats", "St. Lawrence Skiffs", "Sailboats"],
+    "answer": "St. Lawrence Skiffs",
+    "storylineHintKey": "boating_history_3",
+    "fallbackHint": "This historic boatbuilder was one of the premier creators of the elegant, iconic rowing boats of the Thousand Islands."
+  },
+  {
+    "id": "TQ257",
+    "question": "If you are on the river at night and see a boat with a red and a green light, what direction is it heading?",
+    "options": ["Away from you", "Towards you", "Parallel to you", "It is anchored"],
+    "answer": "Towards you",
+    "storylineHintKey": "boating_safety_16",
+    "fallbackHint": "Seeing both sidelights means the bow is pointed your way, a crucial piece of information for night navigation."
+  },
+  {
+    "id": "TQ258",
+    "question": "Which of these is a traditional French-Canadian dish you might find in restaurants on the Ontario side of the river?",
+    "options": ["Sushi", "Poutine", "Tacos", "Pizza"],
+    "answer": "Poutine",
+    "storylineHintKey": "cross_border_culture_3",
+    "fallbackHint": "This hearty dish of fries, cheese curds, and gravy is a beloved comfort food in Canada."
+  },
+  {
+    "id": "TQ259",
+    "question": "The 'Tom Thumb' is a tiny island with a single cottage. What is it famously right next to?",
+    "options": ["Boldt Castle", "Just Room Enough Island", "A shipping channel marker", "The Canadian-US border"],
+    "answer": "A shipping channel marker",
+    "storylineHintKey": "local_landmarks_3",
+    "fallbackHint": "The residents of this tiny island get a front-row seat to the massive freighters gliding by their window."
+  },
+  {
+    "id": "TQ260",
+    "question": "What does PFD stand for in boating safety terms?",
+    "options": ["Port-Facing Door", "Personal Flotation Device", "Power Fast-Drive", "Primary Fuel Depot"],
+    "answer": "Personal Flotation Device",
+    "storylineHintKey": "boating_safety_17",
+    "fallbackHint": "Also known as a life jacket, having enough of these on board isn't just a good idea—it's the law."
+  },
+  {
+    "id": "TQ261",
+    "question": "Which Thousand Islands castle has a bowling alley in one of its towers?",
+    "options": ["Boldt Castle", "Singer Castle", "Calumet Castle", "Jorstadt Castle"],
+    "answer": "Boldt Castle",
+    "storylineHintKey": "architecture_clue_6",
+    "fallbackHint": "The Alster Tower, or 'playhouse,' at Boldt Castle was designed with a two-lane bowling alley for the family's entertainment."
+  },
+  {
+    "id": "TQ262",
+    "question": "What is the common name for the plant 'Lythrum salicaria', a beautiful but highly invasive purple flower?",
+    "options": ["Purple Loosestrife", "Wild Iris", "Pickerelweed", "Purple Orchid"],
+    "answer": "Purple Loosestrife",
+    "storylineHintKey": "environmental_fact_6",
+    "fallbackHint": "While its vibrant purple spikes are pretty, this invasive plant chokes out native wetland vegetation."
+  },
+  {
+    "id": "TQ263",
+    "question": "In a survival scenario, which of these common island trees has inner bark that is edible?",
+    "options": ["Oak", "Pine", "Maple", "Cedar"],
+    "answer": "Pine",
+    "storylineHintKey": "survival_scenario_4",
+    "fallbackHint": "The soft inner bark of a pine tree is a source of emergency nourishment, a piece of old woodsman's lore."
+  },
+  {
+    "id": "TQ264",
+    "question": "What is the 'fathom' a unit of measurement for?",
+    "options": ["Speed", "Weight", "Length", "Depth"],
+    "answer": "Depth",
+    "storylineHintKey": "boating_history_4",
+    "fallbackHint": "This old nautical term, equal to six feet, is used to measure the depth of water."
+  },
+  {
+    "id": "TQ265",
+    "question": "The Canadian span of the Thousand Islands Bridge system lands on what island?",
+    "options": ["Wolfe Island", "Hill Island", "Howe Island", "Grindstone Island"],
+    "answer": "Hill Island",
+    "storylineHintKey": "island_geography_6",
+    "fallbackHint": "This island serves as the Canadian anchor for the bridge system and is home to the 1000 Islands Tower."
+  },
+  {
+    "id": "TQ266",
+    "question": "The ghost of a lone soldier is said to haunt which historic military site?",
+    "options": ["Fort Henry", "Sackets Harbor Battlefield", "Fort Wellington", "Carleton Island"],
+    "answer": "Fort Henry",
+    "storylineHintKey": "ghost_story_2",
+    "fallbackHint": "Visitors report seeing a lone, uniformed figure patrolling the ramparts of this Kingston fort, still on duty after all these years."
+  },
+  {
+    "id": "TQ267",
+    "question": "If you are trolling for fish, what are you doing?",
+    "options": ["Fishing from a dock", "Fishing with a net", "Fishing by dragging a lure or bait behind a moving boat", "Fishing with a spear"],
+    "answer": "Fishing by dragging a lure or bait behind a moving boat",
+    "storylineHintKey": "fishing_lore_3",
+    "fallbackHint": "This popular fishing technique is a great way to cover a lot of water in search of predatory fish like pike or walleye."
+  },
+  {
+    "id": "TQ268",
+    "question": "What is the primary role of the United States Coast Guard in the Thousand Islands?",
+    "options": ["To collect tolls", "To lead sightseeing tours", "Search and rescue, and law enforcement", "To operate the locks"],
+    "answer": "Search and rescue, and law enforcement",
+    "storylineHintKey": "boating_safety_18",
+    "fallbackHint": "The Coast Guard is the primary maritime authority for ensuring safety and enforcing regulations on the US side of the river."
+  },
+  {
+    "id": "TQ269",
+    "question": "Which of these is NOT a real island name in the Thousand Islands?",
+    "options": ["Sugar Island", "Bloodletter Island", "Fiddler's Elbow", "Mermaid Island"],
+    "answer": "Mermaid Island",
+    "storylineHintKey": "island_names_4",
+    "fallbackHint": "While many islands have colorful and historic names, one of these is purely from a fantasy tale."
+  },
+  {
+    "id": "TQ270",
+    "question": "What is the name of the narrow, winding channel that separates Wellesley Island from the US mainland?",
+    "options": ["Lake of the Isles", "The Narrows", "Eel Bay", "The American Channel"],
+    "answer": "Lake of the Isles",
+    "storylineHintKey": "island_geography_7",
+    "fallbackHint": "This beautiful, sheltered body of water feels like a separate lake but is actually a part of the river."
+  },
+  {
+    "id": "TQ271",
+    "question": "The 'port' side of a boat is which side when you are facing forward?",
+    "options": ["The right side", "The left side", "The front side", "The back side"],
+    "answer": "The left side",
+    "storylineHintKey": "boating_safety_19",
+    "fallbackHint": "An old sailor's trick: 'port' and 'left' both have four letters."
+  },
+  {
+    "id": "TQ272",
+    "question": "What is the term for the violent, swirling water often found downstream of a dam or rapids?",
+    "options": ["An eddy", "A backwater", "A boil", "A calm"],
+    "answer": "A boil",
+    "storylineHintKey": "environmental_fact_7",
+    "fallbackHint": "These turbulent upwellings are extremely dangerous for boaters and swimmers."
+  },
+  {
+    "id": "TQ273",
+    "question": "The very first international hockey game is said to have been played between teams from which two river cities?",
+    "options": ["Clayton and Gananoque", "Kingston and Cape Vincent", "Syracuse and Cornwall", "Kingston and Sackets Harbor"],
+    "answer": "Kingston and Sackets Harbor",
+    "storylineHintKey": "cross_border_culture_4",
+    "fallbackHint": "In the 1880s, teams from these two historic cities faced off on the frozen river, a classic Canadian-American rivalry."
+  },
+  {
+    "id": "TQ274",
+    "question": "What is the name of the grand Gilded Age hotel in Alexandria Bay that burned down in 1897?",
+    "options": ["The Frontenac", "The Crossmon House", "The Monticello", "The Thousand Island House"],
+    "answer": "The Crossmon House",
+    "storylineHintKey": "local_history_4",
+    "fallbackHint": "This famous hotel hosted President Ulysses S. Grant and was a center of social life before its fiery demise."
+  },
+  {
+    "id": "TQ275",
+    "question": "If your boat runs aground on a shoal, what is a common first step to try and get free?",
+    "options": ["Put the engine in full reverse", "Shift weight to the part of the boat that is still floating deepest", "Drop your anchor immediately", "Call for a helicopter"],
+    "answer": "Shift weight to the part of the boat that is still floating deepest",
+    "storylineHintKey": "survival_scenario_5",
+    "fallbackHint": "Moving passengers or heavy items can sometimes lift the grounded part of the hull just enough to float free."
   }
 ]
-
-    
