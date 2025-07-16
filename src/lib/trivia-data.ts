@@ -52,7 +52,7 @@ export const storyline: StorylineHint[] = [
   { 
     key: "pirate_treasure_1", 
     title: "The River Rat's Gold", 
-    text: "Arrr, ye think pirates only sailed the sunny Caribbean? Think again, matey! The Thousand Islands had a pirate all its own, a cunning rogue named Bill Johnston. He wasn’t your black-hearted, plank-walking sort, mind you. Bill was an American patriot, a spy, and a first-class smuggler who knew the river’s every secret eddy and hidden cove. During the Patriot War of the 1830s, he aided Canadian rebels, using his fleet of small boats to raid British ships. His most famous act was the burning of the British steamer *Sir Robert Peel*. After the raid, they say he made off with a military payroll, a chest heavy with gold coins. The authorities hunted him for months, but the river was his domain. He vanished into the labyrinth of islands like a fox into its den. Legend says he stashed the gold in a waterfront cave, perhaps Devil’s Oven on Grindstone Island, or some other secret spot known only to him. He was eventually caught, but the treasure was never found. To this day, treasure hunters and hopeful river rats search for Johnston’s lost gold. Some say that on a clear, quiet day, you can see a faint glimmer deep in the water, a wink from ol’ Bill himself, daring you to find his ill-gotten gains. *Perhaps the next piece of lore will lead you closer to the gold…*", 
+    text: "Arrr, ye think pirates only sailed the sunny Caribbean? Think again, matey! The Thousand Islands had a pirate all its own, a cunning rogue named Bill Johnston. He wasn’t your black-hearted, plank-walking sort, mind you. Bill was an American patriot, a spy, and a first-class smuggler who knew the river’s every secret eddy and hidden cove. During the Patriot War of the 1830s, he aided Canadian rebels, using his fleet of small boats to raid British ships. His most famous act was the burning of the British steamer *Sir Robert Peel*. After the raid, they say he made off with a military payroll, a chest heavy with gold coins. The authorities hunted him for months, but the river was his domain. He vanished into the labyrinth of islands like a fox into its den. Legend says he stashed the gold in a waterfront cave, perhaps Devil’s Oven Island, or some other secret spot known only to him. He was eventually caught, but the treasure was never found. To this day, treasure hunters and hopeful river rats search for Johnston’s lost gold. Some say that on a clear, quiet day, you can see a faint glimmer deep in the water, a wink from ol’ Bill himself, daring you to find his ill-gotten gains. *Perhaps the next piece of lore will lead you closer to the gold…*", 
     unlocked: false, 
     icon: Diamond 
   },
@@ -345,7 +345,7 @@ export const storyline: StorylineHint[] = [
   { 
     key: "devils_oven_1", 
     title: "Ancient Shelter", 
-    text: "They say the pirate Bill Johnston used this natural cave as a hideout. Devil's Oven on Grindstone Island has offered shelter to fugitives, fishermen, and storytellers for centuries.", 
+    text: "They say the pirate Bill Johnston used this natural cave as a hideout. Devil's Oven Island has offered shelter to fugitives, fishermen, and storytellers for centuries.", 
     unlocked: false, 
     icon: Mountain 
   },
@@ -679,6 +679,139 @@ export const storyline: StorylineHint[] = [
     icon: Waves 
   },
   { 
+    key: "nepco_spill_1", 
+    title: "The Black Day", 
+    text: "The winter of 1976 is remembered for a black tide. The tanker 'NEPCO 140' ran aground in icy conditions, spilling over 300,000 gallons of crude oil. It was a devastating blow to the river's ecosystem, coating miles of shoreline and wildlife in a thick, toxic sludge. The cleanup took years and the event became a powerful catalyst for change, leading to stricter environmental laws and a deeper appreciation for the river's fragility. The river still bears the scars, and the story serves as a somber reminder of the constant vigilance needed to protect this natural treasure.", 
+    unlocked: false, 
+    icon: Zap 
+  },
+  { 
+    key: "local_business_1", 
+    title: "Guardians of Wood & Varnish", 
+    text: "Some businesses are more than just shops; they are institutions. For generations, Chalk's Marine in Clayton has been a sanctuary for classic wooden boats. They are not just mechanics; they are artisans who understand the soul of a St. Lawrence Skiff or a Chris-Craft runabout. Their work is a living link to the Gilded Age, preserving the elegance and craftsmanship of a bygone era, one plank and one coat of varnish at a time. To own a boat cared for by Chalk's is to be a custodian of river history.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "celestial_event_1", 
+    title: "Sky Fire", 
+    text: "On rare, clear nights, when the sun has unleashed a storm of particles across space, the Thousand Islands gets a visitor from the heavens. The Aurora Borealis, the Northern Lights, will set the northern sky ablaze. Far from city glow, the sky dances with curtains of ethereal green, purple, and white light, reflecting silently on the black water of the river. To the ancient peoples, this was the dance of spirits; to the modern islander, it's a breathtaking reminder of the vast, beautiful universe we float in. It's a celestial treasure, more fleeting and precious than any pirate's gold.", 
+    unlocked: false, 
+    icon: Star 
+  },
+  { 
+    key: "historic_flood_1", 
+    title: "The Raging River", 
+    text: "The river is a mighty beast, and sometimes it strains against its leash. In recent years, high water levels in the Great Lakes basin have led to historic '100-year floods.' Docks have been submerged, shorelines eroded, and homes threatened. This has sparked fierce debate over 'Plan 2014,' the international agreement that governs water releases from the main dam. It's a complex battle between shoreline property owners, the shipping industry, and the health of the wetlands. These floods are a stark reminder that while we may build castles and bridges, the river ultimately answers to nature's command.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "local_business_2", 
+    title: "A Table by the Water", 
+    text: "For over half a century, Cavallario's has been a cornerstone of Alexandria Bay's dining scene. It's a place of memories, where generations of families have gathered for celebratory steak dinners and fresh seafood. Its longevity is a testament to the enduring appeal of good food and classic hospitality, a constant in a town that changes with the seasons.", 
+    unlocked: false, 
+    icon: Palette 
+  },
+  { 
+    key: "seasonal_event_1", 
+    title: "The Great Thaw", 
+    text: "For a true River Rat, the most important date on the calendar isn't a holiday; it's 'ice-out.' It's the day the winter's icy armor on the river finally groans, cracks, and breaks apart, releasing the water from its prison. It's a dramatic, powerful event that signals the true arrival of spring and the start of another boating season. The sound of the shifting ice is the sound of the river breathing again.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "river_cruises_2", 
+    title: "The Castle's Ferryman", 
+    text: "While many boat tours ply the waters, only one company holds the key to the castle. The Uncle Sam Boat Tours' 'Two-Nation Tour' is the exclusive ferryman for Boldt Castle, offering visitors the unique privilege of disembarking on Heart Island to wander the grounds of the unfinished monument to love.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "local_business_3", 
+    title: "The Fish Fry Beacon", 
+    text: "In the small hamlet of Fishers Landing, a weekly tradition signals the start of the weekend: the Friday Fish Fry at Foxy's. It's more than just a meal; it's a community gathering, a place where fishermen, locals, and tourists come together for a taste of classic river life. For decades, it's been a reliable beacon of good food and good company.", 
+    unlocked: false, 
+    icon: Fish 
+  },
+  { 
+    key: "cross_border_culture_5", 
+    title: "The Winteriver", 
+    text: "When the tourists leave and the ice sets in, a special breed of islander remains. They call themselves 'winterivers.' They are the hardy souls who embrace the isolation, the beauty, and the challenges of a Thousand Islands winter. They know the sound of the ice shifting, the best way to keep a pipe from freezing, and the profound peace of a snow-covered island. It's a title earned through resilience and a deep love for the river in all its moods.", 
+    unlocked: false, 
+    icon: Leaf 
+  },
+  { 
+    key: "local_business_4", 
+    title: "A Century of Sightseeing", 
+    text: "Since 1926, the Thomson family's Uncle Sam Boat Tours has been introducing visitors to the magic of the Thousand Islands. Starting with small wooden boats and growing into a fleet of modern tour vessels, they have become as much a part of the Alexandria Bay waterfront as the river itself, carrying millions of passengers and countless stories.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "local_landmarks_4", 
+    title: "The Granite Shield", 
+    text: "The massive breakwall at Cape Vincent is more than just a fishing pier. It is a shield, built from massive, locally quarried granite blocks, designed to protect the harbor from the fury of Lake Ontario's storms, creating a safe haven for vessels at the river's mouth.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "historical_event_1", 
+    title: "The Night the Lights Went Out", 
+    text: "The Great Blackout of 1965 plunged the entire Northeast into darkness, and it all started with a single, faulty electrical relay near Niagara. The event showcased the interconnectedness and fragility of our power grid, a system that has its roots in the hydroelectric power generated right here on the St. Lawrence.", 
+    unlocked: false, 
+    icon: Zap 
+  },
+  { 
+    key: "fishing_lore_4", 
+    title: "Reading the Water", 
+    text: "Serious anglers know that fishing is a science. They use tools to find the 'thermocline,' an invisible layer where the water temperature changes dramatically. This is where baitfish gather, and where the big predators lurk. It's a secret layer of the river that holds the key to a successful catch.", 
+    unlocked: false, 
+    icon: Fish 
+  },
+  { 
+    key: "cross_border_culture_6", 
+    title: "The Invisible Line's Rules", 
+    text: "Boating between the US and Canada is easy, but the rules change at the invisible border. A key difference is Canada's requirement for a Pleasure Craft Operator Card (PCOC). Forgetting this can turn a pleasant cruise into a conversation with the authorities.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "historical_event_2", 
+    title: "The Ice Storm's Grip", 
+    text: "The Ice Storm of 1998 was a catastrophe unlike any other. It wasn't a blizzard, but days of unrelenting freezing rain that encased the region in a thick, heavy shell of ice. The weight toppled transmission towers and ancient trees, leaving communities in the dark and cold for weeks, a powerful display of nature's subtle force.", 
+    unlocked: false, 
+    icon: Trees 
+  },
+  { 
+    key: "local_culture_2", 
+    title: "The Island Lifeline", 
+    text: "For islanders who live off the beaten path, the Mailboat is their lifeline. These small, private boats are contracted to deliver not just letters, but groceries, supplies, and news, weaving through the islands to connect the scattered homes of the river community.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "island_geography_8", 
+    title: "Threading the Needle", 
+    text: "The section of river known as 'The Narrows' is a rite of passage for boaters. This winding, scenic channel demands careful navigation, with beautiful cottages perched on the rocky shores, their owners watching to see who can thread the needle without causing a wake.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "conservation_2", 
+    title: "The River's Eyes", 
+    text: "How do scientists check the river's vision? With a simple tool called a Secchi disk. By lowering this black and white disk, researchers can measure water clarity. It's a fundamental health check for the river, revealing the impacts of pollution and invasive species.", 
+    unlocked: false, 
+    icon: Leaf 
+  },
+  { 
+    key: "famous_people_3", 
+    title: "The President's Pastime", 
+    text: "An iconic photograph from 1872 helped put the Thousand Islands on the map. It shows President Ulysses S. Grant, a war hero, peacefully fishing from the docks of the Crossmon House Hotel in Alexandria Bay, signaling to the world that this was a place for rest and recreation.", 
+    unlocked: false, 
+    icon: BookOpen 
+  },
+  { 
     key: "final_revelation", 
     title: "The River's Heart", 
     text: "You've uncovered many secrets, but here is the last one: the true treasure of the Thousand Islands was never Bill Johnston's gold. It's the enduring spirit of its history, the beauty of its nature, and the tales whispered on the water. You are a true RiverRat now.", 
@@ -797,3 +930,5 @@ export const areCategoryHintsUnlocked = (categoryPrefix: string, unlockedStoryHi
     if (categoryHints.length === 0) return false; // No hints in this category
     return categoryHints.every(hint => unlockedStoryHints.find(unlockedHint => unlockedHint.key === hint.key && unlockedHint.unlocked));
 };
+
+    

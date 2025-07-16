@@ -1864,7 +1864,7 @@
   },
   {
     "id": "TQ205",
-    "question": "Which Thousand Islands castle is still a private summer home and not regularly open for public tours?",
+    "question": "Which of these Thousand Islands castles is still a private summer home and not regularly open for public tours?",
     "options": ["Boldt Castle", "Singer Castle", "Calumet Castle", "Jorstadt Castle"],
     "answer": "Jorstadt Castle",
     "storylineHintKey": "local_landmarks_1",
@@ -2429,5 +2429,207 @@
     "answer": "Shift weight to the part of the boat that is still floating deepest",
     "storylineHintKey": "survival_scenario_5",
     "fallbackHint": "Moving passengers or heavy items can sometimes lift the grounded part of the hull just enough to float free."
+  },
+  {
+    "id": "TQ276",
+    "question": "In what year did the tanker 'NEPCO 140' spill over 300,000 gallons of crude oil, a major environmental disaster for the river?",
+    "options": ["1965", "1976", "1989", "2001"],
+    "answer": "1976",
+    "storylineHintKey": "nepco_spill_1",
+    "fallbackHint": "This infamous spill coated shorelines and wildlife, leading to a massive cleanup and new environmental regulations."
+  },
+  {
+    "id": "TQ277",
+    "question": "Which long-standing Clayton business is famous for its classic boat restorations and marine services?",
+    "options": ["Weldon's Hardware", "Chalk's Marine", "Reinman's Department Store", "The Clayton Shurfine"],
+    "answer": "Chalk's Marine",
+    "storylineHintKey": "local_business_1",
+    "fallbackHint": "For generations, this family-owned marina has been a cornerstone of the river's wooden boat community."
+  },
+  {
+    "id": "TQ278",
+    "question": "What rare atmospheric event can sometimes be seen from the Thousand Islands on clear nights with strong solar activity?",
+    "options": ["A solar eclipse", "A green flash at sunset", "The Aurora Borealis (Northern Lights)", "Ball lightning"],
+    "answer": "The Aurora Borealis (Northern Lights)",
+    "storylineHintKey": "celestial_event_1",
+    "fallbackHint": "When conditions are right, the northern sky dances with ethereal curtains of green and purple light."
+  },
+  {
+    "id": "TQ279",
+    "question": "What is the primary factor that causes the historic '100-year floods' and high water levels seen in recent years?",
+    "options": ["Increased local rainfall", "Melting glaciers in the Arctic", "High water levels in the Great Lakes basin", "Dam malfunctions"],
+    "answer": "High water levels in the Great Lakes basin",
+    "storylineHintKey": "historic_flood_1",
+    "fallbackHint": "The river is the drain for the entire Great Lakes system, so when the lakes are full, the river has nowhere else to go but up."
+  },
+  {
+    "id": "TQ280",
+    "question": "Which Alexandria Bay restaurant, a local institution for decades, is known for its riverside dining and classic American fare?",
+    "options": ["Coleman's Dock", "The Dancing Bull", "Cavallario's Steak and Seafood House", "The Admiral's Inn"],
+    "answer": "Cavallario's Steak and Seafood House",
+    "storylineHintKey": "local_business_2",
+    "fallbackHint": "This downtown restaurant has been a fixture for family dinners and special occasions for over 50 years."
+  },
+  {
+    "id": "TQ281",
+    "question": "What is 'ice-out,' a significant annual event for river residents?",
+    "options": ["A hockey tournament", "A polar bear plunge", "The day the river ice breaks up, signaling spring's arrival", "The first snowfall"],
+    "answer": "The day the river ice breaks up, signaling spring's arrival",
+    "storylineHintKey": "seasonal_event_1",
+    "fallbackHint": "This event marks the end of winter's grip and the start of the boating season, a day of celebration for all River Rats."
+  },
+  {
+    "id": "TQ282",
+    "question": "The 'Two-Nation Tour' offered by Uncle Sam Boat Tours is unique because it is the only tour that does what?",
+    "options": ["Serves both poutine and hot dogs", "Stops and lets passengers off at Boldt Castle", "Travels in a submarine", "Has two captains"],
+    "answer": "Stops and lets passengers off at Boldt Castle",
+    "storylineHintKey": "river_cruises_2",
+    "fallbackHint": "This specific tour includes admission and allows visitors to disembark and explore the famous castle on Heart Island."
+  },
+  {
+    "id": "TQ283",
+    "question": "The long-running waterfront restaurant 'Foxy's' in Fishers Landing is famous for which weekly event?",
+    "options": ["Monday Night Karaoke", "Tuesday Taco Night", "A Friday Fish Fry", "Sunday Brunch Buffet"],
+    "answer": "A Friday Fish Fry",
+    "storylineHintKey": "local_business_3",
+    "fallbackHint": "This beloved local spot is a go-to destination for its traditional, and very popular, Friday fish fry."
+  },
+  {
+    "id": "TQ284",
+    "question": "What is a 'winteriver,' a term used by hardy year-round residents?",
+    "options": ["A type of ice-fishing shack", "A special insulated boat", "A person who stays on the river through the winter", "A frozen cocktail"],
+    "answer": "A person who stays on the river through the winter",
+    "storylineHintKey": "cross_border_culture_5",
+    "fallbackHint": "It takes a special kind of person to endure the ice, snow, and isolation of a Thousand Islands winter."
+  },
+  {
+    "id": "TQ285",
+    "question": "What significant change did the 'NEPCO 140' oil spill in 1976 bring about for the St. Lawrence River?",
+    "options": ["It ended all commercial shipping", "It created a new national park", "It led to stricter navigation and environmental regulations", "It revealed a new shipwreck"],
+    "answer": "It led to stricter navigation and environmental regulations",
+    "storylineHintKey": "nepco_spill_1",
+    "fallbackHint": "This disaster was a wake-up call, prompting new rules to protect the river from future spills."
+  },
+  {
+    "id": "TQ286",
+    "question": "Which of these is NOT a real, named shoal or reef in the Thousand Islands?",
+    "options": ["The Frying Pan Shoal", "The Granite State Shoal", "The Pirate's Bane Reef", "Whiskey Island Shoal"],
+    "answer": "The Pirate's Bane Reef",
+    "storylineHintKey": "island_names_5",
+    "fallbackHint": "While many shoals have colorful names, one of these is purely the stuff of pirate fantasy."
+  },
+  {
+    "id": "TQ287",
+    "question": "What is the 'Plan 2014' often debated by shoreline residents?",
+    "options": ["A new bridge project", "A tourism marketing plan", "An international water-level regulation plan", "A plan to build a new castle"],
+    "answer": "An international water-level regulation plan",
+    "storylineHintKey": "historic_flood_1",
+    "fallbackHint": "This controversial plan by the IJC changed how water is released from the dam, impacting shoreline erosion and flooding."
+  },
+  {
+    "id": "TQ288",
+    "question": "Uncle Sam Boat Tours, an institution in Alexandria Bay since 1926, was started by which family?",
+    "options": ["The Boldt Family", "The Thomson Family", "The Johnston Family", "The Quenell Family"],
+    "answer": "The Thomson Family",
+    "storylineHintKey": "local_business_4",
+    "fallbackHint": "This company has been guiding visitors through the islands for nearly a century."
+  },
+  {
+    "id": "TQ289",
+    "question": "What is the 'Cape Vincent Breakwall,' a popular fishing spot, primarily made of?",
+    "options": ["Poured concrete", "Stacked granite blocks", "Wooden pilings", "Sunken ships"],
+    "answer": "Stacked granite blocks",
+    "storylineHintKey": "local_landmarks_4",
+    "fallbackHint": "This massive structure was built from huge blocks of stone to protect the harbor."
+  },
+  {
+    "id": "TQ290",
+    "question": "What celestial alignment caused the 'Great Blackout of 1965,' which was traced to a power relay near Niagara but affected the entire region?",
+    "options": ["A solar flare", "A meteor shower", "A full moon", "There was no celestial alignment"],
+    "answer": "There was no celestial alignment",
+    "storylineHintKey": "historical_event_1",
+    "fallbackHint": "This massive power failure was caused by a simple, incorrectly set safety relay, a purely man-made cascade of errors."
+  },
+  {
+    "id": "TQ291",
+    "question": "A 'thermocline bar' is a piece of fishing equipment used to do what?",
+    "options": ["Measure water temperature at different depths", "Attract fish with sound", "Weigh a fish accurately", "Unhook a fish safely"],
+    "answer": "Measure water temperature at different depths",
+    "storylineHintKey": "fishing_lore_4",
+    "fallbackHint": "Anglers use this tool to find the 'thermocline,' a layer where temperature changes, attracting baitfish and predators."
+  },
+  {
+    "id": "TQ292",
+    "question": "What must all boaters operating in Canadian waters have on board, which is not required in the U.S.?",
+    "options": ["A valid passport", "A Canadian flag", "A Pleasure Craft Operator Card (PCOC)", "A serving of poutine"],
+    "answer": "A Pleasure Craft Operator Card (PCOC)",
+    "storylineHintKey": "cross_border_culture_6",
+    "fallbackHint": "When you cross the invisible line, you need to have this Canadian-mandated boating license."
+  },
+  {
+    "id": "TQ293",
+    "question": "The massive ice storm of 1998 was devastating because it consisted mainly of what?",
+    "options": ["Heavy snow and high winds", "Extremely cold temperatures", "Weeks of freezing rain", "A sudden, deep freeze"],
+    "answer": "Weeks of freezing rain",
+    "storylineHintKey": "historical_event_2",
+    "fallbackHint": "The prolonged freezing rain coated everything in a thick layer of ice, toppling trees and power lines for weeks."
+  },
+  {
+    "id": "TQ294",
+    "question": "If you see a boat flying an 'Alpha' flag (a blue and white swallow-tailed flag), what does it signify?",
+    "options": ["The captain is an Admiral", "The boat is for sale", "There is a diver in the water", "They are out of fuel"],
+    "answer": "There is a diver in the water",
+    "storylineHintKey": "boating_safety_20",
+    "fallbackHint": "This international signal flag means 'I have a diver down; keep well clear at slow speed.'"
+  },
+  {
+    "id": "TQ295",
+    "question": "What is the 'Mailboat,' such as the one that serves the Summerland Group of islands?",
+    "options": ["A high-speed ferry", "A floating post office", "A small, private vessel contracted to deliver mail", "A boat that only delivers packages"],
+    "answer": "A small, private vessel contracted to deliver mail",
+    "storylineHintKey": "local_culture_2",
+    "fallbackHint": "For many islanders without road access, these mailboats are their primary link to the mainland for letters and supplies."
+  },
+  {
+    "id": "TQ296",
+    "question": "What is 'The Narrows,' a section of the river near Wellesley Island?",
+    "options": ["The shallowest part of the river", "A particularly tight and scenic passage", "A famous fishing spot", "A large, open bay"],
+    "answer": "A particularly tight and scenic passage",
+    "storylineHintKey": "island_geography_8",
+    "fallbackHint": "This area is known for its beautiful cottages and the narrow, winding channel that boaters must navigate carefully."
+  },
+  {
+    "id": "TQ297",
+    "question": "A 'see-chi' disk is a simple tool used by scientists at TIBS to measure what?",
+    "options": ["Water temperature", "Water clarity", "Water depth", "Water current speed"],
+    "answer": "Water clarity",
+    "storylineHintKey": "conservation_2",
+    "fallbackHint": "This black and white disk is lowered into the water to determine how far down light can penetrate, a key indicator of ecosystem health."
+  },
+  {
+    "id": "TQ298",
+    "question": "What is the 'C-Way' program, a point of pride for the Canadian Coast Guard Auxiliary?",
+    "options": ["A water taxi service", "A marine weather broadcast", "A courtesy vessel safety check program", "A youth sailing school"],
+    "answer": "A courtesy vessel safety check program",
+    "storylineHintKey": "boating_safety_21",
+    "fallbackHint": "Volunteers will inspect your boat for free to ensure you have all the required safety equipment on board."
+  },
+  {
+    "id": "TQ299",
+    "question": "In the historic photo of President Grant's visit in 1872, what is he famously doing at the Crossmon House hotel?",
+    "options": ["Fishing from the dock", "Giving a speech", "Playing cards with locals", "Unfurling a large American flag"],
+    "answer": "Fishing from the dock",
+    "storylineHintKey": "famous_people_3",
+    "fallbackHint": "The iconic image of the president relaxing and fishing helped cement the region's status as a premier vacation spot."
+  },
+  {
+    "id": "TQ300",
+    "question": "What does it mean if a river channel is marked with both red and green buoys (bifurcation buoy)?",
+    "options": ["The channel is closed", "Danger on both sides", "The preferred channel is indicated by the top color", "The water is very deep"],
+    "answer": "The preferred channel is indicated by the top color",
+    "storylineHintKey": "boating_safety_22",
+    "fallbackHint": "This special buoy marks where a channel splits. If the top band is green, the primary channel is to the right (following 'Red, Right, Returning')."
   }
 ]
+
+    
