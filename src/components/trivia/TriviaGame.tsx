@@ -120,7 +120,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
-  const [answeredQuestionIds, setAnsweredQuestionIds] = useState<string[]>([]);
+  const [answeredQuestionIds, setAnsweredQuestionIds] = useState<Set<string>>(new Set());
 
   // Refs to hold latest state for async operations
   const scoreRef = useRef(score);
@@ -156,13 +156,13 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
       // Load Answered Questions
       const storedIds = localStorage.getItem(`answered_questions_${user.username}`);
-      if (storedIds) try { setAnsweredQuestionIds(JSON.parse(storedIds)) } catch (e) { console.error(e) }
+      if (storedIds) try { setAnsweredQuestionIds(new Set(JSON.parse(storedIds))) } catch (e) { console.error(e) }
     }
   }, [user]);
 
   // Save User Progress
   useEffect(() => {
-    if (user && typeof window !== 'undefined') {
+    if (user && typeof window !== 'undefined' && isGameInitialized) {
       // Save story hints
       const keysToSave = unlockedStoryHints.filter(h => h.unlocked).map(h => h.key);
       if (keysToSave.length > 0) localStorage.setItem(`storyProgress_${user.username}`, JSON.stringify(keysToSave));
@@ -172,9 +172,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       if (achievementsProgressToStore.length > 0) localStorage.setItem(`achievements_progress_${user.username}`, JSON.stringify(achievementsProgressToStore));
 
       // Save answered questions
-      localStorage.setItem(`answered_questions_${user.username}`, JSON.stringify(answeredQuestionIds));
+      localStorage.setItem(`answered_questions_${user.username}`, JSON.stringify(Array.from(answeredQuestionIds)));
     }
-  }, [unlockedStoryHints, currentAchievements, answeredQuestionIds, user]);
+  }, [unlockedStoryHints, currentAchievements, answeredQuestionIds, user, isGameInitialized]);
   
 
   const fetchAndSetQuestions = useCallback(async () => {
@@ -200,11 +200,11 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const resetGame = useCallback(() => {
     if (allTriviaQuestions.length === 0) return;
 
-    let availableQuestions = allTriviaQuestions.filter(q => !answeredQuestionIds.includes(q.id));
+    let availableQuestions = allTriviaQuestions.filter(q => !answeredQuestionIds.has(q.id));
     if (availableQuestions.length < QUESTIONS_PER_GAME) {
       toast({ title: "You've seen it all!", description: "Resetting the question pool. Well done!", });
       availableQuestions = allTriviaQuestions;
-      setAnsweredQuestionIds([]);
+      setAnsweredQuestionIds(new Set());
     }
     
     const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
@@ -256,7 +256,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     setScore(newScore);
 
     // Update answered questions ID list
-    setAnsweredQuestionIds(prev => Array.from(new Set([...prev, currentQuestion.id])));
+    setAnsweredQuestionIds(prev => new Set(prev).add(currentQuestion.id));
 
     // Show result screen
     setAnswerCorrectness(isCorrect);
