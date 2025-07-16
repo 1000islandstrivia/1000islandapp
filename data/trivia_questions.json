@@ -314,11 +314,11 @@
   },
   {
     "id": "TQ040",
-    "question": "The 'Devil's Oven' is a well-known cave on which island, rumored to be a hideout for Bill Johnston?",
-    "options": ["Heart Island", "Wellesley Island", "Dark Island", "Grindstone Island"],
-    "answer": "Grindstone Island",
+    "question": "What is the name of the island, rumored to be a hideout for the pirate Bill Johnston, that is known for its unique cave?",
+    "options": ["Heart Island", "Wellesley Island", "Devil's Oven Island", "Dark Island"],
+    "answer": "Devil's Oven Island",
     "storylineHintKey": "devils_oven_1",
-    "fallbackHint": "This large island has a rugged history and is home to this legendary pirate hideaway."
+    "fallbackHint": "This rugged island, with its legendary cave, has a long history as a pirate hideaway."
   },
   {
     "id": "TQ041",
