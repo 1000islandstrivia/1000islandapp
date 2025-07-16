@@ -20,6 +20,79 @@ export interface StorylineHint {
   icon?: LucideIcon;
 }
 
+export interface PlayerRank {
+  title: string;
+  minScore: number;
+  icon: LucideIcon;
+}
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  unlocked: boolean;
+  criteria: string;
+  icon: LucideIcon;
+}
+
+export interface LeaderboardEntry {
+    id: string;
+    rank: number;
+    name: string;
+    email?: string;
+    score: number;
+    rankTitle: string;
+    avatar?: string;
+    lastUpdated: Date;
+}
+
+
+export const playerRanks: PlayerRank[] = [
+  { title: "Seaman Recruit", minScore: 0, icon: Shield },
+  { title: "Seaman Apprentice", minScore: 250, icon: ShieldHalf },
+  { title: "Seaman", minScore: 500, icon: ShieldCheck },
+  { title: "Petty Officer 3rd Class", minScore: 1000, icon: Anchor },
+  { title: "Petty Officer 2nd Class", minScore: 2000, icon: Anchor },
+  { title: "Petty Officer 1st Class", minScore: 3500, icon: Anchor },
+  { title: "Chief Petty Officer", minScore: 5000, icon: Gem },
+  { title: "Senior Chief Petty Officer", minScore: 7500, icon: Gem },
+  { title: "Master Chief Petty Officer", minScore: 10000, icon: Gem },
+  { title: "Warrant Officer", minScore: 15000, icon: Award },
+  { title: "Chief Warrant Officer", minScore: 20000, icon: Award },
+  { title: "Ensign", minScore: 30000, icon: Medal },
+  { title: "Lieutenant", minScore: 40000, icon: Medal },
+  { title: "Commander", minScore: 60000, icon: Crown },
+  { title: "Captain", minScore: 80000, icon: Crown },
+  { title: "Admiral of the Fleet", minScore: 100000, icon: Crown },
+];
+
+export const achievements: Achievement[] = [
+  { id: 'first_game', name: 'Set Sail', description: 'Complete your first game of trivia.', unlocked: false, criteria: 'Finish one full game.', icon: Ship },
+  { id: 'first_hint', name: 'Lore Seeker', description: 'Unlock your first piece of the storyline.', unlocked: false, criteria: 'Answer a question correctly to unlock lore.', icon: Scroll },
+  { id: 'first_blood', name: 'First Gold', description: 'Earn your first gold coins.', unlocked: false, criteria: 'Score more than 0 points in a game.', icon: Diamond },
+  { id: 'rank_up_petty', name: 'On Deck', description: 'Achieve the rank of Petty Officer.', unlocked: false, criteria: 'Reach a score of 1,000.', icon: Anchor },
+  { id: 'rank_up_chief', name: 'The Chief', description: 'Achieve the rank of Chief Petty Officer.', unlocked: false, criteria: 'Reach a score of 5,000.', icon: Gem },
+  { id: 'rank_up_captain', name: 'Take the Helm', description: 'Achieve the rank of Captain.', unlocked: false, criteria: 'Reach a score of 80,000.', icon: Crown },
+  { id: 'lore_master', name: 'Lore Master', description: 'Unlock all storyline hints.', unlocked: false, criteria: 'Unlock every piece of the main story.', icon: BookOpen },
+  { id: 'perfect_game', name: 'Flawless Navigator', description: 'Complete a game with a perfect score.', unlocked: false, criteria: 'Answer all questions correctly in one game.', icon: Star },
+  { id: 'trivia_addict', name: 'River Addict', description: 'Play 10 games of trivia.', unlocked: false, criteria: 'Complete 10 full games.', icon: Trophy },
+  { id: 'ghost_hunter', name: 'Ghost Hunter', description: 'Unlock a ghost story-related hint.', unlocked: false, criteria: 'Unlock lore with the "ghost_story" key.', icon: Skull },
+  { id: 'castle_expert', name: 'Castle Expert', description: 'Unlock 5 hints related to castles.', unlocked: false, criteria: 'Unlock 5 lore entries about castles.', icon: Castle },
+  { id: 'eco_warrior', name: 'Eco-Warrior', description: 'Unlock 3 hints about river conservation.', unlocked: false, criteria: 'Unlock lore related to environmental facts.', icon: Leaf },
+];
+
+export function getRankByScore(score: number): PlayerRank {
+  let currentRank = playerRanks[0];
+  for (const rank of playerRanks) {
+    if (score >= rank.minScore) {
+      currentRank = rank;
+    } else {
+      break; 
+    }
+  }
+  return currentRank;
+}
+
 export const storyline: StorylineHint[] = [
   { 
     key: "boldt_secret_1", 
