@@ -817,118 +817,572 @@ export const storyline: StorylineHint[] = [
     text: "You've uncovered many secrets, but here is the last one: the true treasure of the Thousand Islands was never Bill Johnston's gold. It's the enduring spirit of its history, the beauty of its nature, and the tales whispered on the water. You are a true RiverRat now.", 
     unlocked: false, 
     icon: Star 
+  },
+  { 
+    key: "war_history_clue_2", 
+    title: "A Watery Highway of War", 
+    text: "He who controlled the St. Lawrence, controlled the Great Lakes. During the War of 1812, the river was the primary supply line for troops and forts. The race to build bigger, more powerful sailing warships at Sackets Harbor and Kingston was a desperate struggle for this strategic advantage.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "architecture_clue_2", 
+    title: "Gilded Age Playgrounds", 
+    text: "The Thousand Islands was one of several summer playgrounds for the Gilded Age elite, who also built their 'cottages' in places like Newport, Rhode Island. The architecture of these grand homes reflects a national trend of showcasing immense wealth.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "fishing_lore_2", 
+    title: "The Invisible Ledge", 
+    text: "The river's bottom is a landscape of its own, with cliffs, ledges, and drop-offs. Anglers know that predatory fish like walleye and bass often hunt along the 'thermocline', an invisible layer where warm and cold water meet, often found along these underwater structures.", 
+    unlocked: false, 
+    icon: Fish 
+  },
+  { 
+    key: "shipwreck_lore_2", 
+    title: "The Perils of Commerce", 
+    text: "Not all shipwrecks are from storms or wars. The wreck of the 'America' near Kingston is a reminder of the everyday perils of river commerce. This package freighter was a workhorse of the river until a navigational error sent her to the bottom.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "boating_safety_2", 
+    title: "A Boater's Lexicon", 
+    text: "To speak the river's language, you must know your vessel. The 'gunwale' (pronounced 'gunnel') is the top edge of a boat's side. Knowing the right terms isn't just for show; it's crucial for clear communication in an emergency.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "wildlife_nature_2", 
+    title: "A Graceful Return", 
+    text: "The return of the white-tailed deer to the islands is a triumph of conservation. Once hunted out of the region, these graceful creatures have made a remarkable comeback, and it's not uncommon to see them swimming between islands at dawn or dusk.", 
+    unlocked: false, 
+    icon: Trees 
+  },
+  { 
+    key: "local_landmarks_1", 
+    title: "A Private Fantasy", 
+    text: "While Boldt and Singer Castles are open to all, some of the river's castles remain private summer homes. Jorstadt Castle on Westminster Park is one such place, a modern-day fairytale that remains a family's private retreat.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "local_events_2", 
+    title: "A Nation's Birthday", 
+    text: "The river is a stage for national celebrations. On Canada Day, the skies above Kingston's harbour explode in a fireworks display launched from a floating barge, a spectacular celebration of Canadian pride reflected in the water.", 
+    unlocked: false, 
+    icon: Palette 
+  },
+  { 
+    key: "boating_safety_3", 
+    title: "Green for Go-Left", 
+    text: "The river's navigation rules are simple but vital. A green 'can' buoy always marks the left side of the channel when you're heading upstream, away from the sea. It's the other half of the 'Red, Right, Returning' rule.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "scenic_spots_2", 
+    title: "The Eagle's Eye View", 
+    text: "From the top of the 1000 Islands Tower on Hill Island, the complex international border becomes a visible reality. You can see both American and Canadian islands, the bridges that link them, and the ships that navigate the channel between them, all at once.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "war_history_clue_3", 
+    title: "A Fort's Purpose", 
+    text: "Fort Wellington in Prescott wasn't built for show. It was a key defensive position on the British side, constructed to protect the vital St. Lawrence supply line from American attack during the War of 1812.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "wildlife_nature_3", 
+    title: "The Hardy Pioneer", 
+    text: "The pitch pine is a true survivor. This hardy tree is known for its ability to grow in the most inhospitable places, its roots clinging to bare granite rock where other trees would quickly perish. It is a symbol of the islands' rugged endurance.", 
+    unlocked: false, 
+    icon: Trees 
+  },
+  { 
+    key: "boating_safety_4", 
+    title: "The Silent Giants", 
+    text: "The biggest danger in the shipping channel isn't what you can see; it's what you can't anticipate. The massive freighters move much faster than they appear, create huge wakes, and cannot stop or turn quickly. A wise captain gives them a very wide berth.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "environmental_fact_3", 
+    title: "The Blue Line Connection", 
+    text: "The Frontenac Arch is a geological bridge that connects the Canadian Shield to the massive Adirondack Park to the south. The park's famous 'Blue Line' boundary, drawn on a map in 1892, marks one of the largest protected wilderness areas in the United States.", 
+    unlocked: false, 
+    icon: Leaf 
+  },
+  { 
+    key: "lighthouse_legend_3", 
+    title: "A Guiding Pair", 
+    text: "Some lighthouses work in tandem. The Sister Island Lighthouse was part of a pair, its beam working with another light to create a safe path through a particularly hazardous stretch of water. They were a team, guiding sailors through the dark.", 
+    unlocked: false, 
+    icon: Lightbulb 
+  },
+  { 
+    key: "recreation_1", 
+    title: "From River to Capital", 
+    text: "The Rideau Trail is a long-distance hiking path that stretches from Kingston at the mouth of the St. Lawrence all the way to Canada's capital, Ottawa, roughly following the route of the historic Rideau Canal.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "boating_history_1", 
+    title: "The Captain's Taxi", 
+    text: "In the Gilded Age, the owner of a grand steam yacht wouldn't use the main vessel for a quick trip ashore. They used a 'gig'—a light, fast, and elegant tender boat, essentially a luxurious water taxi to ferry guests and supplies.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "island_geography_3", 
+    title: "A Sea of Islands", 
+    text: "The term 'archipelago' is the perfect word for the Thousand Islands. It's a geographical term for a large group or chain of islands, perfectly capturing the scattered, maze-like nature of the region.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "architecture_clue_3", 
+    title: "A German Dream", 
+    text: "George Boldt's vision for his castle was drawn from the romantic, turreted fortresses he had seen along the Rhine River in Germany. The style, known as Châteauesque or Rhineland Castle, was meant to bring a piece of old-world European fantasy to the new world.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "boating_safety_5", 
+    title: "Riding the Waves", 
+    text: "A freighter's wake can easily swamp a small boat. The safest maneuver for a kayaker or canoeist is not to flee, but to turn and face the wave head-on, pointing the bow directly into the approaching swell to maintain stability.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "conservation_1", 
+    title: "A Voice for the River", 
+    text: "The organization 'Save The River' acts as a watchdog and advocate for the St. Lawrence. They publish guides for safe boating and work to protect the river's fragile ecosystem from pollution and invasive species.", 
+    unlocked: false, 
+    icon: Leaf 
+  },
+  { 
+    key: "local_history_2", 
+    title: "The River's Name for a Nation", 
+    text: "The name of a whole country was born on this river. 'Canada' comes from the Iroquoian word 'Kanata,' meaning 'village' or 'settlement.' When the first European explorers asked what the area was called, the local inhabitants were simply referring to their village, but the name stuck for the entire nation.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "famous_people_2", 
+    title: "Astor's Abode", 
+    text: "The Vanderbilts weren't the only Gilded Age dynasty to seek refuge on the river. The Astor family, another of America's wealthiest clans, built 'Hopewell Hall' as their grand summer 'cottage' near Alexandria Bay.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "boating_safety_6", 
+    title: "A Sound of Warning", 
+    text: "On the water, horns are a language. Five or more short, rapid blasts from a ship's horn is the universal signal for 'Danger!' or 'I don't understand your intentions.' It's a clear warning to all nearby vessels to be on high alert.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "wildlife_nature_4", 
+    title: "A Tale of Two Necks", 
+    text: "It can be tricky to tell the river's large wading birds apart. The easiest way is to see them in flight: a Great Blue Heron flies with its neck tucked into an 'S' curve, while the larger Sandhill Crane flies with its neck fully extended.", 
+    unlocked: false, 
+    icon: Bird 
+  },
+  { 
+    key: "shipping_history_2", 
+    title: "A Fiery End", 
+    text: "Many of the grand wooden steamboats of the Gilded Age met a similar, fiery fate. The 'Frontenac,' a luxurious side-wheel steamer, wasn't sunk by a storm but was destroyed by a fire while docked in 1907, a blaze that consumed the floating palace.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "local_landmarks_2", 
+    title: "A Harbor's Shield", 
+    text: "A 'breakwater' is a man-made wall built to shield a harbor from the open water's fury. The one at Cape Vincent, for instance, creates a calm, safe area for boats to moor, protected from the often-rough waves of Lake Ontario.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "recreation_2", 
+    title: "A Paddler's Pace", 
+    text: "To truly experience the river's hidden beauty, you have to slow down. Kayaking and canoeing allow you to glide silently into narrow channels and shallow coves that are inaccessible to larger boats, offering an intimate connection with nature.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "survival_scenario_2", 
+    title: "Engine Failure!", 
+    text: "If your engine cuts out on the river, the wind and current become your enemies, pushing you towards shoals or the shipping lane. The most important first action is to deploy your anchor, securing your position while you troubleshoot or call for help.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "architecture_clue_4", 
+    title: "The Silent Chime", 
+    text: "The grand clock tower on Boldt Castle's Power House was designed to hold a carillon of bells that would have chimed out across the water. But like so many parts of the castle, they were never installed, leaving the tower beautiful but silent.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "boating_safety_7", 
+    title: "Right is Right", 
+    text: "An easy trick to remember nautical terms: the 'starboard' side of a boat is the right side when you're facing forward. Both 'starboard' and 'right' contain the letter 'R'.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "environmental_fact_4", 
+    title: "The Goby's Game", 
+    text: "The Round Goby is an aggressive, bottom-dwelling invasive fish that arrived in ballast water. It multiplies rapidly, out-competing native species for food and spawning grounds, significantly altering the river's delicate food web.", 
+    unlocked: false, 
+    icon: Fish 
+  },
+  { 
+    key: "island_names_2", 
+    title: "A Veteran's Reward", 
+    text: "The 'Navy' group of islands in the Canadian sector earned their name because they were granted by the British Crown to naval veterans as a reward for their service in the French and Indian War, long before the American Revolution.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "food_dining_2", 
+    title: "The Hotel Connection", 
+    text: "It took a hotelier with a vision to take Thousand Island dressing from a local fisherman's secret to a global phenomenon. George Boldt, proprietor of the Waldorf-Astoria Hotel, introduced the dressing to his elite clientele, and the rest is history.", 
+    unlocked: false, 
+    icon: Palette 
+  },
+  { 
+    key: "boating_safety_8", 
+    title: "Fore and Aft", 
+    text: "Knowing your boat's directions is key. 'Aft' is the nautical term for the rear of the vessel. So 'abaft' simply means toward the rear. A simple but essential piece of a mariner's vocabulary.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "lighthouse_legend_4", 
+    title: "A Beacon on the Hazard", 
+    text: "Some lighthouses warn of a danger from a safe distance. The Sunken Rock Lighthouse does the opposite. It is built directly on top of the treacherous, mid-channel shoal it marks, a stark and constant reminder of the hazard lurking just beneath the waves.", 
+    unlocked: false, 
+    icon: Lightbulb 
+  },
+  { 
+    key: "boating_history_2", 
+    title: "A Hole for a Purpose", 
+    text: "In a classic wooden boat, a 'limber hole' is a small notch or hole cut into the boat's frames. It's not a mistake; it's a crucial design feature that allows any water inside the hull to drain to the lowest point so it can be pumped out by the bilge pump.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "war_history_clue_4", 
+    title: "A Fleet Immortalized", 
+    text: "The names of the 'Lake Fleet' islands on the Canadian side serve as a floating memorial. Many are named after the British warships that fought in the naval battles on the Great Lakes during the War of 1812.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "boating_safety_9", 
+    title: "The Ripples of Responsibility", 
+    text: "A boat's wake can cause significant damage to docks, shorelines, and smaller boats. 'No Wake' zones, marked by white buoys with orange symbols, are legally enforceable areas where boats must slow to idle speed to prevent creating a damaging wake.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "architecture_clue_5", 
+    title: "The Skyscraper Architect", 
+    text: "The architect for Singer Castle was Ernest Flagg, a prominent American designer who was also responsible for one of New York City's most famous early skyscrapers, the Singer Building. The castle on Dark Island was his fairytale retreat from the city.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "boating_safety_10", 
+    title: "A Captain's Map", 
+    text: "A 'nautical chart' is a boater's most important tool. It's a special map that details not the land, but the world beneath the water, showing water depths, navigation channels, shoals, and other hazards essential for safe passage.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "shipwreck_lore_3", 
+    title: "A Captain's Choice", 
+    text: "When fire broke out on the passenger steamer 'Iroquoi', the captain made a heroic choice. Instead of letting it sink in deep water, he intentionally beached the burning ship, saving all the passengers and leaving behind a wreck that divers still explore today.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "boating_safety_11", 
+    title: "The 'Hello, I'm Here!' Signal", 
+    text: "On the water, you can't see around corners. That's why one prolonged horn blast is the standard signal a boater uses when leaving a dock or approaching a blind bend. It's a simple way of announcing your presence to unseen vessels.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "environmental_fact_5", 
+    title: "An Eastern Pioneer", 
+    text: "While Canada's most famous national parks are in the Rocky Mountains, the Thousand Islands National Park was a pioneer in its own right. Established in 1904, it was the very first Canadian national park located east of the Rockies.", 
+    unlocked: false, 
+    icon: Trees 
+  },
+  { 
+    key: "boating_safety_12", 
+    title: "How Low Can You Go?", 
+    text: "A boat's 'draft' is the minimum depth of water it needs to float without hitting the bottom. Knowing your boat's draft and comparing it to the depths on a nautical chart is the most fundamental way to avoid running aground.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "local_history_3", 
+    title: "The Loyalist Road", 
+    text: "King's Highway 2, the old highway on the Canadian shore, is also known as the 'Loyalist Parkway.' It follows the historic settlement route of the United Empire Loyalists who were granted land along the St. Lawrence after fleeing the American Revolution.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "island_geography_4", 
+    title: "The Big Island's Ferry Route", 
+    text: "To get to Wolfe Island, the largest of the Thousand Islands, from the Canadian mainland, you must cross the 'Bateau Channel.' This strait has served as the primary ferry route to the island for generations.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "boating_safety_13", 
+    title: "The Boat's Heartbeat", 
+    text: "A 'bilge pump' is a boat's essential lifeline. Its sole purpose is to pump out any unwanted water that leaks or splashes into the hull. A good captain always ensures their bilge pump is in working order before leaving the dock.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "cross_border_culture_2", 
+    title: "Ontario's Watery Welcome", 
+    text: "The 'Great Waterway' is the official tourism brand for the region of southeastern Ontario that borders the river. The name highlights the St. Lawrence River's central role as the region's defining cultural, historical, and recreational feature.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "boating_safety_14", 
+    title: "The Pointy End", 
+    text: "The most basic nautical term is 'bow,' which simply refers to the front of a boat. Every sailor, from an admiral to the newest recruit, knows their bow from their stern.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "island_names_3", 
+    title: "An Industrial Past", 
+    text: "Grindstone Island wasn't named for its shape. It earned its name from the high-quality sandstone that was once quarried there. This stone was prized for making grindstones used to sharpen tools, and the island's name is a link to this industrial past.", 
+    unlocked: false, 
+    icon: Mountain 
+  },
+  { 
+    key: "local_events_3", 
+    title: "Fireworks on the Water", 
+    text: "The spectacular 4th of July fireworks display in Alexandria Bay is traditionally launched from a barge anchored in the middle of the St. Lawrence River. This allows for breathtaking views as the colors explode over and reflect upon the water.", 
+    unlocked: false, 
+    icon: Palette 
+  },
+  { 
+    key: "survival_scenario_3", 
+    title: "Don't Abandon Ship!", 
+    text: "If your boat capsizes, the golden rule of survival is to stay with the vessel. Even an overturned hull is much easier for rescuers to spot from the air or water than a person's head. Climbing on top of the hull also gets you out of the cold water.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "wildlife_nature_5", 
+    title: "The Wing-Dryer", 
+    text: "The Double-crested Cormorant is a common sight, often seen perched on buoys or rocks with its wings spread wide. Unlike a duck's, a cormorant's feathers are not fully waterproof, so they must air-dry them after diving for fish.", 
+    unlocked: false, 
+    icon: Bird 
+  },
+  { 
+    key: "boating_safety_15", 
+    title: "The Tying Post", 
+    text: "A 'cleat' is the simple, T-shaped fitting found on docks and boats. Its crucial job is to provide a secure point for tying a rope or line. Knowing how to tie a 'cleat hitch' is a fundamental skill for any boater.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "food_dining_3", 
+    title: "Squeaky Cheese", 
+    text: "Fried cheese curds, a beloved local delicacy, are made from a special fresh curd cheese, not mozzarella or cheddar. The fresh curds have a unique, 'squeaky' texture when bitten into.", 
+    unlocked: false, 
+    icon: Palette 
+  },
+  { 
+    key: "shipwreck_lore_4", 
+    title: "The Keystorm's Grave", 
+    text: "The massive wreck of the steel freighter 'Keystorm' is a legendary dive site. It lies in the shadow of Rock Island Lighthouse, a testament to the fact that even modern ships were not immune to the river's hidden dangers.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "island_geography_5", 
+    title: "A Cozy Anchorage", 
+    text: "While a 'bay' can be large and open, a 'cove' is specifically a small, sheltered inlet. For boaters, the river's many coves are prized as the safest and most peaceful places to drop anchor for the night.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "boating_history_3", 
+    title: "The Skiff Makers", 
+    text: "The firm of 'Lawlor & Son' in Clayton was one of the most famous and prolific builders of the iconic St. Lawrence Skiff. Their elegant, high-quality rowing boats are now prized antiques and symbols of the region's rich boating heritage.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "boating_safety_16", 
+    title: "Head-On at Night", 
+    text: "At night, a boat's lights are its eyes. If you see both a red and a green light on another vessel, it means you are looking at it head-on, and you must take action to avoid a collision. Seeing only one color means it is passing you.", 
+    unlocked: false, 
+    icon: Lightbulb 
+  },
+  { 
+    key: "cross_border_culture_3", 
+    title: "A Taste of Quebec", 
+    text: "Poutine—a hearty dish of french fries and cheese curds smothered in gravy—is a classic French-Canadian comfort food. You're much more likely to find this delicious, national dish in restaurants on the Ontario side of the river.", 
+    unlocked: false, 
+    icon: Palette 
+  },
+  { 
+    key: "local_landmarks_3", 
+    title: "A Ringside Seat", 
+    text: "The tiny 'Tom Thumb' island, with its single cottage, is famous for its location. It sits right beside a major shipping channel marker, giving its residents a front-row, and sometimes startlingly close, view of the massive freighters gliding past.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "boating_safety_17", 
+    title: "The Boater's Best Friend", 
+    text: "PFD stands for Personal Flotation Device. More commonly known as a life jacket, it's the single most important piece of safety equipment on any boat. Having enough for every passenger isn't just a good idea—it's the law.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "architecture_clue_6", 
+    title: "A Castle's Game Room", 
+    text: "The Alster Tower at Boldt Castle, also known as the 'playhouse,' was designed for pure entertainment. Tucked away inside was a complete, two-lane bowling alley for the amusement of the Boldt family and their guests.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "environmental_fact_6", 
+    title: "The Purple Plague", 
+    text: "Purple Loosestrife is a beautiful but dangerous invader. Its tall, vibrant purple flowers may look pretty, but this non-native plant spreads aggressively in wetlands, choking out native vegetation that wildlife depends on.", 
+    unlocked: false, 
+    icon: Leaf 
+  },
+  { 
+    key: "survival_scenario_4", 
+    title: "A Tree's Inner Strength", 
+    text: "A knowledgeable woodsman knows that survival can be found in unexpected places. The soft, cambium layer of inner bark on a pine tree is edible and has been a source of emergency nourishment for centuries.", 
+    unlocked: false, 
+    icon: Trees 
+  },
+  { 
+    key: "boating_history_4", 
+    title: "Measuring the Deeps", 
+    text: "A 'fathom' is an old nautical unit of measurement used for water depth, equal to six feet. Before modern depth sounders, sailors would drop a weighted line marked in fathoms to measure the water beneath them.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "island_geography_6", 
+    title: "The Bridge's Anchor", 
+    text: "The Thousand Islands Bridge system uses several islands as stepping stones. The main Canadian span lands on Hill Island, which serves as the anchor point for the bridge and is home to the 1000 Islands Tower.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "ghost_story_2", 
+    title: "The Spectral Sentry", 
+    text: "The massive limestone walls of Fort Henry in Kingston are said to be patrolled by a spectral sentry. Visitors and staff report seeing the ghostly figure of a lone soldier in an old uniform, still walking his post, forever on duty.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "fishing_lore_3", 
+    title: "The Troller's Technique", 
+    text: "'Trolling' is a popular and effective fishing technique where a lure or bait is dragged at a specific speed and depth behind a slowly moving boat. It's a great way to cover a lot of water and find active, hunting fish.", 
+    unlocked: false, 
+    icon: Fish 
+  },
+  { 
+    key: "boating_safety_18", 
+    title: "Guardians of the Waterway", 
+    text: "On the U.S. side of the river, the United States Coast Guard is the primary authority for maritime safety. Their duties include search and rescue, enforcing boating laws, and maintaining aids to navigation like buoys and lighthouses.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "island_names_4", 
+    title: "A Colorful Map", 
+    text: "The islands of the St. Lawrence have some wonderfully descriptive and quirky names, from 'Sugar' and 'Bloodletter' to 'Fiddler's Elbow.' But 'Mermaid Island' is one name you won't find on an official nautical chart.", 
+    unlocked: false, 
+    icon: MapPin 
+  },
+  { 
+    key: "island_geography_7", 
+    title: "A Lake Within a River", 
+    text: "The 'Lake of the Isles' is a beautiful, sheltered body of water that feels like its own separate lake, but it's actually the narrow, winding channel that separates Wellesley Island from the U.S. mainland.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "boating_safety_19", 
+    title: "Four Letters for Left", 
+    text: "An easy trick for remembering nautical terms: the 'port' side of a boat is the left side when you are facing forward. Both 'port' and 'left' are four-letter words.", 
+    unlocked: false, 
+    icon: Ship 
+  },
+  { 
+    key: "environmental_fact_7", 
+    title: "Turbulent Waters", 
+    text: "A 'boil' is the term for the turbulent, churning water often found downstream from dams or rapids. These powerful upwellings are created by the immense energy of the water and are extremely hazardous for any boat or swimmer.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "cross_border_culture_4", 
+    title: "The First Faceoff", 
+    text: "The very first international hockey game is said to have been played on the frozen river in the 1880s between teams from Kingston, Ontario, and Sackets Harbor, New York—the start of a long and friendly cross-border rivalry.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "local_history_4", 
+    title: "A Grand Hotel's Ghost", 
+    text: "The Crossmon House was one of Alexandria Bay's grandest Gilded Age hotels, famously hosting President Grant. Like many wooden structures of its time, it was tragically destroyed by a massive fire in 1897.", 
+    unlocked: false, 
+    icon: Castle 
+  },
+  { 
+    key: "survival_scenario_5", 
+    title: "Aground!", 
+    text: "If your boat runs aground on a shoal, hitting the engine in reverse often just digs you in deeper. A better first step is to shift weight by moving passengers and heavy gear to the part of the boat that's still floating, which can sometimes be enough to lift the hull free.", 
+    unlocked: false, 
+    icon: Anchor 
+  },
+  { 
+    key: "boating_safety_20", 
+    title: "The Diver Down Flag", 
+    text: "The 'Alpha' flag—a blue and white swallow-tailed flag—is an international signal that all boaters must recognize. It signifies that the vessel has a scuba diver in the water nearby, and other boats must keep well clear and operate at a slow speed.", 
+    unlocked: false, 
+    icon: Waves 
+  },
+  { 
+    key: "boating_safety_21", 
+    title: "A Friendly Inspection", 
+    text: "The Canadian Coast Guard Auxiliary offers a free, courtesy vessel safety check program called 'C-Way.' Volunteers will inspect your boat to ensure you have all the required safety gear, helping to prevent problems before they start.", 
+    unlocked: false, 
+    icon: Scroll 
+  },
+  { 
+    key: "boating_safety_22", 
+    title: "A Fork in the River", 
+    text: "A navigation buoy with both red and green horizontal bands is a 'bifurcation buoy,' marking where a channel splits. The top color indicates the preferred, or main, channel. If the top band is green, you should keep the buoy on your left to stay in the main channel.", 
+    unlocked: false, 
+    icon: MapPin 
   }
-];
-
-export interface PlayerRank {
-  title: string;
-  minScore: number;
-  icon: LucideIcon;
-}
-
-export const playerRanks: PlayerRank[] = [
-  { title: "Seaman Recruit", minScore: 0, icon: Shield },
-  { title: "Seaman Apprentice", minScore: 20, icon: ShieldHalf },
-  { title: "Seaman", minScore: 50, icon: ShieldCheck },
-  { title: "Petty Officer Third Class", minScore: 90, icon: Star },
-  { title: "Petty Officer Second Class", minScore: 140, icon: Star },
-  { title: "Petty Officer First Class", minScore: 200, icon: Star },
-  { title: "Chief Petty Officer", minScore: 270, icon: Gem },
-  { title: "Senior Chief Petty Officer", minScore: 350, icon: Gem },
-  { title: "Master Chief Petty Officer", minScore: 440, icon: Gem },
-  { title: "Chief Warrant Officer 2", minScore: 540, icon: Award },
-  { title: "Chief Warrant Officer 3", minScore: 650, icon: Award },
-  { title: "Ensign", minScore: 770, icon: Medal },
-  { title: "Lieutenant Junior Grade", minScore: 900, icon: Medal },
-  { title: "Lieutenant", minScore: 1050, icon: Medal },
-  { title: "Lieutenant Commander", minScore: 1200, icon: Crown },
-  { title: "Commander", minScore: 1400, icon: Crown },
-  { title: "Captain", minScore: 1600, icon: Crown },
-  { title: "Rear Admiral", minScore: 1800, icon: Zap },
-  { title: "Vice Admiral", minScore: 2000, icon: Zap },
-  { title: "Admiral", minScore: 2200, icon: Zap },
-];
-
-export function getRankByScore(score: number): PlayerRank {
-  let currentRank = playerRanks[0]; // Default to the first rank
-  for (let i = playerRanks.length - 1; i >= 0; i--) {
-    if (score >= playerRanks[i].minScore) {
-      currentRank = playerRanks[i];
-      break;
-    }
-  }
-  return currentRank;
-}
-
-
-export interface LeaderboardEntry {
-  id: string;
-  name: string;
-  email?: string;
-  score: number;
-  rankTitle?: string; // Title of the rank e.g., "Admiral"
-  avatar?: string;
-  rank?: number; // Numerical rank on leaderboard (1st, 2nd, etc.)
-  lastUpdated?: any; // Firestore Timestamp or Date
-}
-
-
-export interface Achievement {
-  id: string;
-  name: string;
-  description: string;
-  icon: LucideIcon; // This should be the component itself, not an object
-  unlocked: boolean;
-  criteria: string;
-}
-
-export const achievements: Achievement[] = [
-  { id: 'first_hint', name: "Budding Detective", description: "Unlocked your first storyline hint.", icon: Scroll, unlocked: false, criteria: "Unlock 1 hint" },
-  { id: 'five_correct', name: "Trivia Novice", description: "Answered 5 questions correctly.", icon: Star, unlocked: false, criteria: "5 correct answers" },
-  { id: 'all_hints_category1', name: "Boldt's Confidant", description: "Unlocked all hints related to Boldt Castle.", icon: Castle, unlocked: false, criteria: "Unlock specific hints" },
-  { id: 'top_leaderboard', name: "Top RiverRat", description: "Reached the top 3 on the leaderboard.", icon: Trophy, unlocked: false, criteria: "Reach top 3" },
-  { id: 'story_complete', name: "Lore Master", description: "Completed the entire storyline.", icon: Diamond, unlocked: false, criteria: "Unlock all hints" },
-  { id: 'fish_expert', name: "Master Angler", description: "Answered a tricky fish-related question.", icon: Fish, unlocked: false, criteria: "Answer fish question" },
-  { id: 'geology_buff', name: "Rock Solid Knowledge", description: "Answered a question about island geology.", icon: Mountain, unlocked: false, criteria: "Answer geology question" },
-  { id: 'history_hound', name: "History Hound", description: "Answered a question about local history.", icon: BookOpen, unlocked: false, criteria: "Answer history question" },
-  { id: 'rank_petty_officer', name: "Petty Officer", description: "Achieved the rank of Petty Officer.", icon: ShieldCheck, unlocked: false, criteria: "Reach Petty Officer rank" },
-  { id: 'rank_chief', name: "The Chief", description: "Achieved the rank of Chief Petty Officer.", icon: Gem, unlocked: false, criteria: "Reach CPO rank" },
-  { id: 'rank_officer', name: "Commissioned", description: "Achieved an Officer rank.", icon: Medal, unlocked: false, criteria: "Reach Ensign or higher" },
-  { id: 'rank_admiral', name: "Fleet Admiral", description: "Achieved the highest rank of Admiral.", icon: Zap, unlocked: false, criteria: "Reach Admiral rank" },
-];
-
-// Placeholder for a potential storyline clue if all island history questions are answered
-export const islandHistoryMasterClue: StorylineHint = {
-    key: "island_history_master",
-    title: "Echoes of the Past",
-    text: "You've delved deep into the chronicles of the islands. A pattern emerges from the tales of settlers, conflicts, and transformations...",
-    unlocked: false,
-    icon: Scroll
-};
-
-// Placeholder for a potential storyline clue if all nature/geography questions are answered
-export const natureGeographyMasterClue: StorylineHint = {
-    key: "nature_geography_master",
-    title: "Whispers of the Wild",
-    text: "The river's flow, the ancient rocks, the calls of the wild – you understand the islands' natural pulse. A hidden sanctuary reveals itself...",
-    unlocked: false,
-    icon: Leaf
-};
-
-// Placeholder for a potential storyline clue related to maritime/boating questions
-export const maritimeMasterClue: StorylineHint = {
-    key: "maritime_master",
-    title: "Captain's Log",
-    text: "From grand yachts to humble skiffs, from shipwrecks to seaway titans, you've charted the maritime heart of the Thousand Islands. A lost manifest surfaces...",
-    unlocked: false,
-    icon: Anchor
-};
-
-// Function to check if all hints of a specific category are unlocked (example)
-export const areCategoryHintsUnlocked = (categoryPrefix: string, unlockedStoryHints: StorylineHint[]): boolean => {
-    const categoryHints = storyline.filter(hint => hint.key.startsWith(categoryPrefix));
-    if (categoryHints.length === 0) return false; // No hints in this category
-    return categoryHints.every(hint => unlockedStoryHints.find(unlockedHint => unlockedHint.key === hint.key && unlockedHint.unlocked));
-};
-
-    
+]

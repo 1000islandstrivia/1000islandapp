@@ -26,7 +26,7 @@
   },
   {
     "id": "TQ004",
-    "question": "The St. Lawrence Seaway allows huge ocean-going vessels, often called what, to travel to the Great Lakes?",
+    "question": "What are the huge ocean-going vessels, specifically designed to fit through the Seaway's locks, often called?",
     "options": ["River Rats", "Lakers", "Seadogs", "Salties"],
     "answer": "Lakers",
     "storylineHintKey": "seaway_journey_1",
@@ -1179,9 +1179,9 @@
   },
   {
     "id": "TQ135",
-    "question": "What island is home to a natural feature called the Devil's Oven, rumored to have been a pirate hideout?",
-    "options": ["Heart Island", "Wellesley Island", "Grindstone Island", "Devil's Oven Island"],
-    "answer": "Devil's Oven Island",
+    "question": "The island named Devil's Oven is rumored to have been a hideout for which historical figure?",
+    "options": ["George Boldt", "Frederick Bourne", "Bill Johnston", "Ulysses S. Grant"],
+    "answer": "Bill Johnston",
     "storylineHintKey": "devils_oven_1",
     "fallbackHint": "This rugged island, with its legendary cave, has a long history as a pirate hideaway."
   },
@@ -2376,7 +2376,7 @@
   },
   {
     "id": "TQ269",
-    "question": "Which of these is NOT a real island name in the Thousand Islands?",
+    "question": "Which of these is NOT a real, named shoal or reef in the Thousand Islands?",
     "options": ["Sugar Island", "Bloodletter Island", "Fiddler's Elbow", "Mermaid Island"],
     "answer": "Mermaid Island",
     "storylineHintKey": "island_names_4",
@@ -2600,7 +2600,7 @@
   },
   {
     "id": "TQ297",
-    "question": "A 'see-chi' disk is a simple tool used by scientists at TIBS to measure what?",
+    "question": "A 'Secchi' disk is a simple tool used by scientists at TIBS to measure what?",
     "options": ["Water temperature", "Water clarity", "Water depth", "Water current speed"],
     "answer": "Water clarity",
     "storylineHintKey": "conservation_2",
@@ -2631,5 +2631,3 @@
     "fallbackHint": "This special buoy marks where a channel splits. If the top band is green, the primary channel is to the right (following 'Red, Right, Returning')."
   }
 ]
-
-    
