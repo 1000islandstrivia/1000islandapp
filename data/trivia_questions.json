@@ -138,7 +138,7 @@
   },
   {
     "id": "TQ018",
-    "question": "What does the term 'The Lost Channel' refer to?",
+    "question": "What does 'The Lost Channel' refer to?",
     "options": ["A TV station that went off the air", "A sunken boat carrying gold", "A section of the river where a British army got lost", "A popular fishing spot"],
     "answer": "A section of the river where a British army got lost",
     "storylineHintKey": "lost_channel_1",
@@ -1180,8 +1180,8 @@
   {
     "id": "TQ135",
     "question": "What island is home to a natural feature called the Devil's Oven, rumored to have been a pirate hideout?",
-    "options": ["Heart Island", "Wellesley Island", "Grindstone Island", "Dark Island"],
-    "answer": "Grindstone Island",
+    "options": ["Heart Island", "Wellesley Island", "Grindstone Island", "Devil's Oven Island"],
+    "answer": "Devil's Oven Island",
     "storylineHintKey": "devils_oven_1",
     "fallbackHint": "This rugged island, with its legendary cave, has a long history as a pirate hideaway."
   },
