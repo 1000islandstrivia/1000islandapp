@@ -1,6 +1,6 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { Castle, Diamond, Fish, Scroll, Ship, Star, Trophy, Leaf, Anchor, MapPin, Lightbulb, BookOpen, Palette, Mountain, Trees, Waves, Bird, Shield, ShieldHalf, ShieldCheck, Gem, Award, Medal, Crown, Zap } from 'lucide-react';
+import { Castle, Diamond, Fish, Scroll, Ship, Star, Trophy, Leaf, Anchor, MapPin, Lightbulb, BookOpen, Palette, Mountain, Trees, Waves, Bird, Shield, ShieldHalf, ShieldCheck, Gem, Award, Medal, Crown, Zap, Skull } from 'lucide-react';
 
 export interface TriviaQuestion {
   id: string;
@@ -425,7 +425,7 @@ export const storyline: StorylineHint[] = [
   { 
     key: "biosphere_reserve_1", 
     title: "Living Harmony", 
-    text: "The entire region is a UNESCO Biosphere Reserve, a special designation that recognizes its unique ecosystem and the community's effort to live in harmony with nature.", 
+    text: "The entire region is a UNESCO Biosphere Reserve, a special designation that recognizes its unique ecosystem and its commitment to balancing conservation and sustainable human activity.", 
     unlocked: false, 
     icon: Leaf 
   },
