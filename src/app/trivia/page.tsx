@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 export default function TriviaPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [isAiLoreEnabled, setIsAiLoreEnabled] = useState(true);
+  const [isAiLoreEnabled, setIsAiLoreEnabled] = useState(false);
 
   useEffect(() => {
     const savedPreference = localStorage.getItem('aiLoreEnabled');
