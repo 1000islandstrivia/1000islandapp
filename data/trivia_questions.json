@@ -27,7 +27,7 @@
   {
     "id": "TQ004",
     "question": "The St. Lawrence Seaway allows huge ocean-going vessels, often called what, to travel to the Great Lakes?",
-    "options": ["River Rats", "Lakers", "Seadogs", "Freighters"],
+    "options": ["River Rats", "Lakers", "Seadogs", "Salties"],
     "answer": "Lakers",
     "storylineHintKey": "seaway_journey_1",
     "fallbackHint": "These long, narrow cargo ships are specifically designed to fit through the Seaway's locks."
@@ -613,7 +613,7 @@
     "question": "Which of these is a common invasive species that has significantly impacted the river's ecosystem?",
     "options": ["Largemouth Bass", "Zebra Mussels", "Muskellunge", "River Otters"],
     "answer": "Zebra Mussels",
-    "storylineHintKey": "tibs_focus_1",
+    "storylineHintKey": "environmental_fact_1",
     "fallbackHint": "These small, sharp-shelled mollusks arrived in the ballast water of ocean-going ships."
   },
   {
@@ -862,7 +862,7 @@
   },
   {
     "id": "TQ106",
-    "question": "The Great Lakes Seaway Trail is what type of scenic byway?",
+    "question": "What is another name for the 'Great Lakes Seaway Trail', a scenic byway in the U.S.?",
     "options": [
       "A hiking trail",
       "The Great Lakes Seaway Trail",
@@ -1226,11 +1226,11 @@
   },
   {
     "id": "TQ139",
-    "question": "What famous Canadian city is often considered the eastern gateway to the Thousand Islands?",
-    "options": ["Montreal", "Toronto", "Ottawa", "Quebec City"],
-    "answer": "Montreal",
+    "question": "Which famous Canadian city is often considered the western gateway to the Thousand Islands?",
+    "options": ["Kingston", "Toronto", "Ottawa", "Quebec City"],
+    "answer": "Kingston",
     "storylineHintKey": "canadian_gateway_1",
-    "fallbackHint": "Montreal's proximity to the eastern end of the Thousand Islands makes it a popular starting point for many visitors."
+    "fallbackHint": "Kingston's location at the mouth of the St. Lawrence River makes it the primary Canadian gateway to the Thousand Islands."
   },
   {
     "id": "TQ140",
@@ -1656,7 +1656,7 @@
   },
   {
     "id": "TQ179",
-    "question": "The architectural firm of Hewitt, Stevens & Paist was famously hired by which castle-builder in the region?",
+    "question": "The architectural firm of G.W. & W.D. Hewitt was famously hired by which castle-builder in the region?",
     "options": ["Frederick Bourne (Singer Castle)", "Charles Emery (Calumet Castle)", "George Boldt (Boldt Castle)", "Bill Johnston (His Hideout)"],
     "answer": "George Boldt (Boldt Castle)",
     "storylineHintKey": "architecture_clue_1",
@@ -2123,7 +2123,7 @@
     "question": "What is the main purpose of the 'Save The River' organization?",
     "options": ["To promote boat racing", "To restore old castles", "To advocate for the river's environmental protection", "To stock the river with fish"],
     "answer": "To advocate for the river's environmental protection",
-    "storylineHintKey": "conservation_2",
+    "storylineHintKey": "conservation_1",
     "fallbackHint": "This group is a leading voice for the health of the St. Lawrence River ecosystem."
   },
   {
