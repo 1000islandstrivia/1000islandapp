@@ -25,7 +25,7 @@ import {
 } from 'firebase/firestore';
 
 const LEADERBOARD_COLLECTION = 'leaderboard';
-const LEADERBOARD_LIMIT = 25;
+const LEADERBOARD_LIMIT = 100;
 
 /**
  * Fetches the top leaderboard entries from Firestore.
