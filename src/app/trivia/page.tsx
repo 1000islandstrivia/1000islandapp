@@ -6,7 +6,7 @@ import TriviaGame from '@/components/trivia/TriviaGame';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { HelpCircle, Sparkles, Skull } from 'lucide-react';
+import { HelpCircle, BookOpen, Skull } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
@@ -73,8 +73,8 @@ export default function TriviaPage() {
         </div>
 
         <div className="flex items-center space-x-2">
-            <Sparkles className="w-5 h-5 text-accent" />
-            <Label htmlFor="ai-lore-switch" className="font-medium text-sm">AI Pirate Lore</Label>
+            <BookOpen className="w-5 h-5 text-accent" />
+            <Label htmlFor="ai-lore-switch" className="font-medium text-sm">Dig Up Captain's Log, Hold Fast</Label>
             <Switch
             id="ai-lore-switch"
             checked={isAiLoreEnabled}
