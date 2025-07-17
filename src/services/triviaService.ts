@@ -1,3 +1,5 @@
+
+'use server';
 /**
  * @fileOverview Server-side optimized trivia service with aggressive payload reduction.
  *
@@ -12,25 +14,12 @@ import { collection, getDocs, query, addDoc, doc, setDoc, limit, getDoc } from '
 const TRIVIA_COLLECTION = 'triviaQuestions';
 const QUESTIONS_TO_FETCH_FROM_DB = 50;
 
-// Server-side caching to avoid repeated Firestore calls
-const serverCache = new Map<string, any>();
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
-
 /**
  * 🚀 OPTIMIZED: Server-side payload reduction
  * Fetches full documents, immediately strips large fields, sends lean objects to client
  */
 export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   try {
-    // Check server-side cache first
-    const cacheKey = 'trivia_questions_lean_v2';
-    const cached = serverCache.get(cacheKey);
-    
-    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-      console.log('🎯 Server cache hit - returning cached lean questions');
-      return cached.data;
-    }
-
     const startTime = performance.now();
     
     // Fetch full documents from Firestore
@@ -81,24 +70,20 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
     });
     
     // Performance monitoring
-    const compressionRatio = totalOriginalSize > 0 ? ((totalOriginalSize - totalLeanSize) / totalOriginalSize * 100).toFixed(1) : "0.0";
-    console.log(`📦 Payload optimization:
-    - Original size: ${(totalOriginalSize / 1024).toFixed(1)}KB
-    - Lean size: ${(totalLeanSize / 1024).toFixed(1)}KB  
-    - Compression: ${compressionRatio}% smaller
-    - Questions processed: ${leanQuestions.length}`);
+    if (totalOriginalSize > 0) {
+      const compressionRatio = ((totalOriginalSize - totalLeanSize) / totalOriginalSize * 100).toFixed(1);
+      console.log(`📦 Payload optimization:
+      - Original size: ${(totalOriginalSize / 1024).toFixed(1)}KB
+      - Lean size: ${(totalLeanSize / 1024).toFixed(1)}KB  
+      - Compression: ${compressionRatio}% smaller
+      - Questions processed: ${leanQuestions.length}`);
+    }
     
     // Shuffle for randomness (server-side)
     const shuffledQuestions = leanQuestions.sort(() => 0.5 - Math.random());
     
     const endTime = performance.now();
     console.log(`⚡ Total processing time: ${Math.round(endTime - startTime)}ms`);
-    
-    // Cache the lean results server-side
-    serverCache.set(cacheKey, {
-      data: shuffledQuestions,
-      timestamp: Date.now()
-    });
     
     return shuffledQuestions;
 
@@ -114,15 +99,6 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
  */
 export async function getQuestionHints(questionId: string): Promise<{ fallbackHint: string; cachedPirateScript?: string }> {
   try {
-    // Check server-side hint cache
-    const hintCacheKey = `hint_${questionId}`;
-    const cached = serverCache.get(hintCacheKey);
-    
-    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-      console.log(`💾 Server hint cache hit for ${questionId}`);
-      return cached.data;
-    }
-
     const startTime = performance.now();
     
     const docRef = doc(db, TRIVIA_COLLECTION, questionId);
@@ -138,114 +114,20 @@ export async function getQuestionHints(questionId: string): Promise<{ fallbackHi
         cachedPirateScript: data.cachedPirateScript,
       };
       
-      // Cache the hint data server-side
-      serverCache.set(hintCacheKey, {
-        data: hintData,
-        timestamp: Date.now()
-      });
-      
       return hintData;
     }
 
     const fallback = { fallbackHint: "Arrr, this secret seems to have washed away..." };
     
-    // Cache fallback too to prevent repeated failed lookups
-    serverCache.set(hintCacheKey, {
-      data: fallback,
-      timestamp: Date.now()
-    });
-    
     return fallback;
     
   } catch (error: any) {
     console.error(`Error fetching hints for question ${questionId}:`, error);
+    // Return a safe fallback so the game can continue
     return { fallbackHint: "A mysterious force prevents the hint from appearing..." };
   }
 }
 
-/**
- * 🚀 NEW: Batch hint preloading for upcoming questions
- * Preloads hint data for next few questions to reduce perceived latency
- */
-export async function preloadHintsForQuestions(questionIds: string[]): Promise<void> {
-  try {
-    const startTime = performance.now();
-    
-    // Filter out already cached hints
-    const uncachedIds = questionIds.filter(id => {
-      const cacheKey = `hint_${id}`;
-      const cached = serverCache.get(cacheKey);
-      return !cached || Date.now() - cached.timestamp >= CACHE_DURATION;
-    });
-    
-    if (uncachedIds.length === 0) {
-      console.log('✅ All hints already cached on server');
-      return;
-    }
-    
-    console.log(`🔄 Preloading ${uncachedIds.length} hints on server`);
-    
-    // Fetch hints in parallel (but don't block on completion)
-    const preloadPromises = uncachedIds.map(id => 
-      getQuestionHints(id).catch(err => {
-        console.warn(`Preload failed for ${id}:`, err);
-        return null;
-      })
-    );
-    
-    // Fire and forget - don't await
-    Promise.all(preloadPromises).then((results) => {
-      const successful = results.filter(r => r !== null).length;
-      const endTime = performance.now();
-      console.log(`✅ Preloaded ${successful}/${uncachedIds.length} hints in ${Math.round(endTime - startTime)}ms`);
-    });
-    
-  } catch (error) {
-    console.warn('Hint preloading failed:', error);
-  }
-}
-
-/**
- * 🚀 NEW: Performance monitoring and cache management
- */
-export async function getTriviaServiceStats() {
-  const cacheEntries = Array.from(serverCache.keys());
-  const questionCacheEntries = cacheEntries.filter(key => key.startsWith('trivia_'));
-  const hintCacheEntries = cacheEntries.filter(key => key.startsWith('hint_'));
-  
-  return {
-    serverCacheSize: serverCache.size,
-    questionCacheEntries: questionCacheEntries.length,
-    hintCacheEntries: hintCacheEntries.length,
-    cacheKeys: cacheEntries,
-  };
-}
-
-export async function clearTriviaServerCache() {
-  const beforeSize = serverCache.size;
-  serverCache.clear();
-  console.log(`🧹 Server cache cleared (was ${beforeSize} entries)`);
-}
-
-/**
- * 🚀 NEW: Smart cache warming for common questions
- * Pre-warms the server cache with frequently accessed questions
- */
-export async function warmServerCache(): Promise<void> {
-  try {
-    console.log('🔥 Warming server cache...');
-    const startTime = performance.now();
-    
-    // Load a fresh set of questions to warm the cache
-    await getTriviaQuestions();
-    
-    const endTime = performance.now();
-    console.log(`🔥 Server cache warmed in ${Math.round(endTime - startTime)}ms`);
-    
-  } catch (error) {
-    console.warn('Cache warming failed:', error);
-  }
-}
 
 /**
  * Adds a new trivia question to the Firestore database using a custom ID.
@@ -259,15 +141,7 @@ export async function addTriviaQuestion(questionData: Omit<TriviaQuestion, 'id'>
     const questionDocRef = doc(db, TRIVIA_COLLECTION, newId);
     await setDoc(questionDocRef, questionWithId);
     
-    // Clear question cache to ensure new question appears
-    const cacheKeys = Array.from(serverCache.keys());
-    cacheKeys.forEach(key => {
-      if (key.startsWith('trivia_')) {
-        serverCache.delete(key);
-      }
-    });
-    
-    console.log(`✅ Added question ${newId} and cleared question cache`);
+    console.log(`✅ Added question ${newId}`);
     return newId;
 
   } catch (error: any) {
@@ -284,19 +158,8 @@ export async function cachePirateScriptForQuestion(questionId: string, script: s
     const questionDocRef = doc(db, TRIVIA_COLLECTION, questionId);
     await setDoc(questionDocRef, { cachedPirateScript: script }, { merge: true });
     
-    // Update server-side hint cache if it exists
-    const hintCacheKey = `hint_${questionId}`;
-    const existingCache = serverCache.get(hintCacheKey);
-    
-    if (existingCache) {
-      serverCache.set(hintCacheKey, {
-        data: { ...existingCache.data, cachedPirateScript: script },
-        timestamp: existingCache.timestamp
-      });
-      console.log(`🎯 Updated server cache for ${questionId} with new script`);
-    }
-    
   } catch (error: any) {
+    // This is a non-critical operation, so we just log the error
     console.error(`Error caching script for question ${questionId}:`, error);
   }
 }

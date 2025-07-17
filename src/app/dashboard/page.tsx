@@ -12,7 +12,6 @@ import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
 import { runDeduplication } from '@/actions/deduplicateAction';
 import Link from 'next/link';
-import PerformanceReport from '@/components/admin/PerformanceReport';
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
@@ -191,10 +190,6 @@ export default function DashboardPage() {
                 {dedupStatus && <p className="mt-4 text-sm text-muted-foreground">{dedupStatus}</p>}
               </CardContent>
             </Card>
-            
-            <div className="md:col-span-2">
-              <PerformanceReport />
-            </div>
           </div>
         )}
       </div>
