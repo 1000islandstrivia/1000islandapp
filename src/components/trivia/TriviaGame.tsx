@@ -278,13 +278,10 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
       
       try {
-        const hintData = await getQuestionHints(question.id);
-        const actionInput = {
-          question: { ...question, fallbackHint: hintData.fallbackHint },
+        const result = await getAiPirateResponseAction({
+          question,
           playerAnswer: answer,
-        };
-
-        const result = await getAiPirateResponseAction(actionInput);
+        });
         
         if (result.success && result.script) {
           setPirateResponse({ script: result.script, audioDataUri: result.audioDataUri });
@@ -293,6 +290,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         }
       } catch (error: any) {
         console.error("Error getting AI pirate response:", error);
+        // Fallback to standard hint on AI failure
         const hintData = await getQuestionHints(question.id);
         setPirateResponse({ script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." });
       } finally {
@@ -511,8 +509,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               {pirateResponse && (
                 <HintDisplay
                     script={pirateResponse.script}
-                    isAudioLoading={isAiLoading && !pirateResponse.audioDataUri} 
-                    pirateAudioUri={pirateResponse.audioDataUri || null}
+                    isScriptLoading={isAiLoading}
+                    audioUri={pirateResponse.audioDataUri || null}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                 />

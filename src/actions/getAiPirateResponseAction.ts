@@ -11,7 +11,7 @@ import { getQuestionHints } from '@/services/triviaService';
 import type { TriviaQuestion } from '@/lib/trivia-data';
 
 interface ActionInput {
-  question: Omit<TriviaQuestion, 'cachedPirateScript' | 'fallbackHint'>;
+  question: TriviaQuestion;
   playerAnswer: string;
 }
 
