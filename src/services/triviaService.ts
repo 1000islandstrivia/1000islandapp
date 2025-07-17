@@ -76,3 +76,5 @@ export async function cachePirateScriptForQuestion(questionId: string, script: s
         console.error(`Error caching script for question ${questionId}:`, error);
     }
 }
+
+    

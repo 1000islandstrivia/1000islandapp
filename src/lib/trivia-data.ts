@@ -1440,14 +1440,14 @@ export const storyline: StorylineHint[] = [
   { 
     key: "boating_safety_20", 
     title: "The Diver Down Flag", 
-    text: "The 'Alpha' flag—a blue and white swallow-tailed flag—is an international signal that all boaters must recognize. It signifies that the vessel has a scuba diver in the water nearby, and other boats must keep well clear and operate at a slow speed.", 
+    text: "The 'Alpha' flag—a blue and white swallow-tailed flag—is an international signal that all boaters must recognize. It signifies that the vessel has a diver in the water nearby, and other boats must keep well clear and operate at a slow speed.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "boating_safety_21", 
     title: "A Friendly Inspection", 
-    text: "The Canadian Coast Guard Auxiliary offers a free, courtesy vessel safety check program called 'C-Way.' Volunteers will inspect your boat to ensure you have all the required safety gear, helping to prevent problems before they start.", 
+    text: "The Canadian Coast Guard Auxiliary offers a free, courtesy vessel safety check program called 'C-Way.' Volunteers will inspect your boat for free to ensure you have all the required safety gear, helping to prevent problems before they start.", 
     unlocked: false, 
     icon: Scroll 
   },
@@ -1459,3 +1459,5 @@ export const storyline: StorylineHint[] = [
     icon: MapPin 
   }
 ]
+
+    

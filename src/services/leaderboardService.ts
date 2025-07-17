@@ -175,3 +175,5 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
     throw error;
   }
 }
+
+    
