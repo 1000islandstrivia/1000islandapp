@@ -96,7 +96,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
   const [pirateResponse, setPirateResponse] = useState<PirateResponse | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [isHintPlaying, setIsHintPlaying] = useState(false);
+  const [startHintPlayback, setStartHintPlayback] = useState(false);
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
@@ -191,7 +191,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setCurrentQuestionIndex(0);
     setPirateResponse(null);
     setLastAnswerCorrect(false);
-    setIsHintPlaying(false);
+    setStartHintPlayback(false);
     setToastedAchievementIds(new Set());
   }, []);
 
@@ -270,6 +270,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       }
     }
     
+    setGameState('RESULT'); // Set state to show loading/result screen
+
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
@@ -280,7 +282,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         });
         if (result.success && result.script) {
           setPirateResponse({ script: result.script, audioDataUris: result.audioDataUris });
-          setIsHintPlaying(true);
+          setStartHintPlayback(true); // Tell HintDisplay to play audio
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
@@ -296,18 +298,20 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
     }
 
-    setGameState('RESULT');
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
 
+
   const onHintTypingComplete = useCallback(() => {
-    // This callback is now used to trigger audio playback automatically in HintDisplay
+    // This callback can be used for other purposes if needed,
+    // but audio playback is now controlled by the `startHintPlayback` prop.
   }, []);
+
 
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
     
     setPirateResponse(null);
-    setIsHintPlaying(false);
+    setStartHintPlayback(false);
 
     if (nextIndex < activeQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
@@ -479,14 +483,24 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       </Card>
 
       <div className="w-full max-w-2xl mx-auto min-h-[300px] flex justify-center items-center">
-        {gameState === 'PLAYING' && currentQuestion && (
+        {gameState === 'PLAYING' && currentQuestion ? (
           <QuestionCard
             question={currentQuestion}
             onAnswerSubmit={handleAnswerSubmit}
             questionNumber={currentQuestionIndex + 1}
             totalQuestions={totalQuestions}
           />
-        )}
+        ) : gameState === 'PLAYING' && !currentQuestion ? (
+          <div className="flex flex-col items-center justify-center min-h-[300px] bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
+              <Skull className="w-16 h-16 text-destructive mb-4" />
+              <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
+              <p className="text-destructive-foreground/80 mt-2">The next question was lost to the river mists.</p>
+              <Button onClick={initializeGame} className="mt-6" variant="destructive">
+                  <RefreshCw className="mr-2 h-4 w-4" /> Restart Voyage
+              </Button>
+          </div>
+        ) : null}
+
         {gameState === 'RESULT' && (
           isAiLoreEnabled ? (
             <>
@@ -504,7 +518,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                     onTypingComplete={onHintTypingComplete}
-                    startPlayback={isHintPlaying}
+                    startPlayback={startHintPlayback}
                 />
               )}
             </>
@@ -524,5 +538,3 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
-
-    
