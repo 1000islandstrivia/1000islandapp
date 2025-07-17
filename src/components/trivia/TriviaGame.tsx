@@ -326,7 +326,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setIsHintPlaying(isAiLoreEnabled);
     setGameState('RESULT');
   
-  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
+  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled, toast]);
 
 
   const onHintTypingComplete = useCallback(() => {
