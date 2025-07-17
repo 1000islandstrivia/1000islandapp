@@ -229,22 +229,21 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     const question = activeQuestions[currentQuestionIndex];
     if (!question) {
-        setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
-        setGameState('ERROR');
-        return;
+      setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
+      setGameState('ERROR');
+      return;
     }
-
+  
     setLastAnswerCorrect(false); 
-    
     const isCorrect = answer === question.answer;
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
-
+  
     if (isInstantResponseEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       playAudio(randomAudioUrl, 'pirate response audio');
     }
-
+  
     if (isCorrect) {
       setCurrentScore(s => s + 10);
       playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c', 'coin spill audio');
@@ -269,7 +268,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     }
     
     let hintScript: PirateResponse;
-
+  
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
@@ -292,13 +291,13 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         const hintData = await getQuestionHints(question.id);
         hintScript = { script: hintData.fallbackHint || "No hint available." };
     }
-
+  
     setLastAnswerCorrect(isCorrect);
     setPirateResponse(hintScript);
     setIsAiLoading(false);
     setIsHintPlaying(isAiLoreEnabled);
     setGameState('RESULT');
-
+  
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
 
 
@@ -535,5 +534,3 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
-
-    
