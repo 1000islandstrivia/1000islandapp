@@ -41,6 +41,9 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
     setAudioSrcs(null);
     setCurrentTrackIndex(0);
     setIsPlaying(false);
+    if (audioRef.current) {
+      audioRef.current.src = '';
+    }
   };
 
   const handleGenerate = async () => {
@@ -73,7 +76,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
         audioRef.current.pause();
       } else {
         // If we are at the end, restart from the beginning
-        if (currentTrackIndex >= (audioSrcs?.length ?? 0) - 1 && audioRef.current.ended) {
+        if (currentTrackIndex >= (audioSrcs?.length ?? 0) && audioRef.current.ended) {
            setCurrentTrackIndex(0);
         }
         audioRef.current.play();
@@ -85,14 +88,16 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
   const handleRestart = () => {
     if (audioRef.current) {
         setCurrentTrackIndex(0);
+        // Ensure playback starts by setting isPlaying to true, useEffect will handle the rest.
         setIsPlaying(true);
     }
   };
 
   const handleTrackEnd = () => {
     if (currentTrackIndex < (audioSrcs?.length ?? 0) - 1) {
-      // Move to the next track, playback will be handled by useEffect
+      // Move to the next track and ensure it plays
       setCurrentTrackIndex(prevIndex => prevIndex + 1);
+      setIsPlaying(true); // This is the key fix!
     } else {
       // End of playlist
       setIsPlaying(false); 
@@ -104,11 +109,12 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
   useEffect(() => {
     const audioElement = audioRef.current;
     if (audioElement && audioSrcs && audioSrcs[currentTrackIndex]) {
+        // Only change src if it's different to avoid re-buffering
+        if (audioElement.src !== audioSrcs[currentTrackIndex]) {
+            audioElement.src = audioSrcs[currentTrackIndex];
+        }
+
         if (isPlaying) {
-            // If the source is not what's currently loaded, load it
-            if (audioElement.src !== audioSrcs[currentTrackIndex]) {
-                audioElement.src = audioSrcs[currentTrackIndex];
-            }
             audioElement.play().catch(e => {
                 console.error("Audio play failed:", e);
                 setIsPlaying(false);
@@ -149,7 +155,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
               </Button>
             )}
 
-          <Select onValueChange={handleVoiceChange} defaultValue={selectedVoice} disabled={isLoading || isPlaying}>
+          <Select onValueChange={handleVoiceChange} value={selectedVoice} disabled={isLoading || (audioSrcs !== null && isPlaying)}>
             <SelectTrigger className="w-full sm:w-[200px] bg-card text-card-foreground border-primary/50">
               <SelectValue placeholder="Choose a narrator..." />
             </SelectTrigger>
@@ -182,12 +188,12 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                     <span className="sr-only">Restart</span>
                 </Button>
                 <div className="text-sm text-muted-foreground">
-                    Clip {currentTrackIndex + 1} of {audioSrcs.length}
+                   {/* Show progress only if there are clips to play */}
+                   {audioSrcs.length > 0 && `Clip ${currentTrackIndex + 1} of ${audioSrcs.length}`}
                 </div>
             </div>
              <audio
               ref={audioRef}
-              src={audioSrcs[currentTrackIndex]}
               onEnded={handleTrackEnd}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
@@ -199,5 +205,3 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
     </TooltipProvider>
   );
 }
-
-    
