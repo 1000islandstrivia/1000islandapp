@@ -19,7 +19,6 @@ interface ActionInput {
 interface ActionOutput {
   success: boolean;
   script?: string;
-  audioDataUri?: string | null;
   error?: string;
 }
 
@@ -32,9 +31,6 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
   try {
     const { generatePirateScript } = await import('@/ai/flows/generate-pirate-script');
     addLog(`${logPrefix} Dynamically imported 'generatePirateScript'.`);
-    
-    const { generateSpokenPirateAudio } = await import('@/ai/flows/generate-spoken-pirate-audio');
-    addLog(`${logPrefix} Dynamically imported 'generateSpokenPirateAudio'.`);
 
     // 1. Fetch the hint and any cached script.
     addLog(`${logPrefix} Fetching hints from database...`);
@@ -56,6 +52,7 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
       
       if (script) {
         addLog(`${logPrefix} Caching new script asynchronously.`);
+        // No need to await this, it can happen in the background
         cacheHintAction(question.id, script).catch(err => 
           addLog(`${logPrefix} NON-CRITICAL: Failed to cache hint: ${err.message}`)
         );
@@ -68,17 +65,10 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
       throw new Error("Script generation returned empty.");
     }
     
-    // 3. Generate audio for the final script.
-    addLog(`${logPrefix} Generating audio for script: "${script.substring(0, 50)}..."`);
-    const audioResult = await generateSpokenPirateAudio({ script });
-    const audioDataUri = audioResult.audioDataUri;
-    addLog(`${logPrefix} Audio generation finished. Audio data URI length: ${audioDataUri?.length || 0}`);
-
-    addLog(`${logPrefix} Action finished successfully.`);
+    addLog(`${logPrefix} Action finished successfully. Returning script to client.`);
     return {
       success: true,
       script: script,
-      audioDataUri: audioDataUri,
     };
 
   } catch (error: any) {

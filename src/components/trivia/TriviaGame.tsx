@@ -72,7 +72,6 @@ interface StoredAchievementProgress {
 
 interface PirateResponse {
   script: string;
-  audioDataUri?: string | null;
 }
 
 interface TriviaGameProps {
@@ -284,13 +283,12 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         });
         
         if (result.success && result.script) {
-          setPirateResponse({ script: result.script, audioDataUri: result.audioDataUri });
+          setPirateResponse({ script: result.script });
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
       } catch (error: any) {
         console.error("Error getting AI pirate response:", error);
-        // Fallback to standard hint on AI failure
         const hintData = await getQuestionHints(question.id);
         setPirateResponse({ script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." });
       } finally {
@@ -510,7 +508,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                 <HintDisplay
                     script={pirateResponse.script}
                     isScriptLoading={isAiLoading}
-                    audioUri={pirateResponse.audioDataUri || null}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                 />

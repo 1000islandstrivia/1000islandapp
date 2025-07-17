@@ -4,29 +4,20 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Volume2, Loader2, ChevronRight } from 'lucide-react';
 import { useTypewriter } from '@/hooks/useTypewriter';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface HintDisplayProps {
   script: string;
   isScriptLoading: boolean;
-  audioUri: string | null;
   onProceed: () => void;
   isLastQuestion: boolean;
 }
 
-export default function HintDisplay({ script, isScriptLoading, audioUri, onProceed, isLastQuestion }: HintDisplayProps) {
+export default function HintDisplay({ script, isScriptLoading, onProceed, isLastQuestion }: HintDisplayProps) {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const typedScript = useTypewriter(script, 40, 0, () => setIsTypingComplete(true));
   const isTyping = !isTypingComplete && script.length > 0;
-
-  useEffect(() => {
-    // Autoplay audio once typing is complete and audio is available
-    if (audioUri && isTypingComplete) {
-      const audio = new Audio(audioUri);
-      audio.play().catch(e => console.warn("Audio autoplay failed:", e));
-    }
-  }, [audioUri, isTypingComplete]);
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -36,7 +27,7 @@ export default function HintDisplay({ script, isScriptLoading, audioUri, onProce
                 {isScriptLoading && (
                   <div className="flex items-center text-sm text-muted-foreground">
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    Conjuring voice...
+                    Conjuring story...
                   </div>
                 )}
             </div>
@@ -51,7 +42,7 @@ export default function HintDisplay({ script, isScriptLoading, audioUri, onProce
                 </CardContent>
             </Card>
         </div>
-        {!isTyping && script && (
+        {isTypingComplete && script && (
              <Button onClick={onProceed} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground animate-fadeIn">
                 {isLastQuestion ? 'Finish Voyage!' : 'Next Question, Arr!'}
                 <ChevronRight className="ml-2 h-5 w-5" />
