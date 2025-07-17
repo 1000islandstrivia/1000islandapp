@@ -59,10 +59,8 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
       throw new Error("Script generation failed and no fallback was available.");
     }
     
-    // 3. Generate the audio for the final script in parallel
-    const audioPromise = generateSpokenPirateAudio({ script });
-    
-    const audioResult = await audioPromise;
+    // 3. Generate the audio for the final script. This is now sequential.
+    const audioResult = await generateSpokenPirateAudio({ script });
     const audioDataUri = audioResult.audioDataUri;
 
     return {
