@@ -79,7 +79,7 @@ interface TriviaGameProps {
   isAiLoreEnabled: boolean;
 }
 
-type GameState = 'LOADING' | 'READY' | 'PLAYING' | 'RESULT' | 'GAMEOVER' | 'ERROR';
+type GameState = 'LOADING' | 'READY' | 'STARTING' | 'PLAYING' | 'RESULT' | 'GAMEOVER' | 'ERROR';
 
 export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const { user, refreshUser } = useAuth();
@@ -177,29 +177,32 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }, []);
 
   const initializeGame = useCallback(() => {
-    setGameState('LOADING');
+    setGameState('STARTING');
     setCurrentScore(0);
     setCurrentQuestionIndex(0);
     setPirateResponse(null);
     setLastAnswerCorrect(false);
-    
-    if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
-        setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, only ${allTriviaQuestions.length} exist). Please contact an admin.`);
+  }, []);
+
+  useEffect(() => {
+    if (gameState === 'STARTING') {
+      if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
+        setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
         setGameState('ERROR');
         return;
-    }
-    
-    let currentAnsweredIds = new Set<string>();
-    try {
+      }
+
+      let currentAnsweredIds = new Set<string>();
+      try {
         const storedAnswered = localStorage.getItem(`answered_questions_${user?.username}`);
         currentAnsweredIds = new Set(storedAnswered ? JSON.parse(storedAnswered) : []);
-    } catch (e) {
+      } catch (e) {
         console.error("Error parsing answered questions, starting fresh.", e);
-    }
+      }
 
-    let availableQuestions = allTriviaQuestions.filter(q => !currentAnsweredIds.has(q.id));
-    
-    if (availableQuestions.length < QUESTIONS_PER_GAME) {
+      let availableQuestions = allTriviaQuestions.filter(q => !currentAnsweredIds.has(q.id));
+      
+      if (availableQuestions.length < QUESTIONS_PER_GAME) {
         toast({
           title: "You've Seen It All!",
           description: "Resetting the question pool. Well done, Captain!",
@@ -207,15 +210,16 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         currentAnsweredIds.clear();
         if(user) localStorage.removeItem(`answered_questions_${user.username}`);
         availableQuestions = allTriviaQuestions;
+      }
+
+      const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+      const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+      
+      setActiveQuestions(newGameQuestions);
+      setGameState('PLAYING');
     }
-
-    const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
-    const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
-    
-    setActiveQuestions(newGameQuestions);
-    setGameState('PLAYING');
-  }, [allTriviaQuestions, user, toast]);
-
+  }, [gameState, allTriviaQuestions, user, toast]);
+  
   useEffect(() => {
     if(allTriviaQuestions.length > 0 && gameState === 'LOADING') {
       setGameState('READY');
@@ -352,7 +356,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const totalQuestions = activeQuestions.length;
 
-  if (gameState === 'LOADING') {
+  if (gameState === 'LOADING' || gameState === 'STARTING') {
     return (
       <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
         <Loader2 className="w-12 h-12 animate-spin text-primary" />
@@ -494,3 +498,5 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     </div>
   );
 }
+
+    
