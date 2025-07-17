@@ -14,7 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Award, RefreshCw, type LucideIcon, Loader2, Skull, BookOpen, Play } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
-import { getTriviaQuestions, getQuestionHints } from '@/services/triviaService';
+import { getTriviaQuestions, getQuestionHints, preloadHintsForQuestions } from '@/services/triviaService';
 import HintDisplay from './HintDisplay';
 import SimpleHintDisplay from './SimpleHintDisplay';
 
@@ -110,7 +110,13 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   useEffect(() => {
     async function fetchAllQuestions() {
       try {
+        const startTime = performance.now();
         const questions = await getTriviaQuestions();
+        const endTime = performance.now();
+        console.log(`📊 Performance Report:
+        - Question Load Time: ${Math.round(endTime - startTime)}ms
+        - Questions Loaded: ${questions.length}`);
+        
         if (questions && questions.length > 0) {
           setAllTriviaQuestions(questions);
           setGameState('READY');
@@ -224,6 +230,31 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       setGameState('PLAYING');
     }
   }, [gameState, allTriviaQuestions, answeredQuestionIds, toast]);
+
+  // Preload hints when the game starts
+  useEffect(() => {
+    if (gameState === 'PLAYING' && activeQuestions.length > 0) {
+      // Preload hints for first few questions
+      const firstFewQuestionIds = activeQuestions.slice(0, 3).map(q => q.id);
+      preloadHintsForQuestions(firstFewQuestionIds).catch(console.warn);
+    }
+  }, [gameState, activeQuestions]);
+
+  // Preload hints for upcoming questions during gameplay
+  useEffect(() => {
+    if (gameState === 'PLAYING' && currentQuestionIndex >= 0) {
+      // Preload hints for next 2 questions
+      const upcomingQuestions = activeQuestions.slice(
+        currentQuestionIndex + 1, 
+        currentQuestionIndex + 3
+      );
+      
+      if (upcomingQuestions.length > 0) {
+        const upcomingIds = upcomingQuestions.map(q => q.id);
+        preloadHintsForQuestions(upcomingIds).catch(console.warn);
+      }
+    }
+  }, [currentQuestionIndex, activeQuestions, gameState]);
   
 
   const handleAnswerSubmit = useCallback(async (answer: string) => {
@@ -419,6 +450,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             </CardHeader>
             <CardContent>
                 <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
+                <div className="text-sm text-muted-foreground mt-2">
+                    Cache Status: {allTriviaQuestions.length > 0 ? '✅ Loaded' : '⏳ Loading...'}
+                </div>
                 <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90">
                     <Play className="mr-2 h-4 w-4" />
                     Begin Trivia Challenge
@@ -531,5 +565,3 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
-
-    

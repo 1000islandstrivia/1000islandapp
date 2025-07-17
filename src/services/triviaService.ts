@@ -13,9 +13,12 @@ import { collection, getDocs, query, addDoc, doc, setDoc, getDoc } from 'firebas
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
 
-// Simple in-memory cache for all questions
+// Simple in-memory cache for all questions and hints
 let allQuestionsCache: TriviaQuestion[] | null = null;
-let cacheTimestamp: number | null = null;
+let allQuestionsCacheTimestamp: number | null = null;
+const allHintsCache = new Map<string, { fallbackHint: string; cachedPirateScript?: string }>();
+let allHintsCacheTimestamp: number | null = null;
+
 const CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes
 
 /**
@@ -24,7 +27,7 @@ const CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes
  */
 export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   const now = Date.now();
-  if (allQuestionsCache && cacheTimestamp && (now - cacheTimestamp < CACHE_DURATION_MS)) {
+  if (allQuestionsCache && allQuestionsCacheTimestamp && (now - allQuestionsCacheTimestamp < CACHE_DURATION_MS)) {
     console.log('✅ Serving trivia questions from in-memory cache.');
     // Return a shuffled copy of the cache to ensure game randomness
     return [...allQuestionsCache].sort(() => 0.5 - Math.random());
@@ -46,11 +49,13 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       return [];
     }
 
-    // 🔥 KEY OPTIMIZATION: Server-side mapping to lean objects
     const leanQuestions: TriviaQuestion[] = [];
     let totalOriginalSize = 0;
     let totalLeanSize = 0;
     
+    // Clear old hints cache and repopulate
+    allHintsCache.clear();
+
     querySnapshot.forEach((docSnapshot) => {
       const fullData = docSnapshot.data();
       
@@ -71,6 +76,12 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       totalLeanSize += leanSize;
       
       leanQuestions.push(leanQuestion);
+
+      // Populate hints cache at the same time
+      allHintsCache.set(fullData.id, {
+        fallbackHint: fullData.fallbackHint || "Arrr, the river keeps its secrets close.",
+        cachedPirateScript: fullData.cachedPirateScript,
+      });
     });
     
     if (totalOriginalSize > 0) {
@@ -82,10 +93,10 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       - Questions processed: ${leanQuestions.length}`);
     }
     
-    // Update cache
     allQuestionsCache = leanQuestions;
-    cacheTimestamp = now;
-    console.log(`📚 Cached ${leanQuestions.length} trivia questions.`);
+    allQuestionsCacheTimestamp = now;
+    allHintsCacheTimestamp = now;
+    console.log(`📚 Cached ${leanQuestions.length} trivia questions and their hints.`);
 
     const endTime = performance.now();
     console.log(`⚡ Total processing time: ${Math.round(endTime - startTime)}ms`);
@@ -99,18 +110,18 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
 }
 
 /**
- * 🚀 OPTIMIZED: On-demand hint loading with server-side caching
- * Only fetches hint data when actually needed during gameplay
+ * 🚀 OPTIMIZED: On-demand hint loading, now reads from cache first.
+ * Only fetches hint data from Firestore if it's not in the in-memory cache.
  */
 export async function getQuestionHints(questionId: string): Promise<{ fallbackHint: string; cachedPirateScript?: string }> {
+  const now = Date.now();
+  if (allHintsCache.has(questionId) && allHintsCacheTimestamp && (now - allHintsCacheTimestamp < CACHE_DURATION_MS)) {
+    return allHintsCache.get(questionId)!;
+  }
+
   try {
-    const startTime = performance.now();
-    
     const docRef = doc(db, TRIVIA_COLLECTION, questionId);
     const docSnap = await getDoc(docRef);
-    
-    const endTime = performance.now();
-    console.log(`📖 Hint fetch for ${questionId}: ${Math.round(endTime - startTime)}ms`);
 
     if (docSnap.exists()) {
       const data = docSnap.data();
@@ -118,19 +129,36 @@ export async function getQuestionHints(questionId: string): Promise<{ fallbackHi
         fallbackHint: data.fallbackHint || "Arrr, the river keeps its secrets close.",
         cachedPirateScript: data.cachedPirateScript,
       };
-      
+      // Add the freshly fetched hint to the cache
+      allHintsCache.set(questionId, hintData);
       return hintData;
     }
 
-    const fallback = { fallbackHint: "Arrr, this secret seems to have washed away..." };
-    
-    return fallback;
+    return { fallbackHint: "Arrr, this secret seems to have washed away..." };
     
   } catch (error: any) {
     console.error(`Error fetching hints for question ${questionId}:`, error);
-    // Return a safe fallback so the game can continue
     return { fallbackHint: "A mysterious force prevents the hint from appearing..." };
   }
+}
+
+/**
+ * Preloads hints for a given list of question IDs into the server's memory cache.
+ * Does not return anything. This is a "fire and forget" optimization.
+ */
+export async function preloadHintsForQuestions(questionIds: string[]): Promise<void> {
+    const idsToFetch = questionIds.filter(id => !allHintsCache.has(id));
+    if (idsToFetch.length === 0) {
+        return; // All requested hints are already cached.
+    }
+    console.log(`🔥 Preloading hints for ${idsToFetch.length} questions...`);
+    try {
+        const fetchPromises = idsToFetch.map(id => getQuestionHints(id));
+        await Promise.all(fetchPromises);
+        console.log(`✅ Finished preloading hints.`);
+    } catch (error) {
+        console.warn("Hint preloading failed for some questions:", error);
+    }
 }
 
 
@@ -146,10 +174,13 @@ export async function addTriviaQuestion(questionData: Omit<TriviaQuestion, 'id'>
     const questionDocRef = doc(db, TRIVIA_COLLECTION, newId);
     await setDoc(questionDocRef, questionWithId);
 
-    // Invalidate cache
+    // Invalidate caches
     allQuestionsCache = null;
-    cacheTimestamp = null;
-    console.log('Question added. Trivia cache invalidated.');
+    allQuestionsCacheTimestamp = null;
+    allHintsCache.clear();
+    allHintsCacheTimestamp = null;
+
+    console.log('Question added. Trivia and hints cache invalidated.');
     
     console.log(`✅ Added question ${newId}`);
     return newId;
@@ -161,15 +192,21 @@ export async function addTriviaQuestion(questionData: Omit<TriviaQuestion, 'id'>
 }
 
 /**
- * Caches a generated pirate script with server-side cache update
+ * Caches a generated pirate script in both Firestore and the in-memory cache.
  */
 export async function cachePirateScriptForQuestion(questionId: string, script: string): Promise<void> {
   try {
     const questionDocRef = doc(db, TRIVIA_COLLECTION, questionId);
     await setDoc(questionDocRef, { cachedPirateScript: script }, { merge: true });
     
+    // Update in-memory cache as well
+    if (allHintsCache.has(questionId)) {
+        const cachedHint = allHintsCache.get(questionId)!;
+        cachedHint.cachedPirateScript = script;
+        allHintsCache.set(questionId, cachedHint);
+    }
+    
   } catch (error: any) {
-    // This is a non-critical operation, so we just log the error
     console.error(`Error caching script for question ${questionId}:`, error);
   }
 }
