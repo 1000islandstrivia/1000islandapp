@@ -65,30 +65,20 @@ async function toWav(
  * Generates a single audio clip for a chunk of text.
  */
 async function generateAudioChunk(textChunk: string, voice: 'male' | 'female'): Promise<string> {
-  const speakerId = voice === 'male' ? 'MalePirate' : 'FemalePirate';
-  const ttsPrompt = `${speakerId}: ${textChunk}`;
+    const voiceName = voice === 'male' ? 'Achernar' : 'Algenib';
 
-  const { media } = await ai.generate({
-    model: 'googleai/gemini-2.5-flash-preview-tts',
-    config: {
-      responseModalities: ['AUDIO'],
-      speechConfig: {
-        multiSpeakerVoiceConfig: {
-          speakerVoiceConfigs: [
-            {
-              speaker: 'MalePirate',
-              voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Achernar' } }, // Gruff and Bold
+    const { media } = await ai.generate({
+        model: 'googleai/gemini-2.5-flash-preview-tts',
+        config: {
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+                voiceConfig: {
+                    prebuiltVoiceConfig: { voiceName },
+                },
             },
-            {
-              speaker: 'FemalePirate',
-              voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Algenib' } }, // Sly and Clever
-            },
-          ],
         },
-      },
-    },
-    prompt: ttsPrompt,
-  });
+        prompt: textChunk,
+    });
 
   if (!media) {
     // Return an empty string or throw a specific error for this chunk
