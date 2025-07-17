@@ -8,20 +8,6 @@ const nextConfig: NextConfig = {
   eslint: {
     // ignoreDuringBuilds: true, // Removed
   },
-  // Add a watchOptions configuration to ignore the /src/ai/ directory
-  // This will prevent the Genkit file watcher from causing the Next.js server to restart
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.watchOptions = {
-        ...config.watchOptions,
-        ignored: [
-            ...((config.watchOptions.ignored as string[]) || []),
-            '**/src/ai/**'
-        ],
-      };
-    }
-    return config;
-  },
   images: {
     remotePatterns: [
       {

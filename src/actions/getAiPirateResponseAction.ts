@@ -3,10 +3,9 @@
 /**
  * @fileOverview A server action to handle AI pirate response generation.
  * This encapsulates the AI logic, keeping it on the server and fixing build issues.
+ * It now uses dynamic imports to lazily load Genkit flows only when needed.
  */
 
-import { generatePirateScript } from '@/ai/flows/generate-pirate-script';
-import { generateSpokenPirateAudio } from '@/ai/flows/generate-spoken-pirate-audio';
 import { cacheHintAction } from '@/actions/cacheHintAction';
 import { getQuestionHints } from '@/services/triviaService';
 import type { TriviaQuestion } from '@/lib/trivia-data';
@@ -27,6 +26,10 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
   const { question, playerAnswer } = input;
 
   try {
+    // 🔥 DYNAMIC IMPORTS: Load Genkit flows only when this action is executed.
+    const { generatePirateScript } = await import('@/ai/flows/generate-pirate-script');
+    const { generateSpokenPirateAudio } = await import('@/ai/flows/generate-spoken-pirate-audio');
+
     // 1. Fetch the hint and any cached script from the database.
     const hintData = await getQuestionHints(question.id);
     let script = hintData.cachedPirateScript;
@@ -43,7 +46,6 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
       script = scriptResult.script;
       
       // Asynchronously cache the newly generated script without blocking the response.
-      // This is a "fire-and-forget" action for performance.
       if (script) {
         cacheHintAction(question.id, script).catch(err => 
           console.error(`Non-critical error: Failed to cache hint for question ${question.id}:`, err)
@@ -57,15 +59,11 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
       throw new Error("Script generation failed and no fallback was available.");
     }
     
-    // 3. Generate the audio for the final script (whether new or cached).
-    let audioDataUri: string | null = null;
-    try {
-      const audioResult = await generateSpokenPirateAudio({ script });
-      audioDataUri = audioResult.audioDataUri;
-    } catch (audioError) {
-      console.warn(`Spoken audio generation failed for question ${question.id}, proceeding without audio:`, audioError);
-      // This is not a fatal error; we can still return the script.
-    }
+    // 3. Generate the audio for the final script in parallel
+    const audioPromise = generateSpokenPirateAudio({ script });
+    
+    const audioResult = await audioPromise;
+    const audioDataUri = audioResult.audioDataUri;
 
     return {
       success: true,
