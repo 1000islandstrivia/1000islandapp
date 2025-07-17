@@ -25,7 +25,7 @@ import {
 } from 'firebase/firestore';
 
 const LEADERBOARD_COLLECTION = 'leaderboard';
-const LEADERBOARD_LIMIT = 20; // Reduced from 100 for faster loads
+const LEADERBOARD_LIMIT = 20;
 
 /**
  * Fetches the top leaderboard entries from Firestore.
@@ -104,7 +104,6 @@ export async function updateUserScore(userId: string, username: string, scoreEar
     dataToSet.email = email || existingEmail;
     
     // If it's a new user (no existing email) and no new email is provided during an update (e.g. guest play), don't set email.
-    // This case might not be hit often with current registration flow, but good for robustness.
     if (!existingEmail && !email) {
       delete dataToSet.email;
     }

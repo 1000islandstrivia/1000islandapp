@@ -9,31 +9,31 @@ import { Button } from '@/components/ui/button';
 
 interface HintDisplayProps {
   script: string;
-  isAudioLoading: boolean;
-  pirateAudioUri: string | null;
+  isScriptLoading: boolean;
+  audioUri: string | null;
   onProceed: () => void;
   isLastQuestion: boolean;
 }
 
-export default function HintDisplay({ script, isAudioLoading, pirateAudioUri, onProceed, isLastQuestion }: HintDisplayProps) {
+export default function HintDisplay({ script, isScriptLoading, audioUri, onProceed, isLastQuestion }: HintDisplayProps) {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const typedScript = useTypewriter(script, 40, 0, () => setIsTypingComplete(true));
-  const isTyping = typedScript.length < script.length;
+  const isTyping = !isTypingComplete && script.length > 0;
 
   useEffect(() => {
     // Autoplay audio once typing is complete and audio is available
-    if (pirateAudioUri && isTypingComplete) {
-      const audio = new Audio(pirateAudioUri);
+    if (audioUri && isTypingComplete) {
+      const audio = new Audio(audioUri);
       audio.play().catch(e => console.warn("Audio autoplay failed:", e));
     }
-  }, [pirateAudioUri, isTypingComplete]);
+  }, [audioUri, isTypingComplete]);
 
   return (
     <div className="w-full flex flex-col items-center">
         <div className="animate-fadeIn space-y-4 w-full">
             <div className="flex justify-center items-center gap-4">
                 <Volume2 className="w-10 h-10 sm:w-12 sm:h-12 text-accent" />
-                {isAudioLoading && (
+                {isScriptLoading && (
                   <div className="flex items-center text-sm text-muted-foreground">
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
                     Conjuring voice...
