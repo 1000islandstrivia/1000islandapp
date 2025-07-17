@@ -139,7 +139,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
   }, [user]);
 
-  useEffect(() => {
+  const saveProgress = useCallback(() => {
     if (user && !gameOver && !isLoading) {
       try {
         const keysToSave = unlockedStoryHints.filter(h => h.unlocked).map(h => h.key);
@@ -153,36 +153,36 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
   }, [unlockedStoryHints, currentAchievements, answeredQuestionIds, user, gameOver, isLoading]);
 
+  useEffect(() => {
+    saveProgress();
+  }, [saveProgress]);
+
+
   const initializeGame = useCallback(() => {
     setIsLoading(true);
     setError(null);
 
-    let tempAnsweredIds = new Set(answeredQuestionIds);
-    let availableQuestions = allTriviaQuestions.filter(q => !tempAnsweredIds.has(q.id));
+    // Filter out already answered questions
+    let availableQuestions = allTriviaQuestions.filter(q => !answeredQuestionIds.has(q.id));
 
+    // If not enough questions are left, reset the answered list
     if (availableQuestions.length < QUESTIONS_PER_GAME) {
-      toast({
-        title: "You've seen it all!",
-        description: "Resetting the question pool. Well done, Captain!",
-      });
-      tempAnsweredIds.clear();
-      setAnsweredQuestionIds(new Set());
-      availableQuestions = allTriviaQuestions;
+        if (allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
+            toast({
+                title: "You've Seen It All!",
+                description: "Resetting the question pool. Well done, Captain!",
+            });
+            setAnsweredQuestionIds(new Set());
+            availableQuestions = allTriviaQuestions;
+        } else {
+            // Not enough total questions to even start a game
+            setError(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, only ${allTriviaQuestions.length} exist in total). Please contact an admin.`);
+            setIsLoading(false);
+            return;
+        }
     }
-
-    if (availableQuestions.length === 0 && allTriviaQuestions.length > 0) {
-        // This case can happen if all questions have been answered. Reset and try again.
-        tempAnsweredIds.clear();
-        setAnsweredQuestionIds(new Set());
-        availableQuestions = allTriviaQuestions;
-    }
-
-    if (availableQuestions.length < QUESTIONS_PER_GAME) {
-        setError(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${availableQuestions.length}). Please contact an admin.`);
-        setIsLoading(false);
-        return;
-    }
-
+    
+    // Shuffle and pick 10 questions for the new game
     const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
     const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
     
@@ -215,9 +215,8 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         console.error("Failed to fetch trivia questions:", e);
         setError(`Error loading questions: ${e.message}`);
         toast({ title: "Error Loading Questions", description: "Could not load questions. Please try again.", variant: "destructive" });
-      } finally {
-        setIsLoading(false);
       }
+      // Don't set loading to false here; let the next effect handle it
     }
     loadInitialData();
   }, [loadUserProgress, toast]);
@@ -226,7 +225,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     if (allTriviaQuestions.length > 0) {
       initializeGame();
     }
-  }, [allTriviaQuestions]);
+  }, [allTriviaQuestions, initializeGame]); // Add initializeGame as a dependency
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
@@ -236,25 +235,36 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     setShowAnswerResult(true);
     const isCorrect = answer === currentQuestion.answer;
     setAnswerCorrectness(isCorrect);
+    
+    // Add current question to answered set for this session
     setAnsweredQuestionIds(prev => new Set(prev).add(currentQuestion.id));
 
     if (isCorrect) {
       setScore(s => s + 10);
       if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error("Audio play failed:", e));
-      setUnlockedStoryHints(prev => {
-        const isAlreadyUnlocked = prev.some(h => h.key === currentQuestion.storylineHintKey && h.unlocked);
-        return isAlreadyUnlocked ? prev : prev.map(h => (h.key === currentQuestion.storylineHintKey ? { ...h, unlocked: true } : h));
+      
+      setUnlockedStoryHints(prevHints => {
+          const hintKey = currentQuestion.storylineHintKey;
+          // Check if the hint is already unlocked to avoid unnecessary state updates
+          if (prevHints.find(h => h.key === hintKey && h.unlocked)) {
+              return prevHints;
+          }
+          return prevHints.map(h => 
+              h.key === hintKey ? { ...h, unlocked: true } : h
+          );
       });
+
     } else {
       setScore(s => Math.max(0, s - 5));
       if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error("Audio play failed:", e));
     }
     
     if (isAiLoreEnabled) {
+      // Play immediate correct/wrong audio feedback
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       if (typeof window !== 'undefined') new Audio(randomAudioUrl).play().catch(e => console.error("Audio play failed:", e));
-      
+
       setIsResponseLoading(true);
       setLoadingMessage(pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)]);
 
@@ -286,6 +296,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           setPirateAudioUri(audioResult.audioDataUri);
         } catch (err) {
           console.error("Failed to generate pirate audio:", err);
+          setPirateAudioUri(null); // Ensure no broken audio link
         } finally {
           setIsAudioLoading(false);
         }
@@ -491,5 +502,3 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     </div>
   );
 }
-
-    
