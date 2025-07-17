@@ -235,10 +235,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         return;
     }
 
-    setLastAnswerCorrect(false); // Reset this first
-    setIsAiLoading(true);
-    loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
-
+    setLastAnswerCorrect(false); 
+    
     const isCorrect = answer === question.answer;
     setLastAnswerCorrect(isCorrect);
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
@@ -272,8 +270,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       }
     }
     
-    // Now, handle hint generation
     if (isAiLoreEnabled) {
+      setIsAiLoading(true);
+      loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
       try {
         const result = await getAiPirateResponseAction({
           question,
@@ -293,13 +292,12 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         setIsAiLoading(false);
       }
     } else {
-      const hintData = await getQuestionHints(question.id);
-      setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
-      setIsAiLoading(false);
+        const hintData = await getQuestionHints(question.id);
+        setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
     }
 
     setGameState('RESULT');
-  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast, isInstantResponseEnabled]);
+  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
 
   const onHintTypingComplete = useCallback(() => {
     // This callback is now used to trigger audio playback automatically in HintDisplay
@@ -406,11 +404,11 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   if (gameState === 'ERROR') {
      return (
       <div className="flex flex-col items-center justify-center min-h-[300px] bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
-        <Skull className="w-12 h-12 text-destructive-foreground mb-4" />
-        <p className="text-xl text-destructive-foreground">A Squall has Hit!</p>
+        <Skull className="w-16 h-16 text-destructive mb-4" />
+        <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
         <p className="text-destructive-foreground/80 mt-2">{errorMessage}</p>
-        <Button onClick={() => window.location.reload()} className="mt-4" variant="destructive">
-            <RefreshCw className="mr-2 h-4 w-4" /> Try Again
+        <Button onClick={initializeGame} className="mt-6" variant="destructive">
+            <RefreshCw className="mr-2 h-4 w-4" /> Restart Voyage
         </Button>
       </div>
     );
@@ -526,3 +524,5 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
+
+    
