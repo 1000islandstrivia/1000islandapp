@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
 import { runDeduplication } from '@/actions/deduplicateAction';
 import Link from 'next/link';
+import PerformanceReport from '@/components/admin/PerformanceReport';
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
@@ -158,7 +159,7 @@ export default function DashboardPage() {
         </div>
 
         {user.username === 'Dan' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
               <CardHeader>
                 <CardTitle className="font-headline text-xl text-primary">Database Setup</CardTitle>
@@ -190,6 +191,10 @@ export default function DashboardPage() {
                 {dedupStatus && <p className="mt-4 text-sm text-muted-foreground">{dedupStatus}</p>}
               </CardContent>
             </Card>
+            
+            <div className="md:col-span-2">
+              <PerformanceReport />
+            </div>
           </div>
         )}
       </div>
