@@ -210,7 +210,7 @@ export async function preloadHintsForQuestions(questionIds: string[]): Promise<v
 /**
  * 🚀 NEW: Performance monitoring and cache management
  */
-export function getTriviaServiceStats() {
+export async function getTriviaServiceStats() {
   const cacheEntries = Array.from(serverCache.keys());
   const questionCacheEntries = cacheEntries.filter(key => key.startsWith('trivia_'));
   const hintCacheEntries = cacheEntries.filter(key => key.startsWith('hint_'));
@@ -223,7 +223,7 @@ export function getTriviaServiceStats() {
   };
 }
 
-export function clearTriviaServerCache() {
+export async function clearTriviaServerCache() {
   const beforeSize = serverCache.size;
   serverCache.clear();
   console.log(`🧹 Server cache cleared (was ${beforeSize} entries)`);
