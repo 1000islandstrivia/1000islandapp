@@ -16,7 +16,7 @@ const GeneratePirateScriptInputSchema = z.object({
   question: z.string().describe('The trivia question text.'),
   playerAnswer: z.string().describe("The answer the player chose."),
   correctAnswer: z.string().describe('The correct answer to the trivia question.'),
-  fallbackHint: z.string().describe('A pre-written, spooky, pirate-style hint about the correct answer.'),
+  fallbackHint: z.string().describe('A pre-written, pirate-style hint about the correct answer.'),
 });
 export type GeneratePirateScriptInput = z.infer<typeof GeneratePirateScriptInputSchema>;
 
