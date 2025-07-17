@@ -229,9 +229,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     const question = activeQuestions[currentQuestionIndex];
     if (!question) {
-        console.error("No question available at index:", currentQuestionIndex);
         setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
-        setGameState('ERROR');
+        setGameState('ERROR'); // Use the main error state
         return;
     }
 
