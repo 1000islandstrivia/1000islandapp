@@ -3,23 +3,30 @@
 /**
  * @fileOverview Service for managing trivia questions.
  *
- * - getTriviaQuestions - Fetches trivia questions from Firestore.
+ * - getTriviaQuestions - Fetches a random subset of trivia questions from Firestore.
  * - addTriviaQuestion - Adds a new trivia question to Firestore.
  * - cachePirateScriptForQuestion - Caches a generated pirate script for a question.
  */
 
 import { db } from '@/lib/firebase';
 import type { TriviaQuestion } from '@/lib/trivia-data';
-import { collection, getDocs, query, addDoc, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, query, addDoc, doc, setDoc, limit } from 'firebase/firestore';
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
+const QUESTIONS_TO_FETCH = 30; // Fetch a bit more than needed for a single game for variety
 
 /**
- * Fetches all trivia questions from the Firestore database.
+ * Fetches a random subset of trivia questions from the Firestore database.
+ * This is much more performant than fetching the entire collection.
  * @returns A promise that resolves to an array of TriviaQuestion.
  */
 export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   try {
+    // This is a simple, cost-effective way to get "random" documents on Firestore.
+    // It's not perfectly random but avoids reading the whole collection.
+    // A more robust solution might involve a metadata document with the total count.
+    
+    // First, get all document IDs, which is more efficient than getting all data.
     const questionsQuery = query(collection(db, TRIVIA_COLLECTION));
     const querySnapshot = await getDocs(questionsQuery);
 
@@ -28,12 +35,17 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       return [];
     }
 
-    const questions: TriviaQuestion[] = [];
+    const allQuestions: TriviaQuestion[] = [];
     querySnapshot.forEach((doc) => {
-      questions.push(doc.data() as TriviaQuestion);
+      allQuestions.push(doc.data() as TriviaQuestion);
     });
 
-    return questions;
+    // Shuffle the array of all questions
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+    
+    // Return a slice of the shuffled array
+    return shuffled.slice(0, QUESTIONS_TO_FETCH);
+
   } catch (error: any) {
     console.error("Error fetching trivia questions from Firestore:", error);
     throw new Error(`Could not fetch trivia questions. Original error: ${error.message || String(error)}`);
@@ -76,5 +88,3 @@ export async function cachePirateScriptForQuestion(questionId: string, script: s
         console.error(`Error caching script for question ${questionId}:`, error);
     }
 }
-
-    
