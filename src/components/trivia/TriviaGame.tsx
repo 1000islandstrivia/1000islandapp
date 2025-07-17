@@ -510,7 +510,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             <>
               {isAiLoading && !pirateResponse?.script && (
                 <div className="animate-fadeIn space-y-6 flex flex-col justify-center items-center text-center h-full">
-                  <Skull className="w-24 h-24 text-primary/30 animate-pulse" />
+                  <Skull className="w-48 h-48 text-primary/30 animate-pulse-and-rotate" />
                   <p className="text-lg font-semibold text-primary font-headline animate-fadeIn">
                     {loadingMessage.current}
                   </p>

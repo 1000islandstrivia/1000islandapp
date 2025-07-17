@@ -121,10 +121,49 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* New custom animation for the skull loader */
+@keyframes pulse-and-rotate {
+  0%, 100% {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  12.5% { /* Pulse 1 peak */
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  37.5% { /* Pulse 2 peak */
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  62.5% { /* Pulse 3 peak */
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  90% { /* Start rotation */
+    transform: rotate(360deg) scale(1);
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out;
 }
 
 .animate-slideUp {
   animation: slideUp 0.5s ease-in-out;
+}
+
+.animate-pulse-and-rotate {
+  animation: pulse-and-rotate 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
