@@ -146,15 +146,10 @@ const generateStoryAudioFlow = ai.defineFlow(
   async ({ text, voice }) => {
     // Split text into smart chunks of about 50 words
     const textChunks = splitTextIntoChunks(text, 50);
-    const audioResults: string[] = [];
 
-    // Generate audio for each chunk SEQUENTIALLY to avoid rate-limiting.
-    for (const chunk of textChunks) {
-      const audioUri = await generateAudioChunk(chunk, voice);
-      if (audioUri) {
-        audioResults.push(audioUri);
-      }
-    }
+    // Generate audio for all chunks in parallel for speed.
+    const audioPromises = textChunks.map(chunk => generateAudioChunk(chunk, voice));
+    const audioResults = await Promise.all(audioPromises);
     
     // Filter out any failed generations (which return as empty strings)
     const successfulAudioUris = audioResults.filter(uri => uri.length > 0);
