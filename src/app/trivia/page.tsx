@@ -6,7 +6,7 @@ import TriviaGame from '@/components/trivia/TriviaGame';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { HelpCircle, Sparkles } from 'lucide-react';
+import { HelpCircle, Sparkles, AudioWave } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
@@ -15,17 +15,27 @@ export default function TriviaPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [isAiLoreEnabled, setIsAiLoreEnabled] = useState(false);
+  const [isInstantResponseEnabled, setIsInstantResponseEnabled] = useState(false);
+
 
   useEffect(() => {
-    const savedPreference = localStorage.getItem('aiLoreEnabled');
-    if (savedPreference !== null) {
-      setIsAiLoreEnabled(JSON.parse(savedPreference));
+    const savedLorePreference = localStorage.getItem('aiLoreEnabled');
+    if (savedLorePreference !== null) {
+      setIsAiLoreEnabled(JSON.parse(savedLorePreference));
+    }
+    const savedResponsePreference = localStorage.getItem('instantResponseEnabled');
+    if (savedResponsePreference !== null) {
+      setIsInstantResponseEnabled(JSON.parse(savedResponsePreference));
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('aiLoreEnabled', JSON.stringify(isAiLoreEnabled));
   }, [isAiLoreEnabled]);
+  
+  useEffect(() => {
+    localStorage.setItem('instantResponseEnabled', JSON.stringify(isInstantResponseEnabled));
+  }, [isInstantResponseEnabled]);
 
 
   useEffect(() => {
@@ -50,20 +60,34 @@ export default function TriviaPage() {
         <p className="text-xl text-foreground/80 mt-2">Test your knowledge and uncover secrets of the Thousand Islands!</p>
       </div>
       
-      <div className="flex items-center justify-center space-x-3 mb-8">
-        <Sparkles className="w-5 h-5 text-accent" />
-        <Label htmlFor="ai-lore-switch" className="font-medium">Enable AI Pirate Lore</Label>
-        <Switch
-          id="ai-lore-switch"
-          checked={isAiLoreEnabled}
-          onCheckedChange={setIsAiLoreEnabled}
-          aria-label="Toggle AI Pirate Lore"
-        />
+      <div className="flex items-center justify-center space-x-6 mb-8">
+        <div className="flex items-center space-x-2">
+            <AudioWave className="w-5 h-5 text-accent" />
+            <Label htmlFor="instant-response-switch" className="font-medium text-sm">Instant Feedback</Label>
+            <Switch
+            id="instant-response-switch"
+            checked={isInstantResponseEnabled}
+            onCheckedChange={setIsInstantResponseEnabled}
+            aria-label="Toggle Instant Pirate Feedback"
+            />
+        </div>
+
+        <div className="flex items-center space-x-2">
+            <Sparkles className="w-5 h-5 text-accent" />
+            <Label htmlFor="ai-lore-switch" className="font-medium text-sm">AI Pirate Lore</Label>
+            <Switch
+            id="ai-lore-switch"
+            checked={isAiLoreEnabled}
+            onCheckedChange={setIsAiLoreEnabled}
+            aria-label="Toggle AI Pirate Lore"
+            />
+        </div>
       </div>
 
-      <TriviaGame isAiLoreEnabled={isAiLoreEnabled} />
+      <TriviaGame 
+        isAiLoreEnabled={isAiLoreEnabled}
+        isInstantResponseEnabled={isInstantResponseEnabled}
+       />
     </MainLayout>
   );
 }
-
-    

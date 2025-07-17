@@ -77,11 +77,12 @@ interface PirateResponse {
 
 interface TriviaGameProps {
   isAiLoreEnabled: boolean;
+  isInstantResponseEnabled: boolean;
 }
 
 type GameState = 'LOADING' | 'READY' | 'STARTING' | 'PLAYING' | 'RESULT' | 'GAMEOVER' | 'ERROR';
 
-export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
+export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }: TriviaGameProps) {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
 
@@ -241,7 +242,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     setLastAnswerCorrect(isCorrect);
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
 
-    if (isAiLoreEnabled) {
+    if (isInstantResponseEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       playAudio(randomAudioUrl, 'pirate response audio');
@@ -265,7 +266,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       });
     } else {
       setCurrentScore(s => Math.max(0, s - 5));
-      playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
+      if (isInstantResponseEnabled) {
+        playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
+      }
     }
 
     setGameState('RESULT');
@@ -299,7 +302,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       const hintData = await getQuestionHints(question.id);
       setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
     }
-  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast]);
+  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast, isInstantResponseEnabled]);
 
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
