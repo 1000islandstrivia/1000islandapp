@@ -2,12 +2,13 @@
 'use server';
 /**
  * @fileOverview A server action to handle AI pirate response generation.
- * This encapsulates the AI logic, keeping it on the server and fixing build issues.
- * It now uses dynamic imports to lazily load Genkit flows only when needed.
+ * This encapsulates the AI logic, keeping it on the server and using dynamic imports.
+ * Now includes detailed logging for debugging.
  */
 
 import { cacheHintAction } from '@/actions/cacheHintAction';
 import { getQuestionHints } from '@/services/triviaService';
+import { addLog } from '@/services/logService';
 import type { TriviaQuestion } from '@/lib/trivia-data';
 
 interface ActionInput {
@@ -24,19 +25,26 @@ interface ActionOutput {
 
 export async function getAiPirateResponseAction(input: ActionInput): Promise<ActionOutput> {
   const { question, playerAnswer } = input;
+  const logPrefix = `[QID: ${question.id}]`;
+  addLog(`${logPrefix} 'getAiPirateResponseAction' started.`);
+  addLog(`${logPrefix} Player answered '${playerAnswer}' for question "${question.question.substring(0, 30)}..."`);
 
   try {
-    // 🔥 DYNAMIC IMPORTS: Load Genkit flows only when this action is executed.
     const { generatePirateScript } = await import('@/ai/flows/generate-pirate-script');
+    addLog(`${logPrefix} Dynamically imported 'generatePirateScript'.`);
+    
     const { generateSpokenPirateAudio } = await import('@/ai/flows/generate-spoken-pirate-audio');
+    addLog(`${logPrefix} Dynamically imported 'generateSpokenPirateAudio'.`);
 
-    // 1. Fetch the hint and any cached script from the database.
+    // 1. Fetch the hint and any cached script.
+    addLog(`${logPrefix} Fetching hints from database...`);
     const hintData = await getQuestionHints(question.id);
+    addLog(`${logPrefix} Hint data received. Cached script exists: ${!!hintData.cachedPirateScript}`);
     let script = hintData.cachedPirateScript;
 
-    // 2. Generate the script if it's not cached.
+    // 2. Generate the script if not cached.
     if (!script) {
-      console.log(`CACHE MISS: Generating new script for question ${question.id}`);
+      addLog(`${logPrefix} CACHE MISS. Generating new script.`);
       const scriptResult = await generatePirateScript({
         question: question.question,
         playerAnswer: playerAnswer,
@@ -44,25 +52,29 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
         fallbackHint: hintData.fallbackHint || "Arrr, this secret be lost to the depths!",
       });
       script = scriptResult.script;
+      addLog(`${logPrefix} Script generation finished. Script length: ${script?.length || 0}`);
       
-      // Asynchronously cache the newly generated script without blocking the response.
       if (script) {
+        addLog(`${logPrefix} Caching new script asynchronously.`);
         cacheHintAction(question.id, script).catch(err => 
-          console.error(`Non-critical error: Failed to cache hint for question ${question.id}:`, err)
+          addLog(`${logPrefix} NON-CRITICAL: Failed to cache hint: ${err.message}`)
         );
       }
     } else {
-      console.log(`CACHE HIT: Using cached script for question ${question.id}`);
+      addLog(`${logPrefix} CACHE HIT. Using cached script.`);
     }
 
     if (!script) {
-      throw new Error("Script generation failed and no fallback was available.");
+      throw new Error("Script generation returned empty.");
     }
     
-    // 3. Generate the audio for the final script. This is now sequential.
+    // 3. Generate audio for the final script.
+    addLog(`${logPrefix} Generating audio for script: "${script.substring(0, 50)}..."`);
     const audioResult = await generateSpokenPirateAudio({ script });
     const audioDataUri = audioResult.audioDataUri;
+    addLog(`${logPrefix} Audio generation finished. Audio data URI length: ${audioDataUri?.length || 0}`);
 
+    addLog(`${logPrefix} Action finished successfully.`);
     return {
       success: true,
       script: script,
@@ -70,11 +82,13 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
     };
 
   } catch (error: any) {
+    const errorMessage = error.message || "An unknown error occurred.";
+    addLog(`${logPrefix} CRITICAL ERROR: ${errorMessage}`);
     console.error(`Error in getAiPirateResponseAction for question ${question.id}:`, error);
     return {
       success: false,
       script: "A mysterious force prevents the hint from appearing...",
-      error: error.message || "An unknown error occurred while generating the AI response.",
+      error: errorMessage,
     };
   }
 }

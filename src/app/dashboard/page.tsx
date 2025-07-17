@@ -7,10 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle, Trash2 } from 'lucide-react';
+import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle, Trash2, BookText, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
 import { runDeduplication } from '@/actions/deduplicateAction';
+import { getLogsAction } from '@/actions/getLogsAction';
+import { clearLogsAction } from '@/actions/clearLogsAction';
+import type { LogEntry } from '@/services/logService';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -22,6 +26,10 @@ export default function DashboardPage() {
   const [isSeeding, setIsSeeding] = useState(false);
   const [dedupStatus, setDedupStatus] = useState('');
   const [isDeduplicating, setIsDeduplicating] = useState(false);
+
+  // New state for logging
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [isFetchingLogs, setIsFetchingLogs] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -63,6 +71,28 @@ export default function DashboardPage() {
     setDedupStatus(result.message);
     setIsDeduplicating(false);
   };
+  
+  const handleFetchLogs = async () => {
+    if (!user) return;
+    setIsFetchingLogs(true);
+    const fetchedLogs = await getLogsAction(user.username);
+    setLogs(fetchedLogs);
+    setIsFetchingLogs(false);
+  };
+
+  const handleClearLogs = async () => {
+    if (!user) return;
+    await clearLogsAction(user.username);
+    setLogs([]);
+  };
+
+  // Fetch logs on initial admin load
+  useEffect(() => {
+    if (user?.username === 'Dan') {
+      handleFetchLogs();
+    }
+  }, [user]);
+
 
   if (loading || !user) {
     return (
@@ -158,12 +188,44 @@ export default function DashboardPage() {
         </div>
 
         {user.username === 'Dan' && (
-          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+             <Card className="bg-secondary/30 backdrop-blur-sm shadow-lg lg:col-span-2">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl text-primary flex items-center gap-2"><BookText /> Captain's Log (Debug)</CardTitle>
+                <CardDescription>
+                  Real-time server logs for debugging AI and other actions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-2 mb-4">
+                    <Button onClick={handleFetchLogs} disabled={isFetchingLogs}>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Refresh Logs
+                    </Button>
+                     <Button onClick={handleClearLogs} variant="destructive">
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Clear Logs
+                    </Button>
+                </div>
+                <ScrollArea className="h-48 w-full rounded-md border bg-background p-2">
+                    {isFetchingLogs ? (<p>Fetching logs...</p>) : logs.length > 0 ? (
+                        logs.map((log, index) => (
+                            <div key={index} className="text-xs font-mono text-muted-foreground border-b border-border/50 py-1">
+                                <span className="text-primary/70">{log.timestamp}:</span> {log.message}
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-sm text-center text-muted-foreground p-4">No log entries yet. Perform an action to see logs here.</p>
+                    )}
+                </ScrollArea>
+              </CardContent>
+            </Card>
+
             <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
               <CardHeader>
                 <CardTitle className="font-headline text-xl text-primary">Database Setup</CardTitle>
                 <CardDescription>
-                  Click this button to populate your Firestore database with any missing trivia questions from the source file.
+                  Populate Firestore with any missing trivia questions from the source file.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -172,24 +234,15 @@ export default function DashboardPage() {
                   {isSeeding ? 'Seeding...' : 'Seed Trivia Questions'}
                 </Button>
                 {seedStatus && <p className="mt-4 text-sm text-muted-foreground">{seedStatus}</p>}
-              </CardContent>
-            </Card>
-
-            <Card className="bg-destructive/10 backdrop-blur-sm shadow-lg">
-              <CardHeader>
-                <CardTitle className="font-headline text-xl text-destructive">Database Cleanup</CardTitle>
-                <CardDescription>
-                  This will scan the entire database and permanently remove any questions with duplicate text. Use with care.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button onClick={handleDeduplicate} disabled={isDeduplicating} variant="destructive">
+                <Button onClick={handleDeduplicate} disabled={isDeduplicating} variant="destructive" className="mt-4">
                   <Trash2 className="mr-2 h-4 w-4" />
                   {isDeduplicating ? 'Cleaning...' : 'Remove Duplicates'}
                 </Button>
-                {dedupStatus && <p className="mt-4 text-sm text-muted-foreground">{dedupStatus}</p>}
+                 {dedupStatus && <p className="mt-4 text-sm text-muted-foreground">{dedupStatus}</p>}
               </CardContent>
             </Card>
+
+           
           </div>
         )}
       </div>
