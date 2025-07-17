@@ -234,7 +234,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       return;
     }
   
-    setLastAnswerCorrect(false); 
+    setLastAnswerCorrect(false);
     const isCorrect = answer === question.answer;
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
   
@@ -250,15 +250,15 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       
       const hintKey = question.storylineHintKey;
       setUnlockedStoryHints(prevHints => {
-          const isAlreadyUnlocked = prevHints.some(h => h.key === hintKey && h.unlocked);
-          if (!isAlreadyUnlocked) {
-              const hint = initialStoryline.find(h => h.key === hintKey);
-              if (hint) {
-                setStoryToastQueue(q => [...q, hint.title]);
-              }
-              return prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
+        const isAlreadyUnlocked = prevHints.some(h => h.key === hintKey && h.unlocked);
+        if (!isAlreadyUnlocked) {
+          const hint = initialStoryline.find(h => h.key === hintKey);
+          if (hint) {
+            setStoryToastQueue(q => [...q, hint.title]);
           }
-          return prevHints;
+          return prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
+        }
+        return prevHints;
       });
     } else {
       setCurrentScore(s => Math.max(0, s - 5));
@@ -266,17 +266,14 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
       }
     }
-    
+  
     let hintScript: PirateResponse;
   
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
       try {
-        const result = await getAiPirateResponseAction({
-          question,
-          playerAnswer: answer,
-        });
+        const result = await getAiPirateResponseAction({ question, playerAnswer: answer });
         if (result.success && result.script) {
           hintScript = { script: result.script, audioDataUris: result.audioDataUris };
         } else {
@@ -288,8 +285,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         hintScript = { script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." };
       }
     } else {
-        const hintData = await getQuestionHints(question.id);
-        hintScript = { script: hintData.fallbackHint || "No hint available." };
+      const hintData = await getQuestionHints(question.id);
+      hintScript = { script: hintData.fallbackHint || "No hint available." };
     }
   
     setLastAnswerCorrect(isCorrect);
@@ -534,3 +531,5 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
+
+    
