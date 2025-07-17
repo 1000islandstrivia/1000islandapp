@@ -62,6 +62,42 @@ async function toWav(
 }
 
 /**
+ * Splits a long string of text into smaller chunks of a maximum word count,
+ * trying to break at sentence endings for more natural-sounding audio clips.
+ * @param text The full text to split.
+ * @param maxWords The target maximum number of words per chunk.
+ * @returns An array of text chunks.
+ */
+function splitTextIntoChunks(text: string, maxWords: number = 50): string[] {
+  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+  const chunks: string[] = [];
+  let currentChunk = '';
+
+  for (const sentence of sentences) {
+    const potentialChunk = currentChunk + (currentChunk ? ' ' : '') + sentence;
+    const wordCount = potentialChunk.split(/\s+/).length;
+
+    if (wordCount > maxWords) {
+      if (currentChunk) {
+        chunks.push(currentChunk);
+      }
+      currentChunk = sentence;
+    } else {
+      currentChunk = potentialChunk;
+    }
+  }
+
+  if (currentChunk) {
+    chunks.push(currentChunk);
+  }
+  
+  // In case a single sentence is longer than maxWords, we just let it be its own chunk.
+  // A more complex implementation could split mid-sentence, but this is more robust.
+  return chunks.filter(chunk => chunk.trim().length > 0);
+}
+
+
+/**
  * Generates a single audio clip for a chunk of text.
  */
 async function generateAudioChunk(textChunk: string, voice: 'male' | 'female'): Promise<string> {
@@ -104,9 +140,8 @@ const generateStoryAudioFlow = ai.defineFlow(
     outputSchema: GenerateStoryAudioOutputSchema,
   },
   async ({ text, voice }) => {
-    // Split the text into paragraphs. This is a simple way to chunk it.
-    // We filter out any empty strings that might result from multiple newlines.
-    const textChunks = text.split(/\n+/).filter(chunk => chunk.trim().length > 0);
+    // Split text into smart chunks of about 50 words
+    const textChunks = splitTextIntoChunks(text, 50);
 
     // Generate audio for each chunk concurrently to save time.
     const audioPromises = textChunks.map(chunk => generateAudioChunk(chunk, voice));
