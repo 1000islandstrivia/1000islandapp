@@ -45,10 +45,10 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
           options: data.options,
           answer: data.answer,
           storylineHintKey: data.storylineHintKey,
-          // Explicitly exclude large fields from the payload sent to the client
+          // Explicitly exclude large fields from the payload sent to the client for performance
           fallbackHint: '', 
           cachedPirateScript: undefined,
-      } as TriviaQuestion);
+      });
     });
     
     // Shuffle the array of all questions. The initial fetch is not random, so we shuffle here.
