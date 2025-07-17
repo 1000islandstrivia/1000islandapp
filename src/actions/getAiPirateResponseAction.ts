@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A server action to handle AI pirate response generation.

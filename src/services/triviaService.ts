@@ -4,30 +4,37 @@
  * @fileOverview Service for managing trivia questions.
  *
  * - getTriviaQuestions - Fetches a random subset of trivia questions from Firestore.
+ * - getQuestionHints - Fetches the hint and script for a single question.
  * - addTriviaQuestion - Adds a new trivia question to Firestore.
  * - cachePirateScriptForQuestion - Caches a generated pirate script for a question.
  */
 
 import { db } from '@/lib/firebase';
 import type { TriviaQuestion } from '@/lib/trivia-data';
-import { collection, getDocs, query, addDoc, doc, setDoc, limit } from 'firebase/firestore';
+import { collection, getDocs, query, addDoc, doc, setDoc, limit, getDoc, select } from 'firebase/firestore';
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
 const QUESTIONS_TO_FETCH = 30; // Fetch a bit more than needed for a single game for variety
 
 /**
- * Fetches a random subset of trivia questions from the Firestore database.
- * This is much more performant than fetching the entire collection.
- * @returns A promise that resolves to an array of TriviaQuestion.
+ * Fetches a random subset of trivia questions from Firestore, but only essential, small fields.
+ * This is optimized to be fast and not download large hint/script fields.
+ * @returns A promise that resolves to an array of partial TriviaQuestion objects.
  */
 export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   try {
-    // This is a simple, cost-effective way to get "random" documents on Firestore.
-    // It's not perfectly random but avoids reading the whole collection.
-    // A more robust solution might involve a metadata document with the total count.
+    const questionsQuery = query(
+      collection(db, TRIVIA_COLLECTION),
+      // Select only the fields needed for the question list to keep the payload small.
+      select(
+        'id', 
+        'question', 
+        'options', 
+        'answer', 
+        'storylineHintKey'
+      )
+    );
     
-    // First, get all document IDs, which is more efficient than getting all data.
-    const questionsQuery = query(collection(db, TRIVIA_COLLECTION));
     const querySnapshot = await getDocs(questionsQuery);
 
     if (querySnapshot.empty) {
@@ -37,7 +44,12 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
 
     const allQuestions: TriviaQuestion[] = [];
     querySnapshot.forEach((doc) => {
-      allQuestions.push(doc.data() as TriviaQuestion);
+      // Reconstruct the object, ensuring large fields are initialized as empty/undefined.
+      allQuestions.push({
+          ...doc.data(),
+          fallbackHint: '', // Initialize as empty, will be fetched on-demand
+          cachedPirateScript: undefined,
+      } as TriviaQuestion);
     });
 
     // Shuffle the array of all questions
@@ -47,10 +59,38 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
     return shuffled.slice(0, QUESTIONS_TO_FETCH);
 
   } catch (error: any) {
-    console.error("Error fetching trivia questions from Firestore:", error);
+    console.error("Error fetching optimized trivia questions from Firestore:", error);
     throw new Error(`Could not fetch trivia questions. Original error: ${error.message || String(error)}`);
   }
 }
+
+/**
+ * Fetches the large hint fields for a single question on-demand.
+ * @param questionId The ID of the question to fetch hints for.
+ * @returns A promise that resolves to an object with hint and script data.
+ */
+export async function getQuestionHints(questionId: string): Promise<{ fallbackHint: string; cachedPirateScript?: string }> {
+  try {
+    const docRef = doc(db, TRIVIA_COLLECTION, questionId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return {
+        fallbackHint: data.fallbackHint || "Arrr, the river keeps its secrets close.",
+        cachedPirateScript: data.cachedPirateScript,
+      };
+    }
+
+    console.warn(`Could not find hint data for question ID: ${questionId}`);
+    return { fallbackHint: "Arrr, this secret seems to have washed away..." };
+  } catch (error: any) {
+    console.error(`Error fetching hints for question ${questionId}:`, error);
+    // Return a fallback object so the game doesn't crash.
+    return { fallbackHint: "A mysterious force prevents the hint from appearing..." };
+  }
+}
+
 
 /**
  * Adds a new trivia question to the Firestore database using a custom ID.
