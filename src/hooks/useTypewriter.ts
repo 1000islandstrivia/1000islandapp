@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 
 // A custom hook to simulate a typewriter effect for a given string.
-export function useTypewriter(text: string, speed: number = 40, delay: number = 0) {
+export function useTypewriter(text: string, speed: number = 40, delay: number = 0, onComplete?: () => void) {
   const [displayedText, setDisplayedText] = useState('');
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export function useTypewriter(text: string, speed: number = 40, delay: number = 
           i++;
           if (i >= text.length) {
             clearInterval(intervalId);
+            if(onComplete) onComplete();
           }
         }, speed);
       }, delay);
@@ -32,7 +33,7 @@ export function useTypewriter(text: string, speed: number = 40, delay: number = 
         }
       };
     }
-  }, [text, speed, delay]);
+  }, [text, speed, delay, onComplete]);
 
   return displayedText;
 }

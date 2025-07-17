@@ -4,7 +4,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Volume2, Loader2, ChevronRight } from 'lucide-react';
 import { useTypewriter } from '@/hooks/useTypewriter';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface HintDisplayProps {
@@ -16,16 +16,29 @@ interface HintDisplayProps {
 }
 
 export default function HintDisplay({ script, isAudioLoading, pirateAudioUri, onProceed, isLastQuestion }: HintDisplayProps) {
-  // Use the typewriter hook with NO delay, and 60% slower speed (40ms * 1.6 = 64ms)
-  const typedScript = useTypewriter(script, 64, 0);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const typedScript = useTypewriter(script, 40, 0, () => setIsTypingComplete(true));
   const isTyping = typedScript.length < script.length;
+
+  useEffect(() => {
+    // Autoplay audio once typing is complete and audio is available
+    if (pirateAudioUri && isTypingComplete) {
+      const audio = new Audio(pirateAudioUri);
+      audio.play().catch(e => console.warn("Audio autoplay failed:", e));
+    }
+  }, [pirateAudioUri, isTypingComplete]);
 
   return (
     <div className="w-full flex flex-col items-center">
         <div className="animate-fadeIn space-y-4 w-full">
             <div className="flex justify-center items-center gap-4">
                 <Volume2 className="w-10 h-10 sm:w-12 sm:h-12 text-accent" />
-                {isAudioLoading && <Loader2 className="w-6 h-6 text-accent animate-spin" />}
+                {isAudioLoading && (
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    Conjuring voice...
+                  </div>
+                )}
             </div>
             <Card className="bg-secondary/30 p-4 w-full min-h-[120px] flex items-center justify-center">
                 <CardContent className="p-2">
@@ -37,12 +50,6 @@ export default function HintDisplay({ script, isAudioLoading, pirateAudioUri, on
                     </p>
                 </CardContent>
             </Card>
-            {pirateAudioUri && !isAudioLoading && (
-                <audio controls autoPlay key={pirateAudioUri} className="w-full max-w-sm mx-auto mt-4">
-                <source src={pirateAudioUri} type="audio/wav" />
-                Your browser does not support the audio element.
-                </audio>
-            )}
         </div>
         {!isTyping && script && (
              <Button onClick={onProceed} className="w-full max-w-sm mx-auto mt-6 bg-primary hover:bg-primary/90 text-primary-foreground animate-fadeIn">

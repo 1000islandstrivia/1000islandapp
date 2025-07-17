@@ -299,7 +299,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       const hintData = await getQuestionHints(question.id);
       setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
     }
-  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio]);
+  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast]);
 
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
@@ -499,16 +499,16 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         {gameState === 'RESULT' && (
           isAiLoreEnabled ? (
             <>
-              {isAiLoading && (
+              {isAiLoading && !pirateResponse?.script && (
                 <div className="animate-fadeIn space-y-4 flex flex-col justify-center items-center text-center h-full">
                   <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
                   <p className="text-lg font-semibold text-primary font-headline">{loadingMessage.current}</p>
                 </div>
               )}
-              {pirateResponse && !isAiLoading && (
+              {pirateResponse && (
                 <HintDisplay
                     script={pirateResponse.script}
-                    isAudioLoading={false} 
+                    isAudioLoading={isAiLoading && !pirateResponse.audioDataUri} 
                     pirateAudioUri={pirateResponse.audioDataUri || null}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
