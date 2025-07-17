@@ -4,10 +4,12 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, RefreshCw, Server, Zap, Database, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { Loader2, RefreshCw, Zap, Copy } from 'lucide-react';
 import { getTriviaQuestions } from '@/services/triviaService';
 import { getLeaderboard } from '@/services/leaderboardService';
-import { isPersistenceEnabled, db } from '@/lib/firebase'; // Assuming db is exported for a direct check
+import { isPersistenceEnabled } from '@/lib/firebase';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 interface Report {
   questionLoadTime: number | null;
@@ -19,57 +21,77 @@ interface Report {
 
 export default function PerformanceReport() {
   const [report, setReport] = useState<Report | null>(null);
+  const [reportText, setReportText] = useState("Click 'Run Report' to generate performance data.");
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const generateReportText = (currentReport: Report | null): string => {
+    if (!currentReport) {
+      return "Report has not been run or failed to generate.";
+    }
+    return `
+RiverRat Lore Performance Report
+------------------------------------
+Generated: ${new Date().toISOString()}
+
+[Firestore Metrics]
+- Offline Cache (Persistence): ${currentReport.persistenceStatus}
+- Question Fetch Time:         ${currentReport.questionLoadTime}ms
+- Questions Fetched:           ${currentReport.questionCount}
+- Leaderboard Fetch Time:      ${currentReport.leaderboardLoadTime}ms
+- Leaderboard Users Fetched:   ${currentReport.leaderboardCount}
+
+[Analysis]
+- Question loading appears to be the most intensive initial query. Times over 500ms could indicate a need for query optimization or caching review.
+- Leaderboard loading should be consistently fast. Spikes could indicate high traffic or a need for more aggressive caching.
+- Offline Cache being 'Disabled' or 'Failed' will result in slower load times for repeat visitors on the client-side.
+    `;
+  };
 
   const runReport = async () => {
     setIsLoading(true);
-    setReport({
-        questionLoadTime: null,
-        questionCount: null,
-        leaderboardLoadTime: null,
-        leaderboardCount: null,
-        persistenceStatus: 'Checking...',
-    });
-
-    // Check persistence status
-    const persistence = await isPersistenceEnabled();
+    setReportText("Running diagnostics...");
+    const initialReportState: Report = {
+      questionLoadTime: null,
+      questionCount: null,
+      leaderboardLoadTime: null,
+      leaderboardCount: null,
+      persistenceStatus: 'Checking...',
+    };
     
-    // Test Question Loading
+    setReport(initialReportState);
+    const persistence = await isPersistenceEnabled();
     const qStartTime = performance.now();
     const questions = await getTriviaQuestions();
     const qEndTime = performance.now();
-    
-    // Test Leaderboard Loading
     const lStartTime = performance.now();
     const leaderboard = await getLeaderboard();
     const lEndTime = performance.now();
 
-    setReport({
+    const finalReport: Report = {
       questionLoadTime: Math.round(qEndTime - qStartTime),
       questionCount: questions.length,
       leaderboardLoadTime: Math.round(lEndTime - lStartTime),
       leaderboardCount: leaderboard.length,
       persistenceStatus: persistence ? 'Enabled' : 'Disabled',
-    });
+    };
+    
+    setReport(finalReport);
+    setReportText(generateReportText(finalReport).trim());
     setIsLoading(false);
+  };
+
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(reportText);
+    toast({
+      title: "Report Copied!",
+      description: "The performance log is now on your clipboard.",
+    });
   };
 
   useEffect(() => {
     runReport();
   }, []);
-
-  const PersistenceIcon = ({ status }: { status: Report['persistenceStatus'] }) => {
-    switch (status) {
-      case 'Enabled':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'Disabled':
-        return <XCircle className="h-5 w-5 text-destructive" />;
-      case 'Failed':
-        return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
-      default:
-        return <Loader2 className="h-5 w-5 animate-spin" />;
-    }
-  };
 
   return (
     <Card className="bg-card/90 backdrop-blur-sm shadow-xl">
@@ -79,12 +101,18 @@ export default function PerformanceReport() {
                 <Zap className="h-7 w-7 text-primary" />
                 <CardTitle className="font-headline text-2xl text-primary">Performance Report</CardTitle>
             </div>
-            <Button onClick={runReport} disabled={isLoading} variant="ghost" size="icon">
-                <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
-                <span className="sr-only">Refresh Report</span>
-            </Button>
+            <div className="flex items-center gap-2">
+                <Button onClick={runReport} disabled={isLoading} variant="ghost" size="icon">
+                    <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
+                    <span className="sr-only">Refresh Report</span>
+                </Button>
+                 <Button onClick={handleCopyToClipboard} disabled={isLoading || !report} variant="ghost" size="icon">
+                    <Copy className="h-5 w-5" />
+                    <span className="sr-only">Copy Report</span>
+                </Button>
+            </div>
         </div>
-        <CardDescription>Live metrics for app performance and data loading.</CardDescription>
+        <CardDescription>A detailed record of app performance metrics you can copy and paste.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {isLoading && !report ? (
@@ -93,26 +121,12 @@ export default function PerformanceReport() {
             <p className="ml-3 text-muted-foreground">Running diagnostics...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div className="p-4 bg-primary/10 rounded-lg">
-              <h3 className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2"><Database className="h-4 w-4"/> Questions</h3>
-              <p className="text-2xl font-bold text-primary">{report?.questionLoadTime ?? '...'}ms</p>
-              <p className="text-xs text-muted-foreground">{report?.questionCount ?? '...'} questions fetched</p>
-            </div>
-            <div className="p-4 bg-primary/10 rounded-lg">
-              <h3 className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2"><Server className="h-4 w-4"/> Leaderboard</h3>
-              <p className="text-2xl font-bold text-primary">{report?.leaderboardLoadTime ?? '...'}ms</p>
-              <p className="text-xs text-muted-foreground">{report?.leaderboardCount ?? '...'} users fetched</p>
-            </div>
-            <div className="p-4 bg-primary/10 rounded-lg">
-              <h3 className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2">
-                <PersistenceIcon status={report?.persistenceStatus || 'Checking...'} />
-                Offline Cache
-              </h3>
-              <p className="text-2xl font-bold text-primary">{report?.persistenceStatus ?? '...'}</p>
-              <p className="text-xs text-muted-foreground">Firestore Persistence</p>
-            </div>
-          </div>
+          <Textarea
+            readOnly
+            value={reportText}
+            className="h-64 font-mono text-xs bg-muted/30"
+            placeholder="Generating report..."
+          />
         )}
       </CardContent>
     </Card>
