@@ -423,7 +423,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                 <CardTitle className="font-headline text-4xl text-primary">Ready to Set Sail?</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-lg text-foreground/80">A new voyage of ${QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
+                <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
                 <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90">
                     Begin Trivia Challenge
                 </Button>
