@@ -183,7 +183,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     let tempAnsweredIds = new Set(answeredQuestionIds);
     let availableQuestions = allTriviaQuestions.filter(q => !tempAnsweredIds.has(q.id));
 
-    if (availableQuestions.length === 0) {
+    if (availableQuestions.length < QUESTIONS_PER_GAME) {
       toast({
         title: "You've seen it all!",
         description: "Resetting the question pool. Well done, Captain!",
@@ -193,21 +193,18 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
 
     const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
-    const firstQuestion = shuffled.shift();
-    if (!firstQuestion) {
+    const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+    
+    if (newGameQuestions.length === 0) {
         setIsLoading(false);
-        return; // No questions left to play
+        // This should theoretically not be hit if allTriviaQuestions has items
+        // but it's a safe fallback.
+        console.error("No questions available to start a game.");
+        toast({ title: "No Questions", description: "Could not load any questions to start the game."});
+        return; 
     }
 
-    // Set first question immediately
-    setActiveQuestions([firstQuestion]);
-
-    // Prepare the rest in the background
-    const remainingToFetch = Math.min(QUESTIONS_PER_GAME - 1, shuffled.length);
-    const restOfQuestions = shuffled.slice(0, remainingToFetch);
-
-    setActiveQuestions(prev => [...prev, ...restOfQuestions]);
-
+    setActiveQuestions(newGameQuestions);
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
@@ -311,8 +308,6 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           } finally {
             setIsAudioLoading(false);
           }
-        } else {
-          setIsAudioLoading(false);
         }
       };
       processHint();
@@ -430,7 +425,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       <div className="flex flex-col items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
         <Skull className="w-12 h-12 text-primary mb-4" />
         <p className="ml-4 text-xl text-primary">No Trivia Questions Available</p>
-        <p className="text-muted-foreground mt-2">Could not load questions. Starting a new game...</p>
+        <p className="text-muted-foreground mt-2">Could not load questions. Please try again.</p>
         <Button onClick={initializeGame} className="mt-4">
             <RefreshCw className="mr-2 h-4 w-4" /> Start New Game
         </Button>
@@ -498,3 +493,5 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     </div>
   );
 }
+
+    
