@@ -23,25 +23,25 @@ export default function HintDisplay({ script, audioDataUris, onProceed, isLastQu
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // This effect resets the entire component's state when a new script comes in.
-  // This is the key fix to ensure audio plays reliably for every new hint.
   useEffect(() => {
     setIsTypingComplete(false);
     setCurrentTrackIndex(0);
-    setIsPlaying(false);
+    // Auto-play audio as soon as it's available.
+    if (audioDataUris && audioDataUris.length > 0) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
     if (audioRef.current) {
       audioRef.current.src = '';
     }
-  }, [script]);
+  }, [script, audioDataUris]);
 
 
   const handleTypingComplete = React.useCallback(() => {
     setIsTypingComplete(true);
     onTypingComplete();
-    // Auto-play audio once typing is done, if available
-    if (audioDataUris && audioDataUris.length > 0) {
-      setIsPlaying(true);
-    }
-  }, [onTypingComplete, audioDataUris]);
+  }, [onTypingComplete]);
 
   const typedScript = useTypewriter(script, 40, 0, handleTypingComplete);
   const isTyping = !isTypingComplete && script.length > 0;
