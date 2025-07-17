@@ -216,1245 +216,1245 @@ export const storyline: StorylineHint[] = [
   { 
     key: "water_activity_1", 
     title: "Depths of History", 
-    text: "The river's surface tells a story of sunlight and speedboats, but its cold, clear depths hold a much older, quieter tale. This is a paradise for those who seek history in the silence of a shipwreck.", 
+    text: "While the river's surface tells a modern story of sunlight and speedboats, its cold, clear depths hold a much older, quieter tale. The absence of saltwater and wood-eating organisms means that wooden shipwrecks from centuries past are remarkably preserved. For freshwater scuba divers, this makes the river a world-class destination. It’s not about coral reefs; it’s about descending into history, exploring the silent, ghostly decks of schooners and steamers that met their end in the river's unforgiving currents. To dive here is to swim through a submerged museum, where every wreck is a time capsule with a story to tell.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "island_count_1", 
     title: "A Watery Labyrinth", 
-    text: "To be an island here, you need to be above water all year and host at least two living trees. By that count, there are 1,864 islands, forming a beautiful and confusing maze.", 
+    text: "So, how many islands does it take to make a Thousand? The official count is 1,864, but that number hinges on a very specific rule. To earn the title of 'island' in this archipelago, a piece of land must be larger than one square foot, remain above water 365 days a year, and support at least two living trees. This precise definition creates a watery labyrinth of landmasses, from Wolfe Island, which is larger than all the others combined, to tiny 'Just Room Enough Island,' which meets the criteria by the skin of its teeth. It's a testament to the region's unique geography and the human need to count and categorize the magnificent chaos of nature.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "dressing_origin_1", 
     title: "A Tangy Tale", 
-    text: "Gossip travels fast on the river, and one of the tastiest rumors is that the world-famous Thousand Island Dressing was whipped up right here, born from a fishing guide's wife and made famous in a grand Gilded Age hotel.", 
+    text: "The world-famous Thousand Island dressing wasn't invented by a celebrity chef in a glittering city. Legend says it was born right here, in the rustic kitchen of a fishing guide's wife. Sophie LaLonde, wife of guide George LaLonde, would whip up a unique, tangy concoction for the shore dinners she prepared for wealthy visiting fishermen. One of those visitors was a famous actress, who loved it so much she asked for the recipe. Another story credits its fame to George Boldt, who instructed his maitre d' at the Waldorf-Astoria Hotel to create a new dressing after being served a version by Sophie. Either way, its roots are firmly planted in the fishing camps and grand hotels of the river's Gilded Age.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "singer_castle_1", 
     title: "The Castle of Secrets", 
-    text: "On Dark Island, a castle of secrets stands guard. Built by the head of the Singer Sewing Machine company, it's a medieval fantasy complete with dungeons, secret passages, and gargoyles that watch the river with stony eyes.", 
+    text: "On Dark Island, a different kind of Gilded Age dream stands guard. Singer Castle wasn't built for a lost love, but for quiet retreat and playful intrigue. Commissioned by Frederick Bourne, president of the Singer Sewing Machine Company, it's a Scottish-inspired medieval fantasy, complete with a dungeon, secret passages behind swiveling bookcases, and a two-story ice house. Its granite walls, quarried from a neighboring island, give it an imposing presence, but its heart is one of games and mystery. It was a place for the family to escape the city, a fortress of fun filled with hidden nooks and surprising discoveries, a true testament to a wealthy man's imagination.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "geology_rock_1", 
     title: "Foundation of Ages", 
-    text: "The very bones of these islands are made of ancient granite, part of the Frontenac Arch. These are the worn-down tops of mountains that are among the oldest on the planet.", 
+    text: "The islands themselves are the very bones of the Earth, laid bare for us to see. They are the exposed peaks of the Frontenac Arch, a massive spine of ancient granite that stretches from the Canadian Shield down to the Adirondack Mountains. This rock is over a billion years old, some of the most ancient on the planet. When the last great glaciers scoured this land, they scraped away the softer rock but could not defeat this hard, resistant granite. The islands we see today are the worn, resilient tops of a truly ancient mountain range, a testament to endurance on a geological time scale.", 
     unlocked: false, 
     icon: Mountain 
   },
   { 
     key: "boat_museum_1", 
     title: "Echoes of Wooden Hulls", 
-    text: "The Antique Boat Museum in Clayton isn't just a collection of boats; it's a library of river stories, where every polished mahogany hull and gleaming brass fitting speaks of a bygone era of elegance and craftsmanship.", 
+    text: "The Antique Boat Museum in Clayton is more than just a building with boats in it; it's a library of river stories told in polished mahogany and gleaming brass. It houses the largest collection of freshwater antique boats in North America, from elegant St. Lawrence Skiffs to powerful, rumbling Hacker-Crafts from the Gilded Age. Each vessel has a story—of the families who owned them, the races they won, and the craftsmen who built them by hand. To walk through its halls is to hear the echo of wooden hulls cutting through the water, a tribute to an era of unparalleled elegance and craftsmanship on the river.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "river_rat_meaning_1", 
     title: "Lore Keepers", 
-    text: "To be called a 'River Rat' is a badge of honor. It means you know the river’s moods, its secrets, and its stories. It means you're part of the river, and the river is part of you.", 
+    text: "In the Thousand Islands, being called a 'River Rat' is the highest of compliments. It's a title earned, not given. It means you know the river's moods—when it’s angry and when it’s calm. It means you can navigate by the shape of a rock and the bend of a tree, not just a GPS. It means you carry the river's stories, its history, and its secrets in your heart. It signifies a deep, abiding connection to the water, a sense that you are part of the river, and the river is a part of you. It's a badge of honor, worn with pride by those who truly understand this magical place.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "boldt_construction_1", 
     title: "A Frozen Moment", 
-    text: "The year 1904. That was when the hammers fell silent at Boldt Castle, freezing a moment of Gilded Age ambition and turning a monument of love into a memorial of loss.", 
+    text: "The year 1904 marks a tragic pause in the river's history. It was the year that George Boldt, upon hearing of his wife's sudden death, sent a simple, heartbreaking telegram to his army of craftsmen on Heart Island: 'Stop all construction.' In that moment, the hammers fell silent, the saws ceased their whine, and a Gilded Age dream was frozen in time. The half-finished castle, intended as the ultimate testament of love, became instead a monument to loss, a beautiful, poignant ruin that stood silent for over 70 years.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "scenic_byway_1", 
     title: "The Winding Path", 
-    text: "There are roads that follow the river's curves on both shores, offering breathtaking views at every turn. They are paths not just of pavement, but of history and natural wonder.", 
+    text: "On both sides of the river, scenic roads follow the water's curves, offering breathtaking views at every turn. In the U.S., the Great Lakes Seaway Trail is a designated National Scenic Byway, while in Canada, the Thousand Islands Parkway provides a more leisurely alternative to the main highway. These aren't just roads for getting from one point to another; they are journeys in themselves, paths that trace the history, beauty, and natural wonder of the region.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "smallest_post_office_1", 
     title: "Tiny Dispatches", 
-    text: "Even the smallest of islands can play a part in connecting the world. The tiny, unofficial post office on Sugar Island is a testament to the quirky, independent spirit of island life.", 
+    text: "The quirky, independent spirit of river life is perfectly captured by the tiny, unofficial U.S. Post Office on Sugar Island. While not a formal government building, this small shack serves as a vital mail drop-off and pick-up point for a small community of islanders. It stands as a charming, humorous symbol of the unique ways island residents have adapted to create their own services and maintain their connection to the wider world.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "lost_ships_1", 
     title: "Underwater Ghosts", 
-    text: "The cold, fresh water of the St. Lawrence is a perfect tomb. It preserves the 'Lost Ships of the 1000 Islands,' turning the riverbed into a silent, underwater museum of maritime history.", 
+    text: "The St. Lawrence River is a vast, cold-water museum. Because of the fresh, cold water, which lacks salt and wood-eating organisms, the riverbed is home to one of the best-preserved collections of shipwrecks in the world. From 18th-century schooners to 20th-century freighters, these 'Lost Ships' lie in the dark, silent depths, their ghostly forms creating a diver's paradise and a tangible link to the region's dramatic maritime past.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "singer_castle_material_1", 
     title: "Island Stone", 
-    text: "Singer Castle was built from the very rock it stands upon. The granite was quarried from a neighboring island, making the castle a true child of the river.", unlocked:false, 
+    text: "Singer Castle feels like it grew right out of the river, and in a way, it did. The beautiful, strong granite used to construct its towers and walls wasn't imported from some faraway land. It was quarried from a neighboring island, Oak Island. This use of local materials makes the castle a true child of the Thousand Islands, its very essence tied to the ancient rock of the Frontenac Arch.", 
+    unlocked: false, 
     icon: Mountain 
   },
   { 
     key: "canadian_gateway_1", 
     title: "The Limestone City", 
-    text: "Kingston, Ontario, the 'Limestone City,' stands as a historic guardian at the river's gateway to Lake Ontario, its old stone forts and buildings rich with tales of Canada's past.", 
+    text: "Standing guard at the river's gateway to Lake Ontario is Kingston, Ontario, a city whose history is written in stone. Known as 'The Limestone City' for the beautiful, pale local stone used in many of its most historic buildings, Kingston has been a strategic military and economic hub for centuries. Home to Fort Henry and the southern entrance to the Rideau Canal, it serves as the historic Canadian entrance to the Thousand Islands.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "just_room_enough_family_1", 
     title: "A Cozy Claim", 
-    text: "The Sizeland family's dogged determination to have their very own island resulted in 'Just Room Enough Island,' a testament to making the most of what you have.", 
+    text: "The story of Just Room Enough Island is a testament to making a dream fit the space you have. The Sizeland family bought the tiny speck of land, then called Hub Island, in the 1950s. They built a small house that covers nearly every square inch, planted a tree, and proudly declared they had an island estate. It's a charming example of the quirky humor and fierce independence that characterizes life on the river.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "seaway_agreement_1", 
     title: "Forging a Waterway", 
-    text: "It took an agreement between two great nations to tame the river's rapids, forging a deep waterway that would change the course of commerce and the face of the river forever.", 
+    text: "It took a monumental act of international cooperation to create the modern St. Lawrence Seaway. In 1954, Canada and the United States signed an agreement to jointly undertake the massive engineering project. Together, they tamed the river's wild rapids and built a series of locks and channels, forging a deep waterway that would change the course of North American commerce and the very face of the river forever.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "bill_johnston_allegiance_1", 
     title: "The Rebel Pirate", 
-    text: "Hero or villain? Bill Johnston fought for a cause, aiding Canadian rebels against the British Crown. To the empire, he was a pirate; to the patriots, a folk hero.", 
+    text: "Depending on which side of the river you were on, Bill Johnston was either a villainous pirate or a righteous folk hero. During the Patriot War of 1837-38, he used his intimate knowledge of the island maze to aid Canadian rebels seeking independence from Britain. To the British Empire, he was a renegade and a pirate; to the American patriots and Canadian rebels he supported, he was a cunning and invaluable ally in their fight.", 
     unlocked: false, 
     icon: Diamond 
   },
   { 
     key: "power_authority_center_1", 
     title: "Harnessing the Current", 
-    text: "The river's immense power, once a fearsome obstacle, is now harnessed by massive dams, its raw energy transformed into light and electricity for millions.", 
+    text: "The raw, untamed power of the St. Lawrence River, which once raged in impassable rapids, is now harnessed by the massive Moses-Saunders Power Dam. This international hydroelectric project is so large it spans the border between Massena, New York, and Cornwall, Ontario. The visitor center on the American side offers panoramic views of this engineering marvel, where the river's immense energy is transformed into electricity for millions.", 
     unlocked: false, 
     icon: Zap 
   },
   { 
     key: "bridge_type_1", 
     title: "Graceful Span", 
-    text: "To allow the passage of giant ocean-going ships, the main bridge over the river had to be a suspension bridge, its graceful cables soaring high above the international shipping channel.", 
+    text: "The main span of the Thousand Islands Bridge had to accomplish a difficult task: connect two countries while allowing massive ocean-going vessels to pass beneath. The solution was a suspension bridge, whose tall towers and graceful, sweeping cables provide the necessary high clearance over the international shipping channel. It is a design of both strength and beauty.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "alster_tower_inspiration_1", 
     title: "A German Fairytale", 
-    text: "The playful design of Boldt Castle's Alster Tower wasn't born from the river, but from a novel by Sir Walter Scott, a fairytale vision of German castles brought to life in New York.", 
+    text: "The whimsical design of the Alster Tower at Boldt Castle, with its winding staircases and playful turrets, was not inspired by the river, but by a book. George Boldt was captivated by the description of a castle in Sir Walter Scott's novel 'Woodstock,' and had his architects bring that fairytale vision of a German Rhineland tower to life on his island.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "national_park_management_1", 
     title: "Canada's Jewel", 
-    text: "The Thousand Islands National Park, managed by Canada, is a collection of protected islands dedicated to preserving the natural and cultural heritage of this unique region for all time.", 
+    text: "Thousand Islands National Park, one of Canada's oldest, is a collection of over 20 islands and numerous smaller islets managed by Parks Canada. It's a park accessible primarily by water, dedicated to preserving the unique natural and cultural heritage of this region, from its rare species to its Gilded Age history, for all time.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "us_tourism_hub_1", 
     title: "American Harbors", 
-    text: "Towns like Alexandria Bay and Clayton serve as bustling hubs on the American shore, their harbors filled with tour boats and pleasure craft ready to explore the islands.", 
+    text: "On the American side of the river, towns like Alexandria Bay and Clayton serve as the bustling heart of the tourism industry. Their harbors are filled with a constant parade of tour boats, fishing charters, and private pleasure craft, all ready to depart and explore the wonders of the island maze.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "bird_of_prey_1", 
     title: "Sky Hunter", 
-    text: "Keep an eye on the sky for the Osprey, a magnificent raptor known as the 'fish hawk.' Watching one plunge into the river and emerge with a fish is a classic Thousand Islands sight.", 
+    text: "Keep a sharp eye on the sky and you'll likely spot a magnificent bird of prey known as the Osprey. Often called a 'fish hawk,' this raptor can be seen soaring high above the water before making a spectacular dive, plunging feet-first into the river to snatch a fish. Their large, messy nests are a common sight atop channel markers and dead trees throughout the islands.", 
     unlocked: false, 
     icon: Bird 
   },
   { 
     key: "boldt_yacht_house_1", 
     title: "Floating Palaces", 
-    text: "The immense Boldt Yacht House was no mere boathouse; it was a cathedral of wood, designed to shelter the luxurious steam yachts and houseboats of the Gilded Age.", 
+    text: "The Boldt Yacht House on Wellesley Island is no mere boathouse; it's a wooden cathedral built on a scale as grand as the castle itself. This enormous structure was designed to shelter the family's impressive fleet of vessels, including several luxurious steam yachts and a massive, opulent houseboat that was a floating palace in its own right. It is a stunning example of Gilded Age maritime architecture.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "muskellunge_name_1", 
     title: "The River King", 
-    text: "The Muskellunge, or 'Muskie,' is the king of the river's predators. Elusive, powerful, and massive, it is the ultimate prize for any angler who dares to seek it.", 
+    text: "The undisputed king of the St. Lawrence River's predators is the mighty Muskellunge, or 'Muskie.' Its name is believed to derive from an Ojibwe word meaning 'ugly pike,' but to anglers, it is a thing of beauty. Elusive, powerful, and capable of growing to immense sizes, it is known as 'the fish of ten thousand casts' and is the ultimate prize for any fisherman who dares to seek it.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "cottage_country_1", 
     title: "Summer Sanctuaries", 
-    text: "During the Gilded Age, the wealthy elite transformed the islands into their personal 'cottage country,' building grand seasonal homes to escape the city and enjoy the river's splendor.", 
+    text: "In the late 19th and early 20th centuries, America's wealthiest families transformed the Thousand Islands into their personal 'cottage country.' These weren't rustic cabins; the term 'cottage' was a humble euphemism for the sprawling, opulent mansions they built on private islands as seasonal sanctuaries to escape the summer heat of the cities and enjoy the river's splendor.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "half_moon_bay_1", 
     title: "Sculpted by Water", 
-    text: "Half Moon Bay is a natural amphitheater carved from the rock by the river itself. For decades, it has served as a unique floating church, with a minister preaching from a rocky pulpit to a congregation in boats.", 
+    text: "Half Moon Bay is a stunning natural amphitheater, a perfect crescent carved from the granite cliffs of Wellesley Island by the river itself. For well over a century, it has served as a unique floating church. On Sunday mornings in the summer, a minister preaches from a rocky pulpit on the shore to a congregation of boaters who drop anchor in the calm, protected waters of the bay.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "international_rift_1", 
     title: "Borderline Depths", 
-    text: "The International Rift is a deep, narrow channel where the US-Canada border is squeezed between two islands, a place where you can cross a country's border in a single boat length.", 
+    text: "Beneath the main span of the Thousand Islands Bridge lies the International Rift, a deep and narrow channel that marks the precise US-Canada border. Here, the river is squeezed between Wellesley Island in the US and Hill Island in Canada, creating a dramatic passage where you can feel like you can almost touch two countries at once.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "skiff_life_1", 
     title: "River Ramblers", 
-    text: "The St. Lawrence Skiff is more than a boat; it's a way of life. These agile, elegant wooden boats are perfectly designed for the 'river rambling' lifestyle of exploring island nooks and crannies.", 
+    text: "The St. Lawrence Skiff is more than just a boat; it's a lifestyle. These elegant, double-ended wooden boats, perfectly suited for rowing or a small sail, are the quintessential vessel for 'river rambling.' Their agile and efficient design is ideal for exploring the quiet coves and narrow, winding channels between the islands, embodying a slower, more intimate way of experiencing the river.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "cornwall_bridge_1", 
     title: "Vital Link", 
-    text: "The bridge at Cornwall does more than carry cars; it's a vital link in the power grid and a key crossing in the commercial lifeblood of two nations.", 
+    text: "The Cornwall-Massena International Bridge is another vital link between the US and Canada in the region. This system of bridges does more than just carry cars; it crosses directly over the massive St. Lawrence-FDR hydroelectric dam, making it a crucial component for both international trade and the management of the power project.", 
     unlocked: false, 
     icon: Zap 
   },
   { 
     key: "devils_oven_1", 
     title: "Ancient Shelter", 
-    text: "They say the pirate Bill Johnston used this natural cave as a hideout. Devil's Oven Island has offered shelter to fugitives, fishermen, and storytellers for centuries.", 
+    text: "Devil's Oven Island, a rugged and wild isle, is famous for its namesake cave. Local legend has long held that this natural stone shelter was one of the primary hideouts for the river pirate Bill Johnston and his gang. Whether true or not, the island's name and story evoke the region's long history of pirates, smugglers, and those seeking refuge from the law in the river's maze.", 
     unlocked: false, 
     icon: Mountain 
   },
   { 
     key: "biosphere_reserve_1", 
     title: "Living Harmony", 
-    text: "The entire region is a UNESCO Biosphere Reserve, a special designation that recognizes its unique ecosystem and its commitment to balancing conservation and sustainable human activity.", 
+    text: "The entire Thousand Islands region is recognized by UNESCO as the Frontenac Arch Biosphere Reserve. This prestigious designation isn't just about protecting nature; it's about recognizing a place where the community lives in relative harmony with its unique ecosystem. It celebrates the balance between a vibrant human culture and the conservation of the natural world, a commitment to sustainable living on a grand scale.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "haudenosaunee_territory_1", 
     title: "The People of the Longhouse", 
-    text: "This entire region is the ancestral territory of the Haudenosaunee Confederacy. Their stories and traditions are the deepest, oldest layer of the river's history.", 
+    text: "Before any modern border was drawn, this entire region was the ancestral territory of the Haudenosaunee Confederacy, also known as the Iroquois or Six Nations. Their stories, traditions, and connection to the land and water are the deepest and oldest layer of the river's human history. The unique international territory of Akwesasne is a modern testament to this enduring presence.", 
     unlocked: false, 
     icon: Bird 
   },
   { 
     key: "winery_known_for_1", 
     title: "Island Vines", 
-    text: "The unique, rocky soil and moderating effect of the river create a special 'terroir' for growing grapes, leading to the rise of award-winning wineries along the shore.", 
+    text: "The unique microclimate of the Thousand Islands, moderated by the massive thermal mass of the river, combined with the rocky, mineral-rich soil, creates a special 'terroir' for growing cold-hardy grapes. This has led to the recent rise of an award-winning wine region, with wineries along the shore offering a unique taste of the river's bounty.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "gananoque_boat_line_1", 
     title: "Canadian Cruises", 
-    text: "From the charming Canadian town of Gananoque, fleets of tour boats depart, offering visitors stunning vistas of the 'Admiralty' and 'Lake' groups of islands.", 
+    text: "The charming town of Gananoque is known as the 'Gateway to the Thousand Islands' on the Canadian side. From its bustling waterfront, fleets of tour boats depart, offering visitors stunning cruises through the heart of the 'Admiralty' and 'Lake Fleet' groups of islands, providing a distinctly Canadian perspective on the archipelago's beauty.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "seaway_lock_1", 
     title: "River Elevators", 
-    text: "The giant locks of the Seaway are true engineering marvels, using gravity and water to lift and lower massive ships over 80 feet at a time on their journey.", 
+    text: "The massive locks of the St. Lawrence Seaway are true engineering marvels. These concrete chambers act as 'water elevators,' using nothing but gravity and immense amounts of water to lift or lower colossal, 700-foot ships as much as 80 feet at a time, allowing them to bypass rapids and navigate the significant changes in water level along the river's course.", 
     unlocked: false, 
     icon: Zap 
   },
   { 
     key: "tibbetts_point_1", 
     title: "Gateway Guardian", 
-    text: "This lighthouse stands as a lonely guardian at the very point where the mighty St. Lawrence River is born from the vastness of Lake Ontario.", 
+    text: "The historic lighthouse at Tibbetts Point stands as a lonely, vital guardian at the very beginning of the St. Lawrence River. It marks the crucial transition point where the vast, open waters of Lake Ontario narrow and become the river, guiding ships safely into the waterway's mouth. Its light is the first welcome for ships entering the river and the last goodbye for those heading into the lake.", 
     unlocked: false, 
     icon: Lightbulb 
   },
   { 
     key: "smugglers_run_1", 
     title: "Whiskey and Shadows", 
-    text: "During Prohibition, the dark, confusing channels of the Thousand Islands became the perfect 'smuggler's run' for illicit Canadian whiskey flowing into the United States.", 
+    text: "During Prohibition in the 1920s, the dark, confusing maze of channels and coves in the Thousand Islands became the perfect 'smuggler's run.' Fast boats with muffled engines would slip across the international border on moonless nights, their hulls heavy with illicit Canadian whiskey destined for the thirsty cities of the United States. It was a dangerous but profitable game of cat and mouse with the law.", 
     unlocked: false, 
     icon: Diamond 
   },
   { 
     key: "pirate_days_1", 
     title: "Swashbuckler's Bash", 
-    text: "Every year, Alexandria Bay celebrates its rogue history with 'Pirate Days,' a week of festivities honoring the pirate Bill Johnston with parades, battles, and general swashbuckling.", 
+    text: "Every summer, the town of Alexandria Bay dives headfirst into its rogue history with 'Bill Johnston's Pirate Days.' This week-long festival celebrates the region's famous river pirate with parades of ships, mock battles on the water, and costumed swashbucklers overrunning the town. It's a lively homage to the area's rebellious and adventurous spirit.", 
     unlocked: false, 
     icon: Diamond 
   },
   { 
     key: "islands_tower_1", 
     title: "Sky-High Views", 
-    text: "For the ultimate perspective, the 1000 Islands Tower on the Canadian side lifts you 400 feet above the river for a breathtaking, panoramic map of the watery labyrinth below.", 
+    text: "For the ultimate bird's-eye perspective of the islands, you have to ascend the 1000 Islands Tower. This 400-foot observation tower on Hill Island, Canada, offers breathtaking, 360-degree panoramic views, turning the complex, watery labyrinth of islands, channels, and bridges into a living map laid out at your feet.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "seaway_president_1", 
     title: "Visionary Leader", 
-    text: "It took the vision and political will of a former general, U.S. President Dwight D. Eisenhower, to finally push through the legislation that created the modern St. Lawrence Seaway.", 
+    text: "While the idea of a deep-water seaway had been debated for decades, it took the vision and political will of a former five-star general, U.S. President Dwight D. Eisenhower, to finally make it a reality. He saw the strategic and economic importance of the project and was instrumental in pushing through the legislation that allowed the United States to partner with Canada in its construction.", 
     unlocked: false, 
     icon: BookOpen 
   },
   { 
     key: "eel_fishing_1", 
     title: "Ancient Tradition", 
-    text: "The nighttime spearfishing of eels is an ancient tradition, practiced for generations by the Mohawk people of Akwesasne, a testament to a deep and enduring connection to the river's resources.", 
+    text: "The challenging art of nighttime spearfishing for eels is an ancient tradition, passed down for generations by the Mohawk people of Akwesasne. This practice, often done from the bow of a boat with a light to see into the water, is a testament to a deep and enduring connection to the river and its resources, a skill honed over centuries.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "lost_channel_1", 
     title: "Navigational Challenge", 
-    text: "The 'Lost Channel' earned its name when a British army got hopelessly lost in its confusing passages in 1760. It remains a challenge for boaters today.", 
+    text: "The 'Lost Channel' is a notoriously confusing passage of water that earned its name honestly. In 1760, a British army detachment got hopelessly lost in its bewildering twists and turns. To this day, it remains a challenge for even experienced boaters to navigate correctly, a natural puzzle box in the middle of the river.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "poker_run_1", 
     title: "High-Speed Cards", 
-    text: "One of the river's most modern and thrilling traditions is the annual Poker Run, where high-performance speedboats race between islands, not for time, but to collect the best poker hand for charity.", 
+    text: "One of the river's most modern and thrilling traditions is the annual Poker Run. This high-energy event sees dozens of high-performance speedboats roaring between designated checkpoints on the river. The goal isn't to finish first, but to collect a playing card at each stop, with the crew holding the best poker hand at the end winning the grand prize, usually for charity.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "alster_tower_purpose_1", 
     title: "Playful Retreat", 
-    text: "The Alster Tower at Boldt Castle, with its bowling alley and entertainment rooms, was not a defensive structure, but a whimsical, fairytale retreat designed for the Boldt children.", 
+    text: "The Alster Tower at Boldt Castle, also known by the playful nickname 'The Hennery,' was not a defensive structure. It was designed as a whimsical, fairytale retreat for the Boldt children and their guests. Its upper floors contained a billiards room and a two-lane bowling alley, making it the ultimate Gilded Age playhouse.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "parkway_location_1", 
     title: "The Northern Shore", 
-    text: "The Thousand Islands Parkway is a dedicated scenic road that winds along the Canadian shoreline, offering stunning, unobstructed views of the river and islands.", 
+    text: "The Thousand Islands Parkway is a dedicated scenic road that winds along the Canadian shoreline between Gananoque and Brockville. It offers some of the most stunning, continuous, and easily accessible views of the river and islands from the northern shore, providing a more intimate and picturesque alternative to the main highway.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "calumet_island_owner_1", 
     title: "Tobacco Baron's Isle", 
-    text: "Calumet Island was once the site of a magnificent castle owned by Charles Emery, a tobacco tycoon, proving that the Gilded Age dream of a private island kingdom was widespread.", 
+    text: "Calumet Island was once the site of another of the region's magnificent Gilded Age castles. It was the estate of Charles G. Emery, a tycoon who made his fortune in the tobacco industry. His grand castle proved that the dream of building a private island kingdom on the river was a powerful fantasy for many of America's wealthiest industrialists.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "zenda_farms_1", 
     title: "Pastoral Preserve", 
-    text: "Zenda Farms isn't just a park; it's a preserve that protects the historic rural and agricultural character of the region, offering a peaceful glimpse into a different kind of river life.", 
+    text: "The Zenda Farms preserve, protected by the Thousand Islands Land Trust, offers a glimpse into a different side of river life. It isn't a wild forest, but a preserve dedicated to protecting the region's historic rural and agricultural landscape, with its iconic red barns and open fields providing a peaceful contrast to the grand castles on the water.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "windmill_battle_location_1", 
     title: "Rebellion's Stand", 
-    text: "The old windmill near Prescott, Ontario, was the site of a bloody battle during the Patriot War, a stark reminder of the region's turbulent political past.", 
+    text: "The old stone windmill near Prescott, Ontario, is now a national historic site, but in 1838 it was the scene of the bloody Battle of the Windmill. This was a key conflict during the Patriot War, where invading American sympathizers and Canadian rebels made a final, desperate stand against British forces. It is a stark reminder of the region's turbulent political past.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "duck_migration_1", 
     title: "Feathered Travelers", 
-    text: "The river serves as a vital resting and feeding stop on the Atlantic Flyway, a migratory highway for countless ducks, geese, and other waterfowl.", 
+    text: "Twice a year, the St. Lawrence River becomes a bustling highway for millions of birds. It is a vital part of the Atlantic Flyway, a major migratory route for waterfowl. The river's wetlands and bays provide crucial resting and feeding stops for countless ducks, geese, and other birds on their long journeys between their southern wintering grounds and northern breeding habitats.", 
     unlocked: false, 
     icon: Bird 
   },
   { 
     key: "rideau_canal_connects_1", 
     title: "Historic Waterway", 
-    text: "The Rideau Canal, a 19th-century engineering marvel, connects the St. Lawrence at Kingston to Ottawa, creating a historic inland waterway and a UNESCO World Heritage site.", 
+    text: "The Rideau Canal is a 19th-century engineering marvel and a UNESCO World Heritage site. It was built for military purposes after the War of 1812 to provide a secure supply route between the British naval base at Kingston on the St. Lawrence and the city of Ottawa, creating a historic inland waterway that is now a recreational boater's paradise.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "minna_anthony_location_1", 
     title: "Island Nature Hub", 
-    text: "Within Wellesley Island State Park lies the Minna Anthony Common Nature Center, the largest nature center in the NY State Park system and a hub for environmental education.", 
+    text: "Nestled within the vast Wellesley Island State Park is the Minna Anthony Common Nature Center. As the largest nature center in the entire New York State Park system, it serves as a major hub for environmental education and outdoor recreation, offering miles of trails and hands-on exhibits that celebrate the unique flora and fauna of the Thousand Islands.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "tilt_mission_1", 
     title: "Guardians of the Green", 
-    text: "The Thousand Islands Land Trust (TILT) acts as a guardian for the region's wild spaces, working to conserve land and protect the natural beauty for future generations.", 
+    text: "The Thousand Islands Land Trust, or TILT, acts as a dedicated guardian for the region's wild and scenic spaces. This non-profit organization works to conserve land through ownership and agreements, protecting sensitive habitats, scenic vistas, and the overall natural beauty of the Thousand Islands for all future generations to enjoy.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "frontenac_fate_1", 
     title: "Steamboat's Demise", 
-    text: "The grand steamboat 'Frontenac' was a floating palace of the Gilded Age until 1907, when a tragic fire consumed it, leaving a ghostly wreck on the riverbed.", 
+    text: "The 'Frontenac' was one of the grandest side-wheel steamboats of the Gilded Age, a true floating palace. Her reign on the river came to a sudden and fiery end in 1907. A fire broke out while she was docked, and the magnificent wooden vessel was consumed by flames, leaving a charred wreck on the riverbed as a ghostly reminder of a bygone era.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "tibs_focus_1", 
     title: "River Scientists", 
-    text: "The Thousand Islands Biological Station (TIBS) is where scientists study the river's pulse, researching everything from invasive species to fish populations to keep the ecosystem healthy.", 
+    text: "The Thousand Islands Biological Station (TIBS) acts as a doctor for the river. It is a dedicated research facility where scientists study the pulse of the St. Lawrence ecosystem. Their work, focusing on everything from invasive species to fish populations to water quality, is crucial for understanding and protecting the long-term health of this vital waterway.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "playhouse_known_for_1", 
     title: "Stage by the River", 
-    text: "The Thousand Islands Playhouse in Gananoque, ON, offers professional theatre in one of the most scenic settings in Canada, with the St. Lawrence River as its dramatic backdrop.", 
+    text: "The town of Gananoque, Ontario, is home to the acclaimed Thousand Islands Playhouse, which offers professional theatre in one of the most scenic settings in Canada. With two venues right on the water, the St. Lawrence River itself serves as a dramatic, living backdrop for the stories told on its stages.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "shoal_definition_1", 
     title: "Hidden Hazard", 
-    text: "A shoal is a captain's nightmare: a hidden shallow area of rock or sand that can rip the bottom out of an unsuspecting boat. The river is full of them.", 
+    text: "In river terms, a 'shoal' is a captain's worst nightmare. It is a hidden, shallow area of rock or sand lurking just beneath the surface, often in an otherwise deep channel. The Thousand Islands is notorious for these boat-eating hazards, making careful navigation with a nautical chart absolutely essential for anyone venturing off the main path.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "covenanter_shipwreck_1", 
     title: "Diver's Destination", 
-    text: "The wreck of the schooner 'Covenanter' is a popular destination for scuba divers, a well-preserved piece of 19th-century maritime history resting on the river floor.", 
+    text: "The wreck of the 'Covenanter,' a two-masted schooner that sank in the 19th century, is a premier destination for scuba divers. It lies remarkably intact and upright on the riverbed, its masts still pointing towards the surface it will never reach again. It serves as a ghostly and beautiful time capsule from the age of sail.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "fort_henry_1", 
     title: "Garrison Hill", 
-    text: "The massive Fort Henry in Kingston was built by the British to defend their naval dockyards and control the entrance to the Rideau Canal and the St. Lawrence River.", 
+    text: "Perched atop a strategic hill overlooking the city of Kingston and the mouth of the St. Lawrence River, the massive Fort Henry was constructed by the British after the War of 1812. This UNESCO World Heritage site was built to defend their crucial naval dockyards and to control the entrance to the newly built Rideau Canal, solidifying their military presence on the waterway.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "zavikon_island_bridge_1", 
     title: "A Bridge of Contention", 
-    text: "The tiny bridge between the two Zavikon Islands is famously and humorously claimed to be the shortest international bridge, though in reality, both islands are in Canada.", 
+    text: "The tiny, 32-foot bridge connecting the two Zavikon Islands is famously and humorously claimed by tour boat captains to be the 'shortest international bridge in the world.' It's a classic piece of river lore and a great story, though in reality, both islands are located entirely within Canadian territory.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "dressing_origin_2", 
     title: "From River to Ritz", 
-    text: "Though born in a rustic fishing camp on the river, Thousand Island dressing became world-famous when hotel magnate George Boldt put it on the menu at his luxurious Waldorf-Astoria Hotel in New York City.", 
+    text: "Though its origins lie in the rustic fishing camps of the St. Lawrence, Thousand Island dressing became world-famous thanks to hotel magnate George Boldt. After enjoying it on a fishing trip, he introduced the unique, tangy dressing to the elite clientele at his world-famous, luxurious Waldorf-Astoria Hotel in New York City, turning a local secret into a global sensation.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "shipwreck_lore_1", 
     title: "The Silent Fleet", 
-    text: "The cold, fresh water of the St. Lawrence acts as a time capsule. Down in the dark, dozens of shipwrecks—schooners, steamers, barges—rest in a state of stunning preservation, their stories waiting for divers to read.", 
+    text: "The cold, fresh, and dark water of the St. Lawrence acts as a remarkable time capsule for sunken ships. Down in the depths lies a silent fleet of dozens of shipwrecks—19th-century schooners, Gilded Age steamers, and 20th-century barges. They rest in a stunning state of preservation, their stories waiting for skilled scuba divers to visit and read their ghostly tales.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "architecture_clue_1", 
     title: "Blueprints for a Dream", 
-    text: "The grand castles of the Gilded Age weren't just whimsical fancies. They were meticulously designed by prominent architectural firms, who were challenged to build European-style fortresses on rugged, remote river islands.", 
+    text: "The grand castles of the Gilded Age weren't just whimsical fancies; they were monumental construction projects. George Boldt, for instance, hired the prominent Philadelphia architectural firm of G.W. & W.D. Hewitt to design his massive, 120-room Rhineland-style fortress on Heart Island, challenging them to build a European fantasy on a rugged, remote river island.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "environmental_fact_1", 
     title: "The Unseen Invaders", 
-    text: "The river's ecosystem is in a constant battle with unseen invaders. Tiny organisms like Zebra Mussels have drastically changed the water clarity and food web, a permanent mark left by global shipping.", 
+    text: "The river's ecosystem is in a constant, silent battle with invasive species that hitchhiked from across the world in the ballast water of ocean-going ships. Tiny organisms like Zebra and Quagga Mussels have had a massive impact, dramatically increasing water clarity by filtering out plankton, but also disrupting the food web from the bottom up.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "boating_safety_1", 
     title: "The River's Rules", 
-    text: "Navigating the river isn't just about steering. It's about knowing the 'rules of the road.' Simple mnemonics about the color and shape of buoys are the difference between a safe passage and a costly mistake.", 
+    text: "Navigating the river's maze safely is about more than just steering; it's about knowing the 'rules of the road.' The simple mnemonic 'Red, Right, Returning' is a fundamental principle, reminding captains to keep the red-colored navigation buoys on their right-hand side when heading upstream, or 'returning' from the sea. It's the key to staying in the safe, marked channel.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "fishing_lore_1", 
     title: "A Fisherman's Paradise", 
-    text: "The river is a world-class fishery, so famous that it attracts major professional bass tournaments. The fight of a St. Lawrence Smallmouth Bass is the stuff of legends among anglers.", 
+    text: "The St. Lawrence River is a world-renowned fishery, so famous for its healthy population of hard-fighting Smallmouth Bass that it regularly attracts major professional fishing tournaments. For these anglers, the river is a paradise, offering the chance to catch trophy-sized 'bronze-backs' against a stunning backdrop.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "ghost_story_1", 
     title: "Whispers on the Water", 
-    text: "Every old river rat has a ghost story. They tell of haunted lighthouses, phantom ships from long-forgotten wars, and the spirits of those who met a tragic end in the river's icy embrace. At night, every shadow on the water holds a tale.", 
+    text: "Every old River Rat has a favorite ghost story, and many of them are true... at least in the telling. They whisper tales of haunted lighthouses where phantom keepers still tend the light, and of the ghost of a young girl named Minnie, said to wander the shores of Longue Vue Island after a tragic accident. At night on the river, every shadow on the water seems to hold a story.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "famous_people_1", 
     title: "Presidential Retreat", 
-    text: "The Thousand Islands became a fashionable retreat after a visit from President Ulysses S. Grant in 1872. His stay at the Crossmon House Hotel in Alexandria Bay put the region on the map for America's elite.", 
+    text: "The Thousand Islands was launched into the national spotlight as a premier summer destination after a famous visit from President Ulysses S. Grant in 1872. His stay at the Crossmon House Hotel in Alexandria Bay, where he was famously photographed fishing from the docks, signaled to America's Gilded Age elite that this was the new fashionable place to be.", 
     unlocked: false, 
     icon: BookOpen 
   },
   { 
     key: "cross_border_culture_1", 
     title: "A Shared Heritage", 
-    text: "The river doesn't divide; it connects. The culture of the Thousand Islands is a unique blend of American and Canadian traditions, where you're just as likely to hear about hockey as you are about baseball, and where both currencies are often welcome.", 
+    text: "The St. Lawrence River doesn't truly divide two nations; it connects them. The culture of the Thousand Islands is a unique blend of American and Canadian traditions, humor, and history. It's a place where you're just as likely to hear about hockey as you are about baseball, and where the 'World's Shortest International Bridge' is a beloved inside joke shared by both sides.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "shipping_history_1", 
     title: "Lakers and Salties", 
-    text: "There are two kinds of giants on the Seaway. The 'Lakers' are long, narrow ships built for the Great Lakes. The 'Salties' are stout, ocean-going vessels from ports around the world. A true river rat can tell the difference from a mile away.", 
+    text: "A true River Rat can spot the two different kinds of giants on the Seaway from a mile off. The 'Lakers' are long, narrow freighters specifically designed to fit through the Seaway's locks and navigate the Great Lakes. The 'Salties' are the stout, sturdy ocean-going vessels that have traveled the world's oceans to bring their cargo to the heart of the continent.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "wildlife_nature_1", 
     title: "Nature's Pharmacy", 
-    text: "The islands are a living pharmacy for those who know where to look. The common Jewelweed, for instance, often grows right next to its nemesis, poison ivy, and its sap is a well-known folk remedy for the itchy rash.", 
+    text: "The islands are a living pharmacy for those who know the old ways. A prime example is Jewelweed, a native plant whose sap is a well-known folk remedy for soothing the itchy rash of poison ivy. As nature's poetry would have it, the cure, Jewelweed, often grows right next to the affliction, poison ivy.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "local_events_1", 
     title: "A Community's Heartbeat", 
-    text: "The rhythm of the seasons is marked by beloved local events. From the roar of the engines during the Poker Run to the quiet reverence of the Antique Boat Show, these gatherings are the heartbeat of the river community.", 
+    text: "The rhythm of the summer season on the river is marked by beloved local events that form the heartbeat of the community. From the high-octane roar of the engines during the annual Poker Run to the quiet reverence and gleaming varnish of the Antique Boat Show in Clayton, these gatherings bring together locals and visitors to celebrate the unique culture of the islands.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "river_cruises_1", 
     title: "Stories on the Water", 
-    text: "For over a century, tour boats have been the primary storytellers of the river, their captains narrating tales of pirates, castles, and calamities as they guide visitors through the island maze.", 
+    text: "For over a century, the primary storytellers of the river have been the captains of the tour boats. Companies like Uncle Sam Boat Tours in the U.S. and the Gananoque Boat Line in Canada have guided millions of visitors through the island maze, their captains narrating tales of pirates, Prohibition-era smugglers, and Gilded Age castles as they glide past the historic sights.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "local_history_1", 
     title: "Loyalist Legacy", 
-    text: "The Canadian side of the river is steeped in the legacy of the United Empire Loyalists, who, after the American Revolution, were granted land here to begin new lives under the British Crown. Their spirit of endurance shaped the region.", 
+    text: "The Canadian side of the river, particularly the scenic road known as the Loyalist Parkway, is steeped in the legacy of the United Empire Loyalists. After the American Revolution, those who remained loyal to the British Crown fled the new United States and were granted land along the St. Lawrence in Canada to begin new lives. Their spirit of endurance and principle shaped the character of many Ontario river communities.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "scenic_spots_1", 
     title: "The Golden Hour", 
-    text: "Photographers and romantics know the best time on the river is the 'golden hour'—the hour just after sunrise or before sunset. The low, warm light sets the granite islands ablaze and turns the water to liquid gold.", 
+    text: "Ask any photographer or romantic, and they'll tell you the most magical time on the river is the 'golden hour'—the short period just after sunrise and just before sunset. During this time, the low, warm light sets the granite islands ablaze with color and turns the surface of the water into a shimmering sheet of liquid gold, creating unforgettable, magical views.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "island_names_1", 
     title: "What's in a Name?", 
-    text: "The names of the islands are a map of history themselves. 'Grindstone' recalls a quarrying past, the 'Admiralty' group speaks of British naval surveys, and names like 'Bloodletter' hint at darker, more violent tales.", 
+    text: "The names of the islands and channels are a map of history themselves. 'Grindstone Island' recalls a past of active quarrying, the 'Admiralty Group' speaks of the British naval surveys that first charted these waters, and evocative names like 'Fiddler's Elbow' and 'Bloodletter Island' hint at the darker, more dangerous tales of the river's past.", 
     unlocked: false, 
     icon: BookOpen 
   },
   { 
     key: "food_dining_1", 
     title: "Taste of the River", 
-    text: "The ultimate local flavor is a plate of pan-fried walleye or perch, freshly caught from the river. It's a taste of place, a simple, delicious connection to the waters that define the region.", 
+    text: "The ultimate local flavor, the true taste of the Thousand Islands, is a plate of pan-fried walleye or yellow perch, freshly caught from the river's clean, cool waters. It's a simple, delicious meal that represents a direct connection to the natural bounty that has sustained the people of this region for centuries.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "survival_scenario_1", 
     title: "Marooned!", 
-    text: "Every boater has had the fleeting thought: what if I were stranded? The river's currents are strong and its nights are cold. Knowing the basics of survival—shelter, water, and how to signal for help—is a part of the unwritten code of the River Rat.", 
+    text: "Every boater has had the fleeting thought: what if I were stranded? The river's currents are powerful and its waters are cold, even in summer. Knowing the basics of survival—how to create a signal, how to find or purify water, and how to build a basic shelter—is part of the unwritten code of the self-reliant River Rat.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "nepco_spill_1", 
     title: "The Black Day", 
-    text: "The winter of 1976 is remembered for a black tide. The tanker 'NEPCO 140' ran aground in icy conditions, spilling over 300,000 gallons of crude oil. It was a devastating blow to the river's ecosystem, coating miles of shoreline and wildlife in a thick, toxic sludge. The cleanup took years and the event became a powerful catalyst for change, leading to stricter environmental laws and a deeper appreciation for the river's fragility. The river still bears the scars, and the story serves as a somber reminder of the constant vigilance needed to protect this natural treasure.", 
+    text: "The winter of 1976 is remembered for a black tide. On a frigid day, the tanker 'NEPCO 140' ran aground in icy conditions near Wellesley Island, spilling over 300,000 gallons of crude oil. It was a devastating environmental disaster, coating miles of shoreline and wildlife in a thick, toxic sludge. The event became a powerful catalyst for new environmental regulations and the formation of the 'Save The River' organization, a group dedicated to protecting this natural treasure.", 
     unlocked: false, 
     icon: Zap 
   },
   { 
     key: "local_business_1", 
     title: "Guardians of Wood & Varnish", 
-    text: "Some businesses are more than just shops; they are institutions. For generations, Chalk's Marine in Clayton has been a sanctuary for classic wooden boats. They are not just mechanics; they are artisans who understand the soul of a St. Lawrence Skiff or a Chris-Craft runabout. Their work is a living link to the Gilded Age, preserving the elegance and craftsmanship of a bygone era, one plank and one coat of varnish at a time. To own a boat cared for by Chalk's is to be a custodian of river history.", 
+    text: "Some businesses are more than just shops; they are living institutions. For generations, Chalk's Marine in Clayton has been a sanctuary for classic wooden boats. The craftsmen there are not just mechanics; they are artisans who understand the soul of a St. Lawrence Skiff or a Chris-Craft runabout. Their work is a living link to the Gilded Age, preserving the elegance and heritage of a bygone era, one plank and one coat of varnish at a time.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "celestial_event_1", 
     title: "Sky Fire", 
-    text: "On rare, clear nights, when the sun has unleashed a storm of particles across space, the Thousand Islands gets a visitor from the heavens. The Aurora Borealis, the Northern Lights, will set the northern sky ablaze. Far from city glow, the sky dances with curtains of ethereal green, purple, and white light, reflecting silently on the black water of the river. To the ancient peoples, this was the dance of spirits; to the modern islander, it's a breathtaking reminder of the vast, beautiful universe we float in. It's a celestial treasure, more fleeting and precious than any pirate's gold.", 
+    text: "On rare, clear nights, when the sun has unleashed a powerful solar storm, the Thousand Islands gets a visitor from the heavens. The Aurora Borealis, the Northern Lights, will set the northern sky ablaze. Far from the glow of major cities, the sky dances with ethereal curtains of green, purple, and white light, reflecting silently on the black water of the river. To the ancient peoples, this was the dance of spirits; to the modern islander, it's a breathtaking reminder of our place in a vast, beautiful universe.", 
     unlocked: false, 
     icon: Star 
   },
   { 
     key: "historic_flood_1", 
     title: "The Raging River", 
-    text: "The river is a mighty beast, and sometimes it strains against its leash. In recent years, high water levels in the Great Lakes basin have led to historic '100-year floods.' Docks have been submerged, shorelines eroded, and homes threatened. This has sparked fierce debate over 'Plan 2014,' the international agreement that governs water releases from the main dam. It's a complex battle between shoreline property owners, the shipping industry, and the health of the wetlands. These floods are a stark reminder that while we may build castles and bridges, the river ultimately answers to nature's command.", 
+    text: "The river is a mighty beast, and sometimes it strains against its man-made leash. Because the river is the single drain for all of the Great Lakes, high water levels across the entire basin can lead to historic '100-year floods' in the islands. This has sparked fierce debate over 'Plan 2014,' the international agreement that governs water releases from the main dam, pitting the needs of shoreline property owners against those of the shipping industry and the health of wetlands.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "local_business_2", 
     title: "A Table by the Water", 
-    text: "For over half a century, Cavallario's has been a cornerstone of Alexandria Bay's dining scene. It's a place of memories, where generations of families have gathered for celebratory steak dinners and fresh seafood. Its longevity is a testament to the enduring appeal of good food and classic hospitality, a constant in a town that changes with the seasons.", 
+    text: "For over half a century, Cavallario's Steak and Seafood House has been a cornerstone of Alexandria Bay's dining scene. It's a place of memories, where generations of local families and visiting tourists have gathered for celebratory steak dinners and fresh river fish. Its longevity is a testament to the enduring appeal of good food and classic hospitality, a constant in a town that changes with the seasons.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "seasonal_event_1", 
     title: "The Great Thaw", 
-    text: "For a true River Rat, the most important date on the calendar isn't a holiday; it's 'ice-out.' It's the day the winter's icy armor on the river finally groans, cracks, and breaks apart, releasing the water from its prison. It's a dramatic, powerful event that signals the true arrival of spring and the start of another boating season. The sound of the shifting ice is the sound of the river breathing again.", 
+    text: "For a true River Rat, the most important date on the calendar isn't a holiday; it's the day of 'ice-out.' It's the day, usually in late spring, when the winter's icy armor on the river finally groans, cracks, and breaks apart, releasing the water from its frozen prison. The sound of the shifting ice is the sound of the river breathing again, signaling the true arrival of spring and the start of another boating season.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "river_cruises_2", 
     title: "The Castle's Ferryman", 
-    text: "While many boat tours ply the waters, only one company holds the key to the castle. The Uncle Sam Boat Tours' 'Two-Nation Tour' is the exclusive ferryman for Boldt Castle, offering visitors the unique privilege of disembarking on Heart Island to wander the grounds of the unfinished monument to love.", 
+    text: "While many boat tours ply the waters of the Thousand Islands, only one company holds the key to the castle. The Uncle Sam Boat Tours' popular 'Two-Nation Tour' is the exclusive ferryman for Boldt Castle, offering its visitors the unique privilege of disembarking on Heart Island to wander the grounds and explore the halls of the famous unfinished monument to love.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "local_business_3", 
     title: "The Fish Fry Beacon", 
-    text: "In the small hamlet of Fishers Landing, a weekly tradition signals the start of the weekend: the Friday Fish Fry at Foxy's. It's more than just a meal; it's a community gathering, a place where fishermen, locals, and tourists come together for a taste of classic river life. For decades, it's been a reliable beacon of good food and good company.", 
+    text: "In the small, quiet hamlet of Fishers Landing, a weekly tradition signals the start of the weekend: the Friday Fish Fry at Foxy's. It's more than just a meal; it's a community gathering, a place where fishermen, locals, and tourists come together for a taste of classic river life. For decades, it's been a reliable and beloved beacon of good food and good company.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "cross_border_culture_5", 
     title: "The Winteriver", 
-    text: "When the tourists leave and the ice sets in, a special breed of islander remains. They call themselves 'winterivers.' They are the hardy souls who embrace the isolation, the beauty, and the challenges of a Thousand Islands winter. They know the sound of the ice shifting, the best way to keep a pipe from freezing, and the profound peace of a snow-covered island. It's a title earned through resilience and a deep love for the river in all its moods.", 
+    text: "When the tourists leave and the ice sets in, a special breed of islander remains. They sometimes call themselves a 'winteriver.' They are the hardy souls who embrace the profound quiet, the stark beauty, and the unique challenges of a Thousand Islands winter. They know the sound of the ice shifting underfoot and the best way to keep a water pipe from freezing. It's a title earned through resilience and a deep love for the river in all its moods.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "local_business_4", 
     title: "A Century of Sightseeing", 
-    text: "Since 1926, the Thomson family's Uncle Sam Boat Tours has been introducing visitors to the magic of the Thousand Islands. Starting with small wooden boats and growing into a fleet of modern tour vessels, they have become as much a part of the Alexandria Bay waterfront as the river itself, carrying millions of passengers and countless stories.", 
+    text: "Since 1926, the Thomson family's Uncle Sam Boat Tours has been introducing visitors to the magic of the Thousand Islands. Starting with a single small wooden boat and growing into a fleet of modern tour vessels, their company has become as much a part of the Alexandria Bay waterfront as the river itself, having carried millions of passengers and countless stories over nearly a century of operation.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "local_landmarks_4", 
     title: "The Granite Shield", 
-    text: "The massive breakwall at Cape Vincent is more than just a fishing pier. It is a shield, built from massive, locally quarried granite blocks, designed to protect the harbor from the fury of Lake Ontario's storms, creating a safe haven for vessels at the river's mouth.", 
+    text: "The massive breakwall at Cape Vincent is more than just a place to fish. It is a shield, built from enormous, locally quarried granite blocks, designed to protect the town's harbor from the full fury of Lake Ontario's storms. It creates a vital safe haven for vessels at the very mouth of the St. Lawrence River.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "historical_event_1", 
     title: "The Night the Lights Went Out", 
-    text: "The Great Blackout of 1965 plunged the entire Northeast into darkness, and it all started with a single, faulty electrical relay near Niagara. The event showcased the interconnectedness and fragility of our power grid, a system that has its roots in the hydroelectric power generated right here on the St. Lawrence.", 
+    text: "The Great Northeast Blackout of 1965 plunged 30 million people into darkness, and the cascade of failures began with a single, incorrectly set safety relay at a power station near Niagara. This event highlighted the interconnectedness and fragility of our modern power grid, a system that has deep roots in the hydroelectric power generated right here on the St. Lawrence River.", 
     unlocked: false, 
     icon: Zap 
   },
   { 
     key: "fishing_lore_4", 
     title: "Reading the Water", 
-    text: "Serious anglers know that fishing is a science. They use tools to find the 'thermocline,' an invisible layer where the water temperature changes dramatically. This is where baitfish gather, and where the big predators lurk. It's a secret layer of the river that holds the key to a successful catch.", 
+    text: "Serious anglers know that fishing is a science of reading the unseen. They use tools like a 'thermocline bar'—essentially a thermometer on a long, marked line—to find the invisible layer where the warm surface water meets the cold deep water. This 'thermocline' attracts baitfish, and where there are baitfish, the big predators are never far behind.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "cross_border_culture_6", 
     title: "The Invisible Line's Rules", 
-    text: "Boating between the US and Canada is easy, but the rules change at the invisible border. A key difference is Canada's requirement for a Pleasure Craft Operator Card (PCOC). Forgetting this can turn a pleasant cruise into a conversation with the authorities.", 
+    text: "While cruising between the US and Canada is easy, the rules of the water change the moment you cross the invisible border. A key difference is Canada's legal requirement for all boat operators to have a Pleasure Craft Operator Card (PCOC), or a recognized equivalent. Forgetting this can turn a pleasant international cruise into an unwanted conversation with the authorities.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "historical_event_2", 
     title: "The Ice Storm's Grip", 
-    text: "The Ice Storm of 1998 was a catastrophe unlike any other. It wasn't a blizzard, but days of unrelenting freezing rain that encased the region in a thick, heavy shell of ice. The weight toppled transmission towers and ancient trees, leaving communities in the dark and cold for weeks, a powerful display of nature's subtle force.", 
+    text: "The great Ice Storm of 1998 was a catastrophe of silence and weight. It wasn't a blizzard, but days of unrelenting freezing rain that encased the entire region in a thick, heavy shell of clear ice. The immense weight toppled massive steel transmission towers and shattered ancient forests, leaving millions of people in the dark and cold for weeks, a powerful and devastating display of nature's subtle force.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "local_culture_2", 
     title: "The Island Lifeline", 
-    text: "For islanders who live off the beaten path, the Mailboat is their lifeline. These small, private boats are contracted to deliver not just letters, but groceries, supplies, and news, weaving through the islands to connect the scattered homes of the river community.", 
+    text: "For the communities of islanders who live off the beaten path, without bridges or regular ferry service, the 'Mailboat' is their essential lifeline. These small, private boats are contracted to deliver not just letters, but groceries, supplies, news, and gossip, weaving through the islands to connect the scattered homes of the river community to the mainland.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "island_geography_8", 
     title: "Threading the Needle", 
-    text: "The section of river known as 'The Narrows' is a rite of passage for boaters. This winding, scenic channel demands careful navigation, with beautiful cottages perched on the rocky shores, their owners watching to see who can thread the needle without causing a wake.", 
+    text: "The section of the river known to locals as 'The Narrows' is a rite of passage for boaters. This winding, scenic channel near Wellesley Island demands careful navigation, as beautiful cottages are perched on the rocky shores on either side. Their owners watch every boat pass, silently judging who can 'thread the needle' without creating a disruptive wake.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "conservation_2", 
     title: "The River's Eyes", 
-    text: "How do scientists check the river's vision? With a simple tool called a Secchi disk. By lowering this black and white disk, researchers can measure water clarity. It's a fundamental health check for the river, revealing the impacts of pollution and invasive species.", 
+    text: "How do scientists check the river's vision? With a surprisingly simple tool called a Secchi disk. This black and white disk is lowered into the water until it can no longer be seen, providing a consistent measurement of water clarity. It's a fundamental health check for the river, revealing the long-term impacts of pollution, algae blooms, and invasive filter-feeders like zebra mussels.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "famous_people_3", 
     title: "The President's Pastime", 
-    text: "An iconic photograph from 1872 helped put the Thousand Islands on the map. It shows President Ulysses S. Grant, a war hero, peacefully fishing from the docks of the Crossmon House Hotel in Alexandria Bay, signaling to the world that this was a place for rest and recreation.", 
+    text: "An iconic photograph from 1872 helped launch the Thousand Islands as a major tourist destination. The picture shows the celebrated Civil War hero and then-President, Ulysses S. Grant, peacefully fishing from the docks of the Crossmon House Hotel in Alexandria Bay. The image of the powerful leader relaxing on the river signaled to the world that this was a place for rest, recreation, and escape.", 
     unlocked: false, 
     icon: BookOpen 
   },
   { 
     key: "final_revelation", 
-    title: "The River's Heart", 
-    text: "You've uncovered many secrets, but here is the last one: the true treasure of the Thousand Islands was never Bill Johnston's gold. It's the enduring spirit of its history, the beauty of its nature, and the tales whispered on the water. You are a true RiverRat now.", 
+    title: "You have sought knowledge and uncovered many secrets of the water. You have listened to the whispers of history, the tales of pirates, and the legends of the river. But here is the last secret, the one every true River Rat learns in their heart: the real treasure was never Bill Johnston's gold. It is the enduring spirit of this place, the stunning beauty of its nature, and the privilege of becoming part of the endless story that the river itself tells. Congratulations, Captain. You are a true keeper of the lore.", 
     unlocked: false, 
     icon: Star 
   },
   { 
     key: "war_history_clue_2", 
     title: "A Watery Highway of War", 
-    text: "He who controlled the St. Lawrence, controlled the Great Lakes. During the War of 1812, the river was the primary supply line for troops and forts. The race to build bigger, more powerful sailing warships at Sackets Harbor and Kingston was a desperate struggle for this strategic advantage.", 
+    text: "In the age of sail, he who controlled the St. Lawrence River controlled access to the entire Great Lakes basin. During the War of 1812, the river was the primary supply line for troops, cannons, and provisions for all the forts further inland. The desperate race between the shipyards at Sackets Harbor and Kingston to build bigger, more powerful sailing warships was a struggle for the control of this vital strategic highway.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "architecture_clue_2", 
     title: "Gilded Age Playgrounds", 
-    text: "The Thousand Islands was one of several summer playgrounds for the Gilded Age elite, who also built their 'cottages' in places like Newport, Rhode Island. The architecture of these grand homes reflects a national trend of showcasing immense wealth.", 
+    text: "The Thousand Islands was one of several exclusive summer playgrounds for the Gilded Age elite, who also built their opulent 'cottages' in places like Newport, Rhode Island, and Bar Harbor, Maine. The grand architecture of the islands reflects a national trend among the fabulously wealthy to showcase their immense fortunes by building magnificent seasonal homes in beautiful, natural settings.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "fishing_lore_2", 
     title: "The Invisible Ledge", 
-    text: "The river's bottom is a landscape of its own, with cliffs, ledges, and drop-offs. Anglers know that predatory fish like walleye and bass often hunt along the 'thermocline', an invisible layer where warm and cold water meet, often found along these underwater structures.", 
+    text: "The river's bottom is not flat; it's a dramatic landscape of its own, with cliffs, ledges, and deep-water drop-offs. Experienced anglers know that predatory fish like walleye and bass often hunt along the 'thermocline'—an invisible temperature layer—which frequently forms along these underwater structures. Finding these spots is the key to finding the fish.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "shipwreck_lore_2", 
     title: "The Perils of Commerce", 
-    text: "Not all shipwrecks are from storms or wars. The wreck of the 'America' near Kingston is a reminder of the everyday perils of river commerce. This package freighter was a workhorse of the river until a navigational error sent her to the bottom.", 
+    text: "Not all shipwrecks are the result of storms or war. The wreck of the 'America,' a package freighter located near Kingston, is a reminder of the everyday perils of river commerce. The 'America' was a workhorse of the river, transporting goods daily, until a simple navigational error sent her to the bottom, where she now rests as a popular site for scuba divers.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "boating_safety_2", 
     title: "A Boater's Lexicon", 
-    text: "To speak the river's language, you must know your vessel. The 'gunwale' (pronounced 'gunnel') is the top edge of a boat's side. Knowing the right terms isn't just for show; it's crucial for clear communication in an emergency.", 
+    text: "To speak the river's language, you must know the parts of your vessel. The 'gunwale' (pronounced 'gunnel') is the proper nautical term for the upper edge of a boat's side. Knowing the correct terminology isn't just for show; it's crucial for clear and unambiguous communication, especially in an emergency situation.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "wildlife_nature_2", 
     title: "A Graceful Return", 
-    text: "The return of the white-tailed deer to the islands is a triumph of conservation. Once hunted out of the region, these graceful creatures have made a remarkable comeback, and it's not uncommon to see them swimming between islands at dawn or dusk.", 
+    text: "The healthy population of white-tailed deer on the islands today is a modern conservation success story. Once hunted out of the region entirely, these graceful animals have made a remarkable comeback thanks to management efforts. It's now not uncommon to see them swimming between islands at dawn or dusk, a beautiful sign of a resilient ecosystem.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "local_landmarks_1", 
     title: "A Private Fantasy", 
-    text: "While Boldt and Singer Castles are open to all, some of the river's castles remain private summer homes. Jorstadt Castle on Westminster Park is one such place, a modern-day fairytale that remains a family's private retreat.", 
+    text: "While Boldt and Singer Castles have become public attractions, some of the river's other Gilded Age castles remain private summer homes. Jorstadt Castle on Westminster Park is one such place, a magnificent stone mansion that is still a family's private retreat, offering a glimpse of a modern-day fairytale.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "local_events_2", 
     title: "A Nation's Birthday", 
-    text: "The river is a stage for national celebrations. On Canada Day, the skies above Kingston's harbour explode in a fireworks display launched from a floating barge, a spectacular celebration of Canadian pride reflected in the water.", 
+    text: "The river often serves as a grand stage for national celebrations. On Canada Day (July 1st), the skies above Kingston's harbour explode in a massive fireworks display. The show is launched from a floating barge, creating a spectacular celebration of Canadian pride that is reflected beautifully in the dark waters of the harbour.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "boating_safety_3", 
     title: "Green for Go-Left", 
-    text: "The river's navigation rules are simple but vital. A green 'can' buoy always marks the left side of the channel when you're heading upstream, away from the sea. It's the other half of the 'Red, Right, Returning' rule.", 
+    text: "The river's navigation rules are simple but absolutely vital for safety. A green, can-shaped buoy always marks the left side of the safe channel when you're heading upstream (away from the sea). This is the other half of the famous 'Red, Right, Returning' rule, which keeps boat traffic organized and prevents collisions.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "scenic_spots_2", 
     title: "The Eagle's Eye View", 
-    text: "From the top of the 1000 Islands Tower on Hill Island, the complex international border becomes a visible reality. You can see both American and Canadian islands, the bridges that link them, and the ships that navigate the channel between them, all at once.", 
+    text: "From the observation deck of the 1000 Islands Tower on Hill Island, the complex international border becomes a visible, geographical reality. The panoramic view allows you to see both American and Canadian islands, the bridges that link them, and the massive freighters that navigate the shipping channel between them, all at once.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "war_history_clue_3", 
     title: "A Fort's Purpose", 
-    text: "Fort Wellington in Prescott wasn't built for show. It was a key defensive position on the British side, constructed to protect the vital St. Lawrence supply line from American attack during the War of 1812.", 
+    text: "Fort Wellington in Prescott, Ontario, wasn't built for show. It was a key British defensive position constructed to protect the vital St. Lawrence River supply line from a potential American invasion during the War of 1812. Its cannons covered a critical section of the river, ensuring the passage of British troops and supplies.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "wildlife_nature_3", 
     title: "The Hardy Pioneer", 
-    text: "The pitch pine is a true survivor. This hardy tree is known for its ability to grow in the most inhospitable places, its roots clinging to bare granite rock where other trees would quickly perish. It is a symbol of the islands' rugged endurance.", 
+    text: "The Pitch Pine is a true symbol of the islands' rugged endurance. This hardy tree is a pioneer species, known for its incredible ability to grow in the most inhospitable places, its roots clinging tenaciously to bare granite rock and thin soil where other trees would quickly perish.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "boating_safety_4", 
     title: "The Silent Giants", 
-    text: "The biggest danger in the shipping channel isn't what you can see; it's what you can't anticipate. The massive freighters move much faster than they appear, create huge wakes, and cannot stop or turn quickly. A wise captain gives them a very wide berth.", 
+    text: "For recreational boaters, the biggest danger in the shipping channel isn't what you can see, but what you can't anticipate. The massive lake freighters and ocean-going 'salties' move much faster than they appear, are surprisingly quiet, create immense wakes, and are physically incapable of stopping or turning quickly. A wise captain gives these silent giants a very, very wide berth.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "environmental_fact_3", 
     title: "The Blue Line Connection", 
-    text: "The Frontenac Arch is a geological bridge that connects the Canadian Shield to the massive Adirondack Park to the south. The park's famous 'Blue Line' boundary, drawn on a map in 1892, marks one of the largest protected wilderness areas in the United States.", 
+    text: "The Frontenac Arch is a massive, ancient ridge of granite that forms a geological bridge, connecting the Canadian Shield to the great Adirondack Park to the south. The park's famous 'Blue Line' boundary, originally drawn on a map in blue ink in 1892, marks one of the largest and most important protected wilderness areas in the United States.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "lighthouse_legend_3", 
     title: "A Guiding Pair", 
-    text: "Some lighthouses work in tandem. The Sister Island Lighthouse was part of a pair, its beam working with another light to create a safe path through a particularly hazardous stretch of water. They were a team, guiding sailors through the dark.", 
+    text: "Some lighthouses don't work alone. The Sister Island Lighthouse was part of a pair of lights that worked in concert as 'range lights.' By lining up the two beams, one behind the other, a ship's captain could be certain they were in the dead center of the safe channel, a clever system for navigating a particularly hazardous stretch of water.", 
     unlocked: false, 
     icon: Lightbulb 
   },
   { 
     key: "recreation_1", 
     title: "From River to Capital", 
-    text: "The Rideau Trail is a long-distance hiking path that stretches from Kingston at the mouth of the St. Lawrence all the way to Canada's capital, Ottawa, roughly following the route of the historic Rideau Canal.", 
+    text: "For ambitious hikers, the Rideau Trail offers a unique journey. This long-distance hiking path stretches over 200 miles, connecting the city of Kingston at the mouth of the St. Lawrence River all the way to Canada's capital city, Ottawa. The trail roughly follows the scenic route of the historic Rideau Canal system.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "boating_history_1", 
     title: "The Captain's Taxi", 
-    text: "In the Gilded Age, the owner of a grand steam yacht wouldn't use the main vessel for a quick trip ashore. They used a 'gig'—a light, fast, and elegant tender boat, essentially a luxurious water taxi to ferry guests and supplies.", 
+    text: "In the Gilded Age, the immensely wealthy owner of a grand steam yacht wouldn't use the main vessel for a quick trip ashore to a neighboring island. For that, they used a 'gig'—a light, fast, and elegant tender boat, often powered by steam or naptha, which functioned as a luxurious water taxi to ferry guests and supplies from the yacht to the dock.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "island_geography_3", 
     title: "A Sea of Islands", 
-    text: "The term 'archipelago' is the perfect word for the Thousand Islands. It's a geographical term for a large group or chain of islands, perfectly capturing the scattered, maze-like nature of the region.", 
+    text: "The perfect geographical term for the Thousand Islands is an 'archipelago.' This word specifically describes a large group or a chain of islands, perfectly capturing the scattered, maze-like nature of the more than 1,800 islands that dot the St. Lawrence River.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "architecture_clue_3", 
     title: "A German Dream", 
-    text: "George Boldt's vision for his castle was drawn from the romantic, turreted fortresses he had seen along the Rhine River in Germany. The style, known as Châteauesque or Rhineland Castle, was meant to bring a piece of old-world European fantasy to the new world.", 
+    text: "George Boldt's grand vision for his castle was directly inspired by the romantic, towered fortresses he had admired along the Rhine River in Germany. The architectural style, known as Châteauesque or Rhineland Castle, was his attempt to bring a piece of old-world European fantasy and grandeur to the rugged landscape of the new world.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "boating_safety_5", 
     title: "Riding the Waves", 
-    text: "A freighter's wake can easily swamp a small boat. The safest maneuver for a kayaker or canoeist is not to flee, but to turn and face the wave head-on, pointing the bow directly into the approaching swell to maintain stability.", 
+    text: "A freighter's wake can be a formidable wave that can easily swamp a small boat. The safest maneuver for a kayaker or canoeist is not to flee from it or take it on the side, but to turn and face the wave head-on, pointing the bow of the kayak directly into the approaching swell to maintain maximum stability.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "conservation_1", 
     title: "A Voice for the River", 
-    text: "The organization 'Save The River' acts as a watchdog and advocate for the St. Lawrence. They publish guides for safe boating and work to protect the river's fragile ecosystem from pollution and invasive species.", 
+    text: "The grassroots environmental organization 'Save The River' was founded in the wake of the 1976 NEPCO 140 oil spill. It acts as a non-profit watchdog and advocate for the St. Lawrence River, working to protect its fragile ecosystem through policy action, education, and by publishing resources like their popular 'Diver's and Boater's Guide.'", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "local_history_2", 
     title: "The River's Name for a Nation", 
-    text: "The name of a whole country was born on this river. 'Canada' comes from the Iroquoian word 'Kanata,' meaning 'village' or 'settlement.' When the first European explorers asked what the area was called, the local inhabitants were simply referring to their village, but the name stuck for the entire nation.", 
+    text: "The name of an entire country has its roots right here, on the shores of the St. Lawrence River. 'Canada' is derived from the St. Lawrence Iroquoian word 'Kanata,' which simply meant 'village' or 'settlement.' When early French explorer Jacques Cartier asked the local inhabitants about the area, they were referring to their village, but Cartier mistakenly applied the name to the entire territory.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "famous_people_2", 
     title: "Astor's Abode", 
-    text: "The Vanderbilts weren't the only Gilded Age dynasty to seek refuge on the river. The Astor family, another of America's wealthiest clans, built 'Hopewell Hall' as their grand summer 'cottage' near Alexandria Bay.", 
+    text: "The Vanderbilts weren't the only Gilded Age dynasty to build a summer sanctuary on the river. The Astor family, another of America's wealthiest and most prominent clans, built 'Hopewell Hall' as their grand seasonal 'cottage' on an island near Alexandria Bay, cementing the region's status as a playground for the rich and famous.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "boating_safety_6", 
     title: "A Sound of Warning", 
-    text: "On the water, horns are a language. Five or more short, rapid blasts from a ship's horn is the universal signal for 'Danger!' or 'I don't understand your intentions.' It's a clear warning to all nearby vessels to be on high alert.", 
+    text: "On the water, horns are a language with strict rules. Five or more short, rapid blasts from a ship's horn is the universal signal for 'Danger!' It can also mean 'I do not understand your intentions.' It's a clear and urgent warning to all nearby vessels to be on high alert and navigate with extreme caution.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "wildlife_nature_4", 
     title: "A Tale of Two Necks", 
-    text: "It can be tricky to tell the river's large wading birds apart. The easiest way is to see them in flight: a Great Blue Heron flies with its neck tucked into an 'S' curve, while the larger Sandhill Crane flies with its neck fully extended.", 
+    text: "It can be tricky to tell the river's two most magnificent large wading birds apart. The easiest way is to see them in flight: a Great Blue Heron always flies with its neck tucked back into a graceful 'S' curve, while the slightly larger Sandhill Crane flies with its neck fully extended and straight, like a spear.", 
     unlocked: false, 
     icon: Bird 
   },
   { 
     key: "shipping_history_2", 
     title: "A Fiery End", 
-    text: "Many of the grand wooden steamboats of the Gilded Age met a similar, fiery fate. The 'Frontenac,' a luxurious side-wheel steamer, wasn't sunk by a storm but was destroyed by a fire while docked in 1907, a blaze that consumed the floating palace.", 
+    text: "Many of the grand wooden steamboats of the Gilded Age, which were essentially floating wooden palaces, met a similar and tragic fate. The 'Frontenac,' a luxurious side-wheel steamer, wasn't sunk by a storm but was completely destroyed by a massive fire while moored at its dock in Clayton in 1907, a common end for the vessels of its era.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "local_landmarks_2", 
     title: "A Harbor's Shield", 
-    text: "A 'breakwater' is a man-made wall built to shield a harbor from the open water's fury. The one at Cape Vincent, for instance, creates a calm, safe area for boats to moor, protected from the often-rough waves of Lake Ontario.", 
+    text: "A 'breakwater' is a man-made wall, often built of massive stone blocks or concrete, designed to shield a harbor from the fury of the open water. The one at Cape Vincent, for instance, creates a calm, safe area for boats to moor, protecting them from the often-rough waves rolling in from the vast expanse of Lake Ontario.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "recreation_2", 
     title: "A Paddler's Pace", 
-    text: "To truly experience the river's hidden beauty, you have to slow down. Kayaking and canoeing allow you to glide silently into narrow channels and shallow coves that are inaccessible to larger boats, offering an intimate connection with nature.", 
+    text: "To truly experience the river's hidden beauty and quiet moments, you have to slow down. Kayaking and canoeing allow you to glide almost silently into the narrow channels and shallow coves that are inaccessible to larger, motorized boats. This offers a more intimate and peaceful connection with the river's abundant nature.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "survival_scenario_2", 
     title: "Engine Failure!", 
-    text: "If your engine cuts out on the river, the wind and current become your enemies, pushing you towards shoals or the shipping lane. The most important first action is to deploy your anchor, securing your position while you troubleshoot or call for help.", 
+    text: "If your engine suddenly cuts out on the river, the wind and current instantly become your enemies, relentlessly pushing you towards the dangers of shoals or the busy shipping lane. In this situation, the single most important first action is to deploy your anchor to secure your position while you troubleshoot the problem or call for assistance.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "architecture_clue_4", 
     title: "The Silent Chime", 
-    text: "The grand clock tower on Boldt Castle's Power House was designed to hold a carillon of bells that would have chimed out across the water. But like so many parts of the castle, they were never installed, leaving the tower beautiful but silent.", 
+    text: "The grand clock tower on Boldt Castle's Power House was designed for more than just telling time. It was built to house a massive carillon of bells that would have chimed out beautiful melodies across the water. But like so many other parts of the castle, the bells were never installed after construction halted, leaving the tower beautiful but forever silent.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "boating_safety_7", 
     title: "Right is Right", 
-    text: "An easy trick to remember nautical terms: the 'starboard' side of a boat is the right side when you're facing forward. Both 'starboard' and 'right' contain the letter 'R'.", 
+    text: "Here is an easy trick to remember some basic but crucial nautical terms: the 'starboard' side of a boat is always the right side when you're facing forward. An easy way to remember this is that 'starboard' and 'right' both contain the letter 'R'. The left side is 'port'.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "environmental_fact_4", 
     title: "The Goby's Game", 
-    text: "The Round Goby is an aggressive, bottom-dwelling invasive fish that arrived in ballast water. It multiplies rapidly, out-competing native species for food and spawning grounds, significantly altering the river's delicate food web.", 
+    text: "The Round Goby is a small but highly aggressive, bottom-dwelling invasive fish that arrived in the Great Lakes and the St. Lawrence in the ballast water of ocean-going ships. It reproduces rapidly and out-competes many native species for food and spawning grounds, significantly altering the river's delicate food web.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "island_names_2", 
     title: "A Veteran's Reward", 
-    text: "The 'Navy' group of islands in the Canadian sector earned their name because they were granted by the British Crown to naval veterans as a reward for their service in the French and Indian War, long before the American Revolution.", 
+    text: "The 'Navy' group of islands, located in the Canadian sector of the river, earned their collective name for a historical reason. They were granted by the British Crown to loyal naval veterans as a reward for their service in the French and Indian War (1754-1763), long before the American Revolution reshaped the continent.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "food_dining_2", 
     title: "The Hotel Connection", 
-    text: "It took a hotelier with a vision to take Thousand Island dressing from a local fisherman's secret to a global phenomenon. George Boldt, proprietor of the Waldorf-Astoria Hotel, introduced the dressing to his elite clientele, and the rest is history.", 
+    text: "It took a hotelier with a global stage to take Thousand Island dressing from a local fisherman's secret to a household name. George Boldt, the proprietor of New York's world-famous Waldorf-Astoria Hotel, was so impressed with the dressing that he introduced it to his elite clientele, and the rest is culinary history.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "boating_safety_8", 
     title: "Fore and Aft", 
-    text: "Knowing your boat's directions is key. 'Aft' is the nautical term for the rear of the vessel. So 'abaft' simply means toward the rear. A simple but essential piece of a mariner's vocabulary.", 
+    text: "Knowing the proper directions on a boat is day-one stuff for a true River Rat. 'Aft' is the proper nautical term for the rear of the vessel. Therefore, 'abaft' simply means 'toward the rear' or 'behind.' The front of the boat is the 'bow' and toward the front is 'fore.'", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "lighthouse_legend_4", 
     title: "A Beacon on the Hazard", 
-    text: "Some lighthouses warn of a danger from a safe distance. The Sunken Rock Lighthouse does the opposite. It is built directly on top of the treacherous, mid-channel shoal it marks, a stark and constant reminder of the hazard lurking just beneath the waves.", 
+    text: "Some lighthouses warn of a danger from a safe distance, but the Sunken Rock Lighthouse does the opposite. It is built directly on top of the treacherous, mid-channel shoal that it marks. This placement makes it a stark and constant reminder to passing ships of the hazard lurking just beneath the waves.", 
     unlocked: false, 
     icon: Lightbulb 
   },
   { 
     key: "boating_history_2", 
     title: "A Hole for a Purpose", 
-    text: "In a classic wooden boat, a 'limber hole' is a small notch or hole cut into the boat's frames. It's not a mistake; it's a crucial design feature that allows any water inside the hull to drain to the lowest point so it can be pumped out by the bilge pump.", 
+    text: "If you look at the ribs or frames of a classic wooden boat, you might see small notches or holes called 'limber holes.' These aren't a mistake; they are a crucial design feature that allows any water that gets inside the hull to drain down to the lowest point (the bilge) so it can be pumped out by the bilge pump.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "war_history_clue_4", 
     title: "A Fleet Immortalized", 
-    text: "The names of the 'Lake Fleet' islands on the Canadian side serve as a floating memorial. Many are named after the British warships that fought in the naval battles on the Great Lakes during the War of 1812.", 
+    text: "The names of the 'Lake Fleet' islands, located in the Canadian waters of the St. Lawrence, serve as a floating memorial to a naval conflict. Many of the islands in this group are named after the British warships that fought in the naval battles on the Great Lakes during the War of 1812.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "boating_safety_9", 
     title: "The Ripples of Responsibility", 
-    text: "A boat's wake can cause significant damage to docks, shorelines, and smaller boats. 'No Wake' zones, marked by white buoys with orange symbols, are legally enforceable areas where boats must slow to idle speed to prevent creating a damaging wake.", 
+    text: "A boat's wake—the trail of waves it leaves behind—can cause significant erosion and damage to shorelines, docks, and smaller boats. 'No Wake' zones, marked by white buoys with orange symbols, are legally enforceable areas where boats must slow down to idle speed to prevent creating a damaging wake.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "architecture_clue_5", 
     title: "The Skyscraper Architect", 
-    text: "The architect for Singer Castle was Ernest Flagg, a prominent American designer who was also responsible for one of New York City's most famous early skyscrapers, the Singer Building. The castle on Dark Island was his fairytale retreat from the city.", 
+    text: "The architect hired to design Singer Castle on Dark Island was Ernest Flagg, a prominent American designer who was also famous for a much taller project: the Singer Building in New York City, which was the world's tallest building when completed. The castle on Dark Island was his whimsical, Scottish-inspired country retreat.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "boating_safety_10", 
     title: "A Captain's Map", 
-    text: "A 'nautical chart' is a boater's most important tool. It's a special map that details not the land, but the world beneath the water, showing water depths, navigation channels, shoals, and other hazards essential for safe passage.", 
+    text: "A 'nautical chart' is a boater's most important and essential tool. It is a special type of map that details not the land, but the world beneath the water. It shows water depths, navigation channels, the locations of buoys, and, most importantly, the hidden hazards like shoals and submerged rocks that are invisible from the surface.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "shipwreck_lore_3", 
     title: "A Captain's Choice", 
-    text: "When fire broke out on the passenger steamer 'Iroquoi', the captain made a heroic choice. Instead of letting it sink in deep water, he intentionally beached the burning ship, saving all the passengers and leaving behind a wreck that divers still explore today.", 
+    text: "When a fire broke out on the passenger steamship 'Iroquoi,' the captain made a heroic and quick-thinking choice. Instead of letting the ship sink in the deep channel, which would have doomed the passengers, he intentionally ran it aground on the shore. This brave act saved everyone on board and left behind a fascinating wreck that scuba divers still explore today.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "boating_safety_11", 
     title: "The 'Hello, I'm Here!' Signal", 
-    text: "On the water, you can't see around corners. That's why one prolonged horn blast is the standard signal a boater uses when leaving a dock or approaching a blind bend. It's a simple way of announcing your presence to unseen vessels.", 
+    text: "On the water, you often can't see what's around a blind bend or what's about to pull out from a hidden marina. That's why one prolonged blast from a boat's horn is the standard signal a captain uses when leaving a dock or approaching a blind corner. It's a simple auditory way of announcing your presence to any unseen vessels.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "environmental_fact_5", 
     title: "An Eastern Pioneer", 
-    text: "While Canada's most famous national parks are in the Rocky Mountains, the Thousand Islands National Park was a pioneer in its own right. Established in 1904, it was the very first Canadian national park located east of the Rockies.", 
+    text: "While Canada's most famous and sprawling national parks are located in the majestic Rocky Mountains, the much smaller Thousand Islands National Park holds a special distinction. Established in 1904, it was the very first Canadian national park located east of the Rockies, making it a pioneering conservation effort in Eastern Canada.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "boating_safety_12", 
     title: "How Low Can You Go?", 
-    text: "A boat's 'draft' is the minimum depth of water it needs to float without hitting the bottom. Knowing your boat's draft and comparing it to the depths on a nautical chart is the most fundamental way to avoid running aground.", 
+    text: "A boat's 'draft' is the measurement of the minimum depth of water it needs to float freely without its hull or propeller hitting the bottom. Knowing your boat's specific draft and constantly comparing it to the depths shown on a nautical chart is the most fundamental way to avoid the embarrassment and danger of running aground.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "local_history_3", 
     title: "The Loyalist Road", 
-    text: "King's Highway 2, the old highway on the Canadian shore, is also known as the 'Loyalist Parkway.' It follows the historic settlement route of the United Empire Loyalists who were granted land along the St. Lawrence after fleeing the American Revolution.", 
+    text: "The scenic King's Highway 2 on the Canadian side of the river is also officially known by a commemorative name: the 'Loyalist Parkway.' This name honors the United Empire Loyalists who, remaining loyal to the British Crown, fled the American Revolution and were granted land along the St. Lawrence River to settle and build new lives.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "island_geography_4", 
     title: "The Big Island's Ferry Route", 
-    text: "To get to Wolfe Island, the largest of the Thousand Islands, from the Canadian mainland, you must cross the 'Bateau Channel.' This strait has served as the primary ferry route to the island for generations.", 
+    text: "To get from the Canadian mainland to Wolfe Island, the largest of all the Thousand Islands, vehicles and passengers must cross the 'Bateau Channel.' This deep and relatively wide strait has served as the primary ferry route to the island's main village of Marysville for many generations.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "boating_safety_13", 
     title: "The Boat's Heartbeat", 
-    text: "A 'bilge pump' is a boat's essential lifeline. Its sole purpose is to pump out any unwanted water that leaks or splashes into the hull. A good captain always ensures their bilge pump is in working order before leaving the dock.", 
+    text: "A 'bilge pump' is one of a boat's most essential pieces of safety equipment. Its sole purpose is to pump out any unwanted water that leaks or splashes into the lowest part of the hull, called the bilge. A good captain always makes sure their bilge pump is in perfect working order before leaving the dock.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "cross_border_culture_2", 
     title: "Ontario's Watery Welcome", 
-    text: "The 'Great Waterway' is the official tourism brand for the region of southeastern Ontario that borders the river. The name highlights the St. Lawrence River's central role as the region's defining cultural, historical, and recreational feature.", 
+    text: "The 'Great Waterway' is the official tourism branding for the large region of southeastern Ontario that is defined by its relationship with its waterways. This brand highlights the St. Lawrence River, as well as the Rideau Canal and Bay of Quinte, as the region's central cultural, historical, and recreational feature.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "boating_safety_14", 
     title: "The Pointy End", 
-    text: "The most basic nautical term is 'bow,' which simply refers to the front of a boat. Every sailor, from an admiral to the newest recruit, knows their bow from their stern.", 
+    text: "The most basic of all nautical terms is the 'bow,' which simply refers to the very front of a boat. Every sailor, from a brand new recruit to a seasoned admiral, knows their 'bow' (front) from their 'stern' (back).", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "island_names_3", 
     title: "An Industrial Past", 
-    text: "Grindstone Island wasn't named for its shape. It earned its name from the high-quality sandstone that was once quarried there. This stone was prized for making grindstones used to sharpen tools, and the island's name is a link to this industrial past.", 
+    text: "Grindstone Island wasn't named because it is shaped like a grindstone. It earned its name from its industrial past as a source of high-quality, durable sandstone. This stone was once actively quarried on the island and was prized for making the large grindstones used by craftsmen to sharpen tools.", 
     unlocked: false, 
     icon: Mountain 
   },
   { 
     key: "local_events_3", 
     title: "Fireworks on the Water", 
-    text: "The spectacular 4th of July fireworks display in Alexandria Bay is traditionally launched from a barge anchored in the middle of the St. Lawrence River. This allows for breathtaking views as the colors explode over and reflect upon the water.", 
+    text: "The spectacular annual 4th of July fireworks display in Alexandria Bay is traditionally launched from a specially positioned barge anchored in the middle of the St. Lawrence River. This central location allows for breathtaking views as the vibrant colors explode over and reflect upon the dark water for the massive crowds gathered on boats and on both shores.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "survival_scenario_3", 
     title: "Don't Abandon Ship!", 
-    text: "If your boat capsizes, the golden rule of survival is to stay with the vessel. Even an overturned hull is much easier for rescuers to spot from the air or water than a person's head. Climbing on top of the hull also gets you out of the cold water.", 
+    text: "If your small boat capsizes in the river, the golden rule of survival is to stay with the vessel if at all possible. Even an overturned hull is a much larger and more visible target for rescuers to spot from the air or from another boat than a person's head in the water. Climbing on top of the hull also gets you out of the dangerously cold water.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "wildlife_nature_5", 
     title: "The Wing-Dryer", 
-    text: "The Double-crested Cormorant is a common sight, often seen perched on buoys or rocks with its wings spread wide. Unlike a duck's, a cormorant's feathers are not fully waterproof, so they must air-dry them after diving for fish.", 
+    text: "The Double-crested Cormorant, a dark, prehistoric-looking water bird, is a common sight in the islands. They are often seen perched on buoys and rocks with their wings spread wide open in the sun. Unlike a duck's feathers, a cormorant's are not fully waterproof, so they must take time to air-dry them after diving for fish.", 
     unlocked: false, 
     icon: Bird 
   },
   { 
     key: "boating_safety_15", 
     title: "The Tying Post", 
-    text: "A 'cleat' is the simple, T-shaped fitting found on docks and boats. Its crucial job is to provide a secure point for tying a rope or line. Knowing how to tie a 'cleat hitch' is a fundamental skill for any boater.", 
+    text: "A 'cleat' is the simple, T-shaped metal or plastic fitting found on docks and boats. Its crucial job is to provide a strong, secure point for tying a rope or dock line. Knowing how to properly tie a 'cleat hitch' knot is one of the most fundamental skills for any boater.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "food_dining_3", 
     title: "Squeaky Cheese", 
-    text: "Fried cheese curds, a beloved local delicacy, are made from a special fresh curd cheese, not mozzarella or cheddar. The fresh curds have a unique, 'squeaky' texture when bitten into.", 
+    text: "The delicious local delicacy known as fried cheese curds is made from a special, fresh curd cheese, not from aged mozzarella or cheddar. The freshness is key; when the curds are at their freshest, they have a unique, rubbery texture that 'squeaks' against your teeth when you bite into them.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "shipwreck_lore_4", 
     title: "The Keystorm's Grave", 
-    text: "The massive wreck of the steel freighter 'Keystorm' is a legendary dive site. It lies in the shadow of Rock Island Lighthouse, a testament to the fact that even modern ships were not immune to the river's hidden dangers.", 
+    text: "The massive wreck of the steel freighter 'Keystorm,' which sank in 1912 with a cargo of coal, is one of the most famous and popular advanced scuba diving sites in the region. It lies in the shadow of Rock Island Lighthouse, a testament to the fact that even modern, steel-hulled ships were not immune to the river's hidden and treacherous shoals.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "island_geography_5", 
     title: "A Cozy Anchorage", 
-    text: "While a 'bay' can be large and open, a 'cove' is specifically a small, sheltered inlet. For boaters, the river's many coves are prized as the safest and most peaceful places to drop anchor for the night.", 
+    text: "While a 'bay' can be a large and open body of water, a 'cove' is specifically a small, circular, and sheltered inlet. For boaters on the St. Lawrence, the river's many coves are prized as the safest and most peaceful places to drop anchor for the night, protected from the wind and the wakes of passing ships.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "boating_history_3", 
     title: "The Skiff Makers", 
-    text: "The firm of 'Lawlor & Son' in Clayton was one of the most famous and prolific builders of the iconic St. Lawrence Skiff. Their elegant, high-quality rowing boats are now prized antiques and symbols of the region's rich boating heritage.", 
+    text: "The historic boatbuilding firm of 'Lawlor & Son' in Clayton, New York, was one of the most famous and prolific builders of the iconic St. Lawrence Skiff. Their elegant, high-quality rowing boats are now prized antiques and are celebrated as perfect examples of the region's unique and rich boating heritage.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "boating_safety_16", 
     title: "Head-On at Night", 
-    text: "At night, a boat's lights are its eyes. If you see both a red and a green light on another vessel, it means you are looking at it head-on, and you must take action to avoid a collision. Seeing only one color means it is passing you.", 
+    text: "At night, a boat's navigation lights are its eyes and its voice. If you see both a red light (port side) and a green light (starboard side) on another vessel at the same time, it means you are looking at it head-on. This is a potentially dangerous situation, and one or both vessels must take action to avoid a collision.", 
     unlocked: false, 
     icon: Lightbulb 
   },
   { 
     key: "cross_border_culture_3", 
     title: "A Taste of Quebec", 
-    text: "Poutine—a hearty dish of french fries and cheese curds smothered in gravy—is a classic French-Canadian comfort food. You're much more likely to find this delicious, national dish in restaurants on the Ontario side of the river.", 
+    text: "Poutine—a hearty and delicious dish of french fries and fresh cheese curds smothered in a rich brown gravy—is a classic French-Canadian comfort food and a national dish of Canada. You're much more likely to find this beloved meal in restaurants on the Ontario side of the river than on the American side.", 
     unlocked: false, 
     icon: Palette 
   },
   { 
     key: "local_landmarks_3", 
     title: "A Ringside Seat", 
-    text: "The tiny 'Tom Thumb' island, with its single cottage, is famous for its location. It sits right beside a major shipping channel marker, giving its residents a front-row, and sometimes startlingly close, view of the massive freighters gliding past.", 
+    text: "The tiny 'Tom Thumb' island, with its single, brave little cottage, is famous for its precarious location. It sits right beside a major shipping channel marker, giving its residents a thrilling, front-row, and sometimes startlingly close view of the massive, 700-foot freighters that glide silently past their window.", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "boating_safety_17", 
     title: "The Boater's Best Friend", 
-    text: "PFD stands for Personal Flotation Device. More commonly known as a life jacket, it's the single most important piece of safety equipment on any boat. Having enough for every passenger isn't just a good idea—it's the law.", 
+    text: "The acronym PFD stands for Personal Flotation Device. More commonly known as a life jacket or life vest, it's the single most important piece of safety equipment on any boat. Having enough properly-fitting PFDs for every passenger on board isn't just a good idea—it's the law.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "architecture_clue_6", 
     title: "A Castle's Game Room", 
-    text: "The Alster Tower at Boldt Castle, also known as the 'playhouse,' was designed for pure entertainment. Tucked away inside was a complete, two-lane bowling alley for the amusement of the Boldt family and their guests.", 
+    text: "The Alster Tower at Boldt Castle, also known by the playful nickname 'the Hennery,' was designed for pure entertainment. Tucked away inside this whimsical structure was a complete, two-lane bowling alley for the amusement of the Boldt family and their Gilded Age guests. It was the ultimate private game room.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "environmental_fact_6", 
     title: "The Purple Plague", 
-    text: "Purple Loosestrife is a beautiful but dangerous invader. Its tall, vibrant purple flowers may look pretty, but this non-native plant spreads aggressively in wetlands, choking out native vegetation that wildlife depends on.", 
+    text: "Purple Loosestrife is a classic example of a beautiful but dangerous invasive species. Its tall, vibrant purple flowers may look pretty in wetlands, but this non-native plant spreads aggressively, choking out the native vegetation like cattails that local wildlife depends on for food and shelter.", 
     unlocked: false, 
     icon: Leaf 
   },
   { 
     key: "survival_scenario_4", 
     title: "A Tree's Inner Strength", 
-    text: "A knowledgeable woodsman knows that survival can be found in unexpected places. The soft, cambium layer of inner bark on a pine tree is edible and has been a source of emergency nourishment for centuries.", 
+    text: "A knowledgeable woodsman or a well-read survivalist knows that in a desperate situation, sustenance can be found in unexpected places. The soft, cambium layer of inner bark on most pine trees is edible and has been used as a source of emergency nourishment for centuries by Indigenous peoples and lost explorers alike.", 
     unlocked: false, 
     icon: Trees 
   },
   { 
     key: "boating_history_4", 
     title: "Measuring the Deeps", 
-    text: "A 'fathom' is an old nautical unit of measurement used for water depth, equal to six feet. Before modern depth sounders, sailors would drop a weighted line marked in fathoms to measure the water beneath them.", 
+    text: "A 'fathom' is an old nautical unit of measurement used specifically for water depth, equal to six feet. Before modern electronic depth sounders, sailors would drop a lead-weighted line marked in fathoms over the side to measure the depth of the water beneath their ship to avoid running aground.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "island_geography_6", 
     title: "The Bridge's Anchor", 
-    text: "The Thousand Islands Bridge system uses several islands as stepping stones. The main Canadian span lands on Hill Island, which serves as the anchor point for the bridge and is home to the 1000 Islands Tower.", 
+    text: "The Thousand Islands Bridge system uses several islands as 'stepping stones' to cross the river. The main Canadian span of the bridge lands on Hill Island, which serves as the crucial anchor point for the bridge on the northern side of the river and is also home to the 400-foot tall 1000 Islands Tower.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "ghost_story_2", 
     title: "The Spectral Sentry", 
-    text: "The massive limestone walls of Fort Henry in Kingston are said to be patrolled by a spectral sentry. Visitors and staff report seeing the ghostly figure of a lone soldier in an old uniform, still walking his post, forever on duty.", 
+    text: "The massive limestone walls of Fort Henry in Kingston are said to be patrolled by a spectral sentry. For years, late-night visitors and staff have reported seeing the ghostly figure of a lone soldier in an old 19th-century uniform, still walking his post on the ramparts, forever on duty.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "fishing_lore_3", 
     title: "The Troller's Technique", 
-    text: "'Trolling' is a popular and effective fishing technique where a lure or bait is dragged at a specific speed and depth behind a slowly moving boat. It's a great way to cover a lot of water and find active, hunting fish.", 
+    text: "'Trolling' is a popular and highly effective fishing technique where a lure or bait is let out on a long line and dragged at a specific speed and depth behind a slowly moving boat. It's a great way to cover a lot of water and present a lure to active, hunting fish like pike, walleye, or trout.", 
     unlocked: false, 
     icon: Fish 
   },
   { 
     key: "boating_safety_18", 
     title: "Guardians of the Waterway", 
-    text: "On the U.S. side of the river, the United States Coast Guard is the primary authority for maritime safety. Their duties include search and rescue, enforcing boating laws, and maintaining aids to navigation like buoys and lighthouses.", 
+    text: "On the U.S. side of the river, the United States Coast Guard is the primary federal agency responsible for maritime safety. Their duties are extensive and include search and rescue operations, enforcing boating laws and safety regulations, and maintaining the vital aids to navigation like buoys and lighthouses.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "island_names_4", 
     title: "A Colorful Map", 
-    text: "The islands of the St. Lawrence have some wonderfully descriptive and quirky names, from 'Sugar' and 'Bloodletter' to 'Fiddler's Elbow.' But 'Mermaid Island' is one name you won't find on an official nautical chart.", 
+    text: "The historic islands and shoals of the St. Lawrence have some wonderfully descriptive and quirky names, from 'Sugar Island' and 'Bloodletter Island' to the winding 'Fiddler's Elbow' channel. But if you're looking for 'Mermaid Island' on an official nautical chart, you'll be looking forever—it's one name that's purely from a fantasy tale.", 
     unlocked: false, 
     icon: MapPin 
   },
   { 
     key: "island_geography_7", 
     title: "A Lake Within a River", 
-    text: "The 'Lake of the Isles' is a beautiful, sheltered body of water that feels like its own separate lake, but it's actually the narrow, winding channel that separates Wellesley Island from the U.S. mainland.", 
+    text: "The 'Lake of the Isles' is a beautiful and aptly named body of water. It feels like its own separate, tranquil lake, but it is actually the narrow, winding, and sheltered back channel that separates the large Wellesley Island from the U.S. mainland.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "boating_safety_19", 
     title: "Four Letters for Left", 
-    text: "An easy trick for remembering nautical terms: the 'port' side of a boat is the left side when you are facing forward. Both 'port' and 'left' are four-letter words.", 
+    text: "Here's an easy trick for remembering the most basic but crucial nautical terms: the 'port' side of a boat is the left side when you are facing forward. The memory aid is simple: both 'port' and 'left' are four-letter words. The right side is 'starboard.'", 
     unlocked: false, 
     icon: Ship 
   },
   { 
     key: "environmental_fact_7", 
     title: "Turbulent Waters", 
-    text: "A 'boil' is the term for the turbulent, churning water often found downstream from dams or rapids. These powerful upwellings are created by the immense energy of the water and are extremely hazardous for any boat or swimmer.", 
+    text: "A 'boil' is the term for the turbulent, often violent, swirling water that is typically found downstream from a large dam or a major set of rapids. These powerful upwellings are created by the immense energy of the water and are extremely hazardous for any boat or swimmer.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "cross_border_culture_4", 
     title: "The First Faceoff", 
-    text: "The very first international hockey game is said to have been played on the frozen river in the 1880s between teams from Kingston, Ontario, and Sackets Harbor, New York—the start of a long and friendly cross-border rivalry.", 
+    text: "Local hockey historians claim that the very first international hockey game was played on the frozen river in the 1880s between teams from Kingston, Ontario, and Sackets Harbor, New York. It was the start of a long and storied, but friendly, cross-border rivalry in the sport.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "local_history_4", 
     title: "A Grand Hotel's Ghost", 
-    text: "The Crossmon House was one of Alexandria Bay's grandest Gilded Age hotels, famously hosting President Grant. Like many wooden structures of its time, it was tragically destroyed by a massive fire in 1897.", 
+    text: "The Crossmon House was one of Alexandria Bay's largest and grandest Gilded Age hotels, famous for hosting President Ulysses S. Grant. Like many of the massive wooden structures of its time, it was tragically and completely destroyed by a massive fire in 1897.", 
     unlocked: false, 
     icon: Castle 
   },
   { 
     key: "survival_scenario_5", 
     title: "Aground!", 
-    text: "If your boat runs aground on a shoal, hitting the engine in reverse often just digs you in deeper. A better first step is to shift weight by moving passengers and heavy gear to the part of the boat that's still floating, which can sometimes be enough to lift the hull free.", 
+    text: "If your boat runs aground on a shoal, your first instinct might be to slam the engine in reverse, but this often just digs the propeller into the mud and makes things worse. A better first step is to shift weight by having passengers and heavy gear move to the part of the boat that is still floating deepest. This can sometimes be enough to lift the grounded part of the hull just enough to float free.", 
     unlocked: false, 
     icon: Anchor 
   },
   { 
     key: "boating_safety_20", 
     title: "The Diver Down Flag", 
-    text: "The 'Alpha' flag—a blue and white swallow-tailed flag—is an international signal that all boaters must recognize. It signifies that the vessel has a diver in the water nearby, and other boats must keep well clear and operate at a slow speed.", 
+    text: "The 'Alpha' flag—a distinctive blue and white swallow-tailed flag—is an important international signal that all boaters must recognize and respect. It signifies that the vessel flying it has a scuba diver in the water nearby. By law, other boats must keep well clear and operate at a slow, no-wake speed.", 
     unlocked: false, 
     icon: Waves 
   },
   { 
     key: "boating_safety_21", 
     title: "A Friendly Inspection", 
-    text: "The Canadian Coast Guard Auxiliary offers a free, courtesy vessel safety check program called 'C-Way.' Volunteers will inspect your boat for free to ensure you have all the required safety gear, helping to prevent problems before they start.", 
+    text: "The Canadian Coast Guard Auxiliary, a volunteer organization, offers a free, courtesy vessel safety check program sometimes known as 'C-Way.' Volunteers will come to your boat and inspect it for free to ensure you have all the required safety equipment on board, helping to prevent problems and fines before they happen.", 
     unlocked: false, 
     icon: Scroll 
   },
   { 
     key: "boating_safety_22", 
     title: "A Fork in the River", 
-    text: "A navigation buoy with both red and green horizontal bands is a 'bifurcation buoy,' marking where a channel splits. The top color indicates the preferred, or main, channel. If the top band is green, you should keep the buoy on your left to stay in the main channel.", 
+    text: "A navigation buoy with both red and green horizontal bands is called a 'bifurcation buoy,' and it marks where a channel splits into two. The color of the top band indicates the preferred, or main, channel. If the top band is green, you should keep the buoy on your left to stay in the main channel, following the 'Red, Right, Returning' rule.", 
     unlocked: false, 
     icon: MapPin 
   }

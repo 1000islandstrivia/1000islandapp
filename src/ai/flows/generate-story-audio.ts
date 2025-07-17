@@ -103,6 +103,10 @@ function splitTextIntoChunks(text: string, maxWords: number = 50): string[] {
 async function generateAudioChunk(textChunk: string, voice: 'male' | 'female'): Promise<string> {
     const voiceName = voice === 'male' ? 'Achernar' : 'Algenib';
 
+    // Add instructions to the text chunk for the AI voice model
+    const promptWithInstructions = `(Speaking with a charismatic, slightly mysterious pirate accent) ${textChunk}`;
+
+
     const { media } = await ai.generate({
         model: 'googleai/gemini-2.5-flash-preview-tts',
         config: {
@@ -113,7 +117,7 @@ async function generateAudioChunk(textChunk: string, voice: 'male' | 'female'): 
                 },
             },
         },
-        prompt: textChunk,
+        prompt: promptWithInstructions,
     });
 
   if (!media) {
