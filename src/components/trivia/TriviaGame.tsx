@@ -1,13 +1,13 @@
-
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { storyline as initialStoryline, achievements as initialAchievementsData } from '@/lib/trivia-data';
-import type { TriviaQuestion, StorylineHint, Achievement } from '@/lib/trivia-data';
+import type { TriviaQuestion, StorylineHint, Achievement, PlayerRank } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress";
+import { getAiPirateResponseAction } from '@/actions/getAiPirateResponseAction';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
 import { Award, RefreshCw, type LucideIcon, Loader2, Skull } from 'lucide-react';
@@ -16,9 +16,6 @@ import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions, getQuestionHints } from '@/services/triviaService';
 import HintDisplay from './HintDisplay';
 import SimpleHintDisplay from './SimpleHintDisplay';
-import { getAiPirateResponseAction } from '@/actions/getAiPirateResponseAction';
-import { cacheHintAction } from '@/actions/cacheHintAction';
-
 
 const QUESTIONS_PER_GAME = 10;
 
@@ -255,15 +252,16 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           const isAlreadyUnlocked = prevHints.some(h => h.key === hintKey && h.unlocked);
           if (!isAlreadyUnlocked) {
               const hint = initialStoryline.find(h => h.key === hintKey);
-              if (hint) {
-                  setTimeout(() => {
-                      toast({
-                          title: "Lore Unlocked!",
-                          description: `You've uncovered a new secret: "${hint.title}"`,
-                          action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
-                      });
-                  }, 0);
-              }
+              // Defer toast to avoid state update during render
+              setTimeout(() => {
+                if (hint) {
+                  toast({
+                      title: "Lore Unlocked!",
+                      description: `You've uncovered a new secret: "${hint.title}"`,
+                      action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
+                  });
+                }
+              }, 0);
               return prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
           }
           return prevHints;
@@ -281,50 +279,29 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       
       try {
         const hintData = await getQuestionHints(question.id);
-        let script = hintData.cachedPirateScript;
+        const actionInput = {
+          question: { ...question, fallbackHint: hintData.fallbackHint },
+          playerAnswer: answer,
+        };
 
-        if (!script) {
-            const scriptResult = await getAiPirateResponseAction({
-                question: { ...question, fallbackHint: hintData.fallbackHint },
-                playerAnswer: answer,
-            });
-
-            if (scriptResult.success && scriptResult.script) {
-                script = scriptResult.script;
-                // Asynchronously cache the newly generated script
-                cacheHintAction(question.id, script).catch(err => console.error("Non-critical error: Failed to cache hint:", err));
-            } else {
-                throw new Error(scriptResult.error || "AI response generation failed.");
-            }
-        }
+        const result = await getAiPirateResponseAction(actionInput);
         
-        setPirateResponse({ script, audioDataUri: null }); // Set script first
-        setIsAiLoading(false); // Stop loading script part
-
-        // Now, generate audio
-        if (script) {
-            try {
-                const { audioDataUri } = await getAiPirateResponseAction({
-                    question: { ...question, fallbackHint: script, cachedPirateScript: script },
-                    playerAnswer: answer,
-                });
-                 setPirateResponse(prev => prev ? {...prev, audioDataUri: audioDataUri} : {script: script!, audioDataUri});
-
-            } catch (audioError) {
-                console.warn("Spoken audio generation failed, proceeding without audio:", audioError);
-            }
+        if (result.success && result.script) {
+          setPirateResponse({ script: result.script, audioDataUri: result.audioDataUri });
+        } else {
+          throw new Error(result.error || "AI response generation failed.");
         }
       } catch (error: any) {
         console.error("Error getting AI pirate response:", error);
-        setPirateResponse({ script: question.fallbackHint || "A mysterious force prevents the hint from appearing..." });
+        const hintData = await getQuestionHints(question.id);
+        setPirateResponse({ script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." });
+      } finally {
         setIsAiLoading(false);
       }
     } else {
-      // Non-AI path: fetch hint and show it
       const hintData = await getQuestionHints(question.id);
       setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
     }
-
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast]);
 
   const handleProceedToNext = useCallback(async () => {
@@ -349,6 +326,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       }
       
       // Check for game completion achievements
+      // Defer this check to avoid state updates during render
       setTimeout(() => {
         setCurrentAchievements(prev => {
             const newAchievements = [...prev];

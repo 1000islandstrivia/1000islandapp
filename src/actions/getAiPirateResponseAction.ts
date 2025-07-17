@@ -11,7 +11,7 @@ import { cacheHintAction } from '@/actions/cacheHintAction';
 import type { TriviaQuestion } from '@/lib/trivia-data';
 
 interface ActionInput {
-  question: TriviaQuestion;
+  question: Omit<TriviaQuestion, 'cachedPirateScript'> & { fallbackHint: string };
   playerAnswer: string;
 }
 
