@@ -4,12 +4,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, RefreshCw, Zap, Copy } from 'lucide-react';
+import { Loader2, RefreshCw, Zap, Copy, Trash2 } from 'lucide-react';
 import { getTriviaQuestions } from '@/services/triviaService';
 import { getLeaderboard } from '@/services/leaderboardService';
 import { isPersistenceEnabled } from '@/lib/firebase';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { getTriviaStatsAction } from '@/actions/getTriviaStatsAction';
+import { clearTriviaCacheAction } from '@/actions/clearTriviaCacheAction';
 
 interface Report {
   questionLoadTime: number | null;
@@ -17,6 +19,11 @@ interface Report {
   leaderboardLoadTime: number | null;
   leaderboardCount: number | null;
   persistenceStatus: 'Enabled' | 'Disabled' | 'Failed' | 'Checking...';
+  serverCacheStats: {
+    serverCacheSize: number;
+    questionCacheEntries: number;
+    hintCacheEntries: number;
+  } | null;
 }
 
 export default function PerformanceReport() {
@@ -29,17 +36,37 @@ export default function PerformanceReport() {
     if (!currentReport) {
       return "Report has not been run or failed to generate.";
     }
+    const { 
+      questionLoadTime, 
+      questionCount, 
+      leaderboardLoadTime, 
+      leaderboardCount, 
+      persistenceStatus,
+      serverCacheStats 
+    } = currentReport;
+    
+    const cacheInfo = serverCacheStats ? `
+[Server-Side Cache]
+- Total Items:               ${serverCacheStats.serverCacheSize}
+- Question Sets Cached:      ${serverCacheStats.questionCacheEntries}
+- Individual Hints Cached:   ${serverCacheStats.hintCacheEntries}` 
+: `
+[Server-Side Cache]
+- Stats unavailable.
+`;
+
     return `
 RiverRat Lore Performance Report
 ------------------------------------
 Generated: ${new Date().toISOString()}
 
-[Firestore Metrics]
-- Offline Cache (Persistence): ${currentReport.persistenceStatus}
-- Question Fetch Time:         ${currentReport.questionLoadTime}ms
-- Questions Fetched:           ${currentReport.questionCount}
-- Leaderboard Fetch Time:      ${currentReport.leaderboardLoadTime}ms
-- Leaderboard Users Fetched:   ${currentReport.leaderboardCount}
+[Client-Side Firestore Metrics]
+- Offline Cache (Persistence): ${persistenceStatus}
+- Question Fetch Time:         ${questionLoadTime}ms
+- Questions Fetched:           ${questionCount}
+- Leaderboard Fetch Time:      ${leaderboardLoadTime}ms
+- Leaderboard Users Fetched:   ${leaderboardCount}
+${cacheInfo}
 
 [Analysis]
 - Question loading appears to be the most intensive initial query. Times over 500ms could indicate a need for query optimization or caching review.
@@ -57,13 +84,20 @@ Generated: ${new Date().toISOString()}
       leaderboardLoadTime: null,
       leaderboardCount: null,
       persistenceStatus: 'Checking...',
+      serverCacheStats: null,
     };
     
     setReport(initialReportState);
-    const persistence = await isPersistenceEnabled();
+    
+    const [persistence, serverCacheStats] = await Promise.all([
+      isPersistenceEnabled(),
+      getTriviaStatsAction()
+    ]);
+    
     const qStartTime = performance.now();
     const questions = await getTriviaQuestions();
     const qEndTime = performance.now();
+
     const lStartTime = performance.now();
     const leaderboard = await getLeaderboard();
     const lEndTime = performance.now();
@@ -74,6 +108,7 @@ Generated: ${new Date().toISOString()}
       leaderboardLoadTime: Math.round(lEndTime - lStartTime),
       leaderboardCount: leaderboard.length,
       persistenceStatus: persistence ? 'Enabled' : 'Disabled',
+      serverCacheStats: serverCacheStats,
     };
     
     setReport(finalReport);
@@ -89,6 +124,15 @@ Generated: ${new Date().toISOString()}
     });
   };
 
+  const handleClearCache = async () => {
+    await clearTriviaCacheAction();
+    toast({
+      title: "Server Cache Cleared",
+      description: "The server-side cache has been emptied.",
+    });
+    await runReport();
+  };
+
   useEffect(() => {
     runReport();
   }, []);
@@ -102,6 +146,10 @@ Generated: ${new Date().toISOString()}
                 <CardTitle className="font-headline text-2xl text-primary">Performance Report</CardTitle>
             </div>
             <div className="flex items-center gap-2">
+                <Button onClick={handleClearCache} disabled={isLoading} variant="destructive" size="icon">
+                    <Trash2 className="h-5 w-5" />
+                    <span className="sr-only">Clear Server Cache</span>
+                </Button>
                 <Button onClick={runReport} disabled={isLoading} variant="ghost" size="icon">
                     <RefreshCw className={`h-5 w-5 ${isLoading ? 'animate-spin' : ''}`} />
                     <span className="sr-only">Refresh Report</span>
@@ -112,7 +160,7 @@ Generated: ${new Date().toISOString()}
                 </Button>
             </div>
         </div>
-        <CardDescription>A detailed record of app performance metrics you can copy and paste.</CardDescription>
+        <CardDescription>A detailed record of app performance metrics. Use the trash icon to clear the server-side cache.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {isLoading && !report ? (
@@ -124,7 +172,7 @@ Generated: ${new Date().toISOString()}
           <Textarea
             readOnly
             value={reportText}
-            className="h-64 font-mono text-xs bg-muted/30"
+            className="h-72 font-mono text-xs bg-muted/30"
             placeholder="Generating report..."
           />
         )}

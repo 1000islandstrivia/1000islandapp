@@ -1,5 +1,3 @@
-
-'use server';
 /**
  * @fileOverview Server-side optimized trivia service with aggressive payload reduction.
  *
@@ -83,7 +81,7 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
     });
     
     // Performance monitoring
-    const compressionRatio = ((totalOriginalSize - totalLeanSize) / totalOriginalSize * 100).toFixed(1);
+    const compressionRatio = totalOriginalSize > 0 ? ((totalOriginalSize - totalLeanSize) / totalOriginalSize * 100).toFixed(1) : "0.0";
     console.log(`📦 Payload optimization:
     - Original size: ${(totalOriginalSize / 1024).toFixed(1)}KB
     - Lean size: ${(totalLeanSize / 1024).toFixed(1)}KB  
