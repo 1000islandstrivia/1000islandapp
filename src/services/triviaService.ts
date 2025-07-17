@@ -11,7 +11,7 @@
 
 import { db } from '@/lib/firebase';
 import type { TriviaQuestion } from '@/lib/trivia-data';
-import { collection, getDocs, query, addDoc, doc, setDoc, limit, getDoc, select } from 'firebase/firestore';
+import { collection, getDocs, query, addDoc, doc, setDoc, limit, getDoc } from 'firebase/firestore';
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
 const QUESTIONS_TO_FETCH = 30; // Fetch a bit more than needed for a single game for variety
@@ -25,14 +25,7 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   try {
     const questionsQuery = query(
       collection(db, TRIVIA_COLLECTION),
-      // Select only the fields needed for the question list to keep the payload small.
-      select(
-        'id', 
-        'question', 
-        'options', 
-        'answer', 
-        'storylineHintKey'
-      )
+      limit(QUESTIONS_TO_FETCH * 2) // Fetch more to ensure randomness after filtering
     );
     
     const querySnapshot = await getDocs(questionsQuery);
@@ -42,12 +35,18 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       return [];
     }
 
+    // Map the full documents to smaller objects, excluding large fields
     const allQuestions: TriviaQuestion[] = [];
     querySnapshot.forEach((doc) => {
-      // Reconstruct the object, ensuring large fields are initialized as empty/undefined.
+      const data = doc.data();
       allQuestions.push({
-          ...doc.data(),
-          fallbackHint: '', // Initialize as empty, will be fetched on-demand
+          id: data.id,
+          question: data.question,
+          options: data.options,
+          answer: data.answer,
+          storylineHintKey: data.storylineHintKey,
+          // Explicitly exclude large fields from the payload sent to the client
+          fallbackHint: '', 
           cachedPirateScript: undefined,
       } as TriviaQuestion);
     });
