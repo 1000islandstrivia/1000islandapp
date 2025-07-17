@@ -6,7 +6,7 @@ import TriviaGame from '@/components/trivia/TriviaGame';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { HelpCircle, Sparkles, AudioWave } from 'lucide-react';
+import { HelpCircle, Sparkles, Volume2 } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
@@ -62,7 +62,7 @@ export default function TriviaPage() {
       
       <div className="flex items-center justify-center space-x-6 mb-8">
         <div className="flex items-center space-x-2">
-            <AudioWave className="w-5 h-5 text-accent" />
+            <Volume2 className="w-5 h-5 text-accent" />
             <Label htmlFor="instant-response-switch" className="font-medium text-sm">Instant Feedback</Label>
             <Switch
             id="instant-response-switch"
