@@ -96,6 +96,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
   const [pirateResponse, setPirateResponse] = useState<PirateResponse | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [isHintPlaying, setIsHintPlaying] = useState(false);
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
@@ -190,6 +191,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setCurrentQuestionIndex(0);
     setPirateResponse(null);
     setLastAnswerCorrect(false);
+    setIsHintPlaying(false);
     setToastedAchievementIds(new Set());
   }, []);
 
@@ -285,6 +287,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         
         if (result.success && result.script) {
           setPirateResponse({ script: result.script, audioDataUris: result.audioDataUris });
+          setIsHintPlaying(true); // Tell HintDisplay to start playing
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
@@ -309,6 +312,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     const nextIndex = currentQuestionIndex + 1;
     
     setPirateResponse(null);
+    setIsHintPlaying(false);
 
     if (nextIndex < activeQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
@@ -425,6 +429,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             <CardContent>
                 <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
                 <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90">
+                    <Play className="mr-2 h-4 w-4" />
                     Begin Trivia Challenge
                 </Button>
             </CardContent>
@@ -518,6 +523,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                     onTypingComplete={onHintTypingComplete}
+                    startPlayback={isHintPlaying}
                 />
               )}
             </>

@@ -2,7 +2,7 @@
 "use client";
 
 import { Card, CardContent } from '@/components/ui/card';
-import { Volume2, ChevronRight, Play, Pause, RotateCcw, Loader2 } from 'lucide-react';
+import { Volume2, ChevronRight, Play, Pause, RotateCcw } from 'lucide-react';
 import { useTypewriter } from '@/hooks/useTypewriter';
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -13,11 +13,11 @@ interface HintDisplayProps {
   onProceed: () => void;
   isLastQuestion: boolean;
   onTypingComplete: () => void;
+  startPlayback: boolean; // New prop to control playback
 }
 
-export default function HintDisplay({ script, audioDataUris, onProceed, isLastQuestion, onTypingComplete }: HintDisplayProps) {
+export default function HintDisplay({ script, audioDataUris, onProceed, isLastQuestion, onTypingComplete, startPlayback }: HintDisplayProps) {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-  
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -26,17 +26,18 @@ export default function HintDisplay({ script, audioDataUris, onProceed, isLastQu
   useEffect(() => {
     setIsTypingComplete(false);
     setCurrentTrackIndex(0);
-    // Auto-play audio as soon as it's available.
-    if (audioDataUris && audioDataUris.length > 0) {
-      setIsPlaying(true);
-    } else {
-      setIsPlaying(false);
-    }
+    setIsPlaying(startPlayback && !!audioDataUris && audioDataUris.length > 0);
     if (audioRef.current) {
       audioRef.current.src = '';
     }
-  }, [script, audioDataUris]);
+  }, [script, audioDataUris, startPlayback]);
 
+  // Effect to handle external playback control
+  useEffect(() => {
+    if (startPlayback && !isPlaying) {
+      setIsPlaying(true);
+    }
+  }, [startPlayback, isPlaying]);
 
   const handleTypingComplete = React.useCallback(() => {
     setIsTypingComplete(true);
