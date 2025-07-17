@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { storyline as initialStoryline, achievements as initialAchievementsData, getRankByScore } from '@/lib/trivia-data';
+import { storyline as initialStoryline, achievements as initialAchievementsData } from '@/lib/trivia-data';
 import type { TriviaQuestion, StorylineHint, Achievement, PlayerRank } from '@/lib/trivia-data';
 import QuestionCard from './QuestionCard';
 import { Button } from '@/components/ui/button';
@@ -104,8 +104,8 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0); // This is session score
   const [gameOver, setGameOver] = useState(false);
-  const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [isGameInitialized, setIsGameInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // UI/Feedback State
   const [showAnswerResult, setShowAnswerResult] = useState(false);
@@ -177,17 +177,13 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }, [unlockedStoryHints, currentAchievements, answeredQuestionIds, user, isGameInitialized]);
 
   const initializeGame = useCallback(() => {
-    if (allTriviaQuestions.length === 0) {
-      console.log("Initialization skipped: no questions loaded.");
-      return;
-    }
-    
-    setIsLoadingQuestions(true);
+    if (allTriviaQuestions.length === 0) return;
 
+    setIsLoading(true);
     let tempAnsweredIds = new Set(answeredQuestionIds);
     let availableQuestions = allTriviaQuestions.filter(q => !tempAnsweredIds.has(q.id));
 
-    if (availableQuestions.length < QUESTIONS_PER_GAME) {
+    if (availableQuestions.length === 0) {
       toast({
         title: "You've seen it all!",
         description: "Resetting the question pool. Well done, Captain!",
@@ -195,11 +191,23 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       tempAnsweredIds.clear();
       availableQuestions = allTriviaQuestions;
     }
-    
+
     const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
-    setActiveQuestions(shuffled.slice(0, QUESTIONS_PER_GAME));
-    
-    // Reset game state
+    const firstQuestion = shuffled.shift();
+    if (!firstQuestion) {
+        setIsLoading(false);
+        return; // No questions left to play
+    }
+
+    // Set first question immediately
+    setActiveQuestions([firstQuestion]);
+
+    // Prepare the rest in the background
+    const remainingToFetch = Math.min(QUESTIONS_PER_GAME - 1, shuffled.length);
+    const restOfQuestions = shuffled.slice(0, remainingToFetch);
+
+    setActiveQuestions(prev => [...prev, ...restOfQuestions]);
+
     setCurrentQuestionIndex(0);
     setScore(0);
     setGameOver(false);
@@ -208,15 +216,14 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     setPirateAudioUri(null);
     setLoadingMessage(null);
     setToastedAchievementIds(new Set());
-    
     setIsGameInitialized(true);
-    setIsLoadingQuestions(false);
+    setIsLoading(false);
   }, [allTriviaQuestions, answeredQuestionIds, toast]);
 
   // Effect to fetch initial data and user progress
   useEffect(() => {
     async function loadInitialData() {
-      setIsLoadingQuestions(true);
+      setIsLoading(true);
       loadUserProgress();
       try {
         const questions = await getTriviaQuestions();
@@ -231,10 +238,10 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
   // Effect to initialize or re-initialize the game when questions are loaded
   useEffect(() => {
-    if (!isGameInitialized && allTriviaQuestions.length > 0) {
+    if (allTriviaQuestions.length > 0) {
       initializeGame();
     }
-  }, [isGameInitialized, allTriviaQuestions, initializeGame]);
+  }, [allTriviaQuestions, initializeGame]);
 
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
@@ -381,7 +388,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     });
   }, [currentAchievements, toast, toastedAchievementIds]);
 
-  if (isLoadingQuestions || !isGameInitialized) {
+  if (isLoading || !isGameInitialized) {
     return (
       <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
         <Loader2 className="w-12 h-12 animate-spin text-primary" />
