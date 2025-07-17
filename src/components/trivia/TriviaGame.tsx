@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -98,6 +99,8 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
   
+  const [achievementsToToast, setAchievementsToToast] = useState<Achievement[]>([]);
+
   const loadingMessage = useRef(pirateLoadingMessages[0]);
   const gameInitialized = useRef(false);
 
@@ -252,16 +255,13 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           const isAlreadyUnlocked = prevHints.some(h => h.key === hintKey && h.unlocked);
           if (!isAlreadyUnlocked) {
               const hint = initialStoryline.find(h => h.key === hintKey);
-              // Defer toast to avoid state update during render
-              setTimeout(() => {
-                if (hint) {
-                  toast({
-                      title: "Lore Unlocked!",
-                      description: `You've uncovered a new secret: "${hint.title}"`,
-                      action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
-                  });
-                }
-              }, 0);
+              if (hint) {
+                toast({
+                    title: "Lore Unlocked!",
+                    description: `You've uncovered a new secret: "${hint.title}"`,
+                    action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
+                });
+              }
               return prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
           }
           return prevHints;
@@ -326,46 +326,55 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       }
       
       // Check for game completion achievements
-      // Defer this check to avoid state updates during render
-      setTimeout(() => {
-        setCurrentAchievements(prev => {
-            const newAchievements = [...prev];
-            let changed = false;
-            
-            newAchievements.forEach(ach => {
-                if (ach.unlocked) return;
-                let unlocked = false;
-                if (ach.id === 'first_game') unlocked = true;
-                if (ach.id === 'first_blood' && currentScore > 0) unlocked = true;
-
-                if (unlocked) {
-                    const achievement = newAchievements.find(a => a.id === ach.id);
-                    if(achievement) {
-                        achievement.unlocked = true;
-                        changed = true;
-                         if (!toastedAchievementIds.has(ach.id)) {
-                            const AchIconComponent = ach.icon as LucideIcon | undefined;
-                            toast({
-                                title: "Achievement Unlocked!",
-                                description: (
-                                    <div className="flex items-center">
-                                        {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
-                                        <span>{ach.name}</span>
-                                    </div>
-                                ),
-                            });
-                            setToastedAchievementIds(prevIds => new Set(prevIds).add(ach.id));
-                        }
-                    }
-                }
-            });
-            
-            return changed ? newAchievements : prev;
-        });
-      }, 500);
+      setCurrentAchievements(prev => {
+          const newlyUnlocked: Achievement[] = [];
+          const updatedAchievements = prev.map(ach => {
+              if (ach.unlocked) return ach;
+              
+              let unlocked = false;
+              if (ach.id === 'first_game') unlocked = true;
+              if (ach.id === 'first_blood' && currentScore > 0) unlocked = true;
+              
+              if (unlocked) {
+                  const newAch = { ...ach, unlocked: true };
+                  if (!toastedAchievementIds.has(ach.id)) {
+                      newlyUnlocked.push(newAch);
+                  }
+                  return newAch;
+              }
+              return ach;
+          });
+          
+          if (newlyUnlocked.length > 0) {
+              setAchievementsToToast(currentToasts => [...currentToasts, ...newlyUnlocked]);
+              setToastedAchievementIds(currentIds => new Set([...currentIds, ...newlyUnlocked.map(a => a.id)]));
+          }
+          
+          return updatedAchievements;
+      });
     }
   }, [currentQuestionIndex, activeQuestions.length, user, currentScore, toast, refreshUser, toastedAchievementIds]);
   
+  // Effect to safely display toasts for achievements after render
+  useEffect(() => {
+    if (achievementsToToast.length > 0) {
+      achievementsToToast.forEach(ach => {
+        const AchIconComponent = ach.icon as LucideIcon | undefined;
+        toast({
+            title: "Achievement Unlocked!",
+            description: (
+                <div className="flex items-center">
+                    {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
+                    <span>{ach.name}</span>
+                </div>
+            ),
+        });
+      });
+      // Clear the queue after toasting
+      setAchievementsToToast([]);
+    }
+  }, [achievementsToToast, toast]);
+
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const totalQuestions = activeQuestions.length;
 
