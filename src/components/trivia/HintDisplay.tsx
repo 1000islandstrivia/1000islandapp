@@ -13,31 +13,25 @@ interface HintDisplayProps {
   onProceed: () => void;
   isLastQuestion: boolean;
   onTypingComplete: () => void;
-  startPlayback: boolean; // New prop to control playback
+  startPlayback: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
 }
 
-export default function HintDisplay({ script, audioDataUris, onProceed, isLastQuestion, onTypingComplete, startPlayback }: HintDisplayProps) {
+export default function HintDisplay({ script, audioDataUris, onProceed, isLastQuestion, onTypingComplete, startPlayback, setIsPlaying }: HintDisplayProps) {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const isPlaying = startPlayback;
 
-  // This effect resets the entire component's state when a new script comes in.
+  // This effect resets the component's state when a new script comes in.
   useEffect(() => {
     setIsTypingComplete(false);
     setCurrentTrackIndex(0);
-    setIsPlaying(startPlayback && !!audioDataUris && audioDataUris.length > 0);
     if (audioRef.current) {
       audioRef.current.src = '';
     }
-  }, [script, audioDataUris, startPlayback]);
+  }, [script]);
 
-  // Effect to handle external playback control
-  useEffect(() => {
-    if (startPlayback && !isPlaying) {
-      setIsPlaying(true);
-    }
-  }, [startPlayback, isPlaying]);
 
   const handleTypingComplete = React.useCallback(() => {
     setIsTypingComplete(true);
@@ -49,14 +43,6 @@ export default function HintDisplay({ script, audioDataUris, onProceed, isLastQu
 
   const handlePlayPause = () => {
     if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        if (currentTrackIndex >= (audioDataUris?.length ?? 0) && audioRef.current.ended) {
-           setCurrentTrackIndex(0);
-        }
-        audioRef.current.play();
-      }
       setIsPlaying(!isPlaying);
     }
   };
@@ -94,7 +80,7 @@ export default function HintDisplay({ script, audioDataUris, onProceed, isLastQu
             audioElement.pause();
         }
     }
-  }, [currentTrackIndex, isPlaying, audioDataUris]);
+  }, [currentTrackIndex, isPlaying, audioDataUris, setIsPlaying]);
 
   const hasAudio = audioDataUris && audioDataUris.length > 0;
 

@@ -51,7 +51,7 @@ const wrongMaleAudio = [
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_1.mp3?alt=media&token=3ba1a143-3475-4fd4-bd30-448045bbc9f3',
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_2.mp3?alt=media&token=78c97623-b600-4a25-aa3a-d6ebea857a3e',
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_3.mp3?alt=media&token=ff958b5d-de42-43a5-a0d8-8968cde64d73',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_4.mp3?alt=media&token=e166ab82-318c-455e-b5da-4fe13bcf834a',
+    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_4.mp3?alt=media&token=e166ab82-318c-455e-b5da-4fe13bcf83aA',
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_5.mp3?alt=media&token=9ec1a31c-8da3-4fa1-99e5-36ccbea0cdcc'
 ];
 const wrongFemaleAudio = [
@@ -96,7 +96,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
   const [pirateResponse, setPirateResponse] = useState<PirateResponse | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [startHintPlayback, setStartHintPlayback] = useState(false);
+  const [isHintPlaying, setIsHintPlaying] = useState(false);
   const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
@@ -191,7 +191,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setCurrentQuestionIndex(0);
     setPirateResponse(null);
     setLastAnswerCorrect(false);
-    setStartHintPlayback(false);
+    setIsHintPlaying(false);
     setToastedAchievementIds(new Set());
   }, []);
 
@@ -238,7 +238,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setLastAnswerCorrect(false); 
     
     const isCorrect = answer === question.answer;
-    setLastAnswerCorrect(isCorrect);
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
 
     if (isInstantResponseEnabled) {
@@ -270,7 +269,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       }
     }
     
-    setGameState('RESULT'); // Set state to show loading/result screen
+    let hintScript: PirateResponse;
 
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
@@ -281,29 +280,31 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
           playerAnswer: answer,
         });
         if (result.success && result.script) {
-          setPirateResponse({ script: result.script, audioDataUris: result.audioDataUris });
-          setStartHintPlayback(true); // Tell HintDisplay to play audio
+          hintScript = { script: result.script, audioDataUris: result.audioDataUris };
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
       } catch (error: any) {
         console.error("Error getting AI pirate response:", error);
         const hintData = await getQuestionHints(question.id);
-        setPirateResponse({ script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." });
-      } finally {
-        setIsAiLoading(false);
+        hintScript = { script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." };
       }
     } else {
         const hintData = await getQuestionHints(question.id);
-        setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
+        hintScript = { script: hintData.fallbackHint || "No hint available." };
     }
+
+    setLastAnswerCorrect(isCorrect);
+    setPirateResponse(hintScript);
+    setIsAiLoading(false);
+    setIsHintPlaying(isAiLoreEnabled);
+    setGameState('RESULT');
 
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
 
 
   const onHintTypingComplete = useCallback(() => {
-    // This callback can be used for other purposes if needed,
-    // but audio playback is now controlled by the `startHintPlayback` prop.
+    // This callback can be used for other purposes if needed.
   }, []);
 
 
@@ -311,7 +312,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     const nextIndex = currentQuestionIndex + 1;
     
     setPirateResponse(null);
-    setStartHintPlayback(false);
+    setIsHintPlaying(false);
 
     if (nextIndex < activeQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
@@ -518,7 +519,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                     onTypingComplete={onHintTypingComplete}
-                    startPlayback={startHintPlayback}
+                    startPlayback={isHintPlaying}
+                    setIsPlaying={setIsHintPlaying}
                 />
               )}
             </>
