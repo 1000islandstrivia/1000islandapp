@@ -1,75 +1,19 @@
 
-"use client";
-
-import React, { useState, useEffect } from 'react';
+import { auth } from '@/lib/auth-ssr';
+import { redirect } from 'next/navigation';
 import MainLayout from '@/components/layout/MainLayout';
 import AchievementsDisplay from '@/components/achievements/AchievementsDisplay';
-import { useAuth } from '@/hooks/useAuth';
-import { useRouter, usePathname } from 'next/navigation'; // Import usePathname
-import { achievements as allAchievementsData, type Achievement } from '@/lib/trivia-data';
-import { Trophy, HelpCircle } from 'lucide-react';
+import { getAchievementsForUser } from '@/services/achievementsService';
+import { Trophy } from 'lucide-react';
 
-interface StoredAchievementProgress {
-  id: string;
-  unlocked: boolean;
-}
-
-export default function AchievementsPage() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const pathname = usePathname(); // Get current pathname
-  const [userAchievements, setUserAchievements] = useState<Achievement[]>([]);
-  const [pageLoading, setPageLoading] = useState(true);
-
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
-
-  useEffect(() => {
-    if (user && !authLoading) {
-      setPageLoading(true);
-      const achievementsKey = `achievements_progress_${user.username}`;
-      const storedAchievementsProgressString = localStorage.getItem(achievementsKey);
-      let storedProgressData: StoredAchievementProgress[] = [];
-
-      if (storedAchievementsProgressString) {
-        try {
-          storedProgressData = JSON.parse(storedAchievementsProgressString);
-        } catch (e) {
-          console.error("Failed to parse achievements progress from localStorage", e);
-        }
-      }
-
-      const resolvedAchievements = allAchievementsData.map(masterAch => {
-        const progress = storedProgressData.find(p => p.id === masterAch.id);
-        const AchIconComponent = masterAch.icon; // Ensure icon is the component itself
-        return {
-          ...masterAch,
-          icon: AchIconComponent,
-          unlocked: progress ? progress.unlocked : (masterAch.unlocked || false), // Use masterAch.unlocked as fallback if no progress
-        };
-      });
-      setUserAchievements(resolvedAchievements);
-      setPageLoading(false);
-    } else if (!authLoading && !user) {
-      // If user is definitely not logged in and auth is done loading, stop page loading.
-      setPageLoading(false);
-    }
-  }, [user, authLoading]);
-
-  if (authLoading || pageLoading || (!user && pathname !== '/login')) { // Use pathname here
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <HelpCircle className="w-12 h-12 animate-spin text-primary" />
-        <p className="ml-4 text-xl">Loading Achievements...</p>
-      </div>
-    );
+export default async function AchievementsPage() {
+  const session = await auth();
+  if (!session?.user) {
+    redirect('/login');
   }
 
-  // If not loading and no user, means redirect should have happened or is happening.
-  if (!user) return null;
+  // On the server, we fetch the achievement data directly.
+  const userAchievements = await getAchievementsForUser(session.user.username);
 
   return (
     <MainLayout>
