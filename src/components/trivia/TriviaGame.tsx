@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { getAiPirateResponseAction } from '@/actions/getAiPirateResponseAction';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, RefreshCw, type LucideIcon, Loader2, Skull, BookOpen } from 'lucide-react';
+import { Award, RefreshCw, type LucideIcon, Loader2, Skull, BookOpen, Play } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions, getQuestionHints } from '@/services/triviaService';
@@ -301,6 +301,13 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     }
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast, isInstantResponseEnabled]);
 
+  const onHintTypingComplete = useCallback(() => {
+    const audioEl = document.getElementById('pirate-audio') as HTMLAudioElement;
+    if (audioEl) {
+      audioEl.play().catch(e => console.error("Audio play failed:", e));
+    }
+  }, []);
+
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
     
@@ -500,9 +507,11 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
           isAiLoreEnabled ? (
             <>
               {isAiLoading && !pirateResponse?.script && (
-                <div className="animate-fadeIn space-y-4 flex flex-col justify-center items-center text-center h-full">
-                  <Loader2 className="w-12 h-12 text-primary mx-auto animate-spin" />
-                  <p className="text-lg font-semibold text-primary font-headline">{loadingMessage.current}</p>
+                <div className="animate-fadeIn space-y-6 flex flex-col justify-center items-center text-center h-full">
+                  <Skull className="w-24 h-24 text-primary/30 animate-pulse" />
+                  <p className="text-lg font-semibold text-primary font-headline animate-fadeIn">
+                    {loadingMessage.current}
+                  </p>
                 </div>
               )}
               {pirateResponse && (
@@ -511,6 +520,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                     audioUri={pirateResponse.audioUri}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
+                    onTypingComplete={onHintTypingComplete}
                 />
               )}
             </>

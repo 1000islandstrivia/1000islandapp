@@ -2,32 +2,34 @@
 "use client";
 
 import { Card, CardContent } from '@/components/ui/card';
-import { Volume2, Loader2, ChevronRight, Play } from 'lucide-react';
+import { Volume2, ChevronRight, Play } from 'lucide-react';
 import { useTypewriter } from '@/hooks/useTypewriter';
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 
 interface HintDisplayProps {
   script: string;
-  audioUri?: string; // Audio is now optional
+  audioUri?: string;
   onProceed: () => void;
   isLastQuestion: boolean;
+  onTypingComplete: () => void;
 }
 
-export default function HintDisplay({ script, audioUri, onProceed, isLastQuestion }: HintDisplayProps) {
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const onTypingComplete = React.useCallback(() => {
-    setIsTypingComplete(true);
-  }, []);
+export default function HintDisplay({ script, audioUri, onProceed, isLastQuestion, onTypingComplete }: HintDisplayProps) {
+  const [isTypingComplete, setIsTypingComplete] = React.useState(false);
   
-  const typedScript = useTypewriter(script, 40, 0, onTypingComplete);
+  const handleTypingComplete = React.useCallback(() => {
+    setIsTypingComplete(true);
+    onTypingComplete();
+  }, [onTypingComplete]);
+
+  const typedScript = useTypewriter(script, 40, 0, handleTypingComplete);
   const isTyping = !isTypingComplete && script.length > 0;
 
   const handlePlayAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.play().catch(e => console.error("Error playing audio:", e));
+    const audioEl = document.getElementById('pirate-audio') as HTMLAudioElement;
+    if (audioEl) {
+      audioEl.play().catch(e => console.error("Error playing audio:", e));
     }
   };
 
@@ -47,7 +49,7 @@ export default function HintDisplay({ script, audioUri, onProceed, isLastQuestio
                     </p>
                 </CardContent>
             </Card>
-            {audioUri && <audio ref={audioRef} src={audioUri} preload="auto" />}
+            {audioUri && <audio id="pirate-audio" src={audioUri} preload="auto" />}
         </div>
         {isTypingComplete && script && (
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 w-full max-w-sm mx-auto animate-fadeIn">
