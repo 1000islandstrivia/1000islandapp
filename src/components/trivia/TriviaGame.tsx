@@ -40,7 +40,7 @@ const correctMaleAudio = [
   'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_2.mp3?alt=media&token=ea2cb0fa-6299-4db4-bb7b-0d163526f5ba',
   'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_3.mp3?alt=media&token=c444e71e-b9da-4962-89a2-a8c3c5ea56c7',
   'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_4.mp3?alt=media&token=5609da46-1448-4fae-a60-d2ee2971686e',
-  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_5.mp3?alt=media&token=5886b949-0c15-46fb-936b-21e2cdca2ced'
+  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_5.mp3?alt=media&token=5886b949-0c15-46fb-936b-21e2cdca5ced'
 ];
 const correctFemaleAudio = [
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_1.mp3?alt=media&token=abc518be-b949-407e-9faf-1e33487fd580',
@@ -161,71 +161,81 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const initializeGame = useCallback(() => {
     setIsLoading(true);
     setError(null);
-
-    // Filter out already answered questions
-    let availableQuestions = allTriviaQuestions.filter(q => !answeredQuestionIds.has(q.id));
-
-    // If not enough questions are left, reset the answered list
-    if (availableQuestions.length < QUESTIONS_PER_GAME) {
-        if (allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
-            toast({
-                title: "You've Seen It All!",
-                description: "Resetting the question pool. Well done, Captain!",
-            });
-            setAnsweredQuestionIds(new Set());
-            availableQuestions = allTriviaQuestions;
-        } else {
-            // Not enough total questions to even start a game
-            setError(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, only ${allTriviaQuestions.length} exist in total). Please contact an admin.`);
-            setIsLoading(false);
-            return;
-        }
-    }
-    
-    // Shuffle and pick 10 questions for the new game
-    const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
-    const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
-    
-    setActiveQuestions(newGameQuestions);
-    setCurrentQuestionIndex(0);
     setScore(0);
+    setCurrentQuestionIndex(0);
     setGameOver(false);
     setShowAnswerResult(false);
     setPirateResponse(null);
     setPirateAudioUri(null);
     setLoadingMessage(null);
     setToastedAchievementIds(new Set());
-    setIsLoading(false);
-  }, [allTriviaQuestions, answeredQuestionIds, toast]);
+    
+    let localAnsweredIds = new Set<string>();
+    try {
+        const storedAnswered = localStorage.getItem(`answered_questions_${user?.username}`);
+        localAnsweredIds = new Set(storedAnswered ? JSON.parse(storedAnswered) : []);
+    } catch (e) {
+        console.error("Error parsing answered questions, starting fresh.", e);
+    }
+    setAnsweredQuestionIds(localAnsweredIds);
+    
+    // This logic runs after all questions have been loaded
+    if (allTriviaQuestions.length > 0) {
+        let availableQuestions = allTriviaQuestions.filter(q => !localAnsweredIds.has(q.id));
+
+        if (availableQuestions.length < QUESTIONS_PER_GAME) {
+            if (allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
+                toast({
+                    title: "You've Seen It All!",
+                    description: "Resetting the question pool. Well done, Captain!",
+                });
+                setAnsweredQuestionIds(new Set());
+                if(user) localStorage.removeItem(`answered_questions_${user.username}`);
+                availableQuestions = allTriviaQuestions;
+            } else {
+                setError(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, only ${allTriviaQuestions.length} exist). Please contact an admin.`);
+                setIsLoading(false);
+                return;
+            }
+        }
+        
+        const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+        const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+        
+        setActiveQuestions(newGameQuestions);
+        setIsLoading(false);
+    }
+    // If allTriviaQuestions is empty, loading will remain true until it's populated by loadInitialData
+  }, [allTriviaQuestions, user, toast]);
 
   useEffect(() => {
     async function loadInitialData() {
-      setIsLoading(true);
-      setError(null);
-      loadUserProgress();
-      try {
-        const questions = await getTriviaQuestions();
-        if (questions && questions.length > 0) {
-          setAllTriviaQuestions(questions);
-        } else {
-          setError("No trivia questions could be loaded from the database. Please try again later.");
-          toast({ title: "No Questions Loaded", description: "Could not fetch trivia questions.", variant: "destructive"});
+        setIsLoading(true);
+        setError(null);
+        loadUserProgress();
+        try {
+            const questions = await getTriviaQuestions();
+            if (questions && questions.length > 0) {
+                setAllTriviaQuestions(questions);
+            } else {
+                throw new Error("No trivia questions could be loaded from the database.");
+            }
+        } catch (e: any) {
+            console.error("Failed to fetch trivia questions:", e);
+            setError(`Error loading questions: ${e.message}`);
+            toast({ title: "Error Loading Questions", description: "Could not load questions. Please try again.", variant: "destructive" });
+            setIsLoading(false); // Stop loading on error
         }
-      } catch (e: any) {
-        console.error("Failed to fetch trivia questions:", e);
-        setError(`Error loading questions: ${e.message}`);
-        toast({ title: "Error Loading Questions", description: "Could not load questions. Please try again.", variant: "destructive" });
-      }
-      // Don't set loading to false here; let the next effect handle it
     }
     loadInitialData();
   }, [loadUserProgress, toast]);
 
   useEffect(() => {
-    if (allTriviaQuestions.length > 0) {
+      // This effect triggers the game initialization once all questions are loaded.
+    if (allTriviaQuestions.length > 0 && isLoading) {
       initializeGame();
     }
-  }, [allTriviaQuestions, initializeGame]); // Add initializeGame as a dependency
+  }, [allTriviaQuestions, isLoading, initializeGame]);
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
@@ -236,73 +246,74 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     const isCorrect = answer === currentQuestion.answer;
     setAnswerCorrectness(isCorrect);
     
-    // Add current question to answered set for this session
     setAnsweredQuestionIds(prev => new Set(prev).add(currentQuestion.id));
 
     if (isCorrect) {
-      setScore(s => s + 10);
-      if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error("Audio play failed:", e));
-      
-      setUnlockedStoryHints(prevHints => {
-          const hintKey = currentQuestion.storylineHintKey;
-          // Check if the hint is already unlocked to avoid unnecessary state updates
-          if (prevHints.find(h => h.key === hintKey && h.unlocked)) {
-              return prevHints;
-          }
-          return prevHints.map(h => 
-              h.key === hintKey ? { ...h, unlocked: true } : h
-          );
-      });
+        setScore(s => s + 10);
+        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error("Audio play failed:", e));
 
+        setUnlockedStoryHints(prevHints => {
+            const hintKey = currentQuestion.storylineHintKey;
+            if (prevHints.find(h => h.key === hintKey && h.unlocked)) {
+                return prevHints;
+            }
+            toast({
+                title: "Lore Unlocked!",
+                description: `You've uncovered a new secret: "${initialStoryline.find(h => h.key === hintKey)?.title}"`,
+                action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
+            });
+            return prevHints.map(h => 
+                h.key === hintKey ? { ...h, unlocked: true } : h
+            );
+        });
     } else {
-      setScore(s => Math.max(0, s - 5));
-      if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error("Audio play failed:", e));
+        setScore(s => Math.max(0, s - 5));
+        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error("Audio play failed:", e));
     }
     
     if (isAiLoreEnabled) {
-      // Play immediate correct/wrong audio feedback
-      const responseAudios = isCorrect ? correctResponses : wrongResponses;
-      const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
-      if (typeof window !== 'undefined') new Audio(randomAudioUrl).play().catch(e => console.error("Audio play failed:", e));
+        const responseAudios = isCorrect ? correctResponses : wrongResponses;
+        const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
+        if (typeof window !== 'undefined') new Audio(randomAudioUrl).play().catch(e => console.error("Audio play failed:", e));
 
-      setIsResponseLoading(true);
-      setLoadingMessage(pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)]);
+        setIsResponseLoading(true);
+        setLoadingMessage(pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)]);
 
-      let script = currentQuestion.cachedPirateScript;
-      if (!script) {
-        try {
-          const scriptResult = await generatePirateScript({
-            question: currentQuestion.question,
-            playerAnswer: answer,
-            correctAnswer: currentQuestion.answer,
-            fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
-          });
-          script = scriptResult.script;
-          if (script) cacheHintAction(currentQuestion.id, script).catch(err => console.error("Failed to cache hint:", err));
-        } catch (error) {
-          console.error("Failed to generate pirate script:", error);
-          script = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
+        let script = currentQuestion.cachedPirateScript;
+        if (!script) {
+            try {
+                const scriptResult = await generatePirateScript({
+                    question: currentQuestion.question,
+                    playerAnswer: answer,
+                    correctAnswer: currentQuestion.answer,
+                    fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
+                });
+                script = scriptResult.script;
+                if (script) cacheHintAction(currentQuestion.id, script).catch(err => console.error("Failed to cache hint:", err));
+            } catch (error) {
+                console.error("Failed to generate pirate script:", error);
+                script = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
+            }
         }
-      }
-      
-      setPirateResponse({ script });
-      setIsResponseLoading(false);
-      setLoadingMessage(null);
-      
-      if (script) {
-        setIsAudioLoading(true);
-        try {
-          const audioResult = await generateSpokenPirateAudio({ script });
-          setPirateAudioUri(audioResult.audioDataUri);
-        } catch (err) {
-          console.error("Failed to generate pirate audio:", err);
-          setPirateAudioUri(null); // Ensure no broken audio link
-        } finally {
-          setIsAudioLoading(false);
+        
+        setPirateResponse({ script });
+        setIsResponseLoading(false);
+        setLoadingMessage(null);
+        
+        if (script) {
+            setIsAudioLoading(true);
+            try {
+                const audioResult = await generateSpokenPirateAudio({ script });
+                setPirateAudioUri(audioResult.audioDataUri);
+            } catch (err) {
+                console.error("Failed to generate pirate audio:", err);
+                setPirateAudioUri(null);
+            } finally {
+                setIsAudioLoading(false);
+            }
         }
-      }
     } else {
-      setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
+        setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
     }
   }, [currentQuestion, isAiLoreEnabled, toast]);
 
@@ -337,28 +348,58 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
 
   useEffect(() => {
     const checkAchievements = () => {
-      const newAchievements = [...currentAchievementsRef.current];
-      let changed = false;
+        if (gameOver) {
+            const newAchievements = [...currentAchievementsRef.current];
+            let changed = false;
 
-      newAchievements.forEach(ach => {
-        if (ach.unlocked) return;
-        let unlocked = false;
-        if (ach.id === 'first_game' && gameOver) unlocked = true;
-        if (ach.id === 'first_hint' && unlockedStoryHintsRef.current.some(h => h.unlocked && !initialStoryline.find(ih => ih.key === h.key)?.unlocked)) unlocked = true;
-        if (ach.id === 'first_blood' && scoreRef.current > 0) unlocked = true;
-        
-        if(unlocked) {
-          const achievement = newAchievements.find(a => a.id === ach.id);
-          if (achievement) {
-            achievement.unlocked = true;
-            changed = true;
-          }
+            newAchievements.forEach(ach => {
+                if (ach.unlocked) return;
+                
+                let unlocked = false;
+                if (ach.id === 'first_game') unlocked = true;
+                if (ach.id === 'first_blood' && scoreRef.current > 0) unlocked = true;
+                // Add other end-of-game checks here
+
+                if(unlocked) {
+                    const achievement = newAchievements.find(a => a.id === ach.id);
+                    if (achievement && !achievement.unlocked) {
+                        achievement.unlocked = true;
+                        changed = true;
+                    }
+                }
+            });
+            if (changed) setCurrentAchievements(newAchievements);
         }
-      });
-      if (changed) setCurrentAchievements(newAchievements);
     }
     checkAchievements();
-  }, [gameOver, score]);
+  }, [gameOver]);
+  
+  useEffect(() => {
+    const checkAchievementsOnTheFly = () => {
+        const newAchievements = [...currentAchievementsRef.current];
+        let changed = false;
+        newAchievements.forEach(ach => {
+            if(ach.unlocked) return;
+            let unlocked = false;
+            // Check for first hint unlock
+            if(ach.id === 'first_hint' && unlockedStoryHintsRef.current.some(h => h.unlocked && !initialStoryline.find(ih => ih.key === h.key)?.unlocked)) {
+                unlocked = true;
+            }
+
+            if(unlocked) {
+                const achievement = newAchievements.find(a => a.id === ach.id);
+                if (achievement && !achievement.unlocked) {
+                    achievement.unlocked = true;
+                    changed = true;
+                }
+            }
+        });
+
+        if (changed) setCurrentAchievements(newAchievements);
+    };
+    checkAchievementsOnTheFly();
+  }, [unlockedStoryHints]);
+
 
   useEffect(() => {
     currentAchievements.forEach(ach => {
@@ -433,10 +474,10 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
         <Skull className="w-12 h-12 text-primary mb-4" />
-        <p className="ml-4 text-xl text-primary">No Trivia Questions Available</p>
-        <p className="text-muted-foreground mt-2">Could not load questions. Please try again.</p>
-        <Button onClick={initializeGame} className="mt-4">
-            <RefreshCw className="mr-2 h-4 w-4" /> Start New Game
+        <p className="ml-4 text-xl text-primary">Preparing Your Voyage</p>
+        <p className="text-muted-foreground mt-2">Shuffling the treasure maps... please wait.</p>
+        <Button onClick={initializeGame} className="mt-4" disabled>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading...
         </Button>
       </div>
     );
