@@ -2,17 +2,6 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  webpack: (config, { isServer }) => {
-    // This is to solve a bug with handlebars and webpack
-    // https://github.com/handlebars-lang/handlebars.js/issues/1174
-    config.externals = [
-      ...(config.externals || []),
-      {
-        handlebars: 'require("handlebars")',
-      },
-    ];
-    return config;
-  },
   typescript: {
     // ignoreBuildErrors: true, // Removed
   },
