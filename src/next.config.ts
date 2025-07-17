@@ -30,13 +30,10 @@ const nextConfig: NextConfig = {
       }
     ],
   },
-  experimental: {
-    // allowedDevOrigins is now a top-level property
-  },
-  // allowedDevOrigins is now a top-level property
   allowedDevOrigins: [
       "6000-firebase-studio-1749524487777.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev"
   ]
 };
 
 export default nextConfig;
+
