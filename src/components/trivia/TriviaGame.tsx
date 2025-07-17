@@ -230,7 +230,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     const question = activeQuestions[currentQuestionIndex];
     if (!question) {
         setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
-        setGameState('ERROR'); // Use the main error state
+        setGameState('ERROR');
         return;
     }
 
@@ -329,7 +329,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         }
       }
       
-      // Check for game completion achievements
       setCurrentAchievements(prev => {
           const newlyUnlocked: Achievement[] = [];
           const updatedAchievements = prev.map(ach => {
@@ -359,7 +358,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     }
   }, [currentQuestionIndex, activeQuestions.length, user, currentScore, toast, refreshUser, toastedAchievementIds]);
   
-  // Effect to safely display toasts for achievements after render
   useEffect(() => {
     if (achievementsToToast.length > 0) {
       achievementsToToast.forEach(ach => {
@@ -374,12 +372,10 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             ),
         });
       });
-      // Clear the queue after toasting
       setAchievementsToToast([]);
     }
   }, [achievementsToToast, toast]);
 
-  // Effect to safely display toasts for unlocked story hints
   useEffect(() => {
     if (storyToastQueue.length > 0) {
       storyToastQueue.forEach(hintTitle => {
@@ -389,7 +385,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
           action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
         });
       });
-      setStoryToastQueue([]); // Clear the queue
+      setStoryToastQueue([]); 
     }
   }, [storyToastQueue, toast]);
 
@@ -491,7 +487,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             totalQuestions={totalQuestions}
           />
         ) : gameState === 'PLAYING' && !currentQuestion ? (
-          <div className="flex flex-col items-center justify-center min-h-[300px] bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md p-6 text-center">
+          <div className="flex flex-col items-center justify-center min-h-[300px] bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md p-6 text-center animate-fadeIn">
               <Skull className="w-16 h-16 text-destructive mb-4" />
               <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
               <p className="text-destructive-foreground/80 mt-2">The next question was lost to the river mists.</p>
@@ -539,3 +535,5 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
+
+    
