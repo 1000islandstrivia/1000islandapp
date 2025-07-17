@@ -235,7 +235,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         return;
     }
 
-    setGameState('RESULT');
     setLastAnswerCorrect(false); // Reset this first
     setIsAiLoading(true);
     loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
@@ -298,6 +297,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
       setIsAiLoading(false);
     }
+
+    setGameState('RESULT');
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast, isInstantResponseEnabled]);
 
   const onHintTypingComplete = useCallback(() => {
