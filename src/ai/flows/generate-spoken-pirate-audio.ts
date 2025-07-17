@@ -66,31 +66,21 @@ const generateSpokenPirateAudioFlow = ai.defineFlow(
     outputSchema: GenerateSpokenPirateAudioOutputSchema,
   },
   async (input) => {
-    // Randomly select a pirate voice
-    const speakers = ['MalePirate', 'FemalePirate'];
-    const selectedSpeaker = speakers[Math.floor(Math.random() * speakers.length)];
-    const ttsPrompt = `${selectedSpeaker}: ${input.script}`;
+    // Randomly select a pirate voice name
+    const voices = ['Achernar', 'Algenib']; // Achernar is male-sounding, Algenib is female-sounding
+    const selectedVoice = voices[Math.floor(Math.random() * voices.length)];
 
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.5-flash-preview-tts',
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
-          multiSpeakerVoiceConfig: {
-            speakerVoiceConfigs: [
-              {
-                speaker: 'MalePirate',
-                voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Achernar' } }, // A male-sounding voice
-              },
-              {
-                speaker: 'FemalePirate',
-                voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Algenib' } }, // A female-sounding voice
-              },
-            ],
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: selectedVoice },
           },
         },
       },
-      prompt: ttsPrompt,
+      prompt: input.script, // The prompt is now just the script itself
     });
 
     if (!media) {
@@ -109,5 +99,3 @@ const generateSpokenPirateAudioFlow = ai.defineFlow(
     };
   }
 );
-
-    
