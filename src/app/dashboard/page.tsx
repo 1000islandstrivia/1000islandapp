@@ -16,6 +16,7 @@ import { clearLogsAction } from '@/actions/clearLogsAction';
 import type { LogEntry } from '@/services/logService';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
+import { getTriviaQuestions } from '@/services/triviaService';
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
@@ -37,6 +38,11 @@ export default function DashboardPage() {
     } else if (user && !loading && !initialRefreshCalledRef.current) {
       refreshUser();
       initialRefreshCalledRef.current = true;
+      // Pre-load trivia questions as soon as the user is confirmed on the dashboard
+      console.log('Pre-loading trivia questions...');
+      getTriviaQuestions().catch(err => {
+        console.error("Failed to pre-load trivia questions:", err);
+      });
     }
   }, [user, loading, router, refreshUser]);
 
