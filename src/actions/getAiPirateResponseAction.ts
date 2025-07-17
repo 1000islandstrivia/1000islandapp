@@ -65,11 +65,16 @@ export async function getAiPirateResponseAction(input: ActionInput): Promise<Act
       throw new Error("Script generation returned empty.");
     }
     
-    // 3. Generate audio chunks from the script
-    const { generateSpokenPirateAudio } = await import('@/ai/flows/generate-spoken-pirate-audio');
-    addLog(`${logPrefix} Dynamically imported 'generateSpokenPirateAudio'.`);
+    // 3. Generate audio chunks from the script using the correct flow
+    const { generateStoryAudio } = await import('@/ai/flows/generate-story-audio');
+    addLog(`${logPrefix} Dynamically imported 'generateStoryAudio'.`);
     addLog(`${logPrefix} Generating audio for script: "${script.substring(0, 30)}..."`);
-    const audioResult = await generateSpokenPirateAudio({ script });
+    
+    // For hints, we'll randomly pick a voice for variety
+    const randomVoice = Math.random() < 0.5 ? 'male' : 'female';
+    addLog(`${logPrefix} Randomly selected voice: ${randomVoice}`);
+    
+    const audioResult = await generateStoryAudio({ text: script, voice: randomVoice });
     const audioDataUris = audioResult.audioDataUris;
     addLog(`${logPrefix} Audio generation finished. Received ${audioDataUris?.length || 0} audio chunks.`);
     
