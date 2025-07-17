@@ -72,7 +72,7 @@ interface StoredAchievementProgress {
 
 interface PirateResponse {
   script: string;
-  audioUri?: string;
+  audioDataUris?: string[];
 }
 
 interface TriviaGameProps {
@@ -284,7 +284,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         });
         
         if (result.success && result.script) {
-          setPirateResponse({ script: result.script, audioUri: result.audioUri });
+          setPirateResponse({ script: result.script, audioDataUris: result.audioDataUris });
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
@@ -302,10 +302,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast, isInstantResponseEnabled]);
 
   const onHintTypingComplete = useCallback(() => {
-    const audioEl = document.getElementById('pirate-audio') as HTMLAudioElement;
-    if (audioEl) {
-      audioEl.play().catch(e => console.error("Audio play failed:", e));
-    }
+    // This callback is now used to trigger audio playback automatically in HintDisplay
   }, []);
 
   const handleProceedToNext = useCallback(async () => {
@@ -517,7 +514,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               {pirateResponse && (
                 <HintDisplay
                     script={pirateResponse.script}
-                    audioUri={pirateResponse.audioUri}
+                    audioDataUris={pirateResponse.audioDataUris}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                     onTypingComplete={onHintTypingComplete}
