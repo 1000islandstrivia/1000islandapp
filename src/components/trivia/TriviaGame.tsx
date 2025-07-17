@@ -229,12 +229,18 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     const question = activeQuestions[currentQuestionIndex];
     if (!question) {
-      console.error("No question available at index:", currentQuestionIndex);
-      return;
+        console.error("No question available at index:", currentQuestionIndex);
+        setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
+        setGameState('ERROR');
+        return;
     }
 
+    setGameState('RESULT');
+    setLastAnswerCorrect(false); // Reset this first
+    setIsAiLoading(true);
+    loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
+
     const isCorrect = answer === question.answer;
-    
     setLastAnswerCorrect(isCorrect);
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
 
@@ -266,22 +272,17 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
       }
     }
-
-    setGameState('RESULT');
     
+    // Now, handle hint generation
     if (isAiLoreEnabled) {
-      setIsAiLoading(true);
-      loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
-      
       try {
         const result = await getAiPirateResponseAction({
           question,
           playerAnswer: answer,
         });
-        
         if (result.success && result.script) {
           setPirateResponse({ script: result.script, audioDataUris: result.audioDataUris });
-          setIsHintPlaying(true); // Tell HintDisplay to start playing
+          setIsHintPlaying(true);
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
@@ -295,6 +296,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     } else {
       const hintData = await getQuestionHints(question.id);
       setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
+      setIsAiLoading(false);
     }
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast, isInstantResponseEnabled]);
 
@@ -458,21 +460,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       </Card>
     );
   }
-
-  if (!currentQuestion) {
-    return (
-        <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
-            <div className="text-center">
-                <Skull className="w-12 h-12 mx-auto text-destructive-foreground mb-4" />
-                <p className="text-xl text-destructive-foreground">Lost at Sea!</p>
-                <p className="text-sm text-muted-foreground mt-2">Could not load the next question. The river's currents are treacherous today.</p>
-                <Button onClick={initializeGame} className="mt-4">
-                    <RefreshCw className="mr-2 h-4 w-4" /> Try a New Voyage
-                </Button>
-            </div>
-        </div>
-    );
-  }
   
   const progressPercentage = totalQuestions > 0 ? ((currentQuestionIndex) / totalQuestions) * 100 : 0;
   const totalUserScore = (user?.score || 0) + currentScore;
@@ -482,7 +469,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       <Card className="bg-card/80 backdrop-blur-sm shadow-md p-4">
         <div className="flex justify-between items-center mb-2">
             <p className="text-lg font-semibold text-primary">Total Gold: <span className="text-accent">{totalUserScore.toLocaleString()}</span></p>
-            <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {totalQuestions}</p>
+            {gameState === 'PLAYING' && totalQuestions > 0 &&
+                <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {totalQuestions}</p>
+            }
         </div>
         <Progress value={progressPercentage} className="w-full h-3 [&>div]:bg-accent" />
         <p className="text-xs text-muted-foreground italic mt-2 text-center">
@@ -491,7 +480,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       </Card>
 
       <div className="w-full max-w-2xl mx-auto min-h-[300px] flex justify-center items-center">
-        {gameState === 'PLAYING' && (
+        {gameState === 'PLAYING' && currentQuestion && (
           <QuestionCard
             question={currentQuestion}
             onAnswerSubmit={handleAnswerSubmit}
@@ -502,15 +491,14 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         {gameState === 'RESULT' && (
           isAiLoreEnabled ? (
             <>
-              {isAiLoading && !pirateResponse?.script && (
+              {isAiLoading && !pirateResponse?.script ? (
                 <div className="animate-fadeIn space-y-6 flex flex-col justify-center items-center text-center h-full">
                   <Skull className="w-48 h-48 text-primary/30 animate-pulse-and-rotate" />
                   <p className="text-lg font-semibold text-primary font-headline animate-fadeIn">
                     {loadingMessage.current}
                   </p>
                 </div>
-              )}
-              {pirateResponse && (
+              ) : pirateResponse && (
                 <HintDisplay
                     script={pirateResponse.script}
                     audioDataUris={pirateResponse.audioDataUris}
@@ -522,7 +510,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               )}
             </>
           ) : (
-             pirateResponse && <SimpleHintDisplay 
+             pirateResponse && currentQuestion && <SimpleHintDisplay 
               script={pirateResponse.script}
               isCorrect={lastAnswerCorrect}
               correctAnswer={currentQuestion.answer}
