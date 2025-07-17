@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -106,7 +107,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   
   // User Progress State
-  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
+  const [unlockedStoryHints, setUnlockedStoryHints] = useState<string[]>([]);
   const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
   
@@ -132,13 +133,12 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }, []);
 
   // Load user progress from localStorage when user is available
-  const loadUserProgress = useCallback(() => {
+  useEffect(() => {
     if (user) {
       try {
         const storyKey = `storyProgress_${user.username}`;
         const storedStory = localStorage.getItem(storyKey);
-        const unlockedKeys = storedStory ? JSON.parse(storedStory) : initialStoryline.filter(h => h.unlocked).map(h => h.key);
-        setUnlockedStoryHints(initialStoryline.map(h => ({ ...h, unlocked: unlockedKeys.includes(h.key) })));
+        setUnlockedStoryHints(storedStory ? JSON.parse(storedStory) : initialStoryline.filter(h => h.unlocked).map(h => h.key));
 
         const achKey = `achievements_progress_${user.username}`;
         const storedAch = localStorage.getItem(achKey);
@@ -157,16 +157,11 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
   }, [user]);
   
-  useEffect(() => {
-    loadUserProgress();
-  }, [user, loadUserProgress]);
-  
   // Save progress to localStorage whenever it changes
   useEffect(() => {
     if (user && gameState !== 'LOADING') {
       try {
-        const keysToSave = unlockedStoryHints.filter(h => h.unlocked).map(h => h.key);
-        localStorage.setItem(`storyProgress_${user.username}`, JSON.stringify(keysToSave));
+        localStorage.setItem(`storyProgress_${user.username}`, JSON.stringify(unlockedStoryHints));
         
         const achievementsProgress = currentAchievements.map(a => ({ id: a.id, unlocked: a.unlocked }));
         localStorage.setItem(`achievements_progress_${user.username}`, JSON.stringify(achievementsProgress));
@@ -193,7 +188,6 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }, []);
 
   const initializeGame = useCallback(() => {
-    // Reset all game state in a single batch
     setGameState('LOADING');
     setCurrentScore(0);
     setCurrentQuestionIndex(0);
@@ -242,50 +236,6 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
   }, [allTriviaQuestions]);
 
-  const checkAndToastAchievements = useCallback(() => {
-    setCurrentAchievements(prevAchievements => {
-      const updatedAchievements = [...prevAchievements];
-      let changed = false;
-
-      updatedAchievements.forEach(ach => {
-        if (ach.unlocked) return;
-
-        let unlocked = false;
-        if (lastAnswerCorrect && ach.id === 'first_hint' && unlockedStoryHints.filter(h => h.unlocked).length === 1) {
-          unlocked = true;
-        }
-        
-        if(unlocked) {
-          const achievement = updatedAchievements.find(a => a.id === ach.id);
-          if (achievement) {
-              achievement.unlocked = true;
-              changed = true;
-              if (!toastedAchievementIds.has(ach.id)) {
-                  const AchIconComponent = ach.icon as LucideIcon | undefined;
-                  toast({
-                      title: "Achievement Unlocked!",
-                      description: (
-                          <div className="flex items-center">
-                              {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
-                              <span>{ach.name}: {ach.description}</span>
-                          </div>
-                      ),
-                      action: ( <Link href="/achievements"><Button variant="outline" size="sm">View</Button></Link> ),
-                  });
-                  setToastedAchievementIds(prev => new Set(prev).add(ach.id));
-              }
-          }
-        }
-      });
-
-      return changed ? updatedAchievements : prevAchievements;
-    });
-  }, [lastAnswerCorrect, unlockedStoryHints, toast, toastedAchievementIds]);
-
-  useEffect(() => {
-    checkAndToastAchievements();
-  }, [checkAndToastAchievements]);
-
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     const question = activeQuestions[currentQuestionIndex];
     if (!question) {
@@ -294,36 +244,32 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     }
 
     const isCorrect = answer === question.answer;
-    setLastAnswerCorrect(isCorrect);
     
-    // Update answered questions
     setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
 
-    // Play immediate audio feedback for AI Lore mode
     if (isAiLoreEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       playAudio(randomAudioUrl, 'pirate response audio');
     }
 
-    // Handle scoring and story unlocking
     if (isCorrect) {
       setCurrentScore(s => s + 10);
       playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c', 'coin spill audio');
       
       const hintKey = question.storylineHintKey;
       setUnlockedStoryHints(prev => {
-        const isAlreadyUnlocked = prev.some(h => h.key === hintKey && h.unlocked);
-        
-        if (!isAlreadyUnlocked) {
-          toast({
-            title: "Lore Unlocked!",
-            description: `You've uncovered a new secret: "${initialStoryline.find(h => h.key === hintKey)?.title}"`,
-            action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
-          });
-          return prev.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
+        if (!prev.includes(hintKey)) {
+          const hint = initialStoryline.find(h => h.key === hintKey);
+          if (hint) {
+            toast({
+              title: "Lore Unlocked!",
+              description: `You've uncovered a new secret: "${hint.title}"`,
+              action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
+            });
+          }
+          return [...prev, hintKey];
         }
-        
         return prev;
       });
     } else {
@@ -331,9 +277,9 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
     }
 
+    setLastAnswerCorrect(isCorrect);
     setGameState('RESULT');
     
-    // Handle AI-generated pirate response
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
@@ -380,19 +326,13 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, toast, playAudio]);
 
   const handleProceedToNext = useCallback(async () => {
-    const nextIndex = currentQuestionIndex + 1;
-    
-    // Clear previous pirate response state
-    setPirateResponse(null);
-    setPirateAudioUri(null);
-
-    if (nextIndex < activeQuestions.length) {
-      setCurrentQuestionIndex(nextIndex);
+    if (currentQuestionIndex + 1 < activeQuestions.length) {
+      setCurrentQuestionIndex(prev => prev + 1);
+      setPirateResponse(null);
+      setPirateAudioUri(null);
       setGameState('PLAYING');
     } else {
       setGameState('GAMEOVER');
-      
-      // Update score on leaderboard
       if (user) {
         try {
           await updateUserScore(user.username.toLowerCase(), user.username, currentScore);
@@ -402,33 +342,52 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           toast({ title: "Leaderboard Error", description: "Could not save your score.", variant: "destructive" });
         }
       }
-      
-      // Check for game completion achievements
-      setCurrentAchievements(prev => {
-        const newAchievements = [...prev];
-        let changed = false;
-        
-        newAchievements.forEach(ach => {
-          if (ach.unlocked) return;
-          let unlocked = false;
-          if (ach.id === 'first_game') unlocked = true;
-          if (ach.id === 'first_blood' && currentScore > 0) unlocked = true;
-          if (unlocked) {
-            ach.unlocked = true;
-            changed = true;
-          }
-        });
-        
-        return changed ? newAchievements : prev;
-      });
     }
-  }, [currentQuestionIndex, activeQuestions.length, user, currentScore, toast, refreshUser]);
+  }, [currentQuestionIndex, activeQuestions.length, user, currentScore, refreshUser, toast]);
+
+  // Check for achievements *after* a state update has occurred.
+  useEffect(() => {
+    if (gameState === 'RESULT') {
+        const newlyUnlockedAchievements = initialAchievementsData.filter(ach => {
+            if (currentAchievements.find(ca => ca.id === ach.id && ca.unlocked)) return false; // Already unlocked
+            if (toastedAchievementIds.has(ach.id)) return false; // Already toasted this session
+
+            if (lastAnswerCorrect && ach.id === 'first_hint' && unlockedStoryHints.length === 1) return true;
+            // Add other achievement checks here
+            return false;
+        });
+
+        if (newlyUnlockedAchievements.length > 0) {
+            newlyUnlockedAchievements.forEach(ach => {
+                const AchIconComponent = ach.icon as LucideIcon | undefined;
+                toast({
+                    title: "Achievement Unlocked!",
+                    description: (
+                        <div className="flex items-center">
+                            {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
+                            <span>{ach.name}: {ach.description}</span>
+                        </div>
+                    ),
+                    action: ( <Link href="/achievements"><Button variant="outline" size="sm">View</Button></Link> ),
+                });
+                setToastedAchievementIds(prev => new Set(prev).add(ach.id));
+            });
+            setCurrentAchievements(prev => {
+                const updated = [...prev];
+                newlyUnlockedAchievements.forEach(unlockedAch => {
+                    const existing = updated.find(a => a.id === unlockedAch.id);
+                    if (existing) existing.unlocked = true;
+                });
+                return updated;
+            });
+        }
+    }
+  }, [gameState, lastAnswerCorrect, unlockedStoryHints, toast, currentAchievements, toastedAchievementIds]);
   
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const totalQuestions = activeQuestions.length;
 
-  // RENDER LOGIC
   if (gameState === 'LOADING') {
     return (
       <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
@@ -469,6 +428,43 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   }
 
   if (gameState === 'GAMEOVER') {
+    const finalAchievements = initialAchievementsData.filter(ach => {
+      if (currentAchievements.find(ca => ca.id === ach.id && ca.unlocked)) return false;
+      let unlocked = false;
+      if (ach.id === 'first_game') unlocked = true;
+      if (ach.id === 'first_blood' && currentScore > 0) unlocked = true;
+      return unlocked;
+    });
+
+    if (finalAchievements.length > 0 && user) {
+      setTimeout(() => {
+        finalAchievements.forEach(ach => {
+          if (!toastedAchievementIds.has(ach.id)) {
+            const AchIconComponent = ach.icon as LucideIcon | undefined;
+            toast({
+              title: "Achievement Unlocked!",
+              description: (
+                  <div className="flex items-center">
+                      {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
+                      <span>{ach.name}: {ach.description}</span>
+                  </div>
+              ),
+              action: ( <Link href="/achievements"><Button variant="outline" size="sm">View</Button></Link> ),
+            });
+            setToastedAchievementIds(prev => new Set(prev).add(ach.id));
+          }
+        });
+        setCurrentAchievements(prev => {
+          const updated = [...prev];
+          finalAchievements.forEach(unlockedAch => {
+              const existing = updated.find(a => a.id === unlockedAch.id);
+              if (existing) existing.unlocked = true;
+          });
+          return updated;
+        });
+      }, 500);
+    }
+    
     return (
       <Card className="w-full max-w-lg mx-auto text-center p-8 shadow-xl bg-card/90 backdrop-blur-sm animate-slideUp">
         <CardHeader>
@@ -496,23 +492,22 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     );
   }
 
-  // Add safety check for currentQuestion
   if (!currentQuestion) {
     return (
         <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
             <div className="text-center">
-                <Skull className="w-12 h-12 mx-auto text-destructive-foreground mb-4" />
-                <p className="text-xl text-destructive-foreground">No question available!</p>
-                <p className="text-sm text-muted-foreground mt-2">Question Index: {currentQuestionIndex}, Total: {totalQuestions}</p>
+                <Skull className="w-12 h-12 mx-auto text-destructive mb-4" />
+                <p className="text-xl text-destructive-foreground">Lost at Sea!</p>
+                <p className="text-muted-foreground mt-2">Could not load the next question. The river's currents are treacherous today.</p>
                 <Button onClick={initializeGame} className="mt-4">
-                    <RefreshCw className="mr-2 h-4 w-4" /> Restart Game
+                    <RefreshCw className="mr-2 h-4 w-4" /> Try a New Voyage
                 </Button>
             </div>
         </div>
     );
   }
   
-  const progressPercentage = ((currentQuestionIndex) / totalQuestions) * 100;
+  const progressPercentage = totalQuestions > 0 ? ((currentQuestionIndex) / totalQuestions) * 100 : 0;
   const totalUserScore = (user?.score || 0) + currentScore;
 
   return (
