@@ -14,7 +14,7 @@ import type { TriviaQuestion } from '@/lib/trivia-data';
 import { collection, getDocs, query, addDoc, doc, setDoc, limit, getDoc } from 'firebase/firestore';
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
-const QUESTIONS_TO_FETCH = 30; // Fetch a bit more than needed for a single game for variety
+const QUESTIONS_TO_FETCH_FROM_DB = 50; // Fetch a reasonable number from DB for shuffling
 
 /**
  * Fetches a random subset of trivia questions from Firestore, but only essential, small fields.
@@ -25,7 +25,7 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
   try {
     const questionsQuery = query(
       collection(db, TRIVIA_COLLECTION),
-      limit(QUESTIONS_TO_FETCH * 2) // Fetch more to ensure randomness after filtering
+      limit(QUESTIONS_TO_FETCH_FROM_DB) // Fetch a limited set for performance
     );
     
     const querySnapshot = await getDocs(questionsQuery);
@@ -35,7 +35,7 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       return [];
     }
 
-    // Map the full documents to smaller objects, excluding large fields
+    // Map the full documents to smaller objects, excluding large hint/script fields
     const allQuestions: TriviaQuestion[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
@@ -50,12 +50,9 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
           cachedPirateScript: undefined,
       } as TriviaQuestion);
     });
-
-    // Shuffle the array of all questions
-    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
     
-    // Return a slice of the shuffled array
-    return shuffled.slice(0, QUESTIONS_TO_FETCH);
+    // Shuffle the array of all questions. The initial fetch is not random, so we shuffle here.
+    return allQuestions.sort(() => 0.5 - Math.random());
 
   } catch (error: any) {
     console.error("Error fetching optimized trivia questions from Firestore:", error);
@@ -82,6 +79,7 @@ export async function getQuestionHints(questionId: string): Promise<{ fallbackHi
     }
 
     console.warn(`Could not find hint data for question ID: ${questionId}`);
+    // Return a safe default so the game doesn't crash
     return { fallbackHint: "Arrr, this secret seems to have washed away..." };
   } catch (error: any) {
     console.error(`Error fetching hints for question ${questionId}:`, error);

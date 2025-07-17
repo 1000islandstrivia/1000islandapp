@@ -25,7 +25,7 @@ import {
 } from 'firebase/firestore';
 
 const LEADERBOARD_COLLECTION = 'leaderboard';
-const LEADERBOARD_LIMIT = 100;
+const LEADERBOARD_LIMIT = 20; // Reduced from 100 for faster loads
 
 /**
  * Fetches the top leaderboard entries from Firestore.
@@ -175,5 +175,3 @@ export async function getUserLeaderboardEntry(userId: string): Promise<Leaderboa
     throw error;
   }
 }
-
-    
