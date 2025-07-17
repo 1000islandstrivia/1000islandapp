@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { getAiPirateResponseAction } from '@/actions/getAiPirateResponseAction';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/useAuth';
-import { Award, RefreshCw, type LucideIcon, Loader2, Skull } from 'lucide-react';
+import { Award, RefreshCw, type LucideIcon, Loader2, Skull, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { updateUserScore } from '@/services/leaderboardService';
 import { getTriviaQuestions, getQuestionHints } from '@/services/triviaService';
@@ -104,6 +104,11 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   const loadingMessage = useRef(pirateLoadingMessages[0]);
   const gameInitialized = useRef(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  const onTypingComplete = useCallback(() => {
+    setIsTypingComplete(true);
+  }, []);
 
   useEffect(() => {
     async function fetchAllQuestions() {
@@ -236,6 +241,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       return;
     }
 
+    setIsTypingComplete(false); // Reset typing complete state
     const isCorrect = answer === question.answer;
     
     setLastAnswerCorrect(isCorrect);
@@ -507,7 +513,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               {pirateResponse && (
                 <HintDisplay
                     script={pirateResponse.script}
-                    isScriptLoading={isAiLoading}
+                    onTypingComplete={onTypingComplete}
+                    isTypingComplete={isTypingComplete}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                 />

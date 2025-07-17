@@ -4,19 +4,19 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Volume2, Loader2, ChevronRight } from 'lucide-react';
 import { useTypewriter } from '@/hooks/useTypewriter';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 
 interface HintDisplayProps {
   script: string;
-  isScriptLoading: boolean;
+  isTypingComplete: boolean;
+  onTypingComplete: () => void;
   onProceed: () => void;
   isLastQuestion: boolean;
 }
 
-export default function HintDisplay({ script, isScriptLoading, onProceed, isLastQuestion }: HintDisplayProps) {
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
-  const typedScript = useTypewriter(script, 40, 0, () => setIsTypingComplete(true));
+export default function HintDisplay({ script, isTypingComplete, onTypingComplete, onProceed, isLastQuestion }: HintDisplayProps) {
+  const typedScript = useTypewriter(script, 40, 0, onTypingComplete);
   const isTyping = !isTypingComplete && script.length > 0;
 
   return (
@@ -24,12 +24,6 @@ export default function HintDisplay({ script, isScriptLoading, onProceed, isLast
         <div className="animate-fadeIn space-y-4 w-full">
             <div className="flex justify-center items-center gap-4">
                 <Volume2 className="w-10 h-10 sm:w-12 sm:h-12 text-accent" />
-                {isScriptLoading && (
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    Conjuring story...
-                  </div>
-                )}
             </div>
             <Card className="bg-secondary/30 p-4 w-full min-h-[120px] flex items-center justify-center">
                 <CardContent className="p-2">
