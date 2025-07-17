@@ -100,41 +100,45 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [pirateResponse, setPirateResponse] = useState<PirateResponse | null>(null);
   const [pirateAudioUri, setPirateAudioUri] = useState<string | null>(null);
 
-  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>(() => 
-    initialStoryline.map(h => ({ ...h, unlocked: h.unlocked }))
-  );
-  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>(() =>
-    initialAchievementsData.map(a => ({...a, unlocked: a.unlocked }))
-  );
+  const [unlockedStoryHints, setUnlockedStoryHints] = useState<StorylineHint[]>([]);
+  const [currentAchievements, setCurrentAchievements] = useState<Achievement[]>([]);
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<Set<string>>(new Set());
   
   const scoreRef = useRef(score);
   useEffect(() => { scoreRef.current = score }, [score]);
+  
+  const unlockedStoryHintsRef = useRef(unlockedStoryHints);
+  useEffect(() => { unlockedStoryHintsRef.current = unlockedStoryHints; }, [unlockedStoryHints]);
+
+  const currentAchievementsRef = useRef(currentAchievements);
+  useEffect(() => { currentAchievementsRef.current = currentAchievements; }, [currentAchievements]);
 
   const loadUserProgress = useCallback(() => {
     if (user) {
-      const storyKey = `storyProgress_${user.username}`;
-      const achKey = `achievements_progress_${user.username}`;
-      const answeredKey = `answered_questions_${user.username}`;
-      
       try {
+        const storyKey = `storyProgress_${user.username}`;
         const storedStory = localStorage.getItem(storyKey);
+        const unlockedKeys = storedStory ? JSON.parse(storedStory) : initialStoryline.filter(h => h.unlocked).map(h => h.key);
+        setUnlockedStoryHints(initialStoryline.map(h => ({ ...h, unlocked: unlockedKeys.includes(h.key) })));
+
+        const achKey = `achievements_progress_${user.username}`;
         const storedAch = localStorage.getItem(achKey);
-        const storedAnswered = localStorage.getItem(answeredKey);
-
-        const unlockedKeys = storedStory ? JSON.parse(storedStory) : [];
-        setUnlockedStoryHints(initialStoryline.map(h => ({ ...h, unlocked: unlockedKeys.includes(h.key) || h.unlocked })));
-
         const storedProgress: StoredAchievementProgress[] = storedAch ? JSON.parse(storedAch) : [];
         setCurrentAchievements(initialAchievementsData.map(masterAch => {
           const progress = storedProgress.find(p => p.id === masterAch.id);
           return { ...masterAch, icon: masterAch.icon, unlocked: !!progress?.unlocked };
         }));
 
+        const answeredKey = `answered_questions_${user.username}`;
+        const storedAnswered = localStorage.getItem(answeredKey);
         setAnsweredQuestionIds(new Set(storedAnswered ? JSON.parse(storedAnswered) : []));
       } catch (e) {
         console.error("Failed to load user progress from localStorage", e);
+        // Fallback to initial state
+        setUnlockedStoryHints(initialStoryline);
+        setCurrentAchievements(initialAchievementsData);
+        setAnsweredQuestionIds(new Set());
       }
     }
   }, [user]);
@@ -144,8 +148,10 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       try {
         const keysToSave = unlockedStoryHints.filter(h => h.unlocked).map(h => h.key);
         localStorage.setItem(`storyProgress_${user.username}`, JSON.stringify(keysToSave));
+        
         const achievementsProgress = currentAchievements.map(a => ({ id: a.id, unlocked: a.unlocked }));
         localStorage.setItem(`achievements_progress_${user.username}`, JSON.stringify(achievementsProgress));
+        
         localStorage.setItem(`answered_questions_${user.username}`, JSON.stringify(Array.from(answeredQuestionIds)));
       } catch (e) {
         console.error("Failed to save progress to localStorage", e);
@@ -157,8 +163,8 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     saveProgress();
   }, [saveProgress]);
 
-
   const initializeGame = useCallback(() => {
+    loadUserProgress();
     setIsLoading(true);
     setError(null);
     setScore(0);
@@ -170,161 +176,193 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
     setLoadingMessage(null);
     setToastedAchievementIds(new Set());
     
-    let localAnsweredIds = new Set<string>();
-    try {
-        const storedAnswered = localStorage.getItem(`answered_questions_${user?.username}`);
-        localAnsweredIds = new Set(storedAnswered ? JSON.parse(storedAnswered) : []);
-    } catch (e) {
-        console.error("Error parsing answered questions, starting fresh.", e);
-    }
-    setAnsweredQuestionIds(localAnsweredIds);
-    
-    // This logic runs after all questions have been loaded
+    // This now relies on allTriviaQuestions being populated first
     if (allTriviaQuestions.length > 0) {
-        let availableQuestions = allTriviaQuestions.filter(q => !localAnsweredIds.has(q.id));
+      let localAnsweredIds = new Set<string>();
+      try {
+          const storedAnswered = localStorage.getItem(`answered_questions_${user?.username}`);
+          localAnsweredIds = new Set(storedAnswered ? JSON.parse(storedAnswered) : []);
+      } catch (e) {
+          console.error("Error parsing answered questions, starting fresh.", e);
+      }
+      
+      let availableQuestions = allTriviaQuestions.filter(q => !localAnsweredIds.has(q.id));
 
-        if (availableQuestions.length < QUESTIONS_PER_GAME) {
-            if (allTriviaQuestions.length >= QUESTIONS_PER_GAME) {
-                toast({
-                    title: "You've Seen It All!",
-                    description: "Resetting the question pool. Well done, Captain!",
-                });
-                setAnsweredQuestionIds(new Set());
-                if(user) localStorage.removeItem(`answered_questions_${user.username}`);
-                availableQuestions = allTriviaQuestions;
-            } else {
-                setError(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, only ${allTriviaQuestions.length} exist). Please contact an admin.`);
-                setIsLoading(false);
-                return;
-            }
-        }
-        
-        const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
-        const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
-        
-        setActiveQuestions(newGameQuestions);
+      if (availableQuestions.length < QUESTIONS_PER_GAME) {
+        toast({
+          title: "You've Seen It All!",
+          description: "Resetting the question pool. Well done, Captain!",
+        });
+        localAnsweredIds.clear();
+        if(user) localStorage.removeItem(`answered_questions_${user.username}`);
+        availableQuestions = allTriviaQuestions;
+      }
+      
+      if (availableQuestions.length < QUESTIONS_PER_GAME) {
+        setError(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, only ${availableQuestions.length} exist). Please contact an admin.`);
         setIsLoading(false);
+        return;
+      }
+      
+      const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+      const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+      
+      setActiveQuestions(newGameQuestions);
+      setIsLoading(false);
     }
-    // If allTriviaQuestions is empty, loading will remain true until it's populated by loadInitialData
-  }, [allTriviaQuestions, user, toast]);
+  }, [allTriviaQuestions, user?.username, toast, loadUserProgress]);
 
   useEffect(() => {
-    async function loadInitialData() {
-        setIsLoading(true);
-        setError(null);
-        loadUserProgress();
-        try {
-            const questions = await getTriviaQuestions();
-            if (questions && questions.length > 0) {
-                setAllTriviaQuestions(questions);
-            } else {
-                throw new Error("No trivia questions could be loaded from the database.");
-            }
-        } catch (e: any) {
-            console.error("Failed to fetch trivia questions:", e);
-            setError(`Error loading questions: ${e.message}`);
-            toast({ title: "Error Loading Questions", description: "Could not load questions. Please try again.", variant: "destructive" });
-            setIsLoading(false); // Stop loading on error
-        }
+    async function fetchAllQuestions() {
+      setIsLoading(true);
+      setError(null);
+      try {
+          const questions = await getTriviaQuestions();
+          if (questions && questions.length > 0) {
+              setAllTriviaQuestions(questions);
+          } else {
+              throw new Error("No trivia questions could be loaded from the database.");
+          }
+      } catch (e: any) {
+          console.error("Failed to fetch trivia questions:", e);
+          setError(`Error loading questions: ${e.message}`);
+          toast({ title: "Error Loading Questions", description: "Could not load questions. Please try again.", variant: "destructive" });
+          setIsLoading(false);
+      }
     }
-    loadInitialData();
-  }, [loadUserProgress, toast]);
+    fetchAllQuestions();
+  }, [toast]);
 
   useEffect(() => {
-      // This effect triggers the game initialization once all questions are loaded.
-    if (allTriviaQuestions.length > 0 && isLoading) {
+    if (allTriviaQuestions.length > 0) {
       initializeGame();
     }
-  }, [allTriviaQuestions, isLoading, initializeGame]);
-
+  }, [allTriviaQuestions, initializeGame]);
+  
   const currentQuestion = activeQuestions[currentQuestionIndex];
+
+  const checkAchievements = useCallback((isCorrect: boolean) => {
+    const newAchievements = [...currentAchievementsRef.current];
+    let changed = false;
+
+    newAchievements.forEach(ach => {
+      if (ach.unlocked) return;
+      
+      let unlocked = false;
+      if (isCorrect && ach.id === 'first_hint' && unlockedStoryHintsRef.current.filter(h => h.unlocked).length === 1) {
+        unlocked = true;
+      }
+      // Add other on-the-fly checks here
+
+      if(unlocked) {
+        const achievement = newAchievements.find(a => a.id === ach.id);
+        if (achievement) {
+            achievement.unlocked = true;
+            changed = true;
+        }
+      }
+    });
+
+    if (changed) {
+      setCurrentAchievements(newAchievements);
+    }
+  }, []);
 
   const handleAnswerSubmit = useCallback(async (answer: string) => {
     if (!currentQuestion) return;
 
-    setShowAnswerResult(true);
     const isCorrect = answer === currentQuestion.answer;
-    setAnswerCorrectness(isCorrect);
+    
+    // Play immediate audio feedback
+    if (isAiLoreEnabled) {
+      const responseAudios = isCorrect ? correctResponses : wrongResponses;
+      const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
+      if (typeof window !== 'undefined') {
+        const audio = new Audio(randomAudioUrl);
+        audio.play().catch(e => console.error("Audio play failed:", e));
+      }
+    }
     
     setAnsweredQuestionIds(prev => new Set(prev).add(currentQuestion.id));
-
+    
     if (isCorrect) {
-        setScore(s => s + 10);
-        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c').play().catch(e => console.error("Audio play failed:", e));
+      setScore(s => s + 10);
+      if (typeof window !== 'undefined') {
+          const coinAudio = new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c');
+          coinAudio.play().catch(e => console.error("Audio play failed:", e));
+      }
+      
+      const hintKey = currentQuestion.storylineHintKey;
+      const isAlreadyUnlocked = unlockedStoryHintsRef.current.find(h => h.key === hintKey)?.unlocked;
 
-        setUnlockedStoryHints(prevHints => {
-            const hintKey = currentQuestion.storylineHintKey;
-            if (prevHints.find(h => h.key === hintKey && h.unlocked)) {
-                return prevHints;
-            }
-            toast({
-                title: "Lore Unlocked!",
-                description: `You've uncovered a new secret: "${initialStoryline.find(h => h.key === hintKey)?.title}"`,
-                action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
-            });
-            return prevHints.map(h => 
-                h.key === hintKey ? { ...h, unlocked: true } : h
-            );
+      if (!isAlreadyUnlocked) {
+        toast({
+          title: "Lore Unlocked!",
+          description: `You've uncovered a new secret: "${initialStoryline.find(h => h.key === hintKey)?.title}"`,
+          action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
         });
+        
+        setUnlockedStoryHints(prevHints =>
+          prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h))
+        );
+      }
     } else {
-        setScore(s => Math.max(0, s - 5));
-        if (typeof window !== 'undefined') new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57').play().catch(e => console.error("Audio play failed:", e));
+      setScore(s => Math.max(0, s - 5));
+      if (typeof window !== 'undefined') {
+        const hornAudio = new Audio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57');
+        hornAudio.play().catch(e => console.error("Audio play failed:", e));
+      }
     }
     
+    checkAchievements(isCorrect);
+    setAnswerCorrectness(isCorrect);
+    setShowAnswerResult(true);
+
     if (isAiLoreEnabled) {
-        const responseAudios = isCorrect ? correctResponses : wrongResponses;
-        const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
-        if (typeof window !== 'undefined') new Audio(randomAudioUrl).play().catch(e => console.error("Audio play failed:", e));
-
-        setIsResponseLoading(true);
-        setLoadingMessage(pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)]);
-
-        let script = currentQuestion.cachedPirateScript;
-        if (!script) {
-            try {
-                const scriptResult = await generatePirateScript({
-                    question: currentQuestion.question,
-                    playerAnswer: answer,
-                    correctAnswer: currentQuestion.answer,
-                    fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
-                });
-                script = scriptResult.script;
-                if (script) cacheHintAction(currentQuestion.id, script).catch(err => console.error("Failed to cache hint:", err));
-            } catch (error) {
-                console.error("Failed to generate pirate script:", error);
-                script = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
-            }
+      setIsResponseLoading(true);
+      setLoadingMessage(pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)]);
+      
+      let script = currentQuestion.cachedPirateScript;
+      if (!script) {
+        try {
+          const scriptResult = await generatePirateScript({
+            question: currentQuestion.question,
+            playerAnswer: answer,
+            correctAnswer: currentQuestion.answer,
+            fallbackHint: currentQuestion.fallbackHint || "Arrr, this secret be lost to the depths!",
+          });
+          script = scriptResult.script;
+          if (script) cacheHintAction(currentQuestion.id, script).catch(err => console.error("Failed to cache hint:", err));
+        } catch (error) {
+          script = currentQuestion.fallbackHint || "A mysterious force prevents the hint from appearing...";
         }
-        
-        setPirateResponse({ script });
-        setIsResponseLoading(false);
-        setLoadingMessage(null);
-        
-        if (script) {
-            setIsAudioLoading(true);
-            try {
-                const audioResult = await generateSpokenPirateAudio({ script });
-                setPirateAudioUri(audioResult.audioDataUri);
-            } catch (err) {
-                console.error("Failed to generate pirate audio:", err);
-                setPirateAudioUri(null);
-            } finally {
-                setIsAudioLoading(false);
-            }
+      }
+      setPirateResponse({ script });
+      setIsResponseLoading(false);
+
+      if (script) {
+        setIsAudioLoading(true);
+        try {
+          const audioResult = await generateSpokenPirateAudio({ script });
+          setPirateAudioUri(audioResult.audioDataUri);
+        } catch (err) {
+          setPirateAudioUri(null);
+        } finally {
+          setIsAudioLoading(false);
         }
+      }
     } else {
-        setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
+      setPirateResponse({ script: currentQuestion.fallbackHint || "No hint available." });
     }
-  }, [currentQuestion, isAiLoreEnabled, toast]);
+  }, [currentQuestion, isAiLoreEnabled, toast, checkAchievements]);
 
   const handleProceedToNext = useCallback(async () => {
-    setShowAnswerResult(false);
-    setPirateResponse(null);
-    setPirateAudioUri(null);
-
     const nextIndex = currentQuestionIndex + 1;
-
+    
     if (nextIndex < activeQuestions.length) {
+      setShowAnswerResult(false);
+      setPirateResponse(null);
+      setPirateAudioUri(null);
       setCurrentQuestionIndex(nextIndex);
     } else {
       setGameOver(true);
@@ -337,69 +375,27 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           toast({ title: "Leaderboard Error", description: "Could not save your score.", variant: "destructive" });
         }
       }
+      
+      // End-of-game achievement checks
+      const newAchievements = [...currentAchievementsRef.current];
+      let changed = false;
+      newAchievements.forEach(ach => {
+        if (ach.unlocked) return;
+        let unlocked = false;
+        if (ach.id === 'first_game') unlocked = true;
+        if (ach.id === 'first_blood' && scoreRef.current > 0) unlocked = true;
+        // Add other end-of-game checks here
+        if (unlocked) {
+          const achievement = newAchievements.find(a => a.id === ach.id);
+          if (achievement) {
+            achievement.unlocked = true;
+            changed = true;
+          }
+        }
+      });
+      if (changed) setCurrentAchievements(newAchievements);
     }
   }, [currentQuestionIndex, activeQuestions.length, user, toast, refreshUser]);
-  
-  const unlockedStoryHintsRef = useRef(unlockedStoryHints);
-  useEffect(() => { unlockedStoryHintsRef.current = unlockedStoryHints; }, [unlockedStoryHints]);
-
-  const currentAchievementsRef = useRef(currentAchievements);
-  useEffect(() => { currentAchievementsRef.current = currentAchievements; }, [currentAchievements]);
-
-  useEffect(() => {
-    const checkAchievements = () => {
-        if (gameOver) {
-            const newAchievements = [...currentAchievementsRef.current];
-            let changed = false;
-
-            newAchievements.forEach(ach => {
-                if (ach.unlocked) return;
-                
-                let unlocked = false;
-                if (ach.id === 'first_game') unlocked = true;
-                if (ach.id === 'first_blood' && scoreRef.current > 0) unlocked = true;
-                // Add other end-of-game checks here
-
-                if(unlocked) {
-                    const achievement = newAchievements.find(a => a.id === ach.id);
-                    if (achievement && !achievement.unlocked) {
-                        achievement.unlocked = true;
-                        changed = true;
-                    }
-                }
-            });
-            if (changed) setCurrentAchievements(newAchievements);
-        }
-    }
-    checkAchievements();
-  }, [gameOver]);
-  
-  useEffect(() => {
-    const checkAchievementsOnTheFly = () => {
-        const newAchievements = [...currentAchievementsRef.current];
-        let changed = false;
-        newAchievements.forEach(ach => {
-            if(ach.unlocked) return;
-            let unlocked = false;
-            // Check for first hint unlock
-            if(ach.id === 'first_hint' && unlockedStoryHintsRef.current.some(h => h.unlocked && !initialStoryline.find(ih => ih.key === h.key)?.unlocked)) {
-                unlocked = true;
-            }
-
-            if(unlocked) {
-                const achievement = newAchievements.find(a => a.id === ach.id);
-                if (achievement && !achievement.unlocked) {
-                    achievement.unlocked = true;
-                    changed = true;
-                }
-            }
-        });
-
-        if (changed) setCurrentAchievements(newAchievements);
-    };
-    checkAchievementsOnTheFly();
-  }, [unlockedStoryHints]);
-
 
   useEffect(() => {
     currentAchievements.forEach(ach => {
@@ -476,7 +472,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
         <Skull className="w-12 h-12 text-primary mb-4" />
         <p className="ml-4 text-xl text-primary">Preparing Your Voyage</p>
         <p className="text-muted-foreground mt-2">Shuffling the treasure maps... please wait.</p>
-        <Button onClick={initializeGame} className="mt-4" disabled>
+        <Button onClick={initializeGame} className="mt-4" disabled={isLoading}>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading...
         </Button>
       </div>
