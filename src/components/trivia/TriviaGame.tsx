@@ -100,6 +100,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
   const [toastedAchievementIds, setToastedAchievementIds] = useState<Set<string>>(new Set());
   
   const [achievementsToToast, setAchievementsToToast] = useState<Achievement[]>([]);
+  const [storyToastQueue, setStoryToastQueue] = useState<string[]>([]);
 
   const loadingMessage = useRef(pirateLoadingMessages[0]);
   const gameInitialized = useRef(false);
@@ -256,11 +257,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
           if (!isAlreadyUnlocked) {
               const hint = initialStoryline.find(h => h.key === hintKey);
               if (hint) {
-                toast({
-                    title: "Lore Unlocked!",
-                    description: `You've uncovered a new secret: "${hint.title}"`,
-                    action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
-                });
+                setStoryToastQueue(q => [...q, hint.title]);
               }
               return prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
           }
@@ -302,7 +299,7 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       const hintData = await getQuestionHints(question.id);
       setPirateResponse({ script: hintData.fallbackHint || "No hint available." });
     }
-  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, toast]);
+  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio]);
 
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
@@ -374,6 +371,20 @@ export default function TriviaGame({ isAiLoreEnabled }: TriviaGameProps) {
       setAchievementsToToast([]);
     }
   }, [achievementsToToast, toast]);
+
+  // Effect to safely display toasts for unlocked story hints
+  useEffect(() => {
+    if (storyToastQueue.length > 0) {
+      storyToastQueue.forEach(hintTitle => {
+        toast({
+          title: "Lore Unlocked!",
+          description: `You've uncovered a new secret: "${hintTitle}"`,
+          action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
+        });
+      });
+      setStoryToastQueue([]); // Clear the queue
+    }
+  }, [storyToastQueue, toast]);
 
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const totalQuestions = activeQuestions.length;
