@@ -397,7 +397,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const totalQuestions = activeQuestions.length;
 
-  if (gameState === 'LOADING' || gameState === 'STARTING') {
+  if (gameState === 'LOADING') {
     return (
       <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md">
         <Loader2 className="w-12 h-12 animate-spin text-primary" />
