@@ -72,6 +72,7 @@ interface StoredAchievementProgress {
 
 interface PirateResponse {
   script: string;
+  audioUri?: string;
 }
 
 interface TriviaGameProps {
@@ -104,11 +105,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   const loadingMessage = useRef(pirateLoadingMessages[0]);
   const gameInitialized = useRef(false);
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
-
-  const onTypingComplete = useCallback(() => {
-    setIsTypingComplete(true);
-  }, []);
 
   useEffect(() => {
     async function fetchAllQuestions() {
@@ -241,7 +237,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       return;
     }
 
-    setIsTypingComplete(false); // Reset typing complete state
     const isCorrect = answer === question.answer;
     
     setLastAnswerCorrect(isCorrect);
@@ -289,7 +284,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         });
         
         if (result.success && result.script) {
-          setPirateResponse({ script: result.script });
+          setPirateResponse({ script: result.script, audioUri: result.audioUri });
         } else {
           throw new Error(result.error || "AI response generation failed.");
         }
@@ -424,7 +419,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                 <CardTitle className="font-headline text-4xl text-primary">Ready to Set Sail?</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
+                <p className="text-lg text-foreground/80">A new voyage of ${QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
                 <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90">
                     Begin Trivia Challenge
                 </Button>
@@ -513,8 +508,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               {pirateResponse && (
                 <HintDisplay
                     script={pirateResponse.script}
-                    onTypingComplete={onTypingComplete}
-                    isTypingComplete={isTypingComplete}
+                    audioUri={pirateResponse.audioUri}
                     onProceed={handleProceedToNext}
                     isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
                 />
