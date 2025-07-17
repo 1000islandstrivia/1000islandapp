@@ -51,8 +51,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
       if (result.audioDataUris && result.audioDataUris.length > 0) {
         setAudioSrcs(result.audioDataUris);
         setCurrentTrackIndex(0);
-        // Do not autoplay here to comply with mobile browser policies
-        // setIsPlaying(true); 
+        setIsPlaying(true); 
       } else {
         throw new Error("Received no audio clips.");
       }
@@ -73,6 +72,10 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
+        // If we are at the end, restart from the beginning
+        if (currentTrackIndex >= (audioSrcs?.length ?? 0) - 1 && audioRef.current.ended) {
+           setCurrentTrackIndex(0);
+        }
         audioRef.current.play();
       }
       setIsPlaying(!isPlaying);
@@ -88,22 +91,30 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
 
   const handleTrackEnd = () => {
     if (currentTrackIndex < (audioSrcs?.length ?? 0) - 1) {
+      // Move to the next track, playback will be handled by useEffect
       setCurrentTrackIndex(prevIndex => prevIndex + 1);
     } else {
-      setIsPlaying(false); // End of playlist
+      // End of playlist
+      setIsPlaying(false); 
+      setCurrentTrackIndex(0); // Reset to beginning for next play
     }
   };
   
+  // This effect handles the actual playback logic
   useEffect(() => {
-    if (audioRef.current && audioSrcs) { // Ensure audioSrcs is not null
-        if(isPlaying) {
-            audioRef.current.play().catch(e => {
-              // This catch block is important for handling autoplay restrictions
-              console.error("Audio play failed:", e);
-              setIsPlaying(false); // Reset playing state if autoplay is blocked
+    const audioElement = audioRef.current;
+    if (audioElement && audioSrcs && audioSrcs[currentTrackIndex]) {
+        if (isPlaying) {
+            // If the source is not what's currently loaded, load it
+            if (audioElement.src !== audioSrcs[currentTrackIndex]) {
+                audioElement.src = audioSrcs[currentTrackIndex];
+            }
+            audioElement.play().catch(e => {
+                console.error("Audio play failed:", e);
+                setIsPlaying(false);
             });
         } else {
-            audioRef.current.pause();
+            audioElement.pause();
         }
     }
   }, [currentTrackIndex, isPlaying, audioSrcs]);
@@ -113,7 +124,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
     <TooltipProvider delayDuration={200}>
       <div className="mt-6 p-4 bg-primary/10 border-t-2 border-accent/50 rounded-lg">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          {!audioSrcs && (
+          {!audioSrcs && !isLoading && (
             <Tooltip>
                 <TooltipTrigger asChild>
                 <Button 
@@ -121,17 +132,8 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                     disabled={isLoading}
                     className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg transform hover:scale-105 transition-transform w-full sm:w-auto"
                 >
-                    {isLoading ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Summoning the Spirit...
-                    </>
-                    ) : (
-                    <>
-                        <Volume2 className="mr-2 h-5 w-5" />
-                        Hear Me Tale!
-                    </>
-                    )}
+                    <Volume2 className="mr-2 h-5 w-5" />
+                    Hear Me Tale!
                 </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -139,6 +141,13 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                 </TooltipContent>
             </Tooltip>
           )}
+
+           {isLoading && (
+              <Button disabled className="bg-accent text-accent-foreground w-full sm:w-auto">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Summoning the Spirit...
+              </Button>
+            )}
 
           <Select onValueChange={handleVoiceChange} defaultValue={selectedVoice} disabled={isLoading || isPlaying}>
             <SelectTrigger className="w-full sm:w-[200px] bg-card text-card-foreground border-primary/50">
@@ -173,7 +182,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                     <span className="sr-only">Restart</span>
                 </Button>
                 <div className="text-sm text-muted-foreground">
-                    Playing clip {currentTrackIndex + 1} of {audioSrcs.length}
+                    Clip {currentTrackIndex + 1} of {audioSrcs.length}
                 </div>
             </div>
              <audio
@@ -182,8 +191,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
               onEnded={handleTrackEnd}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
-              autoPlay={isPlaying}
-              className="hidden" // The player is controlled by our buttons
+              className="hidden"
             />
           </div>
         )}
@@ -191,3 +199,5 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
     </TooltipProvider>
   );
 }
+
+    
