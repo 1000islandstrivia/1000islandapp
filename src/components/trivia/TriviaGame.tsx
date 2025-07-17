@@ -197,29 +197,23 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   useEffect(() => {
     if (gameState === 'STARTING') {
-      if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
-        setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
-        setGameState('ERROR');
-        return;
-      }
-
-      let currentAnsweredIds = new Set<string>();
-      try {
-        const storedAnswered = localStorage.getItem(`answered_questions_${user?.username}`);
-        currentAnsweredIds = new Set(storedAnswered ? JSON.parse(storedAnswered) : []);
-      } catch (e) {
-        console.error("Error parsing answered questions, starting fresh.", e);
-      }
+      let currentAnsweredIds = answeredQuestionIds;
 
       let availableQuestions = allTriviaQuestions.filter(q => !currentAnsweredIds.has(q.id));
       
       if (availableQuestions.length < QUESTIONS_PER_GAME) {
+        if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
+            setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
+            setGameState('ERROR');
+            return;
+        }
+
         toast({
-          title: "You've Seen It All!",
-          description: "Resetting the question pool. Well done, Captain!",
+          title: "You've Seen It All, Captain!",
+          description: "Resetting the question pool for a new voyage. Well done!",
         });
         currentAnsweredIds.clear();
-        if(user) localStorage.removeItem(`answered_questions_${user.username}`);
+        setAnsweredQuestionIds(new Set()); // Update state
         availableQuestions = allTriviaQuestions;
       }
 
@@ -229,7 +223,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       setActiveQuestions(newGameQuestions);
       setGameState('PLAYING');
     }
-  }, [gameState, allTriviaQuestions, user, toast]);
+  }, [gameState, allTriviaQuestions, answeredQuestionIds, toast]);
   
 
   const handleAnswerSubmit = useCallback(async (answer: string) => {

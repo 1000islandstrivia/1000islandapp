@@ -9,29 +9,37 @@
 
 import { db } from '@/lib/firebase';
 import type { TriviaQuestion } from '@/lib/trivia-data';
-import { collection, getDocs, query, addDoc, doc, setDoc, limit, getDoc } from 'firebase/firestore';
+import { collection, getDocs, query, addDoc, doc, setDoc, getDoc } from 'firebase/firestore';
 
 const TRIVIA_COLLECTION = 'triviaQuestions';
-const QUESTIONS_TO_FETCH_FROM_DB = 50;
+
+// Simple in-memory cache for all questions
+let allQuestionsCache: TriviaQuestion[] | null = null;
+let cacheTimestamp: number | null = null;
+const CACHE_DURATION_MS = 10 * 60 * 1000; // 10 minutes
 
 /**
- * 🚀 OPTIMIZED: Server-side payload reduction
+ * 🚀 OPTIMIZED: Server-side payload reduction and in-memory caching
  * Fetches full documents, immediately strips large fields, sends lean objects to client
  */
 export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
+  const now = Date.now();
+  if (allQuestionsCache && cacheTimestamp && (now - cacheTimestamp < CACHE_DURATION_MS)) {
+    console.log('✅ Serving trivia questions from in-memory cache.');
+    // Return a shuffled copy of the cache to ensure game randomness
+    return [...allQuestionsCache].sort(() => 0.5 - Math.random());
+  }
+
   try {
     const startTime = performance.now();
     
-    // Fetch full documents from Firestore
-    const questionsQuery = query(
-      collection(db, TRIVIA_COLLECTION),
-      limit(QUESTIONS_TO_FETCH_FROM_DB)
-    );
+    // Fetch all documents from Firestore
+    const questionsQuery = query(collection(db, TRIVIA_COLLECTION));
     
     const querySnapshot = await getDocs(questionsQuery);
     const fetchTime = performance.now();
     
-    console.log(`📊 Firestore fetch: ${Math.round(fetchTime - startTime)}ms`);
+    console.log(`📊 Firestore fetch for all questions: ${Math.round(fetchTime - startTime)}ms`);
 
     if (querySnapshot.empty) {
       console.warn("The 'triviaQuestions' collection is empty. Please run the database seeder.");
@@ -46,30 +54,25 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
     querySnapshot.forEach((docSnapshot) => {
       const fullData = docSnapshot.data();
       
-      // Calculate original document size (for monitoring)
       const originalSize = JSON.stringify(fullData).length;
       totalOriginalSize += originalSize;
       
-      // Create lean object with ONLY essential gameplay fields
       const leanQuestion: TriviaQuestion = {
         id: fullData.id,
         question: fullData.question,
         options: fullData.options,
         answer: fullData.answer,
         storylineHintKey: fullData.storylineHintKey,
-        // Explicitly exclude large fields - NEVER send to client
         fallbackHint: '', 
         cachedPirateScript: undefined,
       };
       
-      // Calculate lean size
       const leanSize = JSON.stringify(leanQuestion).length;
       totalLeanSize += leanSize;
       
       leanQuestions.push(leanQuestion);
     });
     
-    // Performance monitoring
     if (totalOriginalSize > 0) {
       const compressionRatio = ((totalOriginalSize - totalLeanSize) / totalOriginalSize * 100).toFixed(1);
       console.log(`📦 Payload optimization:
@@ -79,13 +82,15 @@ export async function getTriviaQuestions(): Promise<TriviaQuestion[]> {
       - Questions processed: ${leanQuestions.length}`);
     }
     
-    // Shuffle for randomness (server-side)
-    const shuffledQuestions = leanQuestions.sort(() => 0.5 - Math.random());
-    
+    // Update cache
+    allQuestionsCache = leanQuestions;
+    cacheTimestamp = now;
+    console.log(`📚 Cached ${leanQuestions.length} trivia questions.`);
+
     const endTime = performance.now();
     console.log(`⚡ Total processing time: ${Math.round(endTime - startTime)}ms`);
     
-    return shuffledQuestions;
+    return [...allQuestionsCache].sort(() => 0.5 - Math.random());
 
   } catch (error: any) {
     console.error("Error fetching and optimizing trivia questions:", error);
@@ -140,6 +145,11 @@ export async function addTriviaQuestion(questionData: Omit<TriviaQuestion, 'id'>
     
     const questionDocRef = doc(db, TRIVIA_COLLECTION, newId);
     await setDoc(questionDocRef, questionWithId);
+
+    // Invalidate cache
+    allQuestionsCache = null;
+    cacheTimestamp = null;
+    console.log('Question added. Trivia cache invalidated.');
     
     console.log(`✅ Added question ${newId}`);
     return newId;
