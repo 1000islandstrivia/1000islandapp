@@ -3,12 +3,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { generateStoryAudio } from '@/ai/flows/generate-story-audio';
 import { useToast } from '@/hooks/use-toast';
-import { Volume2, Anchor, Bird, Loader2, Play, Pause, RotateCcw } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Volume2, Loader2, Play, Pause, RotateCcw } from 'lucide-react';
 
 interface LorePlaybackProps {
   text: string;
@@ -16,10 +14,7 @@ interface LorePlaybackProps {
 
 type VoiceOption = 'male' | 'female';
 
-const VOICE_PREFERENCE_KEY = 'riverrat_lore_voice_preference';
-
 export default function LorePlayback({ text }: LorePlaybackProps) {
-  const [selectedVoice, setSelectedVoice] = useState<VoiceOption>('male');
   const [isLoading, setIsLoading] = useState(false);
   const [audioSrcs, setAudioSrcs] = useState<string[] | null>(null);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -28,29 +23,22 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
   const { toast } = useToast();
 
   useEffect(() => {
-    const savedPreference = localStorage.getItem(VOICE_PREFERENCE_KEY) as VoiceOption | null;
-    if (savedPreference) {
-      setSelectedVoice(savedPreference);
-    }
-  }, []);
-
-  const handleVoiceChange = (value: VoiceOption) => {
-    setSelectedVoice(value);
-    localStorage.setItem(VOICE_PREFERENCE_KEY, value);
-    // Reset everything when voice changes
+    // When the text changes (i.e., user opens a new accordion), reset the player.
     setAudioSrcs(null);
     setCurrentTrackIndex(0);
     setIsPlaying(false);
     if (audioRef.current) {
       audioRef.current.src = '';
     }
-  };
+  }, [text]);
 
   const handleGenerate = async () => {
     setIsLoading(true);
     setAudioSrcs(null);
     try {
-      const result = await generateStoryAudio({ text, voice: selectedVoice });
+      const randomVoice: VoiceOption = Math.random() < 0.5 ? 'male' : 'female';
+      const result = await generateStoryAudio({ text, voice: randomVoice });
+
       if (result.audioDataUris && result.audioDataUris.length > 0) {
         setAudioSrcs(result.audioDataUris);
         setCurrentTrackIndex(0);
@@ -75,7 +63,6 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        // If we are at the end, restart from the beginning
         if (currentTrackIndex >= (audioSrcs?.length ?? 0) && audioRef.current.ended) {
            setCurrentTrackIndex(0);
         }
@@ -88,28 +75,23 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
   const handleRestart = () => {
     if (audioRef.current) {
         setCurrentTrackIndex(0);
-        // Ensure playback starts by setting isPlaying to true, useEffect will handle the rest.
         setIsPlaying(true);
     }
   };
 
   const handleTrackEnd = () => {
     if (currentTrackIndex < (audioSrcs?.length ?? 0) - 1) {
-      // Move to the next track and ensure it plays
       setCurrentTrackIndex(prevIndex => prevIndex + 1);
-      setIsPlaying(true); // This is the key fix!
+      setIsPlaying(true);
     } else {
-      // End of playlist
       setIsPlaying(false); 
-      setCurrentTrackIndex(0); // Reset to beginning for next play
+      setCurrentTrackIndex(0);
     }
   };
   
-  // This effect handles the actual playback logic
   useEffect(() => {
     const audioElement = audioRef.current;
     if (audioElement && audioSrcs && audioSrcs[currentTrackIndex]) {
-        // Only change src if it's different to avoid re-buffering
         if (audioElement.src !== audioSrcs[currentTrackIndex]) {
             audioElement.src = audioSrcs[currentTrackIndex];
         }
@@ -143,7 +125,7 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                 </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                <p>Click to hear the legend, told by a true river rogue.</p>
+                <p>Click to hear the legend, told by a random river rogue.</p>
                 </TooltipContent>
             </Tooltip>
           )}
@@ -154,26 +136,6 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                 Summoning the Spirit...
               </Button>
             )}
-
-          <Select onValueChange={handleVoiceChange} value={selectedVoice} disabled={isLoading || (audioSrcs !== null && isPlaying)}>
-            <SelectTrigger className="w-full sm:w-[200px] bg-card text-card-foreground border-primary/50">
-              <SelectValue placeholder="Choose a narrator..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="male">
-                <div className="flex items-center gap-2">
-                  <Anchor className="h-4 w-4 text-primary" />
-                  <span>Gruff Pirate (Male)</span>
-                </div>
-              </SelectItem>
-              <SelectItem value="female">
-                <div className="flex items-center gap-2">
-                  <Bird className="h-4 w-4 text-accent" />
-                  <span>Sly Pirate (Female)</span>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
         </div>
         
         {audioSrcs && !isLoading && (
@@ -188,7 +150,6 @@ export default function LorePlayback({ text }: LorePlaybackProps) {
                     <span className="sr-only">Restart</span>
                 </Button>
                 <div className="text-sm text-muted-foreground">
-                   {/* Show progress only if there are clips to play */}
                    {audioSrcs.length > 0 && `Clip ${currentTrackIndex + 1} of ${audioSrcs.length}`}
                 </div>
             </div>
