@@ -90,7 +90,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   const [errorMessage, setErrorMessage] = useState('');
   const [allTriviaQuestions, setAllTriviaQuestions] = useState<TriviaQuestion[]>([]);
   const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
-  const [answeredQuestionIds, setAnsweredQuestionIds] = useState<Set<string>>(new Set());
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
@@ -148,9 +147,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
           return { ...masterAch, icon: masterAch.icon, unlocked: !!progress?.unlocked };
         }));
 
-        const answeredKey = `answered_questions_${user.username}`;
-        const storedAnswered = localStorage.getItem(answeredKey);
-        setAnsweredQuestionIds(new Set(storedAnswered ? JSON.parse(storedAnswered) : []));
       } catch (e) {
         console.error("Failed to load user progress from localStorage", e);
       }
@@ -170,12 +166,11 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         const achievementsProgress = currentAchievements.map(a => ({ id: a.id, unlocked: a.unlocked }));
         localStorage.setItem(`achievements_progress_${user.username}`, JSON.stringify(achievementsProgress));
         
-        localStorage.setItem(`answered_questions_${user.username}`, JSON.stringify(Array.from(answeredQuestionIds)));
       } catch (e) {
         console.error("Failed to save progress to localStorage", e);
       }
     }
-  }, [unlockedStoryHints, currentAchievements, answeredQuestionIds, user]);
+  }, [unlockedStoryHints, currentAchievements, user]);
 
   const playAudio = useCallback((audioUrl: string, description: string = 'audio') => {
     if (typeof window !== 'undefined') {
@@ -203,33 +198,19 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   useEffect(() => {
     if (gameState === 'STARTING') {
-      let currentAnsweredIds = answeredQuestionIds;
-
-      let availableQuestions = allTriviaQuestions.filter(q => !currentAnsweredIds.has(q.id));
-      
-      if (availableQuestions.length < QUESTIONS_PER_GAME) {
-        if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
-            setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
-            setGameState('ERROR');
-            return;
-        }
-
-        toast({
-          title: "You've Seen It All, Captain!",
-          description: "Resetting the question pool for a new voyage. Well done!",
-        });
-        currentAnsweredIds.clear();
-        setAnsweredQuestionIds(new Set()); // Update state
-        availableQuestions = allTriviaQuestions;
+      if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
+        setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
+        setGameState('ERROR');
+        return;
       }
-
-      const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+      
+      const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
       const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
       
       setActiveQuestions(newGameQuestions);
       setGameState('PLAYING');
     }
-  }, [gameState, allTriviaQuestions, answeredQuestionIds, toast]);
+  }, [gameState, allTriviaQuestions]);
 
   // Preload hints when the game starts
   useEffect(() => {
@@ -267,7 +248,6 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
   
     setLastAnswerCorrect(false);
     const isCorrect = answer === question.answer;
-    setAnsweredQuestionIds(prev => new Set(prev).add(question.id));
   
     if (isInstantResponseEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
