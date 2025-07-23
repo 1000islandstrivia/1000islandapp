@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { LeaderboardEntry, PlayerRank } from '@/lib/trivia-data';
-import { playerRanks, getRankByScore } from '@/lib/trivia-data'; // Import ranks
+import { getRankByScore } from '@/lib/trivia-data';
 import { Award, ChevronDown, ChevronUp, ChevronsUpDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -138,22 +138,17 @@ export default function LeaderboardTable() {
           <TableRow className="hover:bg-muted/0">
             <TableHead className="w-[80px] text-center">
                  <Button variant="ghost" onClick={() => requestSort('rankDisplay')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
-                    Rank {getSortIcon('rankDisplay')}
+                    RANK {getSortIcon('rankDisplay')}
                 </Button>
             </TableHead>
             <TableHead>
                 <Button variant="ghost" onClick={() => requestSort('name')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
-                    Player {getSortIcon('name')}
-                </Button>
-            </TableHead>
-            <TableHead className="text-center hidden sm:table-cell">
-                 <Button variant="ghost" onClick={() => requestSort('rankTitle')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
-                    Title {getSortIcon('rankTitle')}
+                    PLAYER {getSortIcon('name')}
                 </Button>
             </TableHead>
             <TableHead className="text-right">
                  <Button variant="ghost" onClick={() => requestSort('score')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
-                    Gold {getSortIcon('score')}
+                    GOLD {getSortIcon('score')}
                 </Button>
             </TableHead>
           </TableRow>
@@ -165,7 +160,7 @@ export default function LeaderboardTable() {
               className={cn(
                 "transition-all duration-300 ease-in-out hover:bg-primary/10",
                 (entry.rank ?? Infinity) <= 3 && "bg-accent/10 hover:bg-accent/20",
-                user && entry.id === user.username && "bg-primary/20 ring-2 ring-primary"
+                user && entry.id === user.username && "bg-primary/20"
               )}
             >
               <TableCell className="text-center font-medium text-base sm:text-lg">
@@ -191,15 +186,6 @@ export default function LeaderboardTable() {
                     <AvatarFallback>{entry.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <span className={cn("font-medium text-sm sm:text-base", user && entry.id === user.username && "text-primary font-bold")}>{entry.name}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-center hidden sm:table-cell">
-                <div className="flex items-center justify-center gap-1">
-                 {entry.rankIcon && (() => {
-                   const RankIcon = entry.rankIcon;
-                   return <RankIcon className="w-4 h-4 text-muted-foreground" />;
-                 })()}
-                 <span className="text-xs text-muted-foreground">{entry.rankTitle}</span>
                 </div>
               </TableCell>
               <TableCell className={cn("text-right font-semibold text-base sm:text-lg", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>

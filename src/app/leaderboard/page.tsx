@@ -66,13 +66,13 @@ export default function LeaderboardPage() {
                         className={cn(
                           "flex items-center justify-between p-3 rounded-lg border transition-all",
                           user && user.rankTitle === rank.title
-                            ? "bg-primary/20 border-primary ring-2 ring-primary shadow-md"
+                            ? "bg-primary text-primary-foreground shadow-md"
                             : "bg-card/50 border-border hover:bg-muted/60 hover:border-primary/50"
                         )}
                       >
                         <div className="flex items-center gap-3">
                           {IconComponent && (
-                            <IconComponent className={cn("w-6 h-6 shrink-0", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-accent")} />
+                            <IconComponent className={cn("w-6 h-6 shrink-0", user && user.rankTitle === rank.title ? "text-accent" : "text-accent")} />
                           )}
                           <span className={cn("font-medium", user && user.rankTitle === rank.title ? "text-primary-foreground" : "text-card-foreground")}>{rank.title}</span>
                         </div>
