@@ -182,14 +182,14 @@ export default function LeaderboardTable() {
               </TableCell>
               <TableCell className="px-2 sm:px-4">
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <Avatar className="h-7 w-7 sm:h-8 sm:w-8 border-2 border-primary/50">
+                  <Avatar className="h-6 w-6 sm:h-8 sm:w-8 border-2 border-primary/50">
                     <AvatarImage src={entry.avatar || `https://placehold.co/40x40.png?text=${entry.name.substring(0,2).toUpperCase()}`} alt={entry.name} data-ai-hint="player avatar"/>
                     <AvatarFallback>{entry.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <span className={cn("font-medium text-sm truncate", user && entry.id === user.username && "text-primary font-bold")}>{entry.name}</span>
+                  <span className={cn("font-medium text-xs sm:text-sm truncate", user && entry.id === user.username && "text-primary font-bold")}>{entry.name}</span>
                 </div>
               </TableCell>
-              <TableCell className={cn("text-right font-semibold text-sm sm:text-base pr-4 sm:pr-4", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>
+              <TableCell className={cn("text-right font-semibold text-xs sm:text-base pr-2 sm:pr-4", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>
