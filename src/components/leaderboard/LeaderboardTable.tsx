@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { LeaderboardEntry, PlayerRank } from '@/lib/trivia-data';
@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getLeaderboard } from '@/services/leaderboardService';
 import { useToast } from "@/hooks/use-toast";
 import React from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 type SortKey = keyof LeaderboardEntry | 'rankDisplay';
 type SortOrder = 'asc' | 'dsc';
@@ -25,37 +26,38 @@ export default function LeaderboardTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAndSetLeaderboard = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-          const data = await getLeaderboard();
-          const rankedData = data.map((entry, index) => {
-            const playerRankDetails = getRankByScore(entry.score);
-            return {
-              ...entry,
-              rank: index + 1,
-              rankTitle: entry.rankTitle || playerRankDetails.title,
-              rankIcon: playerRankDetails.icon,
-            };
-          });
-          setLeaderboard(rankedData as LeaderboardEntry[] & {rankIcon: PlayerRank['icon']}[] );
-        } catch (err: any) {
-          console.error("Failed to fetch leaderboard:", err);
-          setError(err.message || "Could not load leaderboard. Please try again later.");
-          toast({
-            title: "Leaderboard Error",
-            description: `Failed to fetch leaderboard data. Original error: ${err.message || String(err)}`,
-            variant: "destructive",
-          });
-          setLeaderboard([]);
-        } finally {
-          setLoading(false);
-        }
-    };
-    fetchAndSetLeaderboard();
+  const fetchAndSetLeaderboard = useCallback(async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getLeaderboard();
+        const rankedData = data.map((entry, index) => {
+          const playerRankDetails = getRankByScore(entry.score);
+          return {
+            ...entry,
+            rank: index + 1,
+            rankTitle: entry.rankTitle || playerRankDetails.title,
+            rankIcon: playerRankDetails.icon,
+          };
+        });
+        setLeaderboard(rankedData as LeaderboardEntry[] & {rankIcon: PlayerRank['icon']}[] );
+      } catch (err: any) {
+        console.error("Failed to fetch leaderboard:", err);
+        setError(err.message || "Could not load leaderboard. Please try again later.");
+        toast({
+          title: "Leaderboard Error",
+          description: `Failed to fetch leaderboard data. Original error: ${err.message || String(err)}`,
+          variant: "destructive",
+        });
+        setLeaderboard([]);
+      } finally {
+        setLoading(false);
+      }
   }, [toast]);
+
+  useEffect(() => {
+    fetchAndSetLeaderboard();
+  }, [fetchAndSetLeaderboard]);
 
   const sortedLeaderboard = () => {
     let sortableItems = [...leaderboard];
@@ -131,9 +133,9 @@ export default function LeaderboardTable() {
   const displayData = sortedLeaderboard();
 
   return (
-    <div className="overflow-hidden rounded-lg border shadow-lg bg-card/90 backdrop-blur-sm">
+    <ScrollArea className="h-[500px] rounded-lg border shadow-lg bg-card/90 backdrop-blur-sm">
       <Table>
-        <TableHeader>
+        <TableHeader className="sticky top-0 bg-card/95 z-10">
           <TableRow className="hover:bg-muted/0">
             <TableHead className="w-[80px] text-center">
                  <Button variant="ghost" onClick={() => requestSort('rankDisplay')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
@@ -192,6 +194,6 @@ export default function LeaderboardTable() {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </ScrollArea>
   );
 }
