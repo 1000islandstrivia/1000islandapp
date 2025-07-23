@@ -137,17 +137,17 @@ export default function LeaderboardTable() {
       <Table>
         <TableHeader className="sticky top-0 bg-card/95 z-10">
           <TableRow className="hover:bg-muted/0">
-            <TableHead className="w-[80px] text-center">
+            <TableHead className="w-[60px] text-center px-2 sm:px-4">
                  <Button variant="ghost" onClick={() => requestSort('rankDisplay')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
                     RANK {getSortIcon('rankDisplay')}
                 </Button>
             </TableHead>
-            <TableHead>
+            <TableHead className="px-2 sm:px-4">
                 <Button variant="ghost" onClick={() => requestSort('name')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
                     PLAYER {getSortIcon('name')}
                 </Button>
             </TableHead>
-            <TableHead className="text-right">
+            <TableHead className="text-right px-2 sm:px-4">
                  <Button variant="ghost" onClick={() => requestSort('score')} className="px-1 hover:bg-transparent text-primary font-semibold text-xs sm:text-sm">
                     GOLD {getSortIcon('score')}
                 </Button>
@@ -164,7 +164,7 @@ export default function LeaderboardTable() {
                 user && entry.id === user.username && "bg-primary/20"
               )}
             >
-              <TableCell className="text-center font-medium text-base sm:text-lg">
+              <TableCell className="text-center font-medium text-base sm:text-lg px-2 sm:px-4">
                 <div className="flex items-center justify-center">
                   {(entry.rank ?? Infinity) <= 3 ? (
                     <Award
@@ -180,7 +180,7 @@ export default function LeaderboardTable() {
                   )}
                 </div>
               </TableCell>
-              <TableCell>
+              <TableCell className="px-2 sm:px-4">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/50">
                     <AvatarImage src={entry.avatar || `https://placehold.co/40x40.png?text=${entry.name.substring(0,2).toUpperCase()}`} alt={entry.name} data-ai-hint="player avatar"/>
@@ -189,7 +189,7 @@ export default function LeaderboardTable() {
                   <span className={cn("font-medium text-sm sm:text-base", user && entry.id === user.username && "text-primary font-bold")}>{entry.name}</span>
                 </div>
               </TableCell>
-              <TableCell className={cn("text-right font-semibold text-base sm:text-lg", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>
+              <TableCell className={cn("text-right font-semibold text-sm sm:text-lg px-2 sm:px-4", user && entry.id === user.username && "text-primary")}>{entry.score.toLocaleString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>
