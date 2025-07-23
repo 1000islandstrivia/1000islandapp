@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { LeaderboardEntry, PlayerRank } from '@/lib/trivia-data';
@@ -25,40 +25,39 @@ export default function LeaderboardTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAndSetLeaderboard = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getLeaderboard();
-      const rankedData = data.map((entry, index) => {
-        const playerRankDetails = getRankByScore(entry.score);
-        return {
-          ...entry,
-          rank: index + 1,
-          rankTitle: entry.rankTitle || playerRankDetails.title,
-          rankIcon: playerRankDetails.icon,
-        };
-      });
-      setLeaderboard(rankedData as LeaderboardEntry[] & {rankIcon: PlayerRank['icon']}[] );
-    } catch (err: any) {
-      console.error("Failed to fetch leaderboard:", err);
-      setError(err.message || "Could not load leaderboard. Please try again later.");
-      toast({
-        title: "Leaderboard Error",
-        description: `Failed to fetch leaderboard data. Original error: ${err.message || String(err)}`,
-        variant: "destructive",
-      });
-      setLeaderboard([]);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    const fetchAndSetLeaderboard = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const data = await getLeaderboard();
+          const rankedData = data.map((entry, index) => {
+            const playerRankDetails = getRankByScore(entry.score);
+            return {
+              ...entry,
+              rank: index + 1,
+              rankTitle: entry.rankTitle || playerRankDetails.title,
+              rankIcon: playerRankDetails.icon,
+            };
+          });
+          setLeaderboard(rankedData as LeaderboardEntry[] & {rankIcon: PlayerRank['icon']}[] );
+        } catch (err: any) {
+          console.error("Failed to fetch leaderboard:", err);
+          setError(err.message || "Could not load leaderboard. Please try again later.");
+          toast({
+            title: "Leaderboard Error",
+            description: `Failed to fetch leaderboard data. Original error: ${err.message || String(err)}`,
+            variant: "destructive",
+          });
+          setLeaderboard([]);
+        } finally {
+          setLoading(false);
+        }
+    };
+    fetchAndSetLeaderboard();
   }, [toast]);
 
-  useEffect(() => {
-    fetchAndSetLeaderboard();
-  }, [fetchAndSetLeaderboard]);
-
-  const sortedLeaderboard = useCallback(() => {
+  const sortedLeaderboard = () => {
     let sortableItems = [...leaderboard];
     if (sortConfig.key) {
       sortableItems.sort((a, b) => {
@@ -79,7 +78,7 @@ export default function LeaderboardTable() {
       });
     }
     return sortableItems;
-  }, [leaderboard, sortConfig]);
+  };
 
   const requestSort = (key: SortKey) => {
     let order: SortOrder = 'dsc';
@@ -115,7 +114,7 @@ export default function LeaderboardTable() {
     return (
       <div className="text-center p-8 bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md border border-destructive">
         <p className="text-xl text-destructive-foreground">{error}</p>
-        <Button onClick={fetchAndSetLeaderboard} className="mt-4">Try Again</Button>
+        <Button onClick={() => window.location.reload()} className="mt-4">Try Again</Button>
       </div>
     );
   }
