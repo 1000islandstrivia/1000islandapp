@@ -80,7 +80,7 @@ interface TriviaGameProps {
   isInstantResponseEnabled: boolean;
 }
 
-type GameState = 'LOADING' | 'READY' | 'STARTING' | 'PLAYING' | 'RESULT' | 'GAMEOVER' | 'ERROR';
+type GameState = 'LOADING' | 'READY' | 'STARTING' | 'PLAYING' | 'RESULT' | 'GAMEOVER' | 'ERROR' | 'QUESTION_LOADING';
 
 export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }: TriviaGameProps) {
   const { user, refreshUser } = useAuth();
@@ -105,29 +105,54 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   const loadingMessage = useRef(pirateLoadingMessages[0]);
   const gameInitialized = useRef(false);
+  
+  // 🔥 NEW: Add refs to prevent race conditions
+  const isProcessingAnswer = useRef(false);
+  const currentGameQuestions = useRef<TriviaQuestion[]>([]);
 
+  // 🔥 NEW: Enhanced question loading with better error handling
   useEffect(() => {
     async function fetchAllQuestions() {
       try {
+        setGameState('LOADING');
         const startTime = performance.now();
+        
+        console.log('🚀 Starting question fetch...');
         const questions = await getTriviaQuestions();
         const endTime = performance.now();
+        
         console.log(`📊 Performance Report:
         - Question Load Time: ${Math.round(endTime - startTime)}ms
         - Questions Loaded: ${questions.length}`);
         
-        if (questions && questions.length > 0) {
-          setAllTriviaQuestions(questions);
-          setGameState('READY');
-        } else {
+        if (!questions || questions.length === 0) {
           throw new Error("No trivia questions could be loaded from the database.");
         }
+        
+        if (questions.length < QUESTIONS_PER_GAME) {
+          throw new Error(`Not enough questions available. Need ${QUESTIONS_PER_GAME}, got ${questions.length}.`);
+        }
+        
+        // 🔥 NEW: Validate question structure
+        const validQuestions = questions.filter(q => 
+          q && q.id && q.question && q.options && q.options.length > 0 && q.answer
+        );
+        
+        if (validQuestions.length < QUESTIONS_PER_GAME) {
+          throw new Error(`Not enough valid questions. Need ${QUESTIONS_PER_GAME}, got ${validQuestions.length} valid ones.`);
+        }
+        
+        console.log(`✅ Successfully loaded ${validQuestions.length} valid questions`);
+        setAllTriviaQuestions(validQuestions);
+        setGameState('READY');
+        
       } catch (e: any) {
-        console.error("Failed to fetch trivia questions:", e);
+        console.error("❌ Failed to fetch trivia questions:", e);
         setErrorMessage(`Error loading questions: ${e.message}`);
         setGameState('ERROR');
       }
     }
+    
     fetchAllQuestions();
   }, []);
 
@@ -185,7 +210,15 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     }
   }, []);
 
+  // 🔥 NEW: Bulletproof game initialization
   const initializeGame = useCallback(() => {
+    if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
+      setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
+      setGameState('ERROR');
+      return;
+    }
+    
+    console.log('🎮 Initializing new game...');
     setGameState('STARTING');
     gameInitialized.current = true;
     setCurrentScore(0);
@@ -194,67 +227,67 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setLastAnswerCorrect(false);
     setIsHintPlaying(false);
     setToastedAchievementIds(new Set());
-  }, []);
-
-  useEffect(() => {
-    if (gameState === 'STARTING') {
-      if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
-        setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
-        setGameState('ERROR');
-        return;
-      }
-      
-      const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
-      const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
-      
-      setActiveQuestions(newGameQuestions);
-      setGameState('PLAYING');
+    isProcessingAnswer.current = false;
+    
+    // 🔥 NEW: Immediately set up game questions to prevent race conditions
+    const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
+    const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
+    
+    // Validate all questions before starting
+    const allValid = newGameQuestions.every(q => 
+      q && q.id && q.question && q.options && q.options.length > 0 && q.answer
+    );
+    
+    if (!allValid) {
+      console.error('❌ Some game questions are invalid:', newGameQuestions);
+      setErrorMessage('Some questions are corrupted. Please try restarting.');
+      setGameState('ERROR');
+      return;
     }
-  }, [gameState, allTriviaQuestions]);
+    
+    console.log(`✅ Game initialized with ${newGameQuestions.length} valid questions`);
+    currentGameQuestions.current = newGameQuestions;
+    setActiveQuestions(newGameQuestions);
+    
+    // Preload hints for first few questions
+    const firstFewQuestionIds = newGameQuestions.slice(0, 3).map(q => q.id);
+    preloadHintsForQuestions(firstFewQuestionIds).catch(console.warn);
+    
+    setGameState('PLAYING');
+  }, [allTriviaQuestions]);
 
-  // Preload hints when the game starts
-  useEffect(() => {
-    if (gameState === 'PLAYING' && activeQuestions.length > 0) {
-      // Preload hints for first few questions
-      const firstFewQuestionIds = activeQuestions.slice(0, 3).map(q => q.id);
-      preloadHintsForQuestions(firstFewQuestionIds).catch(console.warn);
-    }
-  }, [gameState, activeQuestions]);
-
-  // Preload hints for upcoming questions during gameplay
-  useEffect(() => {
-    if (gameState === 'PLAYING' && currentQuestionIndex >= 0) {
-      // Preload hints for next 2 questions
-      const upcomingQuestions = activeQuestions.slice(
-        currentQuestionIndex + 1, 
-        currentQuestionIndex + 3
-      );
-      
-      if (upcomingQuestions.length > 0) {
-        const upcomingIds = upcomingQuestions.map(q => q.id);
-        preloadHintsForQuestions(upcomingIds).catch(console.warn);
-      }
-    }
-  }, [currentQuestionIndex, activeQuestions, gameState]);
-  
-
+  // 🔥 NEW: Enhanced answer handling with race condition protection
   const handleAnswerSubmit = useCallback(async (answer: string) => {
-    const question = activeQuestions[currentQuestionIndex];
+    // Prevent double-submission
+    if (isProcessingAnswer.current) {
+      console.log('⚠️ Answer already being processed, ignoring duplicate submission');
+      return;
+    }
+    
+    // Use the ref to get current questions to avoid race conditions
+    const gameQuestions = currentGameQuestions.current;
+    const question = gameQuestions[currentQuestionIndex];
+    
     if (!question) {
+      console.error('❌ No question found at index:', currentQuestionIndex, 'Game questions:', gameQuestions.length);
       setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
       setGameState('ERROR');
       return;
     }
+    
+    console.log(`🎯 Processing answer for question ${currentQuestionIndex + 1}: "${question.question}"`);
+    isProcessingAnswer.current = true;
+    setGameState('QUESTION_LOADING');
   
     setLastAnswerCorrect(false);
     const isCorrect = answer === question.answer;
-  
+
     if (isInstantResponseEnabled) {
       const responseAudios = isCorrect ? correctResponses : wrongResponses;
       const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
       playAudio(randomAudioUrl, 'pirate response audio');
     }
-  
+
     if (isCorrect) {
       setCurrentScore(s => s + 10);
       playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c', 'coin spill audio');
@@ -277,9 +310,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
       }
     }
-  
+
     let hintScript: PirateResponse;
-  
+
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
@@ -299,31 +332,41 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       const hintData = await getQuestionHints(question.id);
       hintScript = { script: hintData.fallbackHint || "No hint available." };
     }
-  
+
     setLastAnswerCorrect(isCorrect);
     setPirateResponse(hintScript);
     setIsAiLoading(false);
     setIsHintPlaying(isAiLoreEnabled);
+    isProcessingAnswer.current = false;
     setGameState('RESULT');
-  
-  }, [activeQuestions, currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled, toast]);
 
+  }, [currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
 
   const onHintTypingComplete = useCallback(() => {
     // This callback can be used for other purposes if needed.
   }, []);
 
-
+  // 🔥 NEW: Enhanced next question handling
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
     
     setPirateResponse(null);
     setIsHintPlaying(false);
 
-    if (nextIndex < activeQuestions.length) {
+    if (nextIndex < currentGameQuestions.current.length) {
+      console.log(`➡️ Moving to question ${nextIndex + 1}`);
       setCurrentQuestionIndex(nextIndex);
+      
+      // Preload hints for upcoming questions
+      const upcomingQuestions = currentGameQuestions.current.slice(nextIndex + 1, nextIndex + 3);
+      if (upcomingQuestions.length > 0) {
+        const upcomingIds = upcomingQuestions.map(q => q.id);
+        preloadHintsForQuestions(upcomingIds).catch(console.warn);
+      }
+      
       setGameState('PLAYING');
     } else {
+      console.log('🎯 Game completed!');
       setGameState('GAMEOVER');
       
       if (user) {
@@ -363,7 +406,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
           return updatedAchievements;
       });
     }
-  }, [currentQuestionIndex, activeQuestions.length, user, currentScore, toast, refreshUser, toastedAchievementIds]);
+  }, [currentQuestionIndex, user, currentScore, toast, refreshUser, toastedAchievementIds]);
   
   useEffect(() => {
     if (achievementsToToast.length > 0) {
@@ -396,8 +439,17 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     }
   }, [storyToastQueue, toast]);
 
-  const currentQuestion = activeQuestions[currentQuestionIndex];
-  const totalQuestions = activeQuestions.length;
+  // 🔥 NEW: Safer current question access
+  const getCurrentQuestion = useCallback((): TriviaQuestion | null => {
+    const gameQuestions = currentGameQuestions.current;
+    if (!gameQuestions || currentQuestionIndex >= gameQuestions.length || currentQuestionIndex < 0) {
+      return null;
+    }
+    return gameQuestions[currentQuestionIndex];
+  }, [currentQuestionIndex]);
+
+  const currentQuestion = getCurrentQuestion();
+  const totalQuestions = currentGameQuestions.current.length || QUESTIONS_PER_GAME;
 
   if (gameState === 'LOADING') {
     return (
@@ -431,9 +483,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             <CardContent>
                 <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
                 <div className="text-sm text-muted-foreground mt-2">
-                    Cache Status: {allTriviaQuestions.length > 0 ? '✅ Loaded' : '⏳ Loading...'}
+                    Cache Status: {allTriviaQuestions.length > 0 ? `✅ Loaded ${allTriviaQuestions.length} questions` : '⏳ Loading...'}
                 </div>
-                <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90">
+                <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90" disabled={allTriviaQuestions.length < QUESTIONS_PER_GAME}>
                     <Play className="mr-2 h-4 w-4" />
                     Begin Trivia Challenge
                 </Button>
@@ -478,7 +530,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       <Card className="bg-card/80 backdrop-blur-sm shadow-md p-4">
         <div className="flex justify-between items-center mb-2">
             <p className="text-lg font-semibold text-primary">Total Gold: <span className="text-accent">{totalUserScore.toLocaleString()}</span></p>
-            {gameState === 'PLAYING' && totalQuestions > 0 &&
+            {(gameState === 'PLAYING' || gameState === 'QUESTION_LOADING') && totalQuestions > 0 &&
                 <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {totalQuestions}</p>
             }
         </div>
@@ -489,6 +541,14 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       </Card>
 
       <div className="w-full max-w-2xl mx-auto min-h-[300px] flex justify-center items-center">
+        {/* 🔥 NEW: Enhanced question loading states */}
+        {gameState === 'QUESTION_LOADING' && (
+          <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md animate-fadeIn">
+            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+            <p className="ml-4 text-xl">Processing your answer...</p>
+          </div>
+        )}
+        
         {gameState === 'PLAYING' && currentQuestion ? (
           <QuestionCard
             question={currentQuestion}
@@ -501,6 +561,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               <Skull className="w-16 h-16 text-destructive mb-4" />
               <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
               <p className="text-destructive-foreground/80 mt-2">The next question was lost to the river mists.</p>
+              <p className="text-xs text-muted-foreground mt-1">Debug: Index {currentQuestionIndex}, Questions loaded: {currentGameQuestions.current.length}</p>
               <Button onClick={initializeGame} className="mt-6" variant="destructive">
                   <RefreshCw className="mr-2 h-4 w-4" /> Restart Voyage
               </Button>
@@ -545,3 +606,5 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
+
+    
