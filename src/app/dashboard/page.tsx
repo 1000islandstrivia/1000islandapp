@@ -1,4 +1,3 @@
-
 "use client";
 
 import MainLayout from '@/components/layout/MainLayout';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle, Trash2, BookText, RefreshCw } from 'lucide-react';
+import { PlayCircle, ListOrdered, BookOpen, Trophy, Users, HelpCircle, type LucideIcon, Database, PlusCircle, Trash2, BookText, RefreshCw, BarChart } from 'lucide-react';
 import Image from 'next/image';
 import { runDatabaseSeed } from '@/actions/seedDatabaseAction';
 import { runDeduplication } from '@/actions/deduplicateAction';
@@ -16,7 +15,9 @@ import { clearLogsAction } from '@/actions/clearLogsAction';
 import type { LogEntry } from '@/services/logService';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
+import VarietyMonitor from '@/components/admin/VarietyMonitor';
 import { getTriviaQuestions } from '@/services/triviaService';
+
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useAuth();
@@ -28,21 +29,20 @@ export default function DashboardPage() {
   const [dedupStatus, setDedupStatus] = useState('');
   const [isDeduplicating, setIsDeduplicating] = useState(false);
 
-  // New state for logging
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isFetchingLogs, setIsFetchingLogs] = useState(false);
+  const [showVarietyMonitor, setShowVarietyMonitor] = useState(false);
+
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     } else if (user && !loading && !initialRefreshCalledRef.current) {
       refreshUser();
+       // Pre-warm the question cache on dashboard load
+      console.log('Pre-warming question cache...');
+      getTriviaQuestions().catch(console.error);
       initialRefreshCalledRef.current = true;
-      // Pre-load trivia questions as soon as the user is confirmed on the dashboard
-      console.log('Pre-loading trivia questions...');
-      getTriviaQuestions().catch(err => {
-        console.error("Failed to pre-load trivia questions:", err);
-      });
     }
   }, [user, loading, router, refreshUser]);
 
@@ -92,7 +92,6 @@ export default function DashboardPage() {
     setLogs([]);
   };
 
-  // Fetch logs on initial admin load
   useEffect(() => {
     if (user?.username === 'Dan') {
       handleFetchLogs();
@@ -194,6 +193,16 @@ export default function DashboardPage() {
         </div>
 
         {user.username === 'Dan' && (
+          <div className="mt-6">
+            <Button onClick={() => setShowVarietyMonitor(!showVarietyMonitor)} className="mb-4">
+              <BarChart className="mr-2 h-4 w-4" />
+              {showVarietyMonitor ? 'Hide' : 'Show'} Variety Monitor
+            </Button>
+            {showVarietyMonitor && <VarietyMonitor />}
+          </div>
+        )}
+
+        {user.username === 'Dan' && (
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
              <Card className="bg-secondary/30 backdrop-blur-sm shadow-lg lg:col-span-2">
               <CardHeader>
@@ -247,7 +256,6 @@ export default function DashboardPage() {
                  {dedupStatus && <p className="mt-4 text-sm text-muted-foreground">{dedupStatus}</p>}
               </CardContent>
             </Card>
-
            
           </div>
         )}

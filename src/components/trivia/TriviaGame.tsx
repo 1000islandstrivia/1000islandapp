@@ -19,6 +19,8 @@ import HintDisplay from './HintDisplay';
 import SimpleHintDisplay from './SimpleHintDisplay';
 
 const QUESTIONS_PER_GAME = 10;
+const USER_HISTORY_LENGTH = 50;
+
 
 const pirateLoadingMessages = [
   "☠️ Hold fast, matey... a cursed clue be brewin'...",
@@ -26,40 +28,23 @@ const pirateLoadingMessages = [
   "🦜 Squawk! The parrot's whisperin' secrets...",
   "🗺️ Unfurlin' the scroll of shame...",
   "💀 Dredgin' up facts from Davy Jones's locker...",
-  "🎣 Fishin' for the truth in haunted waters...",
-  "🧜‍♂️ Consultin' the mermaid oracles...",
-  "🕯️ Lightin' the lanterns of lost legends...",
-  "🏴‍☠️ Readin' yer fortune in the river fog...",
-  "📚 Flippin' through the haunted captain's log..."
 ];
 
 const correctMaleAudio = [
   'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_1.mp3?alt=media&token=e5f3fdb6-aaec-4616-b9b5-c1c37eba1898',
   'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_2.mp3?alt=media&token=ea2cb0fa-6299-4db4-bb7b-0d163526f5ba',
-  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_3.mp3?alt=media&token=c444e71e-b9da-4962-89a2-a8c3c5ea56c7',
-  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_4.mp3?alt=media&token=5609da46-1448-4fae-a60-d2ee2971686e',
-  'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_right_answer_5.mp3?alt=media&token=5886b949-0c15-46fb-936b-21e2cdca5ced'
 ];
 const correctFemaleAudio = [
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_1.mp3?alt=media&token=abc518be-b949-407e-9faf-1e33487fd580',
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_2.mp3?alt=media&token=946c0515-67ed-40e9-b342-d01127622da5',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_3.mp3?alt=media&token=12cb05a5-6a89-49d6-8ccf-c9176affad94',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_4.mp3?alt=media&token=8da50af1-c6dc-416f-b1c9-4008129a09e0',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/right_answer_5.mp3?alt=media&token=926275c9-9914-404d-9e63-b433a66614a5'
 ];
 const wrongMaleAudio = [
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_1.mp3?alt=media&token=3ba1a143-3475-4fd4-bd30-448045bbc9f3',
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_2.mp3?alt=media&token=78c97623-b600-4a25-aa3a-d6ebea857a3e',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_3.mp3?alt=media&token=ff958b5d-de42-43a5-a0d8-8968cde64d73',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_4.mp3?alt=media&token=e166ab82-318c-455e-b5da-4fe13bcf83aA',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/male_wrong_answer_5.mp3?alt=media&token=9ec1a31c-8da3-4fa1-99e5-36ccbea0cdcc'
 ];
 const wrongFemaleAudio = [
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_1.mp3?alt=media&token=7d9158f9-5839-4eb2-985c-5ed7a67573c7',
     'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_2.mp3?alt=media&token=6257a8c3-943b-47f8-8003-58e62dfb5d8c',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_3.mp3?alt=media&token=2b5b6ee1-83a9-4142-8213-0e82343ffb7f',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_4.mp3?alt=media&token=aeeb0fcb-c2d7-48de-b006-b52428afa81f',
-    'https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/wrong_answer_5.mp3?alt=media&token=bf43a337-1cec-49a2-92b8-c8000dcb8830'
 ];
 
 const correctResponses = [...correctMaleAudio, ...correctFemaleAudio];
@@ -82,14 +67,31 @@ interface TriviaGameProps {
 
 type GameState = 'LOADING' | 'READY' | 'STARTING' | 'PLAYING' | 'RESULT' | 'GAMEOVER' | 'ERROR' | 'QUESTION_LOADING';
 
+// Client-side helper to get user history from localStorage
+function getUserQuestionHistory(): string[] {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem('userQuestionHistory') || '[]');
+  }
+  return [];
+}
+
+// Client-side helper to update user history in localStorage
+function updateUserHistory(questionId: string) {
+  const history = getUserQuestionHistory();
+  const updatedHistory = [questionId, ...history];
+  if (updatedHistory.length > USER_HISTORY_LENGTH) {
+    updatedHistory.pop();
+  }
+  localStorage.setItem('userQuestionHistory', JSON.stringify(updatedHistory));
+}
+
 export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }: TriviaGameProps) {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
 
   const [gameState, setGameState] = useState<GameState>('LOADING');
   const [errorMessage, setErrorMessage] = useState('');
-  const [allTriviaQuestions, setAllTriviaQuestions] = useState<TriviaQuestion[]>([]);
-  const [activeQuestions, setActiveQuestions] = useState<TriviaQuestion[]>([]);
+  const [gameQuestions, setGameQuestions] = useState<TriviaQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
@@ -105,57 +107,31 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   const loadingMessage = useRef(pirateLoadingMessages[0]);
   const gameInitialized = useRef(false);
-  
-  // 🔥 NEW: Add refs to prevent race conditions
   const isProcessingAnswer = useRef(false);
-  const currentGameQuestions = useRef<TriviaQuestion[]>([]);
 
-  // 🔥 NEW: Enhanced question loading with better error handling
+  // Load questions on initial component mount
   useEffect(() => {
-    async function fetchAllQuestions() {
+    async function loadInitialQuestions() {
       try {
         setGameState('LOADING');
-        const startTime = performance.now();
+        const userHistory = getUserQuestionHistory();
+        const questions = await getTriviaQuestions(userHistory);
         
-        console.log('🚀 Starting question fetch...');
-        const questions = await getTriviaQuestions();
-        const endTime = performance.now();
-        
-        console.log(`📊 Performance Report:
-        - Question Load Time: ${Math.round(endTime - startTime)}ms
-        - Questions Loaded: ${questions.length}`);
-        
-        if (!questions || questions.length === 0) {
-          throw new Error("No trivia questions could be loaded from the database.");
+        if (!questions || questions.length < QUESTIONS_PER_GAME) {
+          throw new Error(`Not enough unique questions available. Need ${QUESTIONS_PER_GAME}, but only found ${questions?.length || 0}.`);
         }
         
-        if (questions.length < QUESTIONS_PER_GAME) {
-          throw new Error(`Not enough questions available. Need ${QUESTIONS_PER_GAME}, got ${questions.length}.`);
-        }
-        
-        // 🔥 NEW: Validate question structure
-        const validQuestions = questions.filter(q => 
-          q && q.id && q.question && q.options && q.options.length > 0 && q.answer
-        );
-        
-        if (validQuestions.length < QUESTIONS_PER_GAME) {
-          throw new Error(`Not enough valid questions. Need ${QUESTIONS_PER_GAME}, got ${validQuestions.length} valid ones.`);
-        }
-        
-        console.log(`✅ Successfully loaded ${validQuestions.length} valid questions`);
-        setAllTriviaQuestions(validQuestions);
+        setGameQuestions(questions);
         setGameState('READY');
-        
       } catch (e: any) {
-        console.error("❌ Failed to fetch trivia questions:", e);
+        console.error("Failed to fetch trivia questions:", e);
         setErrorMessage(`Error loading questions: ${e.message}`);
         setGameState('ERROR');
       }
     }
-    
-    fetchAllQuestions();
+    loadInitialQuestions();
   }, []);
-
+  
   const loadUserProgress = useCallback(() => {
     if (user) {
       try {
@@ -177,7 +153,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
       }
     }
   }, [user]);
-  
+
   useEffect(() => {
     loadUserProgress();
   }, [user, loadUserProgress]);
@@ -201,23 +177,14 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     if (typeof window !== 'undefined') {
       try {
         const audio = new Audio(audioUrl);
-        audio.play().catch(e => {
-          console.warn(`${description} play failed (this is normal if autoplay is blocked):`, e);
-        });
+        audio.play().catch(e => console.warn(`${description} play failed`, e));
       } catch (e) {
         console.warn(`Failed to create ${description} element:`, e);
       }
     }
   }, []);
 
-  // 🔥 NEW: Bulletproof game initialization
   const initializeGame = useCallback(() => {
-    if (allTriviaQuestions.length < QUESTIONS_PER_GAME) {
-      setErrorMessage(`Not enough unique questions available to start a new game (need ${QUESTIONS_PER_GAME}, have ${allTriviaQuestions.length}). Please contact an admin.`);
-      setGameState('ERROR');
-      return;
-    }
-    
     console.log('🎮 Initializing new game...');
     setGameState('STARTING');
     gameInitialized.current = true;
@@ -229,197 +196,127 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     setToastedAchievementIds(new Set());
     isProcessingAnswer.current = false;
     
-    // 🔥 NEW: Immediately set up game questions to prevent race conditions
-    const shuffled = [...allTriviaQuestions].sort(() => 0.5 - Math.random());
-    const newGameQuestions = shuffled.slice(0, QUESTIONS_PER_GAME);
-    
-    // Validate all questions before starting
-    const allValid = newGameQuestions.every(q => 
-      q && q.id && q.question && q.options && q.options.length > 0 && q.answer
-    );
-    
-    if (!allValid) {
-      console.error('❌ Some game questions are invalid:', newGameQuestions);
-      setErrorMessage('Some questions are corrupted. Please try restarting.');
-      setGameState('ERROR');
-      return;
-    }
-    
-    console.log(`✅ Game initialized with ${newGameQuestions.length} valid questions`);
-    currentGameQuestions.current = newGameQuestions;
-    setActiveQuestions(newGameQuestions);
-    
     // Preload hints for first few questions
-    const firstFewQuestionIds = newGameQuestions.slice(0, 3).map(q => q.id);
-    preloadHintsForQuestions(firstFewQuestionIds).catch(console.warn);
+    preloadHintsForQuestions(gameQuestions.slice(0, 3).map(q => q.id)).catch(console.warn);
     
     setGameState('PLAYING');
-  }, [allTriviaQuestions]);
+  }, [gameQuestions]);
 
-  // 🔥 NEW: Enhanced answer handling with race condition protection
   const handleAnswerSubmit = useCallback(async (answer: string) => {
-    // Prevent double-submission
-    if (isProcessingAnswer.current) {
-      console.log('⚠️ Answer already being processed, ignoring duplicate submission');
-      return;
-    }
+    if (isProcessingAnswer.current) return;
     
-    // Use the ref to get current questions to avoid race conditions
-    const gameQuestions = currentGameQuestions.current;
     const question = gameQuestions[currentQuestionIndex];
-    
     if (!question) {
-      console.error('❌ No question found at index:', currentQuestionIndex, 'Game questions:', gameQuestions.length);
-      setErrorMessage("Lost the next question in a fog bank! Please restart the game.");
+      setErrorMessage("Lost the next question! Please restart.");
       setGameState('ERROR');
       return;
     }
     
-    console.log(`🎯 Processing answer for question ${currentQuestionIndex + 1}: "${question.question}"`);
     isProcessingAnswer.current = true;
     setGameState('QUESTION_LOADING');
+    updateUserHistory(question.id);
   
-    setLastAnswerCorrect(false);
     const isCorrect = answer === question.answer;
+    setLastAnswerCorrect(isCorrect);
 
     if (isInstantResponseEnabled) {
-      const responseAudios = isCorrect ? correctResponses : wrongResponses;
-      const randomAudioUrl = responseAudios[Math.floor(Math.random() * responseAudios.length)];
-      playAudio(randomAudioUrl, 'pirate response audio');
+      const audioSet = isCorrect ? correctResponses : wrongResponses;
+      playAudio(audioSet[Math.floor(Math.random() * audioSet.length)], 'instant feedback');
     }
 
     if (isCorrect) {
       setCurrentScore(s => s + 10);
-      playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c', 'coin spill audio');
+      playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/coins-spill.mp3?alt=media&token=e36bc0a2-ff0b-4076-b863-d2cf384ee50c', 'coin spill');
       
       const hintKey = question.storylineHintKey;
-      setUnlockedStoryHints(prevHints => {
-        const isAlreadyUnlocked = prevHints.some(h => h.key === hintKey && h.unlocked);
-        if (!isAlreadyUnlocked) {
+      setUnlockedStoryHints(prev => {
+        const isNew = !prev.some(h => h.key === hintKey && h.unlocked);
+        if (isNew) {
           const hint = initialStoryline.find(h => h.key === hintKey);
-          if (hint) {
-            setStoryToastQueue(q => [...q, hint.title]);
-          }
-          return prevHints.map(h => (h.key === hintKey ? { ...h, unlocked: true } : h));
+          if (hint) setStoryToastQueue(q => [...q, hint.title]);
+          return prev.map(h => h.key === hintKey ? { ...h, unlocked: true } : h);
         }
-        return prevHints;
+        return prev;
       });
     } else {
       setCurrentScore(s => Math.max(0, s - 5));
-      if (isInstantResponseEnabled) {
-        playAudio('https://firebasestorage.googleapis.com/v0/b/islands-riverrat-lore.firebasestorage.app/o/fog-horn.mp3?alt=media&token=fdc46aad-af9f-450d-b355-c6f2189fcd57', 'fog horn audio');
-      }
     }
 
     let hintScript: PirateResponse;
-
     if (isAiLoreEnabled) {
       setIsAiLoading(true);
       loadingMessage.current = pirateLoadingMessages[Math.floor(Math.random() * pirateLoadingMessages.length)];
       try {
         const result = await getAiPirateResponseAction({ question, playerAnswer: answer });
-        if (result.success && result.script) {
-          hintScript = { script: result.script, audioDataUris: result.audioDataUris };
-        } else {
-          throw new Error(result.error || "AI response generation failed.");
-        }
-      } catch (error: any) {
-        console.error("Error getting AI pirate response:", error);
+        if (!result.success || !result.script) throw new Error(result.error || "AI failed.");
+        hintScript = { script: result.script, audioDataUris: result.audioDataUris };
+      } catch (error) {
         const hintData = await getQuestionHints(question.id);
-        hintScript = { script: hintData.fallbackHint || "A mysterious force prevents the hint from appearing..." };
+        hintScript = { script: hintData.fallbackHint || "A mysterious force prevents the hint..." };
       }
     } else {
       const hintData = await getQuestionHints(question.id);
       hintScript = { script: hintData.fallbackHint || "No hint available." };
     }
 
-    setLastAnswerCorrect(isCorrect);
     setPirateResponse(hintScript);
     setIsAiLoading(false);
     setIsHintPlaying(isAiLoreEnabled);
     isProcessingAnswer.current = false;
     setGameState('RESULT');
 
-  }, [currentQuestionIndex, isAiLoreEnabled, playAudio, isInstantResponseEnabled]);
+  }, [currentQuestionIndex, gameQuestions, isAiLoreEnabled, isInstantResponseEnabled, playAudio]);
 
-  const onHintTypingComplete = useCallback(() => {
-    // This callback can be used for other purposes if needed.
-  }, []);
+  const onHintTypingComplete = useCallback(() => {}, []);
 
-  // 🔥 NEW: Enhanced next question handling
   const handleProceedToNext = useCallback(async () => {
     const nextIndex = currentQuestionIndex + 1;
-    
     setPirateResponse(null);
     setIsHintPlaying(false);
 
-    if (nextIndex < currentGameQuestions.current.length) {
-      console.log(`➡️ Moving to question ${nextIndex + 1}`);
+    if (nextIndex < gameQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
-      
-      // Preload hints for upcoming questions
-      const upcomingQuestions = currentGameQuestions.current.slice(nextIndex + 1, nextIndex + 3);
-      if (upcomingQuestions.length > 0) {
-        const upcomingIds = upcomingQuestions.map(q => q.id);
-        preloadHintsForQuestions(upcomingIds).catch(console.warn);
-      }
-      
+      preloadHintsForQuestions(gameQuestions.slice(nextIndex + 1, nextIndex + 3).map(q => q.id)).catch(console.warn);
       setGameState('PLAYING');
     } else {
-      console.log('🎯 Game completed!');
       setGameState('GAMEOVER');
-      
       if (user) {
         try {
           await updateUserScore(user.username.toLowerCase(), user.username, currentScore);
           await refreshUser();
         } catch (error) {
-          console.error("Failed to update score on leaderboard:", error);
           toast({ title: "Leaderboard Error", description: "Could not save your score.", variant: "destructive" });
         }
       }
       
       setCurrentAchievements(prev => {
           const newlyUnlocked: Achievement[] = [];
-          const updatedAchievements = prev.map(ach => {
+          const updated = prev.map(ach => {
               if (ach.unlocked) return ach;
-              
-              let unlocked = false;
-              if (ach.id === 'first_game') unlocked = true;
-              if (ach.id === 'first_blood' && currentScore > 0) unlocked = true;
-              
+              let unlocked = (ach.id === 'first_game') || (ach.id === 'first_blood' && currentScore > 0);
               if (unlocked) {
                   const newAch = { ...ach, unlocked: true };
-                  if (!toastedAchievementIds.has(ach.id)) {
-                      newlyUnlocked.push(newAch);
-                  }
+                  if (!toastedAchievementIds.has(ach.id)) newlyUnlocked.push(newAch);
                   return newAch;
               }
               return ach;
           });
-          
           if (newlyUnlocked.length > 0) {
-              setAchievementsToToast(currentToasts => [...currentToasts, ...newlyUnlocked]);
-              setToastedAchievementIds(currentIds => new Set([...currentIds, ...newlyUnlocked.map(a => a.id)]));
+              setAchievementsToToast(q => [...q, ...newlyUnlocked]);
+              setToastedAchievementIds(ids => new Set([...ids, ...newlyUnlocked.map(a => a.id)]));
           }
-          
-          return updatedAchievements;
+          return updated;
       });
     }
-  }, [currentQuestionIndex, user, currentScore, toast, refreshUser, toastedAchievementIds]);
+  }, [currentQuestionIndex, gameQuestions, user, currentScore, toast, refreshUser, toastedAchievementIds]);
   
   useEffect(() => {
     if (achievementsToToast.length > 0) {
       achievementsToToast.forEach(ach => {
-        const AchIconComponent = ach.icon as LucideIcon | undefined;
+        const Icon = ach.icon as LucideIcon | undefined;
         toast({
             title: "Achievement Unlocked!",
-            description: (
-                <div className="flex items-center">
-                    {AchIconComponent && <AchIconComponent className="w-5 h-5 mr-2 text-accent" />}
-                    <span>{ach.name}</span>
-                </div>
-            ),
+            description: (<div className="flex items-center">{Icon && <Icon className="w-5 h-5 mr-2 text-accent" />}<span>{ach.name}</span></div>),
         });
       });
       setAchievementsToToast([]);
@@ -428,10 +325,10 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
 
   useEffect(() => {
     if (storyToastQueue.length > 0) {
-      storyToastQueue.forEach(hintTitle => {
+      storyToastQueue.forEach(title => {
         toast({
           title: "Lore Unlocked!",
-          description: `You've uncovered a new secret: "${hintTitle}"`,
+          description: `You've uncovered: "${title}"`,
           action: (<Link href="/storyline"><Button variant="secondary" size="sm">View Story</Button></Link>),
         });
       });
@@ -439,17 +336,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     }
   }, [storyToastQueue, toast]);
 
-  // 🔥 NEW: Safer current question access
-  const getCurrentQuestion = useCallback((): TriviaQuestion | null => {
-    const gameQuestions = currentGameQuestions.current;
-    if (!gameQuestions || currentQuestionIndex >= gameQuestions.length || currentQuestionIndex < 0) {
-      return null;
-    }
-    return gameQuestions[currentQuestionIndex];
-  }, [currentQuestionIndex]);
-
-  const currentQuestion = getCurrentQuestion();
-  const totalQuestions = currentGameQuestions.current.length || QUESTIONS_PER_GAME;
+  const currentQuestion = gameQuestions[currentQuestionIndex];
+  const totalUserScore = (user?.score || 0) + currentScore;
 
   if (gameState === 'LOADING') {
     return (
@@ -466,8 +354,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
         <Skull className="w-16 h-16 text-destructive mb-4" />
         <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
         <p className="text-destructive-foreground/80 mt-2">{errorMessage}</p>
-        <Button onClick={initializeGame} className="mt-6" variant="destructive">
-            <RefreshCw className="mr-2 h-4 w-4" /> Restart Voyage
+        <Button onClick={() => window.location.reload()} className="mt-6" variant="destructive">
+            <RefreshCw className="mr-2 h-4 w-4" /> Reload Page
         </Button>
       </div>
     );
@@ -481,11 +369,11 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                 <CardTitle className="font-headline text-4xl text-primary">Ready to Set Sail?</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore and earn your place on the leaderboard!</p>
+                <p className="text-lg text-foreground/80">A new voyage of {QUESTIONS_PER_GAME} questions awaits. Test your knowledge of river lore!</p>
                 <div className="text-sm text-muted-foreground mt-2">
-                    Cache Status: {allTriviaQuestions.length > 0 ? `✅ Loaded ${allTriviaQuestions.length} questions` : '⏳ Loading...'}
+                    Cache Status: ✅ Loaded {gameQuestions.length} fresh questions
                 </div>
-                <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90" disabled={allTriviaQuestions.length < QUESTIONS_PER_GAME}>
+                <Button onClick={initializeGame} className="w-full mt-6 bg-primary hover:bg-primary/90">
                     <Play className="mr-2 h-4 w-4" />
                     Begin Trivia Challenge
                 </Button>
@@ -502,9 +390,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
           <CardTitle className="font-headline text-4xl text-primary">Adventure Complete, Captain!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-2xl">Your haul this game: <span className="font-bold text-accent">{currentScore.toLocaleString()}</span> gold coins!</p>
+          <p className="text-2xl">Your haul: <span className="font-bold text-accent">{currentScore.toLocaleString()}</span> gold!</p>
           <p className="text-lg text-foreground/80">
-            Ye've navigated the treacherous waters of Thousand Islands trivia. Check yer treasure map (storyline) and see how ye rank against other pirates on the leaderboard!
+            Ye've navigated the treacherous waters of trivia. Check the leaderboard to see yer new rank!
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
             <Button asChild className="bg-primary hover:bg-primary/90">
@@ -513,8 +401,8 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
             <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
               <Link href="/storyline">View Storyline</Link>
             </Button>
-            <Button onClick={initializeGame} className="bg-accent text-accent-foreground hover:bg-accent/80">
-                <RefreshCw className="mr-2 h-4 w-4" /> Set Sail Again!
+            <Button onClick={() => window.location.reload()} className="bg-accent text-accent-foreground hover:bg-accent/80">
+                <RefreshCw className="mr-2 h-4 w-4" /> New Voyage
             </Button>
           </div>
         </CardContent>
@@ -522,51 +410,48 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     );
   }
   
-  const progressPercentage = totalQuestions > 0 ? ((currentQuestionIndex) / totalQuestions) * 100 : 0;
-  const totalUserScore = (user?.score || 0) + currentScore;
+  const progressPercentage = gameQuestions.length > 0 ? ((currentQuestionIndex) / gameQuestions.length) * 100 : 0;
 
   return (
     <div className="space-y-8">
       <Card className="bg-card/80 backdrop-blur-sm shadow-md p-4">
         <div className="flex justify-between items-center mb-2">
             <p className="text-lg font-semibold text-primary">Total Gold: <span className="text-accent">{totalUserScore.toLocaleString()}</span></p>
-            {(gameState === 'PLAYING' || gameState === 'QUESTION_LOADING') && totalQuestions > 0 &&
-                <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {totalQuestions}</p>
+            {(gameState === 'PLAYING' || gameState === 'QUESTION_LOADING') &&
+                <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {gameQuestions.length}</p>
             }
         </div>
         <Progress value={progressPercentage} className="w-full h-3 [&>div]:bg-accent" />
         <p className="text-xs text-muted-foreground italic mt-2 text-center">
-            Earn 10 gold for each right answer, lose 5 for wrong ones. Rack up gold to <Link href="/leaderboard" className="underline hover:text-accent">rise in rank!</Link>
+            Earn 10 gold for right answers, lose 5 for wrong. Rack up gold to <Link href="/leaderboard" className="underline hover:text-accent">rise in rank!</Link>
         </p>
       </Card>
 
       <div className="w-full max-w-2xl mx-auto min-h-[300px] flex justify-center items-center">
-        {/* 🔥 NEW: Enhanced question loading states */}
-        {gameState === 'QUESTION_LOADING' && (
-          <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md animate-fadeIn">
-            <Loader2 className="w-12 h-12 animate-spin text-primary" />
-            <p className="ml-4 text-xl">Processing your answer...</p>
-          </div>
-        )}
-        
         {gameState === 'PLAYING' && currentQuestion ? (
           <QuestionCard
             question={currentQuestion}
             onAnswerSubmit={handleAnswerSubmit}
             questionNumber={currentQuestionIndex + 1}
-            totalQuestions={totalQuestions}
+            totalQuestions={gameQuestions.length}
           />
-        ) : gameState === 'PLAYING' && !currentQuestion ? (
-          <div className="flex flex-col items-center justify-center min-h-[300px] bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md p-6 text-center animate-fadeIn">
-              <Skull className="w-16 h-16 text-destructive mb-4" />
-              <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
-              <p className="text-destructive-foreground/80 mt-2">The next question was lost to the river mists.</p>
-              <p className="text-xs text-muted-foreground mt-1">Debug: Index {currentQuestionIndex}, Questions loaded: {currentGameQuestions.current.length}</p>
-              <Button onClick={initializeGame} className="mt-6" variant="destructive">
-                  <RefreshCw className="mr-2 h-4 w-4" /> Restart Voyage
-              </Button>
+        ) : (gameState === 'PLAYING' && !currentQuestion) ? (
+            <div className="flex flex-col items-center justify-center min-h-[300px] bg-destructive/10 backdrop-blur-sm rounded-lg shadow-md p-6 text-center animate-fadeIn">
+                <Skull className="w-16 h-16 text-destructive mb-4" />
+                <p className="font-headline text-2xl text-destructive">A Squall has Hit!</p>
+                <p className="text-destructive-foreground/80 mt-2">The next question was lost to the river mists.</p>
+                <Button onClick={() => window.location.reload()} className="mt-6" variant="destructive">
+                    <RefreshCw className="mr-2 h-4 w-4" /> Restart Voyage
+                </Button>
+            </div>
+        ) : null }
+
+        {gameState === 'QUESTION_LOADING' && (
+          <div className="flex items-center justify-center min-h-[300px] bg-card/80 backdrop-blur-sm rounded-lg shadow-md animate-fadeIn">
+            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+            <p className="ml-4 text-xl">Processing answer...</p>
           </div>
-        ) : null}
+        )}
 
         {gameState === 'RESULT' && (
           isAiLoreEnabled ? (
@@ -583,7 +468,7 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
                     script={pirateResponse.script}
                     audioDataUris={pirateResponse.audioDataUris}
                     onProceed={handleProceedToNext}
-                    isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
+                    isLastQuestion={currentQuestionIndex >= gameQuestions.length - 1}
                     onTypingComplete={onHintTypingComplete}
                     startPlayback={isHintPlaying}
                     setIsPlaying={setIsHintPlaying}
@@ -596,9 +481,9 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
               isCorrect={lastAnswerCorrect}
               correctAnswer={currentQuestion.answer}
               onProceed={handleProceedToNext}
-              isLastQuestion={currentQuestionIndex >= totalQuestions - 1}
+              isLastQuestion={currentQuestionIndex >= gameQuestions.length - 1}
               questionNumber={currentQuestionIndex + 1}
-              totalQuestions={totalQuestions}
+              totalQuestions={gameQuestions.length}
             />
           )
         )}
@@ -606,5 +491,3 @@ export default function TriviaGame({ isAiLoreEnabled, isInstantResponseEnabled }
     </div>
   );
 }
-
-    
