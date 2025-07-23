@@ -25,10 +25,9 @@ import {
 } from 'firebase/firestore';
 
 const LEADERBOARD_COLLECTION = 'leaderboard';
-const LEADERBOARD_LIMIT = 20;
 
 /**
- * Fetches the top leaderboard entries from Firestore.
+ * Fetches all leaderboard entries from Firestore.
  * @returns A promise that resolves to an array of LeaderboardEntry.
  */
 export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
@@ -36,8 +35,7 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
     const q = query(
       collection(db, LEADERBOARD_COLLECTION),
       orderBy('score', 'desc'),
-      orderBy('lastUpdated', 'desc'),
-      limit(LEADERBOARD_LIMIT)
+      orderBy('lastUpdated', 'desc')
     );
     const querySnapshot = await getDocs(q);
     const leaderboard: LeaderboardEntry[] = [];
