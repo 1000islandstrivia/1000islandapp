@@ -49,21 +49,21 @@ export interface LeaderboardEntry {
 
 export const playerRanks: PlayerRank[] = [
   { title: "Seaman Recruit", minScore: 0, icon: Shield },
-  { title: "Seaman Apprentice", minScore: 250, icon: ShieldHalf },
-  { title: "Seaman", minScore: 500, icon: ShieldCheck },
-  { title: "Petty Officer 3rd Class", minScore: 1000, icon: Anchor },
-  { title: "Petty Officer 2nd Class", minScore: 2000, icon: Anchor },
-  { title: "Petty Officer 1st Class", minScore: 3500, icon: Anchor },
-  { title: "Chief Petty Officer", minScore: 5000, icon: Gem },
-  { title: "Senior Chief Petty Officer", minScore: 7500, icon: Gem },
-  { title: "Master Chief Petty Officer", minScore: 10000, icon: Gem },
-  { title: "Warrant Officer", minScore: 15000, icon: Award },
-  { title: "Chief Warrant Officer", minScore: 20000, icon: Award },
-  { title: "Ensign", minScore: 30000, icon: Medal },
-  { title: "Lieutenant", minScore: 40000, icon: Medal },
-  { title: "Commander", minScore: 60000, icon: Crown },
-  { title: "Captain", minScore: 80000, icon: Crown },
-  { title: "Admiral of the Fleet", minScore: 100000, icon: Crown },
+  { title: "Seaman Apprentice", minScore: 25, icon: ShieldHalf },
+  { title: "Seaman", minScore: 50, icon: ShieldCheck },
+  { title: "Petty Officer 3rd Class", minScore: 100, icon: Anchor },
+  { title: "Petty Officer 2nd Class", minScore: 200, icon: Anchor },
+  { title: "Petty Officer 1st Class", minScore: 350, icon: Anchor },
+  { title: "Chief Petty Officer", minScore: 500, icon: Gem },
+  { title: "Senior Chief Petty Officer", minScore: 750, icon: Gem },
+  { title: "Master Chief Petty Officer", minScore: 1000, icon: Gem },
+  { title: "Warrant Officer", minScore: 1500, icon: Award },
+  { title: "Chief Warrant Officer", minScore: 2000, icon: Award },
+  { title: "Ensign", minScore: 3000, icon: Medal },
+  { title: "Lieutenant", minScore: 4000, icon: Medal },
+  { title: "Commander", minScore: 6000, icon: Crown },
+  { title: "Captain", minScore: 8000, icon: Crown },
+  { title: "Admiral of the Fleet", minScore: 10000, icon: Crown },
 ];
 
 export const achievements: Achievement[] = [
@@ -1146,7 +1146,7 @@ export const storyline: StorylineHint[] = [
   { 
     key: "boating_history_2", 
     title: "A Hole for a Purpose", 
-    text: "If you look at the ribs or frames of a classic wooden boat, you might see small notches or holes called 'limber holes.' These aren't a mistake; they are a crucial design feature that allows any water that gets inside the hull to drain down to the lowest point (the bilge) so it can be pumped out by the bilge pump.", 
+    text: "If you look at the ribs or frames of a classic wooden boat, you might see small notches or holes called 'limber holes.' These aren't a mistake; they are a crucial design feature that allows any water that gets inside the hull to drain down to the lowest part (the bilge) so it can be pumped out by the bilge pump.", 
     unlocked: false, 
     icon: Ship 
   },
