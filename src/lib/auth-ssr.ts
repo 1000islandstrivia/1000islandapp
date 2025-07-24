@@ -20,7 +20,7 @@ interface Session {
  * @returns A promise that resolves to the user's session object.
  */
 export async function auth(): Promise<Session> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(AUTH_KEY);
 
   if (!sessionCookie?.value) {
