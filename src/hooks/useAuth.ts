@@ -8,7 +8,7 @@ import { getRankByScore, playerRanks, type PlayerRank } from '@/lib/trivia-data'
 
 const AUTH_KEY = 'riverrat_lore_auth_v2';
 
-interface User {
+export interface User {
   username: string;
   email?: string;
   score?: number;
@@ -160,5 +160,3 @@ export function useAuth() {
 
   return { user, loading, login, register, logout, refreshUser };
 }
-
-    
