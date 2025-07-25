@@ -1,4 +1,3 @@
-
 import type { LucideIcon } from 'lucide-react';
 import { Castle, Diamond, Fish, Scroll, Ship, Star, Trophy, Leaf, Anchor, MapPin, Lightbulb, BookOpen, Palette, Mountain, Trees, Waves, Bird, Shield, ShieldHalf, ShieldCheck, Gem, Award, Medal, Crown, Zap, Skull } from 'lucide-react';
 
@@ -49,21 +48,21 @@ export interface LeaderboardEntry {
 
 export const playerRanks: PlayerRank[] = [
   { title: "Seaman Recruit", minScore: 0, icon: Shield },
-  { title: "Seaman Apprentice", minScore: 25, icon: ShieldHalf },
-  { title: "Seaman", minScore: 50, icon: ShieldCheck },
-  { title: "Petty Officer 3rd Class", minScore: 100, icon: Anchor },
-  { title: "Petty Officer 2nd Class", minScore: 200, icon: Anchor },
-  { title: "Petty Officer 1st Class", minScore: 350, icon: Anchor },
-  { title: "Chief Petty Officer", minScore: 500, icon: Gem },
-  { title: "Senior Chief Petty Officer", minScore: 750, icon: Gem },
-  { title: "Master Chief Petty Officer", minScore: 1000, icon: Gem },
-  { title: "Warrant Officer", minScore: 1500, icon: Award },
-  { title: "Chief Warrant Officer", minScore: 2000, icon: Award },
-  { title: "Ensign", minScore: 3000, icon: Medal },
-  { title: "Lieutenant", minScore: 4000, icon: Medal },
-  { title: "Commander", minScore: 6000, icon: Crown },
-  { title: "Captain", minScore: 8000, icon: Crown },
-  { title: "Admiral of the Fleet", minScore: 10000, icon: Crown },
+  { title: "Seaman Apprentice", minScore: 2.5, icon: ShieldHalf },
+  { title: "Seaman", minScore: 5, icon: ShieldCheck },
+  { title: "Petty Officer 3rd Class", minScore: 10, icon: Anchor },
+  { title: "Petty Officer 2nd Class", minScore: 20, icon: Anchor },
+  { title: "Petty Officer 1st Class", minScore: 35, icon: Anchor },
+  { title: "Chief Petty Officer", minScore: 50, icon: Gem },
+  { title: "Senior Chief Petty Officer", minScore: 75, icon: Gem },
+  { title: "Master Chief Petty Officer", minScore: 100, icon: Gem },
+  { title: "Warrant Officer", minScore: 150, icon: Award },
+  { title: "Chief Warrant Officer", minScore: 200, icon: Award },
+  { title: "Ensign", minScore: 300, icon: Medal },
+  { title: "Lieutenant", minScore: 400, icon: Medal },
+  { title: "Commander", minScore: 600, icon: Crown },
+  { title: "Captain", minScore: 800, icon: Crown },
+  { title: "Admiral of the Fleet", minScore: 1000, icon: Crown },
 ];
 
 export const achievements: Achievement[] = [
@@ -886,12 +885,6 @@ export const storyline: StorylineHint[] = [
     icon: BookOpen 
   },
   { 
-    key: "final_revelation", 
-    title: "You have sought knowledge and uncovered many secrets of the water. You have listened to the whispers of history, the tales of pirates, and the legends of the river. But here is the last secret, the one every true River Rat learns in their heart: the real treasure was never Bill Johnston's gold. It is the enduring spirit of this place, the stunning beauty of its nature, and the privilege of becoming part of the endless story that the river itself tells. Congratulations, Captain. You are a true keeper of the lore.", 
-    unlocked: false, 
-    icon: Star 
-  },
-  { 
     key: "war_history_clue_2", 
     title: "A Watery Highway of War", 
     text: "In the age of sail, he who controlled the St. Lawrence River controlled access to the entire Great Lakes basin. During the War of 1812, the river was the primary supply line for troops, cannons, and provisions for all the forts further inland. The desperate race between the shipyards at Sackets Harbor and Kingston to build bigger, more powerful sailing warships was a struggle for the control of this vital strategic highway.", 
@@ -999,7 +992,7 @@ export const storyline: StorylineHint[] = [
   { 
     key: "recreation_1", 
     title: "From River to Capital", 
-    text: "For ambitious hikers, the Rideau Trail offers a unique journey. This long-distance hiking path stretches over 200 miles, connecting the city of Kingston at the mouth of the St. Lawrence River all the way to Canada's capital city, Ottawa. The trail roughly follows the scenic route of the historic Rideau Canal system.", 
+    text: "For ambitious hikers, the Rideau Trail offers a unique journey. This long-distance hiking path stretches over 200 miles, connecting the city of Kingston at the mouth of the St. Lawrence River all the way to Canada's capital city, Ottawa. The trail roughly follows the route of the historic Rideau Canal system.", 
     unlocked: false, 
     icon: MapPin 
   },
@@ -1457,7 +1450,15 @@ export const storyline: StorylineHint[] = [
     text: "A navigation buoy with both red and green horizontal bands is called a 'bifurcation buoy,' and it marks where a channel splits into two. The color of the top band indicates the preferred, or main, channel. If the top band is green, you should keep the buoy on your left to stay in the main channel, following the 'Red, Right, Returning' rule.", 
     unlocked: false, 
     icon: MapPin 
+  },
+  {
+    key: "final_revelation",
+    title: "The Final Revelation",
+    text: "You have sought knowledge and uncovered many secrets of the water. You have listened to the whispers of history, the tales of pirates, and the legends of the river. But here is the last secret, the one every true River Rat learns in their heart: the real treasure was never Bill Johnston's gold. It is the enduring spirit of this place, the stunning beauty of its nature, and the privilege of becoming part of the endless story that the river itself tells. Congratulations, Captain. You are a true keeper of the lore.",
+    unlocked: false,
+    icon: Star
   }
 ]
 
     
+
