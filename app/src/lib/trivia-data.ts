@@ -1,4 +1,3 @@
-
 import type { LucideIcon } from 'lucide-react';
 import { Castle, Diamond, Fish, Scroll, Ship, Star, Trophy, Leaf, Anchor, MapPin, Lightbulb, BookOpen, Palette, Mountain, Trees, Waves, Bird, Shield, ShieldHalf, ShieldCheck, Gem, Award, Medal, Crown, Zap, Skull } from 'lucide-react';
 
@@ -993,7 +992,7 @@ export const storyline: StorylineHint[] = [
   { 
     key: "recreation_1", 
     title: "From River to Capital", 
-    text: "For ambitious hikers, the Rideau Trail offers a unique journey. This long-distance hiking path stretches over 200 miles, connecting the city of Kingston at the mouth of the St. Lawrence River all the way to Canada's capital city, Ottawa. The trail roughly follows the scenic route of the historic Rideau Canal system.", 
+    text: "For ambitious hikers, the Rideau Trail offers a unique journey. This long-distance hiking path stretches over 200 miles, connecting the city of Kingston at the mouth of the St. Lawrence River all the way to Canada's capital city, Ottawa. The trail roughly follows the route of the historic Rideau Canal system.", 
     unlocked: false, 
     icon: MapPin 
   },
