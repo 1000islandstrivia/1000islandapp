@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { PT_Sans, Playfair_Display } from 'next/font/google';
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster"; // Import Toaster
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -28,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${ptSans.variable} ${playfairDisplay.variable}`} suppressHydrationWarning={true}>
+      <head>
+        {/* next/font handles optimized font loading for PT Sans and Playfair Display */}
+      </head>
       <body className="font-body antialiased" suppressHydrationWarning={true}>
         {children}
         <Toaster />

@@ -1,4 +1,3 @@
-
 export default function Footer() {
   return (
     <footer className="bg-primary/10 text-foreground py-6 mt-auto">

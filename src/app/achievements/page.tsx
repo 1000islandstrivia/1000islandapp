@@ -1,3 +1,4 @@
+
 import { auth } from '@/lib/auth-ssr';
 import { redirect } from 'next/navigation';
 import MainLayout from '@/components/layout/MainLayout';

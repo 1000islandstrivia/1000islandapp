@@ -1,0 +1,2633 @@
+
+[
+  {
+    "id": "TQ001",
+    "question": "What is the name of the famous, unfinished castle on Heart Island, built by George C. Boldt?",
+    "options": ["Singer Castle", "Boldt Castle", "Dark Island Castle", "Castle Rest"],
+    "answer": "Boldt Castle",
+    "storylineHintKey": "boldt_secret_1",
+    "fallbackHint": "This Gilded Age marvel was built as a testament to a husband's love for his wife, Louise."
+  },
+  {
+    "id": "TQ002",
+    "question": "The St. Lawrence River forms the international border between the USA and which other country?",
+    "options": ["Mexico", "France", "Canada", "Greenland"],
+    "answer": "Canada",
+    "storylineHintKey": "border_mystery_1",
+    "fallbackHint": "Our northern neighbors share this magnificent waterway with the United States."
+  },
+  {
+    "id": "TQ003",
+    "question": "What is the humorous name of the smallest inhabited island in the Thousand Islands, part of the U.S.?",
+    "options": ["Tiny Town", "No Yard Inn", "A-B-C Island", "Just Room Enough Island"],
+    "answer": "Just Room Enough Island",
+    "storylineHintKey": "small_island_clue_1",
+    "fallbackHint": "The family who owns it wanted just enough space for a small house and a tree."
+  },
+  {
+    "id": "TQ004",
+    "question": "What are the huge ocean-going vessels, specifically designed to fit through the Seaway's locks, often called?",
+    "options": ["River Rats", "Lakers", "Seadogs", "Salties"],
+    "answer": "Lakers",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "These long, narrow cargo ships are specifically designed to fit through the Seaway's locks."
+  },
+  {
+    "id": "TQ005",
+    "question": "What famous pirate and smuggler used the Thousand Islands as his base of operations during the Patriot War?",
+    "options": ["Blackbeard", "Calico Jack", "Bill Johnston", "Captain Kidd"],
+    "answer": "Bill Johnston",
+    "storylineHintKey": "pirate_treasure_1",
+    "fallbackHint": "This river pirate famously burned the British steamer 'Sir Robert Peel'."
+  },
+  {
+    "id": "TQ006",
+    "question": "What elusive, predatory fish is known as the 'King of the River' and is a prized catch for anglers?",
+    "options": ["Northern Pike", "Largemouth Bass", "Muskellunge", "Walleye"],
+    "answer": "Muskellunge",
+    "storylineHintKey": "fish_expert_clue",
+    "fallbackHint": "Often called 'Muskie,' it's known as the fish of ten thousand casts."
+  },
+  {
+    "id": "TQ007",
+    "question": "The St. Lawrence River is the primary outflow for what massive freshwater system?",
+    "options": ["The Mississippi River", "The Great Lakes", "The Hudson Bay", "The Amazon River"],
+    "answer": "The Great Lakes",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "It drains the combined waters of Superior, Michigan, Huron, Erie, and Ontario."
+  },
+  {
+    "id": "TQ008",
+    "question": "Which U.S. President was instrumental in the creation of the St. Lawrence Seaway?",
+    "options": ["Franklin D. Roosevelt", "John F. Kennedy", "Theodore Roosevelt", "Dwight D. Eisenhower"],
+    "answer": "Dwight D. Eisenhower",
+    "storylineHintKey": "seaway_president_1",
+    "fallbackHint": "A former general, he saw the strategic importance of the deep waterway."
+  },
+  {
+    "id": "TQ009",
+    "question": "By official count, how many islands make up the 'Thousand Islands' region?",
+    "options": ["Exactly 1,000", "Over 2,000", "1,864", "About 800"],
+    "answer": "1,864",
+    "storylineHintKey": "island_count_1",
+    "fallbackHint": "To be an island, it must stay above water year-round and have at least two living trees."
+  },
+  {
+    "id": "TQ010",
+    "question": "What popular salad dressing is said to have originated in the Thousand Islands?",
+    "options": ["Ranch", "Caesar", "Italian", "Thousand Island"],
+    "answer": "Thousand Island",
+    "storylineHintKey": "dressing_origin_1",
+    "fallbackHint": "Legend says it was created by a fishing guide's wife, Sophie LaLonde."
+  },
+  {
+    "id": "TQ011",
+    "question": "Singer Castle on Dark Island features secret passages and was built for the president of what company?",
+    "options": ["Ford Motor Company", "US Steel", "Singer Sewing Machine Company", "The Ritz-Carlton"],
+    "answer": "Singer Sewing Machine Company",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Its owner, Frederick Bourne, wanted a surprise-filled hunting lodge for his family."
+  },
+  {
+    "id": "TQ012",
+    "question": "The islands are the exposed tops of an ancient granite mountain range called the:",
+    "options": ["Appalachian Mountains", "Adirondack Mountains", "Rocky Mountains", "Frontenac Arch"],
+    "answer": "Frontenac Arch",
+    "storylineHintKey": "geology_rock_1",
+    "fallbackHint": "This bridge of ancient rock connects the Canadian Shield to the Adirondacks."
+  },
+  {
+    "id": "TQ013",
+    "question": "In what U.S. village would you find the Antique Boat Museum, dedicated to preserving the region's boating heritage?",
+    "options": ["Alexandria Bay", "Cape Vincent", "Clayton", "Sackets Harbor"],
+    "answer": "Clayton",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "This museum boasts the largest collection of freshwater antique boats in North America."
+  },
+  {
+    "id": "TQ014",
+    "question": "What is the affectionate nickname for a person who is a local expert on the St. Lawrence River?",
+    "options": ["River Person", "Seawolf", "River Rat", "Islander"],
+    "answer": "River Rat",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "It's considered a badge of honor, signifying deep knowledge of the river's secrets."
+  },
+  {
+    "id": "TQ015",
+    "question": "In what year did construction on Boldt Castle famously halt due to a personal tragedy?",
+    "options": ["1920", "1899", "1904", "1941"],
+    "answer": "1904",
+    "storylineHintKey": "boldt_construction_1",
+    "fallbackHint": "A telegram bearing news of his wife's death stopped all work on the castle."
+  },
+  {
+    "id": "TQ016",
+    "question": "What is a 'shore dinner,' a traditional meal for fishermen in the Thousand Islands?",
+    "options": ["A picnic on the beach", "A fish fry with salt pork and potatoes cooked outdoors", "A formal dinner at a riverside restaurant", "A potluck supper at the yacht club"],
+    "answer": "A fish fry with salt pork and potatoes cooked outdoors",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "It's a rustic tradition of cooking the day's catch right on the riverbank."
+  },
+  {
+    "id": "TQ017",
+    "question": "The cold, clear waters of the St. Lawrence are a popular destination for what type of recreational activity?",
+    "options": ["Surfing", "Freshwater Scuba Diving", "Whitewater Rafting", "Water Skiing Competitions"],
+    "answer": "Freshwater Scuba Diving",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Divers come to explore the many well-preserved shipwrecks on the river bottom."
+  },
+  {
+    "id": "TQ018",
+    "question": "What does 'The Lost Channel' refer to?",
+    "options": ["A TV station that went off the air", "A sunken boat carrying gold", "A section of the river where a British army got lost", "A popular fishing spot"],
+    "answer": "A section of the river where a British army got lost",
+    "storylineHintKey": "lost_channel_1",
+    "fallbackHint": "This confusing passage of water famously bewildered British forces in 1760."
+  },
+  {
+    "id": "TQ019",
+    "question": "The annual Poker Run event features what type of boats racing between checkpoints?",
+    "options": ["Sailboats", "Kayaks", "High-performance speedboats", "Antique wooden boats"],
+    "answer": "High-performance speedboats",
+    "storylineHintKey": "poker_run_1",
+    "fallbackHint": "Participants collect playing cards at various stops to build the best hand."
+  },
+  {
+    "id": "TQ020",
+    "question": "Which historic Canadian city, known as the 'Limestone City,' is located at the gateway to the Thousand Islands?",
+    "options": ["Toronto", "Ottawa", "Montreal", "Kingston"],
+    "answer": "Kingston",
+    "storylineHintKey": "canadian_gateway_1",
+    "fallbackHint": "This city is home to Fort Henry and the southern end of the Rideau Canal."
+  },
+  {
+    "id": "TQ021",
+    "question": "What is the primary purpose of the St. Lawrence Seaway's lock system?",
+    "options": ["To generate hydroelectric power", "To allow ships to bypass rapids and changes in water level", "To store water for irrigation", "To create recreational swimming areas"],
+    "answer": "To allow ships to bypass rapids and changes in water level",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "These massive 'water elevators' are crucial for navigating the river's changing elevation."
+  },
+  {
+    "id": "TQ022",
+    "question": "Which of these is NOT a Gilded Age castle in the Thousand Islands?",
+    "options": ["Boldt Castle", "Singer Castle", "Casa Loma", "Calumet Castle"],
+    "answer": "Casa Loma",
+    "storylineHintKey": "boldt_secret_2",
+    "fallbackHint": "While a famous Canadian castle, this one is located in Toronto, not on the river."
+  },
+  {
+    "id": "TQ023",
+    "question": "The Thousand Islands Bridge connects Collins Landing, NY to what Canadian province?",
+    "options": ["Quebec", "British Columbia", "Nova Scotia", "Ontario"],
+    "answer": "Ontario",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "The bridge links New York State with Canada's most populous province."
+  },
+  {
+    "id": "TQ024",
+    "question": "What is the name of the deep, narrow channel where the US-Canada border runs between Wellesley Island and Hill Island?",
+    "options": ["The Grand Canal", "The International Rift", "The Sunken Trench", "The Border Pass"],
+    "answer": "The International Rift",
+    "storylineHintKey": "international_rift_1",
+    "fallbackHint": "This channel is so narrow that it feels like you can almost touch both countries at once."
+  },
+  {
+    "id": "TQ025",
+    "question": "What is the traditional type of wooden boat, ideal for 'river rambling,' that originated in the region?",
+    "options": ["Gondola", "St. Lawrence Skiff", "Viking Longship", "Catamaran"],
+    "answer": "St. Lawrence Skiff",
+    "storylineHintKey": "skiff_life_1",
+    "fallbackHint": "These elegant, pointed boats are perfectly suited for exploring the nooks and crannies of the islands."
+  },
+  {
+    "id": "TQ026",
+    "question": "For what reason was the Rideau Canal, which connects to the St. Lawrence at Kingston, originally built?",
+    "options": ["For recreational boating", "As a tourist attraction", "As a secure military supply route", "For commercial fishing"],
+    "answer": "As a secure military supply route",
+    "storylineHintKey": "rideau_canal_connects_1",
+    "fallbackHint": "It was built after the War of 1812 to provide a safe route away from the American border."
+  },
+  {
+    "id": "TQ027",
+    "question": "Which magnificent bird of prey, known as a 'fish hawk,' is commonly seen diving for fish in the river?",
+    "options": ["Bald Eagle", "Osprey", "Peregrine Falcon", "Great Horned Owl"],
+    "answer": "Osprey",
+    "storylineHintKey": "bird_of_prey_1",
+    "fallbackHint": "These raptors build large nests on high points near the water and are skilled hunters."
+  },
+  {
+    "id": "TQ028",
+    "question": "The powerful currents of the St. Lawrence are harnessed to generate electricity by what massive structure?",
+    "options": ["The Hoover Dam", "The Boldt Castle Power House", "The Moses-Saunders Power Dam", "The Three Gorges Dam"],
+    "answer": "The Moses-Saunders Power Dam",
+    "storylineHintKey": "power_authority_center_1",
+    "fallbackHint": "This dam is so large it spans the border between Cornwall, Ontario, and Massena, New York."
+  },
+  {
+    "id": "TQ029",
+    "question": "What natural amphitheater, carved by glaciers, hosts unique non-denominational church services for boaters?",
+    "options": ["The Devil's Oven", "The Lost Channel", "Half Moon Bay", "The Admiralty Islands"],
+    "answer": "Half Moon Bay",
+    "storylineHintKey": "half_moon_bay_1",
+    "fallbackHint": "A minister preaches from a rocky pulpit to a floating congregation in this scenic cove."
+  },
+  {
+    "id": "TQ030",
+    "question": "Akwesasne, a Mohawk territory, is unique for straddling the borders of which three jurisdictions?",
+    "options": ["NY, Vermont, and Quebec", "NY, Ontario, and Quebec", "NY, Ontario, and Pennsylvania", "NY, Quebec, and Maine"],
+    "answer": "NY, Ontario, and Quebec",
+    "storylineHintKey": "haudenosaunee_territory_1",
+    "fallbackHint": "This territory's unique geography places it at a complex international and inter-provincial junction."
+  },
+  {
+    "id": "TQ031",
+    "question": "The Thousand Islands Land Trust (TILT) is an organization dedicated to what?",
+    "options": ["Promoting tourism", "Organizing boat races", "Conserving natural spaces and habitats", "Operating the lighthouses"],
+    "answer": "Conserving natural spaces and habitats",
+    "storylineHintKey": "tilt_mission_1",
+    "fallbackHint": "This group works to protect the wild beauty of the region for future generations."
+  },
+  {
+    "id": "TQ032",
+    "question": "What is the name of the lighthouse that stands at the very beginning of the St. Lawrence River, where it flows out of Lake Ontario?",
+    "options": ["Rock Island Lighthouse", "Sister Island Lighthouse", "Tibbetts Point Lighthouse", "Sunken Rock Lighthouse"],
+    "answer": "Tibbetts Point Lighthouse",
+    "storylineHintKey": "tibbetts_point_1",
+    "fallbackHint": "This historic light marks the crucial transition from lake to river navigation."
+  },
+  {
+    "id": "TQ033",
+    "question": "Which of these is a popular, well-preserved shipwreck that serves as a destination for scuba divers?",
+    "options": ["The Titanic", "The Sir Robert Peel", "The Covenanter", "The Edmund Fitzgerald"],
+    "answer": "The Covenanter",
+    "storylineHintKey": "covenanter_shipwreck_1",
+    "fallbackHint": "This two-masted schooner lies intact on the riverbed, a ghostly sight for divers."
+  },
+  {
+    "id": "TQ034",
+    "question": "The historic Fort Henry in Kingston, a UNESCO World Heritage Site, was built by which nation?",
+    "options": ["France", "The United States", "Spain", "Great Britain"],
+    "answer": "Great Britain",
+    "storylineHintKey": "fort_henry_1",
+    "fallbackHint": "This massive fort was constructed to defend British naval interests after the War of 1812."
+  },
+  {
+    "id": "TQ035",
+    "question": "What is the name of the scenic road that runs along the Canadian shoreline of the St. Lawrence River?",
+    "options": ["The Queen's Highway", "The Thousand Islands Parkway", "The Seaway Trail", "The Loyalist Parkway"],
+    "answer": "The Thousand Islands Parkway",
+    "storylineHintKey": "parkway_location_1",
+    "fallbackHint": "This road offers some of the most stunning, continuous views of the islands from the northern shore."
+  },
+  {
+    "id": "TQ036",
+    "question": "The Thousand Islands region has been recognized by UNESCO as a what?",
+    "options": ["World Danger Zone", "Biosphere Reserve", "Intangible Cultural Heritage Site", "World Literary Capital"],
+    "answer": "Biosphere Reserve",
+    "storylineHintKey": "biosphere_reserve_1",
+    "fallbackHint": "This designation recognizes the region's unique ecosystem and the community's efforts to live in harmony with it."
+  },
+  {
+    "id": "TQ037",
+    "question": "What does the term 'shoal' mean in a river context?",
+    "options": ["A large school of fish", "A deep, safe channel", "A hidden, shallow area of rock or sand", "A type of anchor"],
+    "answer": "A hidden, shallow area of rock or sand",
+    "storylineHintKey": "shoal_definition_1",
+    "fallbackHint": "These are a boater's worst nightmare, capable of causing serious damage to a vessel."
+  },
+  {
+    "id": "TQ038",
+    "question": "In what Canadian town would you find the Thousand Islands Playhouse, a popular professional theatre?",
+    "options": ["Brockville", "Kingston", "Gananoque", "Cornwall"],
+    "answer": "Gananoque",
+    "storylineHintKey": "playhouse_known_for_1",
+    "fallbackHint": "This charming town is known as the 'Gateway to the Thousand Islands' on the Canadian side."
+  },
+  {
+    "id": "TQ039",
+    "question": "Which of these is NOT a group of islands within the Thousand Islands archipelago?",
+    "options": ["The Admiralty Islands", "The Lake Fleet Islands", "The Navy Islands", "The Hawaiian Islands"],
+    "answer": "The Hawaiian Islands",
+    "storylineHintKey": "region_geography_clue",
+    "fallbackHint": "While lovely, these Pacific islands are quite a long swim from the St. Lawrence River."
+  },
+  {
+    "id": "TQ040",
+    "question": "What is the name of the island, rumored to be a hideout for the pirate Bill Johnston, that is known for its unique cave?",
+    "options": ["Heart Island", "Wellesley Island", "Devil's Oven Island", "Dark Island"],
+    "answer": "Devil's Oven Island",
+    "storylineHintKey": "devils_oven_1",
+    "fallbackHint": "This rugged island, with its legendary cave, has a long history as a pirate hideaway."
+  },
+  {
+    "id": "TQ041",
+    "question": "What was the fate of the grand steamboat 'Frontenac' in 1907?",
+    "options": ["It was sold to a museum", "It was destroyed by fire", "It was sunk by a German U-boat", "It was renamed and still sails today"],
+    "answer": "It was destroyed by fire",
+    "storylineHintKey": "frontenac_fate_1",
+    "fallbackHint": "Like many wooden structures of its era, this floating palace met a fiery end."
+  },
+  {
+    "id": "TQ042",
+    "question": "The Thousand Islands Biological Station (TIBS) is primarily focused on what?",
+    "options": ["Studying astronomy", "Historical reenactments", "Scientific research of the river ecosystem", "Developing new boat engines"],
+    "answer": "Scientific research of the river ecosystem",
+    "storylineHintKey": "tibs_focus_1",
+    "fallbackHint": "This research station acts as a doctor for the river, monitoring its health."
+  },
+  {
+    "id": "TQ043",
+    "question": "What is the story behind Zavikon Island's famously short 'international' bridge?",
+    "options": ["It connects the US and Canada", "It's an optical illusion", "It connects two Canadian islands but is humorously claimed to be international", "It was a mistake by the builders"],
+    "answer": "It connects two Canadian islands but is humorously claimed to be international",
+    "storylineHintKey": "zavikon_island_bridge_1",
+    "fallbackHint": "It's a classic river tale, a bit of local humor for the tourists."
+  },
+  {
+    "id": "TQ044",
+    "question": "Before the Seaway, what natural obstacle made upstream navigation past Cornwall impossible for large ships?",
+    "options": ["A giant waterfall", "The Long Sault rapids", "A large beaver dam", "A narrow canyon"],
+    "answer": "The Long Sault rapids",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "This long, violent stretch of whitewater had to be tamed to create the modern waterway."
+  },
+  {
+    "id": "TQ045",
+    "question": "What annual event in Alexandria Bay celebrates the region's rogue history with parades and mock battles?",
+    "options": ["The Gilded Age Ball", "The Seaway Festival", "Bill Johnston's Pirate Days", "The Antique Boat Show"],
+    "answer": "Bill Johnston's Pirate Days",
+    "storylineHintKey": "pirate_days_1",
+    "fallbackHint": "For one week, the town is overrun with swashbucklers honoring its famous pirate."
+  },
+  {
+    "id": "TQ046",
+    "question": "Why are many of the Gilded Age 'cottages' in the Thousand Islands built primarily of wood?",
+    "options": ["Wood was cheaper than stone", "For better insulation against the cold", "To showcase elaborate, custom woodwork and craftsmanship", "Because stone was not available"],
+    "answer": "To showcase elaborate, custom woodwork and craftsmanship",
+    "storylineHintKey": "cottage_country_1",
+    "fallbackHint": "The wealthy owners competed to have the most intricate and beautiful wooden designs."
+  },
+  {
+    "id": "TQ047",
+    "question": "What is the purpose of the 400-foot tall 1000 Islands Tower on Hill Island?",
+    "options": ["It's a cell phone tower", "It's a lighthouse", "It's a private residence", "It's an observation deck for panoramic views"],
+    "answer": "It's an observation deck for panoramic views",
+    "storylineHintKey": "islands_tower_1",
+    "fallbackHint": "Elevators whisk visitors to the top for a breathtaking, bird's-eye view of the archipelago."
+  },
+  {
+    "id": "TQ048",
+    "question": "The Battle of the Windmill, a bloody conflict during the Patriot War, took place near which Ontario town?",
+    "options": ["Kingston", "Gananoque", "Prescott", "Brockville"],
+    "answer": "Prescott",
+    "storylineHintKey": "windmill_battle_location_1",
+    "fallbackHint": "This historic structure is now a national historic site of Canada, marking a key battle."
+  },
+  {
+    "id": "TQ049",
+    "question": "The Minna Anthony Common Nature Center, the largest in the NY State Park system, is located within which larger park?",
+    "options": ["Central Park", "Yellowstone National Park", "Wellesley Island State Park", "Niagara Falls State Park"],
+    "answer": "Wellesley Island State Park",
+    "storylineHintKey": "minna_anthony_location_1",
+    "fallbackHint": "This island park is a major hub for recreation and nature education on the US side."
+  },
+  {
+    "id": "TQ050",
+    "question": "Why do the cold, fresh waters of the St. Lawrence preserve shipwrecks so well?",
+    "options": ["The water is too deep for light to penetrate", "The absence of salt and wood-eating organisms", "The strong currents wash away decay", "The local fish protect the wrecks"],
+    "answer": "The absence of salt and wood-eating organisms",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Unlike in saltwater, wooden ships can remain remarkably intact for centuries here."
+  },
+  {
+    "id": "TQ051",
+    "question": "What is Calumet Castle, now gone, famous for being the estate of?",
+    "options": ["A railroad tycoon", "A shipping magnate", "A tobacco baron", "A famous actor"],
+    "answer": "A tobacco baron",
+    "storylineHintKey": "calumet_island_owner_1",
+    "fallbackHint": "Charles G. Emery made his fortune in the tobacco industry and built a grand castle on the river."
+  },
+  {
+    "id": "TQ052",
+    "question": "The St. Lawrence River serves as a vital migratory path for birds known as the what?",
+    "options": ["The Atlantic Flyway", "The Pacific Flyway", "The Mississippi Flyway", "The Central Flyway"],
+    "answer": "The Atlantic Flyway",
+    "storylineHintKey": "duck_migration_1",
+    "fallbackHint": "Millions of birds use the river as a highway during their spring and fall migrations."
+  },
+  {
+    "id": "TQ053",
+    "question": "Which material, quarried locally, gives the city of Kingston, ON, its nickname 'The Limestone City'?",
+    "options": ["Granite", "Marble", "Sandstone", "Limestone"],
+    "answer": "Limestone",
+    "storylineHintKey": "canadian_gateway_1",
+    "fallbackHint": "Many of the city's most historic and beautiful buildings are made from this pale stone."
+  },
+  {
+    "id": "TQ054",
+    "question": "The Alster Tower at Boldt Castle, meant as a playhouse, was also known by what nickname?",
+    "options": ["The Children's Keep", "The Playhouse", "The Millionaire's Funhouse", "The Hennery"],
+    "answer": "The Hennery",
+    "storylineHintKey": "alster_tower_purpose_1",
+    "fallbackHint": "This whimsical name was a playful nod to its intended use as a place for fun and games."
+  },
+  {
+    "id": "TQ055",
+    "question": "What Indigenous Confederacy has ancestral territory throughout the Thousand Islands region?",
+    "options": ["The Algonquin", "The Sioux", "The Haudenosaunee (Iroquois)", "The Cherokee"],
+    "answer": "The Haudenosaunee (Iroquois)",
+    "storylineHintKey": "native_history_clue",
+    "fallbackHint": "The people of the Longhouse have a deep and ancient connection to this land and waterway."
+  },
+  {
+    "id": "TQ056",
+    "question": "Which of these is NOT a primary ingredient in a traditional shore dinner?",
+    "options": ["Freshly caught fish", "Salt pork", "Potatoes and Onions", "Lobster"],
+    "answer": "Lobster",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "This rustic meal relies on simple, hearty ingredients cooked over an open fire."
+  },
+  {
+    "id": "TQ057",
+    "question": "Zenda Farms in Clayton is preserved by TILT to protect the region's what?",
+    "options": ["Military history", "Gilded Age architecture", "Agricultural and rural landscape", "Native American artifacts"],
+    "answer": "Agricultural and rural landscape",
+    "storylineHintKey": "zenda_farms_1",
+    "fallbackHint": "This preserve showcases a different side of river life, away from the grand castles."
+  },
+  {
+    "id": "TQ058",
+    "question": "The unique climate and soil of the Thousand Islands region has led to the growth of what industry?",
+    "options": ["Cotton farming", "Wineries and vineyards", "Citrus groves", "Coffee plantations"],
+    "answer": "Wineries and vineyards",
+    "storylineHintKey": "winery_known_for_1",
+    "fallbackHint": "The river moderates the temperature, allowing for the successful cultivation of grapes."
+  },
+  {
+    "id": "TQ059",
+    "question": "The main span of the Thousand Islands Bridge is a suspension bridge. Why was this design chosen?",
+    "options": ["It was the cheapest to build", "It looks the most beautiful", "To provide high clearance for tall ships", "It's the only design that works on granite"],
+    "answer": "To provide high clearance for tall ships",
+    "storylineHintKey": "bridge_type_1",
+    "fallbackHint": "The bridge had to be tall enough to allow massive 'Lakers' to pass underneath."
+  },
+  {
+    "id": "TQ060",
+    "question": "The American Coot is a common water bird in the region. What is its most distinctive feature?",
+    "options": ["A bright red beak", "A vibrant blue head", "A white bill and forehead shield", "A long, curved neck"],
+    "answer": "A white bill and forehead shield",
+    "storylineHintKey": "flora_fauna_clue",
+    "fallbackHint": "This small, dark bird is easily identified by its chicken-like white beak."
+  },
+  {
+    "id": "TQ061",
+    "question": "What is the primary product transported westbound (into the Great Lakes) on the St. Lawrence Seaway?",
+    "options": ["Luxury cars", "Grain", "Iron Ore", "Tropical fruit"],
+    "answer": "Iron Ore",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "Massive quantities of ore are shipped from eastern Canada to steel mills on the Great Lakes."
+  },
+  {
+    "id": "TQ062",
+    "question": "The construction of Singer Castle used granite quarried from where?",
+    "options": ["Vermont", "Italy", "A neighboring island, Oak Island", "The mainland"],
+    "answer": "A neighboring island, Oak Island",
+    "storylineHintKey": "singer_castle_material_1",
+    "fallbackHint": "The castle was truly built from the river, using stone from its own surroundings."
+  },
+  {
+    "id": "TQ063",
+    "question": "What is the term for the Gilded Age when wealthy families built lavish summer homes in the area?",
+    "options": ["The Roaring Twenties", "The Victorian Era", "The 'Cottage Country' boom", "The Renaissance"],
+    "answer": "The 'Cottage Country' boom",
+    "storylineHintKey": "cottage_country_1",
+    "fallbackHint": "These 'cottages' were often sprawling mansions, turning the islands into a millionaire's playground."
+  },
+  {
+    "id": "TQ064",
+    "question": "An ancient tradition of the Mohawk people of Akwesasne is the nighttime spearfishing of what creature?",
+    "options": ["Sturgeon", "Muskellunge", "Turtles", "Eels"],
+    "answer": "Eels",
+    "storylineHintKey": "eel_fishing_1",
+    "fallbackHint": "This challenging form of fishing has been practiced for generations."
+  },
+  {
+    "id": "TQ065",
+    "question": "Which of these is NOT a real lighthouse in the Thousand Islands?",
+    "options": ["Sunken Rock Lighthouse", "Rock Island Lighthouse", "Pharos of Alexandria", "Sister Island Lighthouse"],
+    "answer": "Pharos of Alexandria",
+    "storylineHintKey": "lighthouse_legend_clue",
+    "fallbackHint": "While a legendary ancient wonder, this lighthouse was located in Egypt, not New York."
+  },
+  {
+    "id": "TQ066",
+    "question": "During Prohibition, the area was a hotspot for smuggling alcohol. This activity was often called what?",
+    "options": ["The Whiskey Rebellion", "The Rum Run", "The Bootlegger's Boogie", "The Smuggler's Run"],
+    "answer": "The Smuggler's Run",
+    "storylineHintKey": "smugglers_run_1",
+    "fallbackHint": "Fast boats would 'run' illicit Canadian spirits across the border under the cover of darkness."
+  },
+  {
+    "id": "TQ067",
+    "question": "What did George Boldt do for a living?",
+    "options": ["He was a railroad tycoon", "He was the proprietor of the Waldorf-Astoria Hotel", "He was an oil baron", "He was a steel magnate"],
+    "answer": "He was the proprietor of the Waldorf-Astoria Hotel",
+    "storylineHintKey": "boldt_secret_1",
+    "fallbackHint": "His expertise in luxury hospitality was meant to be poured into his castle."
+  },
+  {
+    "id": "TQ068",
+    "question": "The name 'Muskellunge' is believed to come from the Ojibwe word 'maashkinoozhe,' meaning what?",
+    "options": ["'River King'", "'Great Fish'", "'Ugly Pike'", "'Water Wolf'"],
+    "answer": "'Ugly Pike'",
+    "storylineHintKey": "muskellunge_name_1",
+    "fallbackHint": "Despite the unflattering name, it is a highly prized game fish."
+  },
+  {
+    "id": "TQ069",
+    "question": "Where is Boldt Castle's enormous Yacht House located?",
+    "options": ["On Heart Island with the castle", "On Wellesley Island, across the channel", "In Alexandria Bay", "On Grindstone Island"],
+    "answer": "On Wellesley Island, across the channel",
+    "storylineHintKey": "boldt_yacht_house_1",
+    "fallbackHint": "This massive structure required its own space on a neighboring island."
+  },
+  {
+    "id": "TQ070",
+    "question": "The 'Lost Villages' are nine communities in Ontario that were flooded to create what?",
+    "options": ["A nature preserve", "A larger shipping channel for the St. Lawrence Seaway", "A hydroelectric reservoir", "A new national park"],
+    "answer": "A larger shipping channel for the St. Lawrence Seaway",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "The creation of the modern seaway required the permanent flooding of these towns."
+  },
+  {
+    "id": "TQ071",
+    "question": "A key criterion for an area to be designated a UNESCO Biosphere Reserve is what?",
+    "options": ["Having at least one castle", "A demonstrated balance between humans and nature", "Being completely uninhabited", "Having a population over 1 million"],
+    "answer": "A demonstrated balance between humans and nature",
+    "storylineHintKey": "biosphere_reserve_1",
+    "fallbackHint": "It recognizes places where conservation and sustainable development are successfully integrated."
+  },
+  {
+    "id": "TQ072",
+    "question": "What is the primary building material of the grandstand and barracks at Fort Henry?",
+    "options": ["Wood", "Brick", "Limestone", "Concrete"],
+    "answer": "Limestone",
+    "storylineHintKey": "fort_henry_1",
+    "fallbackHint": "This locally quarried stone gives the fort its imposing and historic appearance."
+  },
+  {
+    "id": "TQ073",
+    "question": "The Gananoque Boat Line is a well-known company offering scenic tours from which country?",
+    "options": ["The United States", "France", "Great Britain", "Canada"],
+    "answer": "Canada",
+    "storylineHintKey": "gananoque_boat_line_1",
+    "fallbackHint": "This company provides the classic Canadian perspective on the Thousand Islands."
+  },
+  {
+    "id": "TQ074",
+    "question": "The 'Admiralty Group' of islands is so named because they were surveyed and charted by whom?",
+    "options": ["The French Navy", "The British Admiralty", "The US Coast Guard", "A group of admirals who retired there"],
+    "answer": "The British Admiralty",
+    "storylineHintKey": "region_geography_clue",
+    "fallbackHint": "These island names often reflect the history of their charting and ownership."
+  },
+  {
+    "id": "TQ075",
+    "question": "What unique feature does the Just Room Enough Island have that qualifies it as an official island?",
+    "options": ["A flagpole", "A mailbox", "A tree", "A satellite dish"],
+    "answer": "A tree",
+    "storylineHintKey": "just_room_enough_family_1",
+    "fallbackHint": "Official rules state an island must have at least one living tree and be above water year-round."
+  },
+  {
+    "id": "TQ076",
+    "question": "During the War of 1812, Sackets Harbor, NY, served as what for the US forces?",
+    "options": ["A major naval base and shipyard", "A prison camp", "The national capital", "A large farm"],
+    "answer": "A major naval base and shipyard",
+    "storylineHintKey": "war_history_clue",
+    "fallbackHint": "This port was the center of American naval power on Lake Ontario."
+  },
+  {
+    "id": "TQ077",
+    "question": "Which of these is a common invasive species that has significantly impacted the river's ecosystem?",
+    "options": ["Largemouth Bass", "Zebra Mussels", "Muskellunge", "River Otters"],
+    "answer": "Zebra Mussels",
+    "storylineHintKey": "environmental_fact_1",
+    "fallbackHint": "These small, sharp-shelled mollusks arrived in the ballast water of ocean-going ships."
+  },
+  {
+    "id": "TQ078",
+    "question": "If you see a long boat with a 'V' shaped wake, it is likely a what?",
+    "options": ["A Kayak", "A Houseboat", "A St. Lawrence Skiff", "A Tugboat"],
+    "answer": "A St. Lawrence Skiff",
+    "storylineHintKey": "skiff_life_1",
+    "fallbackHint": "The unique hull design of these traditional boats creates a very distinctive wake."
+  },
+  {
+    "id": "TQ079",
+    "question": "What is the primary cargo transported eastbound (out of the Great Lakes) on the St. Lawrence Seaway?",
+    "options": ["Iron Ore", "Grain", "Coal", "Livestock"],
+    "answer": "Grain",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "Vast quantities of grain from the prairies of the US and Canada are shipped to the world via the seaway."
+  },
+  {
+    "id": "TQ080",
+    "question": "The design of Singer Castle on Dark Island is said to be inspired by a castle from a novel by which author?",
+    "options": ["Mark Twain", "Charles Dickens", "Sir Walter Scott", "Jane Austen"],
+    "answer": "Sir Walter Scott",
+    "storylineHintKey": "alster_tower_inspiration_1",
+    "fallbackHint": "The owner was inspired by the castle of Woodstock described in one of this author's historical novels."
+  },
+  {
+    "id": "TQ081",
+    "question": "How many locks make up the Welland Canal portion of the St. Lawrence Seaway, bypassing Niagara Falls?",
+    "options": ["Two", "Twenty", "Eight", "Fifteen"],
+    "answer": "Eight",
+    "storylineHintKey": "seaway_lock_1",
+    "fallbackHint": "This series of 'water elevators' lifts ships up and over the Niagara Escarpment."
+  },
+  {
+    "id": "TQ082",
+    "question": "The official residence of the Speaker of the House of Commons of Canada is located in what nearby region?",
+    "options": ["On Wellesley Island", "In the Thousand Islands", "In Gatineau Park, near Ottawa", "In Toronto"],
+    "answer": "In Gatineau Park, near Ottawa",
+    "storylineHintKey": "rideau_canal_connects_1",
+    "fallbackHint": "Though close, this official residence is part of the National Capital Region, connected by the Rideau Canal."
+  },
+  {
+    "id": "TQ083",
+    "question": "Which Thousand Islands hotel is credited with making Thousand Island dressing famous?",
+    "options": ["The Monticello Hotel", "The Crossmon House", "The Waldorf-Astoria in New York City", "The Herald Hotel"],
+    "answer": "The Waldorf-Astoria in New York City",
+    "storylineHintKey": "dressing_origin_1",
+    "fallbackHint": "Though it originated on the river, George Boldt introduced it to the world at his famous hotel."
+  },
+  {
+    "id": "TQ084",
+    "question": "What is a 'Laker's Tan'?",
+    "options": ["A type of boat paint", "A sunburn on only one side of the body", "A brand of local beer", "A type of leather used in boat shoes"],
+    "answer": "A sunburn on only one side of the body",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "This humorous term refers to getting sun only on the side of your body facing the sun while boating all day."
+  },
+  {
+    "id": "TQ085",
+    "question": "The Frontenac Arch, which forms the islands, is an extension of what major geological formation?",
+    "options": ["The Rocky Mountains", "The Canadian Shield", "The San Andreas Fault", "The Appalachian Mountains"],
+    "answer": "The Canadian Shield",
+    "storylineHintKey": "geology_rock_1",
+    "fallbackHint": "This bridge of ancient rock connects the shield to the Adirondack Mountains."
+  },
+  {
+    "id": "TQ086",
+    "question": "In what year did the Thousand Islands Bridge first open to traffic?",
+    "options": ["1904", "1938", "1959", "1976"],
+    "answer": "1938",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "President Franklin D. Roosevelt and Prime Minister Mackenzie King attended the opening ceremony."
+  },
+  {
+    "id": "TQ087",
+    "question": "What is the approximate distance from the start of the St. Lawrence River to the Atlantic Ocean?",
+    "options": ["100 miles", "500 miles", "1,200 miles", "750 miles"],
+    "answer": "750 miles",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "The river follows a long and winding path from Lake Ontario to the Gulf of St. Lawrence."
+  },
+  {
+    "id": "TQ088",
+    "question": "Which of these is NOT a common fish species in the St. Lawrence River?",
+    "options": ["Northern Pike", "Yellow Perch", "Piranha", "Smallmouth Bass"],
+    "answer": "Piranha",
+    "storylineHintKey": "fish_expert_clue",
+    "fallbackHint": "These tropical fish would not survive the cold winters of the St. Lawrence River."
+  },
+  {
+    "id": "TQ089",
+    "question": "What does the name of the Canadian city 'Gananoque' mean in the local Indigenous language?",
+    "options": ["'City of Rocks'", "'Place of Health' or 'City of Springs'", "'Big River'", "'Safe Harbor'"],
+    "answer": "'Place of Health' or 'City of Springs'",
+    "storylineHintKey": "gananoque_boat_line_1",
+    "fallbackHint": "The name refers to the local springs that were believed to have healing properties."
+  },
+  {
+    "id": "TQ090",
+    "question": "In the War of 1812, what was the primary type of warship used in battles on Lake Ontario and the river?",
+    "options": ["Ironclad submarines", "Aircraft carriers", "Sailing ships-of-the-line", "Nuclear-powered destroyers"],
+    "answer": "Sailing ships-of-the-line",
+    "storylineHintKey": "war_history_clue",
+    "fallbackHint": "The battles here were fought with large, square-rigged wooden sailing vessels."
+  },
+  {
+    "id": "TQ091",
+    "question": "The story of Thousand Island Dressing's creation involves a fishing guide's wife named what?",
+    "options": ["Sophia Loren", "Sophie LaLonde", "Sarah Johnston", "Mary Boldt"],
+    "answer": "Sophie LaLonde",
+    "storylineHintKey": "dressing_origin_1",
+    "fallbackHint": "Her husband, George LaLonde, would serve the dressing to visiting fishermen."
+  },
+  {
+    "id": "TQ092",
+    "question": "How many floors was Boldt Castle planned to have?",
+    "options": ["Two", "Four", "Six", "Ten"],
+    "answer": "Six",
+    "storylineHintKey": "boldt_secret_1",
+    "fallbackHint": "It was designed to be a towering, Rhineland-style fortress of love."
+  },
+  {
+    "id": "TQ093",
+    "question": "What is the minimum requirement for a piece of land to be considered an island in the region?",
+    "options": ["It must have a house on it", "It must be at least one acre in size", "It must be above water year-round and have at least two living trees", "It must be named on an official map"],
+    "answer": "It must be above water year-round and have at least two living trees",
+    "storylineHintKey": "island_count_1",
+    "fallbackHint": "These specific rules are what lead to the official count of 1,864 islands."
+  },
+  {
+    "id": "TQ094",
+    "question": "Before it was renamed, 'Just Room Enough Island' was known by what name?",
+    "options": ["Hub Island", "Tiny Island", "Sizeland Island", "Last Island"],
+    "answer": "Hub Island",
+    "storylineHintKey": "small_island_clue_1",
+    "fallbackHint": "The Sizeland family bought Hub Island and gave it its more descriptive, modern name."
+  },
+  {
+    "id": "TQ095",
+    "question": "The St. Lawrence Seaway officially opened in what year?",
+    "options": ["1938", "1945", "1959", "1967"],
+    "answer": "1959",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "The opening was attended by Queen Elizabeth II and President Dwight D. Eisenhower."
+  },
+  {
+    "id": "TQ096",
+    "question": "After burning the British steamer 'Sir Robert Peel', what did Bill Johnston supposedly make off with?",
+    "options": ["A chest of gold", "A cargo of whiskey", "The ship's anchor", "A collection of fine hats"],
+    "answer": "A chest of gold",
+    "storylineHintKey": "pirate_treasure_1",
+    "fallbackHint": "The stolen military payroll has become the stuff of local legend and treasure hunts."
+  },
+  {
+    "id": "TQ097",
+    "question": "The Antique Boat Museum in Clayton holds an annual show that attracts classic boats from all over where?",
+    "options": ["The world", "North America", "New York State", "The Great Lakes region"],
+    "answer": "North America",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "It is the largest freshwater antique boat show on the continent."
+  },
+  {
+    "id": "TQ098",
+    "question": "The American span of the Thousand Islands Bridge is what type of bridge?",
+    "options": ["A cantilever bridge", "An arch bridge", "A suspension bridge", "A simple beam bridge"],
+    "answer": "A suspension bridge",
+    "storylineHintKey": "bridge_type_1",
+    "fallbackHint": "This design allows for the high clearance needed for the shipping channel."
+  },
+  {
+    "id": "TQ099",
+    "question": "The current in the St. Lawrence River flows in which general direction?",
+    "options": ["Southwest (into Lake Ontario)", "Northeast (towards the Atlantic)", "North to South", "West to East"],
+    "answer": "Northeast (towards the Atlantic)",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "The river is the great drain for the Great Lakes, flowing out to the ocean."
+  },
+  {
+    "id": "TQ100",
+    "question": "What is the final 'secret' that a true River Rat learns?",
+    "options": ["The location of Bill Johnston's gold", "A secret fishing spot", "That the river's story is the true treasure", "How to navigate without a map"],
+    "answer": "That the river's story is the true treasure",
+    "storylineHintKey": "final_revelation",
+    "fallbackHint": "The real treasure isn't something you can hold, but something you become a part of."
+  },
+  {
+    "id": "TQ101",
+    "question": "What is the primary purpose of the Thousand Islands Bridge?",
+    "options": [
+      "Scenic views only",
+      "Connecting Ontario and New York",
+      "Pedestrian traffic only",
+      "Railroad transport"
+    ],
+    "answer": "Connecting Ontario and New York",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "The Thousand Islands Bridge is a series of bridges connecting Interstate 81 in New York with Highway 401 in Ontario, facilitating international travel and commerce."
+  },
+  {
+    "id": "TQ102",
+    "question": "Approximately how many islands are there in the 'Thousand Islands' archipelago?",
+    "options": ["Exactly 1000", "Around 500", "Over 1800", "Less than 700"],
+    "answer": "Over 1800",
+    "storylineHintKey": "island_count_1",
+    "fallbackHint": "To be counted as one of the Thousand Islands, a piece of land must be above water year-round and support at least two living trees. There are 1,864 such islands."
+  },
+  {
+    "id": "TQ103",
+    "question": "Dark Island is home to what historic structure?",
+    "options": [
+      "A lighthouse",
+      "Singer Castle",
+      "A modern art museum",
+      "A nature preserve"
+    ],
+    "answer": "Singer Castle",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Singer Castle, built by Commodore Frederick Bourne of the Singer Sewing Machine Company, is known for its intricate architecture and secret passages."
+  },
+  {
+    "id": "TQ104",
+    "question": "The Clayton Antique Boat Museum showcases what type of vessels?",
+    "options": [
+      "Modern speedboats",
+      "Freshwater antique and classic wooden boats",
+      "Viking longships",
+      "Submarines"
+    ],
+    "answer": "Freshwater antique and classic wooden boats",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "The Antique Boat Museum in Clayton, NY, holds the largest collection of freshwater antique and classic boats in North America."
+  },
+  {
+    "id": "TQ105",
+    "question": "What does the term 'River Rat' affectionately refer to in this region?",
+    "options": [
+      "A type of invasive rodent",
+      "Locals who are knowledgeable about the river",
+      "A famous steamboat",
+      "A mythical river creature"
+    ],
+    "answer": "Locals who are knowledgeable about the river",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "A 'River Rat' is a fond nickname for someone who grew up on or is intimately familiar with the life and lore of the St. Lawrence River."
+  },
+  {
+    "id": "TQ106",
+    "question": "What is another name for the 'Great Lakes Seaway Trail', a scenic byway in the U.S.?",
+    "options": [
+      "A hiking trail",
+      "The Great Lakes Seaway Trail",
+      "Island View Drive",
+      "The King's Highway"
+    ],
+    "answer": "The Great Lakes Seaway Trail",
+    "storylineHintKey": "scenic_byway_1",
+    "fallbackHint": "The Great Lakes Seaway Trail is a National Scenic Byway in the U.S. that follows the shores of the St. Lawrence River and lakes Ontario, and Lake Erie."
+  },
+  {
+    "id": "TQ107",
+    "question": "Which island is known for having a U.S. Post Office that is the smallest in the U.S.?",
+    "options": [
+      "Wellesley Island",
+      "Grindstone Island",
+      "Sugar Island (unofficial)",
+      "Picton Island"
+    ],
+    "answer": "Sugar Island (unofficial)",
+    "storylineHintKey": "smallest_post_office_1",
+    "fallbackHint": "While not officially a post office building, the small structure on Sugar Island serves as a mail drop-off and is humorously called the smallest in the U.S."
+  },
+  {
+    "id": "TQ108",
+    "question": "The 'Lost Ships of the 1000 Islands' refers to what?",
+    "options": [
+      "A fictional novel series",
+      "A collection of well-preserved shipwrecks",
+      "A fleet that vanished mysteriously",
+      "A type of mirage seen on the water"
+    ],
+    "answer": "A collection of well-preserved shipwrecks",
+    "storylineHintKey": "lost_ships_1",
+    "fallbackHint": "Due to the cold, fresh water, numerous shipwrecks from the past two centuries are remarkably preserved on the riverbed, creating a 'museum' for divers."
+  },
+  {
+    "id": "TQ109",
+    "question": "What material was primarily used for the exterior of Singer Castle?",
+    "options": ["Imported Italian marble", "Local granite", "Red brick", "Timber"],
+    "answer": "Local granite",
+    "storylineHintKey": "singer_castle_material_1",
+    "fallbackHint": "Singer Castle was constructed using granite quarried from a nearby island, Oak Island, giving it a strong, local character."
+  },
+  {
+    "id": "TQ110",
+    "question": "The story of 'Just Room Enough Island' involves a family named?",
+    "options": ["The Boldts", "The Webers", "The Sizelands", "The Johnstons"],
+    "answer": "The Sizelands",
+    "storylineHintKey": "just_room_enough_family_1",
+    "fallbackHint": "The Sizeland family bought the tiny island, originally named Hub Island, in the 1950s, and built a house that covers nearly every square foot of it."
+  },
+  {
+    "id": "TQ111",
+    "question": "What important international agreement led to the creation of the St. Lawrence Seaway?",
+    "options": [
+      "The Treaty of Paris",
+      "The Webster-Ashburton Treaty",
+      "The St. Lawrence Seaway Agreement",
+      "The Jay Treaty"
+    ],
+    "answer": "The St. Lawrence Seaway Agreement",
+    "storylineHintKey": "seaway_agreement_1",
+    "fallbackHint": "In 1954, Canada and the United States signed an agreement to jointly construct the St. Lawrence Seaway, a monumental engineering project."
+  },
+  {
+    "id": "TQ112",
+    "question": "Bill Johnston, the 'Pirate of the Thousand Islands', aided which side during the Patriot War?",
+    "options": [
+      "The British Crown",
+      "The American Rebels/Patriots",
+      "He remained neutral",
+      "The French forces"
+    ],
+    "answer": "The American Rebels/Patriots",
+    "storylineHintKey": "bill_johnston_allegiance_1",
+    "fallbackHint": "During the Patriot War of 1837-38, Bill Johnston used his intimate knowledge of the islands to help Canadian rebels seeking independence from Britain."
+  },
+  {
+    "id": "TQ113",
+    "question": "What is the Power Authority's visitor center near Massena, NY, that offers views of the St. Lawrence-FDR Power Project?",
+    "options": [
+      "The Boldt Castle Visitor Center",
+      "The Hawkins Point Visitors Center",
+      "Minna Anthony Common Nature Center",
+      "An aquatarium"
+    ],
+    "answer": "The Hawkins Point Visitors Center",
+    "storylineHintKey": "power_authority_center_1",
+    "fallbackHint": "The Hawkins Point Visitors Center provides panoramic views of the massive St. Lawrence-FDR hydroelectric dam, a key part of the seaway project."
+  },
+  {
+    "id": "TQ114",
+    "question": "Which Great Lake is the primary source of the St. Lawrence River?",
+    "options": ["Lake Superior", "Lake Huron", "Lake Ontario", "Lake Erie"],
+    "answer": "Lake Ontario",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "The St. Lawrence River begins at the northeastern end of Lake Ontario, flowing northeast towards the Atlantic Ocean."
+  },
+  {
+    "id": "TQ115",
+    "question": "What type of bridge is the international span of the Thousand Islands Bridge?",
+    "options": [
+      "Cantilever bridge",
+      "Suspension bridge",
+      "Arch bridge",
+      "Cable-stayed bridge"
+    ],
+    "answer": "Suspension bridge",
+    "storylineHintKey": "bridge_type_1",
+    "fallbackHint": "The main part of the Thousand Islands Bridge is a suspension bridge to allow large ocean-going vessels to pass underneath, the main part of the Thousand Islands Bridge is a suspension bridge."
+  },
+  {
+    "id": "TQ116",
+    "question": "Which famous American president owned a summer home on Campobello Island, near the Thousand Islands?",
+    "options": [
+      "Theodore Roosevelt",
+      "Franklin D. Roosevelt",
+      "John F. Kennedy",
+      "Abraham Lincoln"
+    ],
+    "answer": "Franklin D. Roosevelt",
+    "storylineHintKey": "historical_figure_clue",
+    "fallbackHint": "While not in the Thousand Islands, Franklin D. Roosevelt's beloved summer home on Campobello Island, NB, reflects the region's history as a retreat for the influential."
+  },
+  {
+    "id": "TQ117",
+    "question": "What is the approximate length of the Thousand Islands region along the St. Lawrence River?",
+    "options": ["10 miles", "50 miles", "100 miles", "200 miles"],
+    "answer": "50 miles",
+    "storylineHintKey": "region_geography_clue",
+    "fallbackHint": "The Thousand Islands archipelago stretches for about 50 miles (80 km) downstream from Kingston, Ontario."
+  },
+  {
+    "id": "TQ118",
+    "question": "The Alster Tower on Boldt Castle's Heart Island was inspired by a structure from what country?",
+    "options": ["Germany", "France", "England", "Scotland"],
+    "answer": "Germany",
+    "storylineHintKey": "alster_tower_inspiration_1",
+    "fallbackHint": "The Alster Tower's design is based on a castle described in the novel 'Woodstock' by Sir Walter Scott, which was set in Germany."
+  },
+  {
+    "id": "TQ119",
+    "question": "What unique geological feature characterizes many of the Thousand Islands?",
+    "options": [
+      "Volcanic craters",
+      "Glacial sculpting",
+      "Coral reefs",
+      "Meteor impact sites"
+    ],
+    "answer": "Glacial sculpting",
+    "storylineHintKey": "geology_mystery_clue",
+    "fallbackHint": "Massive glaciers carved and shaped the landscape, exposing the hard granite hills and creating the rugged beauty of the islands."
+  },
+  {
+    "id": "TQ120",
+    "question": "The Thousand Islands National Park is managed by which country?",
+    "options": [
+      "United States",
+      "Canada",
+      "Jointly by U.S. & Canada",
+      "United Nations"
+    ],
+    "answer": "Canada",
+    "storylineHintKey": "national_park_management_1",
+    "fallbackHint": "Established in 1904, Thousand Islands National Park is one of Canada's oldest national parks."
+  },
+  {
+    "id": "TQ121",
+    "question": "What is the primary species of pine tree commonly found on the islands?",
+    "options": ["Loblolly Pine", "Ponderosa Pine", "Eastern White Pine", "Scots Pine"],
+    "answer": "Eastern White Pine",
+    "storylineHintKey": "flora_fauna_clue",
+    "fallbackHint": "The tall, distinctive Eastern White Pine is a signature tree of the region's ecosystem."
+  },
+  {
+    "id": "TQ122",
+    "question": "Rock Island Lighthouse State Park features a lighthouse built in what century?",
+    "options": ["17th Century", "18th Century", "19th Century", "20th Century"],
+    "answer": "19th Century",
+    "storylineHintKey": "lighthouse_legend_clue",
+    "fallbackHint": "The historic Rock Island lighthouse was first lit in 1847 to guide ships through the treacherous waters."
+  },
+  {
+    "id": "TQ123",
+    "question": "Which of these towns is NOT considered a major hub for Thousand Islands tourism?",
+    "options": ["Alexandria Bay, NY", "Gananoque, ON", "Syracuse, NY", "Clayton, NY"],
+    "answer": "Syracuse, NY",
+    "storylineHintKey": "us_tourism_hub_1",
+    "fallbackHint": "While a major city in Central New York, Syracuse is not located on the St. Lawrence River and is not a direct hub for island tourism."
+  },
+  {
+    "id": "TQ124",
+    "question": "The Frederic Remington Art Museum, featuring works of the famous 'Cowboy Artist', is located in which nearby town?",
+    "options": ["Watertown, NY", "Kingston, ON", "Ogdensburg, NY", "Syracuse, NY"],
+    "answer": "Ogdensburg, NY",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "Located in Ogdensburg, NY, the museum is dedicated to Frederic Remington, who was famous for his depictions of the American Old West."
+  },
+  {
+    "id": "TQ125",
+    "question": "During the War of 1812, which strategic naval base was located near the Thousand Islands?",
+    "options": ["Fort Niagara", "Fort Ticonderoga", "Sackets Harbor, NY", "West Point"],
+    "answer": "Sackets Harbor, NY",
+    "storylineHintKey": "war_history_clue",
+    "fallbackHint": "Sackets Harbor was the center of American naval and military operations on Lake Ontario during the War of 1812."
+  },
+  {
+    "id": "TQ126",
+    "question": "What is the name of the large, migratory bird of prey often seen soaring above the St. Lawrence River?",
+    "options": ["Golden Eagle", "Osprey", "Bald Eagle", "Peregrine Falcon"],
+    "answer": "Bald Eagle",
+    "storylineHintKey": "bird_of_prey_1",
+    "fallbackHint": "The region is known for its large nests near the water throughout the islands."
+  },
+  {
+    "id": "TQ127",
+    "question": "The Boldt Castle Yacht House is notable for housing what?",
+    "options": [
+      "Modern luxury yachts",
+      "A collection of historic houseboats",
+      "A submarine",
+      "A seaplane hangar"
+    ],
+    "answer": "A collection of historic houseboats",
+    "storylineHintKey": "boldt_yacht_house_1",
+    "fallbackHint": "The enormous Boldt Yacht House on Wellesley Island now houses a rare collection of historic wooden boats, including a luxurious houseboat."
+  },
+  {
+    "id": "TQ128",
+    "question": "What is the common name for 'Esox masquinongy', a large predatory fish native to the St. Lawrence River?",
+    "options": ["Northern Pike", "Walleye", "Muskellunge", "Lake Sturgeon"],
+    "answer": "Muskellunge",
+    "storylineHintKey": "muskellunge_name_1",
+    "fallbackHint": "Esox masquinongy is the scientific name for the Muskellunge, often called a 'muskie' for short."
+  },
+  {
+    "id": "TQ129",
+    "question": "The term 'cottage country' is often used to describe the Thousand Islands. What does this term refer to?",
+    "options": [
+      "Small, rustic shacks",
+      "Modern one-room cabins",
+      "Seasonal vacation homes, often of large or elaborate design",
+      "Quaint rural farmhouses"
+    ],
+    "answer": "Seasonal vacation homes, often of large or elaborate design",
+    "storylineHintKey": "cottage_country_1",
+    "fallbackHint": "In this region, 'cottage' is a term used for any seasonal home, many of which are large, elaborate mansions built during the Gilded Age."
+  },
+  {
+    "id": "TQ130",
+    "question": "Which of the Thousand Islands is home to the Half Moon Bay, known for its weekly non-denominational Sunday services from boats?",
+    "options": [
+      "Grindstone Island",
+      "Wellesley Island",
+      "Carleton Island",
+      "Howe Island"
+    ],
+    "answer": "Wellesley Island",
+    "storylineHintKey": "half_moon_bay_1",
+    "fallbackHint": "Half Moon Bay is a scenic cove on Wellesley Island where it is traditional for boaters to attend non-denominational Sunday services from their boats."
+  },
+  {
+    "id": "TQ131",
+    "question": "The International Rift is a narrow, deep section of the river located between what two islands?",
+    "options": [
+      "Wellesley Island (US) and Hill Island (Canada)",
+      "Grindstone Island and Wolfe Island",
+      "Just Room Enough Island and Heart Island",
+      "Picton Island and Grindstone Island"
+    ],
+    "answer": "Wellesley Island (US) and Hill Island (Canada)",
+    "storylineHintKey": "international_rift_1",
+    "fallbackHint": "The International Rift is a very narrow channel where the US-Canada border runs, located under the main span of the Thousand Islands Bridge."
+  },
+  {
+    "id": "TQ132",
+    "question": "What is 'skiff life,' a term associated with the region?",
+    "options": [
+      "A type of fishing lure",
+      "A lifestyle centered around small, versatile wooden boats",
+      "A competitive rowing sport",
+      "A local theater production"
+    ],
+    "answer": "A lifestyle centered around small, versatile wooden boats",
+    "storylineHintKey": "skiff_life_1",
+    "fallbackHint": "'Skiff life' refers to the local culture of using small, versatile St. Lawrence Skiffs for transportation, fishing, and recreation among the islands."
+  },
+  {
+    "id": "TQ133",
+    "question": "The Cornwall-Massena International Bridge is another major crossing in the region. What does it span?",
+    "options": [
+      "A walking path",
+      "A high-speed rail",
+      "The St. Lawrence River and Seaway",
+      "A bicycle tour"
+    ],
+    "answer": "The St. Lawrence River and Seaway",
+    "storylineHintKey": "cornwall_bridge_1",
+    "fallbackHint": "This bridge is crucial for international trade and crosses over the St. Lawrence-FDR Power Project dam."
+  },
+  {
+    "id": "TQ134",
+    "question": "What does 'Iroquoian' refer to in the context of the Thousand Islands' history?",
+    "options": [
+      "A group of Indigenous peoples native to the region",
+      "A type of sailing ship",
+      "A French colonial fort",
+      "A style of architecture"
+    ],
+    "answer": "A group of Indigenous peoples native to the region",
+    "storylineHintKey": "native_history_clue",
+    "fallbackHint": "The Iroquoian peoples, including the Haudenosaunee Confederacy, have inhabited this region for centuries before European arrival."
+  },
+  {
+    "id": "TQ135",
+    "question": "The island named Devil's Oven is rumored to have been a hideout for which historical figure?",
+    "options": ["George Boldt", "Frederick Bourne", "Bill Johnston", "Ulysses S. Grant"],
+    "answer": "Bill Johnston",
+    "storylineHintKey": "devils_oven_1",
+    "fallbackHint": "This rugged island, with its legendary cave, has a long history as a pirate hideaway."
+  },
+  {
+    "id": "TQ136",
+    "question": "The Frontenac Arch Biosphere Reserve encompasses the Thousand Islands and what major theme?",
+    "options": [
+      "A military exclusion zone",
+      "An area promoting sustainable development",
+      "A theme park",
+      "A private hunting ground"
+    ],
+    "answer": "An area promoting sustainable development",
+    "storylineHintKey": "biosphere_reserve_1",
+    "fallbackHint": "A UNESCO Biosphere Reserve is an area recognized for its unique ecosystem and its commitment to balancing conservation and sustainable human activity."
+  },
+  {
+    "id": "TQ137",
+    "question": "Before European settlement, the region was primarily the territory of which Indigenous nation?",
+    "options": [
+      "The Cherokee Nation",
+      "The Haudenosaunee (Iroquois) Confederacy",
+      "The Anishinaabe",
+      "The Sioux Nation"
+    ],
+    "answer": "The Haudenosaunee (Iroquois) Confederacy",
+    "storylineHintKey": "haudenosaunee_territory_1",
+    "fallbackHint": "The Haudenosaunee, also known as the Iroquois Confederacy or Six Nations, have ancestral ties to the Thousand Islands region."
+  },
+  {
+    "id": "TQ138",
+    "question": "What is the 'Thousand Islands Winery' known for, besides wine?",
+    "options": [
+      "Its historic castle",
+      "Its extensive cave system",
+      "Its scenic location and local products",
+      "Its Olympic-sized swimming pool"
+    ],
+    "answer": "Its scenic location and local products",
+    "storylineHintKey": "winery_known_for_1",
+    "fallbackHint": "As one of the first wineries in the region, it's a popular stop on the Thousand Islands Seaway Wine Trail."
+  },
+  {
+    "id": "TQ139",
+    "question": "Which famous Canadian city is often considered the western gateway to the Thousand Islands?",
+    "options": ["Kingston", "Toronto", "Ottawa", "Quebec City"],
+    "answer": "Kingston",
+    "storylineHintKey": "canadian_gateway_1",
+    "fallbackHint": "Kingston's location at the mouth of the St. Lawrence River makes it the primary Canadian gateway to the Thousand Islands."
+  },
+  {
+    "id": "TQ140",
+    "question": "Which of these is a popular type of recreational boat in the region?",
+    "options": ["Jet ski", "Pontoon boat", "Kayak", "Airboat"],
+    "answer": "Pontoon boat",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Pontoon boats are a common sight, offering a comfortable way for groups to enjoy the scenic beauty of the islands."
+  },
+  {
+    "id": "TQ141",
+    "question": "The Thousand Islands Parkway in Canada runs parallel to which major highway?",
+    "options": [
+      "Highway 401",
+      "The Trans-Canada Highway",
+      "Queen Elizabeth Way",
+      "Highway 416"
+    ],
+    "answer": "Highway 401",
+    "storylineHintKey": "parkway_location_1",
+    "fallbackHint": "The scenic parkway provides a more leisurely alternative to the busy Highway 401 for a portion of its route."
+  },
+  {
+    "id": "TQ142",
+    "question": "What does the 'TI' in 'TIBS' (Thousand Islands Biological Station) stand for?",
+    "options": [
+      "Thousand Inlets",
+      "Thousand Islands",
+      "Tidal Inlet",
+      "Tectonic Intersection"
+    ],
+    "answer": "Thousand Islands",
+    "storylineHintKey": "tibs_focus_1",
+    "fallbackHint": "TIBS is dedicated to the scientific study and preservation of the Thousand Islands ecosystem."
+  },
+  {
+    "id": "TQ143",
+    "question": "What is the name of the American scenic byway that runs along the St. Lawrence River?",
+    "options": [
+      "The Adirondack Trail",
+      "The Great Lakes Seaway Trail",
+      "The Black River Trail",
+      "The Mohawk Trail"
+    ],
+    "answer": "The Great Lakes Seaway Trail",
+    "storylineHintKey": "scenic_byway_1",
+    "fallbackHint": "The Great Lakes Seaway Trail is a National Scenic Byway that offers stunning views of the river and access to many historic sites."
+  },
+  {
+    "id": "TQ144",
+    "question": "The construction of the St. Lawrence Seaway led to the creation of what large, man-made lake?",
+    "options": [
+      "Lake Placid",
+      "Lake St. Lawrence",
+      "Great Sacandaga Lake",
+      "Oneida Lake"
+    ],
+    "answer": "Lake St. Lawrence",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "Lake St. Lawrence was formed by the construction of the Moses-Saunders Power Dam, submerging several villages in the process."
+  },
+  {
+    "id": "TQ145",
+    "question": "Which of these is a characteristic feature of a St. Lawrence Skiff?",
+    "options": [
+      "A flat bottom",
+      "A pointed bow and stern",
+      "A large sail",
+      "An inboard motor"
+    ],
+    "answer": "A pointed bow and stern",
+    "storylineHintKey": "skiff_life_1",
+    "fallbackHint": "The double-ended design of the St. Lawrence Skiff makes it a versatile and efficient boat for rowing and sailing."
+  },
+  {
+    "id": "TQ146",
+    "question": "The Thousand Islands region is part of which larger North American watershed?",
+    "options": [
+      "The Mississippi River Watershed",
+      "The Hudson Bay Watershed",
+      "The Great Lakes-St. Lawrence Watershed",
+      "The Atlantic Coastal Watershed"
+    ],
+    "answer": "The Great Lakes-St. Lawrence Watershed",
+    "storylineHintKey": "river_origin_clue",
+    "fallbackHint": "This vast watershed drains a significant portion of the North American continent into the Atlantic Ocean."
+  },
+  {
+    "id": "TQ147",
+    "question": "Which of these is a traditional craft often associated with the Haudenosaunee people of the region?",
+    "options": ["Pottery making", "Elaborate beadwork", "Metal smithing", "Glass blowing"],
+    "answer": "Elaborate beadwork",
+    "storylineHintKey": "native_history_clue",
+    "fallbackHint": "The Haudenosaunee are known for their intricate and meaningful beadwork, a tradition that continues to this day."
+  },
+  {
+    "id": "TQ148",
+    "question": "What is the primary industry that shaped the Gilded Age development of the Thousand Islands?",
+    "options": [
+      "Logging",
+      "Farming",
+      "Tourism and recreation for the wealthy",
+      "Commercial fishing"
+    ],
+    "answer": "Tourism and recreation for the wealthy",
+    "storylineHintKey": "cottage_country_1",
+    "fallbackHint": "The late 19th and early 20th centuries saw the Thousand Islands become a premier summer destination for America's wealthiest families."
+  },
+  {
+    "id": "TQ149",
+    "question": "The St. Lawrence Seaway is jointly operated by the U.S. and which other country?",
+    "options": ["Great Britain", "France", "Mexico", "Canada"],
+    "answer": "Canada",
+    "storylineHintKey": "seaway_agreement_1",
+    "fallbackHint": "The Seaway is a marvel of international cooperation between the United States and Canada."
+  },
+  {
+    "id": "TQ150",
+    "question": "What is the main geological reason for the abundance of islands in this region?",
+    "options": [
+      "Volcanic activity",
+      "A resistant granite ridge (The Frontenac Arch)",
+      "River delta formation",
+      "Tectonic plate collision"
+    ],
+    "answer": "A resistant granite ridge (The Frontenac Arch)",
+    "storylineHintKey": "geology_rock_1",
+    "fallbackHint": "The islands are the exposed peaks of the Frontenac Arch, an ancient granite ridge that withstood glacial erosion."
+  },
+  {
+    "id": "TQ151",
+    "question": "The annual antique boat show in Clayton, NY, is hosted by what museum?",
+    "options": [
+      "The Maritime Museum of the Great Lakes",
+      "The Antique Boat Museum",
+      "The H. Lee White Maritime Museum",
+      "The Great Lakes Shipwreck Museum"
+    ],
+    "answer": "The Antique Boat Museum",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "The Antique Boat Museum in Clayton is a world-renowned institution dedicated to preserving freshwater boating history."
+  },
+  {
+    "id": "TQ152",
+    "question": "What is the significance of the year 1959 for the St. Lawrence River?",
+    "options": [
+      "The first steamboat was launched",
+      "The Thousand Islands Bridge opened",
+      "The St. Lawrence Seaway officially opened",
+      "The last major shipwreck occurred"
+    ],
+    "answer": "The St. Lawrence Seaway officially opened",
+    "storylineHintKey": "seaway_journey_1",
+    "fallbackHint": "The opening of the St. Lawrence Seaway in 1959 transformed the river into a major international shipping route."
+  },
+  {
+    "id": "TQ153",
+    "question": "What is the title of the person who is a local expert and enthusiast of the St. Lawrence River?",
+    "options": ["River Warden", "River Rat", "River Master", "River Keeper"],
+    "answer": "River Rat",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "The term 'River Rat' is an affectionate nickname for those with a deep love and knowledge of the river."
+  },
+  {
+    "id": "TQ154",
+    "question": "What is the name of the castle on Dark Island?",
+    "options": ["Boldt Castle", "Jorstadt Castle", "Singer Castle", "Calumet Castle"],
+    "answer": "Singer Castle",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Singer Castle, a historic landmark, is located on Dark Island and is open to the public for tours."
+  },
+  {
+    "id": "TQ155",
+    "question": "The Thousand Islands region is a popular destination for viewing what natural phenomenon in the fall?",
+    "options": [
+      "The northern lights",
+      "Meteor showers",
+      "The fall foliage",
+      "Bird migrations"
+    ],
+    "answer": "The fall foliage",
+    "storylineHintKey": "flora_fauna_clue",
+    "fallbackHint": "The vibrant colors of the fall foliage attract many visitors to the region each year."
+  },
+  {
+    "id": "TQ156",
+    "question": "What is the primary function of the Iroquois National Wildlife Refuge, located near the Thousand Islands?",
+    "options": [
+      "To provide a habitat for migratory birds",
+      "To preserve a historic battleground",
+      "To protect a rare species of fish",
+      "To manage a herd of wild horses"
+    ],
+    "answer": "To provide a habitat for migratory birds",
+    "storylineHintKey": "duck_migration_1",
+    "fallbackHint": "The refuge is a crucial stopover for birds migrating along the Atlantic Flyway."
+  },
+  {
+    "id": "TQ157",
+    "question": "What is the purpose of the 'No Wake' zones in the Thousand Islands?",
+    "options": [
+      "To protect wildlife habitats",
+      "To prevent shoreline erosion",
+      "To ensure the safety of swimmers and small boats",
+      "All of the above"
+    ],
+    "answer": "All of the above",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "'No Wake' zones are implemented to protect the environment and ensure the safety of all river users."
+  },
+  {
+    "id": "TQ158",
+    "question": "Which of these is a key feature of the Thousand Islands National Park in Canada?",
+    "options": [
+      "A large amusement park",
+      "A chain of over 20 islands",
+      "A replica of a historic fort",
+      "A world-class golf course"
+    ],
+    "answer": "A chain of over 20 islands",
+    "storylineHintKey": "national_park_management_1",
+    "fallbackHint": "The park is composed of numerous islands, offering opportunities for hiking, camping, and boating."
+  },
+  {
+    "id": "TQ159",
+    "question": "The Thousand Islands Arts Center in Clayton, NY, is known for its collection of what?",
+    "options": [
+      "Modern sculpture",
+      "Antique textiles and handcrafts",
+      "Impressionist paintings",
+      "Contemporary photography"
+    ],
+    "answer": "Antique textiles and handcrafts",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "The center preserves and promotes traditional arts and crafts, with a focus on textiles."
+  },
+  {
+    "id": "TQ160",
+    "question": "What is the name of the Canadian town known as the 'Gateway to the Thousand Islands'?",
+    "options": ["Brockville", "Kingston", "Cornwall", "Gananoque"],
+    "answer": "Gananoque",
+    "storylineHintKey": "gananoque_boat_line_1",
+    "fallbackHint": "Gananoque is a popular starting point for tours of the Thousand Islands from the Canadian side."
+  },
+  {
+    "id": "TQ161",
+    "question": "The St. Lawrence River is one of the world's major sources of what type of energy?",
+    "options": [
+      "Solar power",
+      "Wind power",
+      "Geothermal energy",
+      "Hydroelectric power"
+    ],
+    "answer": "Hydroelectric power",
+    "storylineHintKey": "power_authority_center_1",
+    "fallbackHint": "The river's powerful current is harnessed by several large dams to generate electricity."
+  },
+  {
+    "id": "TQ162",
+    "question": "What is the name of the international peace monument located on the US-Canada border in the region?",
+    "options": [
+      "The Peace Arch",
+      "The International Peace Garden",
+      "The Friendship Monument",
+      "The hands across the border monument"
+    ],
+    "answer": "The Friendship Monument",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "The monument symbolizes the long history of peace and cooperation between the two nations."
+  },
+  {
+    "id": "TQ163",
+    "question": "Which of these is a common activity for visitors to the Thousand Islands?",
+    "options": [
+      "Mountain climbing",
+      "Desert hiking",
+      "Island hopping by boat",
+      "Surfing"
+    ],
+    "answer": "Island hopping by boat",
+    "storylineHintKey": "water_activity_1",
+    "fallbackHint": "Exploring the numerous islands by boat is a quintessential Thousand Islands experience."
+  },
+  {
+    "id": "TQ164",
+    "question": "The Thousand Islands region is known for its numerous what?",
+    "options": ["Skyscrapers", "Suspension bridges", "Lighthouses", "Subway systems"],
+    "answer": "Lighthouses",
+    "storylineHintKey": "lighthouse_legend_clue",
+    "fallbackHint": "Many historic lighthouses dot the islands, guiding ships through the treacherous waters."
+  },
+  {
+    "id": "TQ165",
+    "question": "What is the primary purpose of the Clayton Opera House?",
+    "options": [
+      "To host political debates",
+      "To serve as a movie theater",
+      "To present live performances",
+      "To function as a museum"
+    ],
+    "answer": "To present live performances",
+    "storylineHintKey": "local_culture_clue",
+    "fallbackHint": "The historic opera house is a vibrant venue for concerts, plays, and other cultural events."
+  },
+  {
+    "id": "TQ166",
+    "question": "What is the name of the organization that works to protect and conserve the natural environment of the Thousand Islands?",
+    "options": [
+      "The Nature Conservancy",
+      "The Sierra Club",
+      "The Thousand Islands Land Trust (TILT)",
+      "Greenpeace"
+    ],
+    "answer": "The Thousand Islands Land Trust (TILT)",
+    "storylineHintKey": "tilt_mission_1",
+    "fallbackHint": "TILT plays a crucial role in preserving the unique landscapes and habitats of the region."
+  },
+  {
+    "id": "TQ167",
+    "question": "What is the name of the bay on Wellesley Island known for its public beach and marina?",
+    "options": ["French Bay", "Fisher Bay", "Eel Bay", "Lake of the Isles"],
+    "answer": "Eel Bay",
+    "storylineHintKey": "eel_fishing_1",
+    "fallbackHint": "Eel Bay is a popular spot for swimming, boating, and fishing on Wellesley Island."
+  },
+  {
+    "id": "TQ168",
+    "question": "Which of these is a key ingredient in the original Thousand Island dressing?",
+    "options": ["Blue cheese", "Mayonnaise", "Anchovies", "Olive oil"],
+    "answer": "Mayonnaise",
+    "storylineHintKey": "dressing_origin_1",
+    "fallbackHint": "The original recipe is said to be based on mayonnaise, with various other ingredients added for flavor."
+  },
+  {
+    "id": "TQ169",
+    "question": "What is the name of the state park located on the US side of the Thousand Islands?",
+    "options": [
+      "Wellesley Island State Park",
+      "Letchworth State Park",
+      "Allegany State Park",
+      "Niagara Falls State Park"
+    ],
+    "answer": "Wellesley Island State Park",
+    "storylineHintKey": "minna_anthony_location_1",
+    "fallbackHint": "Wellesley Island State Park offers camping, hiking, and boating opportunities in the heart of the Thousand Islands."
+  },
+  {
+    "id": "TQ170",
+    "question": "The Thousand Islands region is a popular destination for what type of fishing?",
+    "options": [
+      "Ice fishing",
+      "Fly fishing",
+      "Deep sea fishing",
+      "Bass and pike fishing"
+    ],
+    "answer": "Bass and pike fishing",
+    "storylineHintKey": "fish_expert_clue",
+    "fallbackHint": "The river's diverse habitats make it an ideal location for catching a variety of freshwater game fish."
+  },
+  {
+    "id": "TQ171",
+    "question": "Which two countries does the Thousand Islands Bridge connect?",
+    "options": ["USA and Mexico", "USA and Canada", "Canada and Greenland", "USA and Cuba"],
+    "answer": "USA and Canada",
+    "storylineHintKey": "bridge_info_1",
+    "fallbackHint": "The bridge system is a major international crossing point between New York State and the province of Ontario."
+  },
+  {
+    "id": "TQ172",
+    "question": "What is the minimum number of living trees an island must have to be counted in the Thousand Islands?",
+    "options": ["One", "Two", "Five", "Ten"],
+    "answer": "Two",
+    "storylineHintKey": "island_count_1",
+    "fallbackHint": "To be officially recognized, an island must be above water year-round and have at least two living trees."
+  },
+  {
+    "id": "TQ173",
+    "question": "Who was the original owner of Singer Castle on Dark Island?",
+    "options": ["George Boldt", "William Waldorf Astor", "Frederick Bourne", "Andrew Carnegie"],
+    "answer": "Frederick Bourne",
+    "storylineHintKey": "singer_castle_1",
+    "fallbackHint": "Frederick Bourne, president of the Singer Sewing Machine Company, built the castle as a hunting lodge."
+  },
+  {
+    "id": "TQ174",
+    "question": "The Antique Boat Museum in Clayton is dedicated to preserving what type of boats?",
+    "options": ["Saltwater fishing boats", "Modern speedboats", "Freshwater wooden boats", "Viking longships"],
+    "answer": "Freshwater wooden boats",
+    "storylineHintKey": "boat_museum_1",
+    "fallbackHint": "The museum holds the largest collection of freshwater antique and classic boats in North America."
+  },
+  {
+    "id": "TQ175",
+    "question": "A 'River Rat' is a nickname for what type of person in the Thousand Islands?",
+    "options": ["A tourist", "A fisherman", "A local expert on the river", "A boat mechanic"],
+    "answer": "A local expert on the river",
+    "storylineHintKey": "river_rat_meaning_1",
+    "fallbackHint": "It's an affectionate term for someone with deep, firsthand knowledge of the St. Lawrence River."
+  },
+  {
+    "id": "TQ176",
+    "question": "Which Gilded Age hotelier introduced Thousand Island dressing to the world at his famous New York City hotel?",
+    "options": ["John Jacob Astor", "George Boldt", "Frederick Bourne", "William Waldorf Astor"],
+    "answer": "George Boldt",
+    "storylineHintKey": "dressing_origin_2",
+    "fallbackHint": "This hotel magnate, builder of a famous castle, made the local dressing a global sensation at the Waldorf-Astoria."
+  },
+  {
+    "id": "TQ177",
+    "question": "What is the name of the well-preserved, two-masted schooner shipwreck popular with divers near Kingston?",
+    "options": ["The Edmund Fitzgerald", "The Sir Robert Peel", "The Comet", "The Katie Eccles"],
+    "answer": "The Katie Eccles",
+    "storylineHintKey": "shipwreck_lore_1",
+    "fallbackHint": "This 19th-century schooner lies upright and intact, a ghostly destination for underwater explorers."
+  },
+  {
+    "id": "TQ178",
+    "question": "During the War of 1812, what was the primary strategic advantage of controlling the St. Lawrence River?",
+    "options": ["Access to fishing grounds", "Control of the supply line to the Great Lakes", "Scenic views for generals", "A place for naval parades"],
+    "answer": "Control of the supply line to the Great Lakes",
+    "storylineHintKey": "war_history_clue_2",
+    "fallbackHint": "The river was the main highway for moving troops and supplies, making it a critical military objective."
+  },
+  {
+    "id": "TQ179",
+    "question": "The architectural firm of G.W. & W.D. Hewitt was famously hired by which castle-builder in the region?",
+    "options": ["Frederick Bourne (Singer Castle)", "Charles Emery (Calumet Castle)", "George Boldt (Boldt Castle)", "Bill Johnston (His Hideout)"],
+    "answer": "George Boldt (Boldt Castle)",
+    "storylineHintKey": "architecture_clue_1",
+    "fallbackHint": "This prominent architectural firm was tasked with designing a massive Rhineland-style castle on Heart Island."
+  },
+  {
+    "id": "TQ180",
+    "question": "What invasive species is known for clarifying the river's water but also disrupting the food web?",
+    "options": ["Round Goby", "Asian Carp", "Zebra and Quagga Mussels", "Eurasian Watermilfoil"],
+    "answer": "Zebra and Quagga Mussels",
+    "storylineHintKey": "environmental_fact_1",
+    "fallbackHint": "These tiny, filter-feeding mollusks have had a massive and complex impact on the river's ecosystem since their arrival."
+  },
+  {
+    "id": "TQ181",
+    "question": "On a nautical chart, what does a 'Red, Right, Returning' rule of thumb mean for a boater?",
+    "options": ["Keep red buoys on your right when returning from sea", "Red buoys are on the right side of the river", "Always turn right at a red buoy", "Stop at all red buoys"],
+    "answer": "Keep red buoys on your right when returning from sea",
+    "storylineHintKey": "boating_safety_1",
+    "fallbackHint": "This fundamental rule of navigation helps boaters safely stay within marked channels."
+  },
+  {
+    "id": "TQ182",
+    "question": "What is the largest of the Thousand Islands?",
+    "options": ["Wellesley Island", "Grindstone Island", "Howe Island", "Wolfe Island"],
+    "answer": "Wolfe Island",
+    "storylineHintKey": "island_geography_2",
+    "fallbackHint": "Located on the Canadian side at the entrance to the river, this island is larger than all the other islands combined."
+  },
+  {
+    "id": "TQ183",
+    "question": "Which of these is NOT a real lighthouse in the Thousand Islands region?",
+    "options": ["Sunken Rock Lighthouse", "Cape Vincent Breakwater Light", "Tibbetts Point Lighthouse", "Alexandria's Flame"],
+    "answer": "Alexandria's Flame",
+    "storylineHintKey": "lighthouse_legend_2",
+    "fallbackHint": "While many beacons guide ships, one of these names is a figment of a storyteller's imagination."
+  },
+  {
+    "id": "TQ184",
+    "question": "What is the primary fish species targeted during the popular BASS Pro Tour on the St. Lawrence?",
+    "options": ["Muskellunge", "Northern Pike", "Smallmouth Bass", "Lake Trout"],
+    "answer": "Smallmouth Bass",
+    "storylineHintKey": "fishing_lore_1",
+    "fallbackHint": "The river is world-renowned for its population of these bronze-backed fighters, attracting major fishing tournaments."
+  },
+  {
+    "id": "TQ185",
+    "question": "The ghost of a young girl named Minnie is said to haunt which island, following a tragic winter accident?",
+    "options": ["Heart Island", "Dark Island", "Longue Vue Island", "Carleton Island"],
+    "answer": "Longue Vue Island",
+    "storylineHintKey": "ghost_story_1",
+    "fallbackHint": "They say the spirit of a girl who fell through the ice still wanders the shores of this private island."
+  },
+  {
+    "id": "TQ186",
+    "question": "What is a 'seiche' in the context of the St. Lawrence River and Great Lakes?",
+    "options": ["A type of sailing maneuver", "A sudden, large wave caused by wind and pressure changes", "A school of migrating eels", "A shallow, rocky area"],
+    "answer": "A sudden, large wave caused by wind and pressure changes",
+    "storylineHintKey": "environmental_fact_2",
+    "fallbackHint": "This phenomenon can cause the water level to rise and fall dramatically in a short period, like the water sloshing in a giant bathtub."
+  },
+  {
+    "id": "TQ187",
+    "question": "Which U.S. President famously visited the Thousand Islands in 1872, staying at the Crossmon House Hotel?",
+    "options": ["Abraham Lincoln", "Theodore Roosevelt", "Ulysses S. Grant", "Grover Cleveland"],
+    "answer": "Ulysses S. Grant",
+    "storylineHintKey": "famous_people_1",
+    "fallbackHint": "This Civil War general and president brought national attention to the region as a summer destination."
+  },
+  {
+    "id": "TQ188",
+    "question": "What does the term 'gunwale' refer to on a boat?",
+    "options": ["The boat's engine cover", "The anchor rope", "The upper edge of a boat's side", "The steering wheel"],
+    "answer": "The upper edge of a boat's side",
+    "storylineHintKey": "boating_safety_2",
+    "fallbackHint": "Knowing your boat's anatomy is key to being a true River Rat. It's pronounced 'gunnel'!"
+  },
+  {
+    "id": "TQ189",
+    "question": "In what town is the 'World's Shortest International Bridge' located, connecting two islands?",
+    "options": ["Clayton, NY", "Ivy Lea, ON", "Alexandria Bay, NY", "Gananoque, ON"],
+    "answer": "Ivy Lea, ON",
+    "storylineHintKey": "cross_border_culture_1",
+    "fallbackHint": "This whimsical tourist attraction, while on two Canadian islands, is a famous stop for tour boats near the international border."
+  },
+  {
+    "id": "TQ190",
+    "question": "What is the main difference between a 'Laker' and a 'Salty'?",
+    "options": ["The color of their hull", "Lakers are freshwater ships, Salties are ocean-going vessels", "Lakers only carry grain", "Salties are smaller"],
+    "answer": "Lakers are freshwater ships, Salties are ocean-going vessels",
+    "storylineHintKey": "shipping_history_1",
+    "fallbackHint": "Though they share the Seaway, these two types of ships are built differently for the waters they call home."
+  },
+  {
+    "id": "TQ191",
+    "question": "What is the common name for the flowering plant 'Impatiens capensis', whose jewel-like sap is a folk remedy for poison ivy?",
+    "options": ["Queen Anne's Lace", "Jewelweed", "Trillium", "Lady's Slipper"],
+    "answer": "Jewelweed",
+    "storylineHintKey": "wildlife_nature_1",
+    "fallbackHint": "This native plant often grows near poison ivy and is a useful piece of lore for any island explorer."
+  },
+  {
+    "id": "TQ192",
+    "question": "Which of these historic mansions was NOT located in the Thousand Islands?",
+    "options": ["Castle Rest", "The Breakers", "Calumet Castle", "Hopewell Hall"],
+    "answer": "The Breakers",
+    "storylineHintKey": "architecture_clue_2",
+    "fallbackHint": "While a famous Gilded Age mansion, this Vanderbilt 'cottage' is located in Newport, Rhode Island."
+  },
+  {
+    "id": "TQ193",
+    "question": "The 'Thousand Islands Land Trust' (TILT) hosts an annual community picnic on which of its protected properties?",
+    "options": ["Heart Island", "Grindstone Island", "Picton Island", "Zenda Farms"],
+    "answer": "Zenda Farms",
+    "storylineHintKey": "local_events_1",
+    "fallbackHint": "This event celebrates the conservation of the region's agricultural and natural landscapes."
+  },
+  {
+    "id": "TQ194",
+    "question": "What is the 'thermocline' that anglers search for in summer?",
+    "options": ["A type of fishing lure", "A steep cliff on the river bottom", "A layer where water temperature changes sharply", "A school of bait fish"],
+    "answer": "A layer where water temperature changes sharply",
+    "storylineHintKey": "fishing_lore_2",
+    "fallbackHint": "Predatory fish often hunt along this invisible temperature boundary in the river's depths."
+  },
+  {
+    "id": "TQ195",
+    "question": "The wreck of the 'America', a package freighter, is a popular scuba site near which Canadian city?",
+    "options": ["Kingston, ON", "Gananoque, ON", "Brockville, ON", "Cornwall, ON"],
+    "answer": "Kingston, ON",
+    "storylineHintKey": "shipwreck_lore_2",
+    "fallbackHint": "This large, intact wreck lies in the shipping channel, a ghostly reminder of the perils of river navigation."
+  },
+  {
+    "id": "TQ196",
+    "question": "If you find yourself stranded on a remote island, what is the FIRST thing you should do according to survival experts?",
+    "options": ["Build a fire", "Find a source of fresh water", "Build a shelter", "Signal for help"],
+    "answer": "Signal for help",
+    "storylineHintKey": "survival_scenario_1",
+    "fallbackHint": "While all are important, letting others know you're in trouble is the most critical first step in a busy waterway."
+  },
+  {
+    "id": "TQ197",
+    "question": "What is the name of the glass-bottom boat tour company that famously operates out of Alexandria Bay?",
+    "options": ["Clayton Cruiselines", "Rockport Boat Line", "Uncle Sam Boat Tours", "Gananoque Boat Line"],
+    "answer": "Uncle Sam Boat Tours",
+    "storylineHintKey": "river_cruises_1",
+    "fallbackHint": "This iconic American tour boat company is famous for its trips to Boldt Castle and views of the riverbed."
+  },
+  {
+    "id": "TQ198",
+    "question": "The 'Loyalist Parkway' on the Canadian side commemorates the settlement of which group of people?",
+    "options": ["French Fur Traders", "American Revolutionaries", "United Empire Loyalists fleeing the American Revolution", "Irish Immigrants"],
+    "answer": "United Empire Loyalists fleeing the American Revolution",
+    "storylineHintKey": "local_history_1",
+    "fallbackHint": "These settlers remained loyal to the British Crown and were granted land along the river in Canada."
+  },
+  {
+    "id": "TQ199",
+    "question": "What type of large mammal, once eliminated from the region, has made a successful comeback on Wellesley Island?",
+    "options": ["Black Bear", "Moose", "White-tailed Deer", "Bobcat"],
+    "answer": "White-tailed Deer",
+    "storylineHintKey": "wildlife_nature_2",
+    "fallbackHint": "These graceful animals can often be seen swimming between islands, a success story for conservation."
+  },
+  {
+    "id": "TQ200",
+    "question": "What is the 'golden hour' that photographers cherish in the Thousand Islands?",
+    "options": ["The hour right after sunrise and before sunset", "The hour at high noon", "The hour when the tour boats leave", "The first hour of a fishing tournament"],
+    "answer": "The hour right after sunrise and before sunset",
+    "storylineHintKey": "scenic_spots_1",
+    "fallbackHint": "This time of day bathes the islands in a warm, golden light, creating magical photo opportunities."
+  },
+  {
+    "id": "TQ201",
+    "question": "What does a green navigation buoy, or 'can,' signify in the main river channel?",
+    "options": ["The right side of the channel when heading upstream", "A swimming area", "The left side of the channel when heading upstream", "A shipwreck"],
+    "answer": "The left side of the channel when heading upstream",
+    "storylineHintKey": "boating_safety_3",
+    "fallbackHint": "Remembering 'Red, Right, Returning' also means green is on your left when you're heading away from the sea."
+  },
+  {
+    "id": "TQ202",
+    "question": "The 1000 Islands Tower on Hill Island, Canada offers views of which two countries?",
+    "options": ["USA and Mexico", "Canada and Greenland", "USA and Canada", "Canada and France"],
+    "answer": "USA and Canada",
+    "storylineHintKey": "scenic_spots_2",
+    "fallbackHint": "From its observation deck, you can see the intricate border and landscape of both nations at once."
+  },
+  {
+    "id": "TQ203",
+    "question": "Fort Wellington, a National Historic Site in Prescott, ON, was built to defend against what threat?",
+    "options": ["Pirates", "Vikings", "An American invasion during the War of 1812", "French fur traders"],
+    "answer": "An American invasion during the War of 1812",
+    "storylineHintKey": "war_history_clue_3",
+    "fallbackHint": "This fort played a crucial role in protecting the vital St. Lawrence supply route from American attacks."
+  },
+  {
+    "id": "TQ204",
+    "question": "What is 'pitch pine,' a tree species found on some islands, notable for?",
+    "options": ["Its sweet-smelling sap", "Its ability to grow on bare rock", "Its bright purple needles", "It's the tallest tree in the region"],
+    "answer": "Its ability to grow on bare rock",
+    "storylineHintKey": "wildlife_nature_3",
+    "fallbackHint": "This hardy tree is a true survivor, clinging to life in the thin, rocky soil where others cannot."
+  },
+  {
+    "id": "TQ205",
+    "question": "Which of these Thousand Islands castles is still a private summer home and not regularly open for public tours?",
+    "options": ["Boldt Castle", "Singer Castle", "Calumet Castle", "Jorstadt Castle"],
+    "answer": "Jorstadt Castle",
+    "storylineHintKey": "local_landmarks_1",
+    "fallbackHint": "While many castles are now museums, this one on Westminster Park remains a private residence."
+  },
+  {
+    "id": "TQ206",
+    "question": "On Canada Day (July 1st), where does the city of Kingston host its major fireworks display?",
+    "options": ["From Fort Henry", "In the downtown market square", "From a barge in the harbour", "On Wolfe Island"],
+    "answer": "From a barge in the harbour",
+    "storylineHintKey": "local_events_2",
+    "fallbackHint": "The waterfront provides a spectacular backdrop for the annual celebration of Canada's birthday."
+  },
+  {
+    "id": "TQ207",
+    "question": "What is the origin of the name 'Grindstone Island'?",
+    "options": ["It's shaped like a grindstone", "It was a place for sharpening tools", "From the high-quality sandstone once quarried there", "A family named Grindstone lived there"],
+    "answer": "From the high-quality sandstone once quarried there",
+    "storylineHintKey": "island_names_1",
+    "fallbackHint": "The island's very name speaks to its industrial past and the valuable rock taken from its quarries."
+  },
+  {
+    "id": "TQ208",
+    "question": "What is the primary danger of the 'shipping channel' for recreational boaters?",
+    "options": ["It has the strongest currents", "Large freighters that are fast, quiet, and cannot stop quickly", "It is the deepest part of the river", "It's where pirates hide"],
+    "answer": "Large freighters that are fast, quiet, and cannot stop quickly",
+    "storylineHintKey": "boating_safety_4",
+    "fallbackHint": "A wise River Rat gives these giants of the Seaway a very wide berth, as they are much faster than they appear."
+  },
+  {
+    "id": "TQ209",
+    "question": "Which of these is a popular local delicacy often found in Thousand Islands restaurants?",
+    "options": ["Pan-fried walleye", "Alaskan king crab", "Gumbo", "New England clam chowder"],
+    "answer": "Pan-fried walleye",
+    "storylineHintKey": "food_dining_1",
+    "fallbackHint": "Enjoying a freshly caught fish from the river is a classic culinary experience in the region."
+  },
+  {
+    "id": "TQ210",
+    "question": "What does the 'Blue Line' refer to in the context of Adirondack Park, south of the Thousand Islands?",
+    "options": ["A famous hiking trail", "A local bus route", "The boundary line of the park drawn on a map in 1892", "A river that flows into the St. Lawrence"],
+    "answer": "The boundary line of the park drawn on a map in 1892",
+    "storylineHintKey": "environmental_fact_3",
+    "fallbackHint": "The Frontenac Arch connects the islands to this massive, protected park, and its boundary is famously marked in blue ink."
+  },
+  {
+    "id": "TQ211",
+    "question": "What is the main purpose of the 'Sister Island Lighthouse'?",
+    "options": ["To mark a dangerous shoal", "To serve as a private residence", "To guide ships into a specific channel", "To be a tourist attraction only"],
+    "answer": "To guide ships into a specific channel",
+    "storylineHintKey": "lighthouse_legend_3",
+    "fallbackHint": "This light works in concert with others to create a safe passage through a tricky part of the river."
+  },
+  {
+    "id": "TQ212",
+    "question": "The 'Rideau Trail' is a long-distance trail that connects which two cities?",
+    "options": ["Toronto and Montreal", "Kingston and Ottawa", "Syracuse and Watertown", "Quebec City and Montreal"],
+    "answer": "Kingston and Ottawa",
+    "storylineHintKey": "recreation_1",
+    "fallbackHint": "This hiking trail roughly follows the route of the historic Rideau Canal system."
+  },
+  {
+    "id": "TQ213",
+    "question": "What is a 'gig,' in the context of the Antique Boat Museum?",
+    "options": ["A musical performance", "A type of fishing spear", "A light, fast boat, often for the owner of a larger yacht", "A special type of oar"],
+    "answer": "A light, fast boat, often for the owner of a larger yacht",
+    "storylineHintKey": "boating_history_1",
+    "fallbackHint": "These elegant 'tenders' were used to ferry guests and owners to and from their grand yachts."
+  },
+  {
+    "id": "TQ214",
+    "question": "The term 'archipelago' best describes what feature of the Thousand Islands?",
+    "options": ["A single large mountain", "A deep river canyon", "A large group or chain of islands", "A type of bridge"],
+    "answer": "A large group or chain of islands",
+    "storylineHintKey": "island_geography_3",
+    "fallbackHint": "This geographical term perfectly captures the essence of the region's scattered, numerous islands."
+  },
+  {
+    "id": "TQ215",
+    "question": "What is the primary architectural style of Boldt Castle?",
+    "options": ["Modernist", "Art Deco", "Rhineland Castle (Châteauesque)", "Victorian Gothic"],
+    "answer": "Rhineland Castle (Châteauesque)",
+    "storylineHintKey": "architecture_clue_3",
+    "fallbackHint": "George Boldt was inspired by the romantic, towered castles along the Rhine River in Germany."
+  },
+  {
+    "id": "TQ216",
+    "question": "If you are kayaking and see a large ship's wake approaching, what should you do?",
+    "options": ["Paddle away from it as fast as possible", "Turn your kayak parallel to the wave", "Stop paddling and wait", "Point the bow of your kayak directly into the wake"],
+    "answer": "Point the bow of your kayak directly into the wake",
+    "storylineHintKey": "boating_safety_5",
+    "fallbackHint": "Meeting a large wave head-on is the most stable and safest way to navigate it in a small craft."
+  },
+  {
+    "id": "TQ217",
+    "question": "The 'Diver's and Boater's Guide to the St. Lawrence River' is a publication by which local organization?",
+    "options": ["The US Coast Guard", "The Antique Boat Museum", "Save The River", "The Thousand Islands Land Trust"],
+    "answer": "Save The River",
+    "storylineHintKey": "conservation_1",
+    "fallbackHint": "This environmental group works to protect the river and provides resources for enjoying it safely."
+  },
+  {
+    "id": "TQ218",
+    "question": "What is the etymology of 'Canada,' a name deeply connected to the St. Lawrence River's history?",
+    "options": ["It's named after a British explorer", "It means 'Land of Snow' in French", "It comes from the Iroquoian word 'Kanata,' meaning village or settlement", "It's an acronym for the first provinces"],
+    "answer": "It comes from the Iroquoian word 'Kanata,' meaning village or settlement",
+    "storylineHintKey": "local_history_2",
+    "fallbackHint": "The name of the entire country has its roots in the Indigenous language spoken along this very river."
+  },
+  {
+    "id": "TQ219",
+    "question": "What famous Gilded Age family owned 'Hopewell Hall' on an island near Alexandria Bay?",
+    "options": ["The Rockefellers", "The Carnegies", "The Astors", "The Vanderbilts"],
+    "answer": "The Astors",
+    "storylineHintKey": "famous_people_2",
+    "fallbackHint": "This prominent New York family also established a grand summer estate in the Thousand Islands."
+  },
+  {
+    "id": "TQ220",
+    "question": "What does the marine signal of five short horn blasts from a ship indicate?",
+    "options": ["Hello!", "I am turning to the right", "I am in distress and need assistance", "Danger, or I do not understand your intentions"],
+    "answer": "Danger, or I do not understand your intentions",
+    "storylineHintKey": "boating_safety_6",
+    "fallbackHint": "Hearing this signal on the water is a clear sign to be alert and cautious, as another boater is uncertain or warning of a hazard."
+  },
+  {
+    "id": "TQ221",
+    "question": "What is the main visual difference between a Great Blue Heron and a Sandhill Crane?",
+    "options": ["Herons fly with their necks in an 'S' curve, cranes fly with necks straight", "Cranes are blue, herons are grey", "Herons have a red patch on their head", "Cranes live in the water, herons on land"],
+    "answer": "Herons fly with their necks in an 'S' curve, cranes fly with necks straight",
+    "storylineHintKey": "wildlife_nature_4",
+    "fallbackHint": "This key difference in flight profile is the easiest way to tell these two magnificent, long-legged birds apart."
+  },
+  {
+    "id": "TQ222",
+    "question": "The 'Frontenac' was a famous side-wheel steamboat. What was its ultimate fate?",
+    "options": ["It was converted to a museum", "It sank in a storm", "It was dismantled for scrap", "It was destroyed by fire at its dock"],
+    "answer": "It was destroyed by fire at its dock",
+    "storylineHintKey": "shipping_history_2",
+    "fallbackHint": "This grand vessel of the Gilded Age met a fiery end in 1907, a common fate for wooden steamboats."
+  },
+  {
+    "id": "TQ223",
+    "question": "What is the purpose of a 'breakwater' like the one at Cape Vincent, NY?",
+    "options": ["To create large waves for surfing", "To provide a fishing pier", "To protect a harbor or anchorage from waves", "To mark the international border"],
+    "answer": "To protect a harbor or anchorage from waves",
+    "storylineHintKey": "local_landmarks_2",
+    "fallbackHint": "These man-made barriers are essential for creating safe, calm waters for boats to moor."
+  },
+  {
+    "id": "TQ224",
+    "question": "Which of these is a traditional, non-motorized way to explore the narrow channels between islands?",
+    "options": ["A cruise ship", "A houseboat", "Kayaking or canoeing", "A high-speed ferry"],
+    "answer": "Kayaking or canoeing",
+    "storylineHintKey": "recreation_2",
+    "fallbackHint": "Paddling allows for a quiet, intimate experience with the river's nature and hidden beauty."
+  },
+  {
+    "id": "TQ225",
+    "question": "If your boat's engine fails, what is the most important piece of safety equipment to deploy to prevent drifting into danger?",
+    "options": ["Your radio", "A flare", "Your anchor", "Your life jacket"],
+    "answer": "Your anchor",
+    "storylineHintKey": "survival_scenario_2",
+    "fallbackHint": "Dropping an anchor immediately stops your boat from being pushed by wind or current into rocks or the shipping channel."
+  },
+  {
+    "id": "TQ226",
+    "question": "What architectural feature was planned for Boldt Castle's Power House that was never completed, leaving it silent?",
+    "options": ["A pipe organ", "A carillon of bells", "A drawbridge", "A water-powered clock"],
+    "answer": "A carillon of bells",
+    "storylineHintKey": "architecture_clue_4",
+    "fallbackHint": "The grand clock tower on the Power House was meant to ring out across the water with a chime of bells, but they were never installed."
+  },
+  {
+    "id": "TQ227",
+    "question": "On a boat, what does the term 'starboard' refer to?",
+    "options": ["The left side", "The right side", "The front", "The back"],
+    "answer": "The right side",
+    "storylineHintKey": "boating_safety_7",
+    "fallbackHint": "A simple trick for a River Rat: 'starboard' has an 'R', and so does 'right'."
+  },
+  {
+    "id": "TQ228",
+    "question": "What is the common name of the invasive fish, native to the Black and Caspian seas, that competes with native species for food?",
+    "options": ["Round Goby", "Piranha", "Snakehead", "Lionfish"],
+    "answer": "Round Goby",
+    "storylineHintKey": "environmental_fact_4",
+    "fallbackHint": "This small, bottom-dwelling invader arrived in ballast water and has had a significant impact on the river's ecosystem."
+  },
+  {
+    "id": "TQ229",
+    "question": "The 'Navy' group of islands was so named because they were set aside for veterans of which war?",
+    "options": ["The American Revolution", "The War of 1812", "The French and Indian War", "The Civil War"],
+    "answer": "The French and Indian War",
+    "storylineHintKey": "island_names_2",
+    "fallbackHint": "The British Crown granted these islands to loyal naval veterans for their service long before the American Revolution."
+  },
+  {
+    "id": "TQ230",
+    "question": "Which hotel, not on the river itself, played a crucial role in popularizing Thousand Island dressing?",
+    "options": ["The Plaza Hotel", "The Ritz-Carlton", "The Waldorf-Astoria Hotel", "The Savoy"],
+    "answer": "The Waldorf-Astoria Hotel",
+    "storylineHintKey": "food_dining_2",
+    "fallbackHint": "George Boldt, owner of Boldt Castle, introduced the dressing to the world at his famous New York City hotel."
+  },
+  {
+    "id": "TQ231",
+    "question": "What does the term 'abaft' mean on a boat?",
+    "options": ["Toward the front", "On the left side", "Toward the rear", "Above the deck"],
+    "answer": "Toward the rear",
+    "storylineHintKey": "boating_safety_8",
+    "fallbackHint": "Knowing your 'fore' from your 'aft' is day-one stuff for a true River Rat."
+  },
+  {
+    "id": "TQ232",
+    "question": "The Sunken Rock Lighthouse is known for being located where?",
+    "options": ["On a large island", "On the mainland", "On a tiny, dangerous shoal in the middle of the channel", "At the entrance to a bay"],
+    "answer": "On a tiny, dangerous shoal in the middle of the channel",
+    "storylineHintKey": "lighthouse_legend_4",
+    "fallbackHint": "This lighthouse is a stark warning, built directly on top of the hazard it marks for passing ships."
+  },
+  {
+    "id": "TQ233",
+    "question": "What is the purpose of a 'limber hole' in the frame of a wooden boat?",
+    "options": ["To hold a fishing rod", "To allow water to drain to the lowest point of the hull", "To tie a rope to", "A place for decoration"],
+    "answer": "To allow water to drain to the lowest point of the hull",
+    "storylineHintKey": "boating_history_2",
+    "fallbackHint": "These small but crucial holes prevent water from getting trapped in the boat's ribs, a key detail in classic boat building."
+  },
+  {
+    "id": "TQ234",
+    "question": "The 'Lake Fleet' group of islands is named after what?",
+    "options": ["A fleet of ghost ships", "A famous brand of boat", "The ships of the British fleet from the War of 1812", "A local fishing fleet"],
+    "answer": "The ships of the British fleet from the War of 1812",
+    "storylineHintKey": "war_history_clue_4",
+    "fallbackHint": "Many islands in this Canadian group are named after the warships that fought on the Great Lakes."
+  },
+  {
+    "id": "TQ235",
+    "question": "What is the primary sign of a 'no-wake zone' on the river?",
+    "options": ["A red flag on a dock", "A flashing light on an island", "A white buoy with orange markings and 'NO WAKE' text", "A loud siren"],
+    "answer": "A white buoy with orange markings and 'NO WAKE' text",
+    "storylineHintKey": "boating_safety_9",
+    "fallbackHint": "These buoys signal boaters to slow to idle speed to protect shorelines, docks, and other vessels from damaging wakes."
+  },
+  {
+    "id": "TQ236",
+    "question": "The construction of Singer Castle was overseen by which famous artist and designer?",
+    "options": ["Frank Lloyd Wright", "Louis Comfort Tiffany", "Ernest Flagg", "Stanford White"],
+    "answer": "Ernest Flagg",
+    "storylineHintKey": "architecture_clue_5",
+    "fallbackHint": "This notable American architect, known for the Singer Building in New York City, designed the castle on Dark Island."
+  },
+  {
+    "id": "TQ237",
+    "question": "What is the main purpose of the 'Save The River' organization?",
+    "options": ["To promote boat racing", "To restore old castles", "To advocate for the river's environmental protection", "To stock the river with fish"],
+    "answer": "To advocate for the river's environmental protection",
+    "storylineHintKey": "conservation_1",
+    "fallbackHint": "This group is a leading voice for the health of the St. Lawrence River ecosystem."
+  },
+  {
+    "id": "TQ238",
+    "question": "What is the term for a chart that shows water depths and navigational information?",
+    "options": ["A topographic map", "A globe", "An atlas", "A nautical chart"],
+    "answer": "A nautical chart",
+    "storylineHintKey": "boating_safety_10",
+    "fallbackHint": "No wise captain would dare navigate the river's maze without one of these detailed maps of the world beneath the waves."
+  },
+  {
+    "id": "TQ239",
+    "question": "The wreck of the 'Iroquoi', a passenger steamship, is a popular dive site. What was its fate?",
+    "options": ["It hit a shoal and sank", "It was burned by Bill Johnston", "It was intentionally scuttled", "It caught fire and was beached"],
+    "answer": "It caught fire and was beached",
+    "storylineHintKey": "shipwreck_lore_3",
+    "fallbackHint": "A fire broke out on this vessel, and its captain bravely beached it to save the passengers, leaving a wreck for future divers to explore."
+  },
+  {
+    "id": "TQ240",
+    "question": "If you are on a boat and hear one prolonged horn blast from another boat, what might it indicate?",
+    "options": ["They are in distress", "They are leaving a dock or a blind bend", "They are turning to the right", "They are stopping"],
+    "answer": "They are leaving a dock or a blind bend",
+    "storylineHintKey": "boating_safety_11",
+    "fallbackHint": "This is a common warning signal to alert other boaters of their presence when their view is obstructed."
+  },
+  {
+    "id": "TQ241",
+    "question": "The 'Thousand Islands National Park' was the first Canadian national park established where?",
+    "options": ["In the Rocky Mountains", "In the Maritimes", "East of the Rocky Mountains", "In the Arctic"],
+    "answer": "East of the Rocky Mountains",
+    "storylineHintKey": "environmental_fact_5",
+    "fallbackHint": "Established in 1904, this park was a pioneering conservation effort in Eastern Canada."
+  },
+  {
+    "id": "TQ242",
+    "question": "What does the term 'draft' refer to in boating?",
+    "options": ["The speed of the boat", "The height of the mast", "The depth of water a boat needs to float", "The wind direction"],
+    "answer": "The depth of water a boat needs to float",
+    "storylineHintKey": "boating_safety_12",
+    "fallbackHint": "Knowing your boat's draft is crucial for avoiding the river's many treacherous shoals."
+  },
+  {
+    "id": "TQ243",
+    "question": "The historic 'King's Highway 2' on the Canadian side is also known by what commemorative name?",
+    "options": ["The Seaway Trail", "The Loyalist Parkway", "The Heritage Highway", "The Queen's Way"],
+    "answer": "The Loyalist Parkway",
+    "storylineHintKey": "local_history_3",
+    "fallbackHint": "This scenic route follows the path of United Empire Loyalists who settled along the river after the American Revolution."
+  },
+  {
+    "id": "TQ244",
+    "question": "What is the name of the strait that separates Wolfe Island from the Canadian mainland?",
+    "options": ["The Bateau Channel", "The International Rift", "The Lost Channel", "The Grand Narrows"],
+    "answer": "The Bateau Channel",
+    "storylineHintKey": "island_geography_4",
+    "fallbackHint": "This channel is the main route for the ferry connecting the largest of the Thousand Islands to Kingston."
+  },
+  {
+    "id": "TQ245",
+    "question": "A 'bilge pump' is a critical piece of equipment on a boat for what purpose?",
+    "options": ["To play music", "To cool the engine", "To pump out unwanted water from inside the hull", "To inflate rafts"],
+    "answer": "To pump out unwanted water from inside the hull",
+    "storylineHintKey": "boating_safety_13",
+    "fallbackHint": "Every good River Rat makes sure this device is in working order before leaving the dock."
+  },
+  {
+    "id": "TQ246",
+    "question": "The 'Great Waterway' is a tourism region in Ontario that prominently features which river?",
+    "options": ["The Ottawa River", "The Hudson River", "The St. Lawrence River", "The Mississippi River"],
+    "answer": "The St. Lawrence River",
+    "storylineHintKey": "cross_border_culture_2",
+    "fallbackHint": "This branding highlights the river's central role in the history and culture of southeastern Ontario."
+  },
+  {
+    "id": "TQ247",
+    "question": "What is the common term for the front of a boat?",
+    "options": ["The stern", "The aft", "The bow", "The port"],
+    "answer": "The bow",
+    "storylineHintKey": "boating_safety_14",
+    "fallbackHint": "A true mariner always knows their bow from their stern."
+  },
+  {
+    "id": "TQ248",
+    "question": "In the early 20th century, what industry on Grindstone Island was known for its high-quality stone?",
+    "options": ["Diamond mining", "Granite quarrying", "Sandstone quarrying for grindstones", "Marble quarrying"],
+    "answer": "Sandstone quarrying for grindstones",
+    "storylineHintKey": "island_names_3",
+    "fallbackHint": "The island's name is a direct link to its past as a source of stone for sharpening tools."
+  },
+  {
+    "id": "TQ249",
+    "question": "The '4th of July' fireworks in Alexandria Bay are traditionally launched from where?",
+    "options": ["The top of Boldt Castle", "A barge in the middle of the river", "The Thousand Islands Bridge", "The town docks"],
+    "answer": "A barge in the middle of the river",
+    "storylineHintKey": "local_events_3",
+    "fallbackHint": "This allows for spectacular views and reflections on the water for the crowds gathered on both shores."
+  },
+  {
+    "id": "TQ250",
+    "question": "If your boat capsizes in the river, what is the safest thing to do if you can't get to shore?",
+    "options": ["Swim for the nearest island, no matter how far", "Try to climb on top of the overturned hull", "Tread water and wait for help", "Dive under the boat to stay out of the wind"],
+    "answer": "Try to climb on top of the overturned hull",
+    "storylineHintKey": "survival_scenario_3",
+    "fallbackHint": "Staying with your boat, even if it's upside down, makes you a much larger target for rescuers to spot."
+  },
+  {
+    "id": "TQ251",
+    "question": "What is the common name for the Double-crested bird, often seen drying its wings on buoys and islands?",
+    "options": ["Loon", "Cormorant", "Gull", "Puffin"],
+    "answer": "Cormorant",
+    "storylineHintKey": "wildlife_nature_5",
+    "fallbackHint": "These dark, prehistoric-looking birds lack waterproof feathers, so they must spread their wings to dry in the sun."
+  },
+  {
+    "id": "TQ252",
+    "question": "A 'cleat' on a dock or boat is used for what purpose?",
+    "options": ["A decorative ornament", "A step to get on board", "To securely tie a rope or line", "To hold a flag"],
+    "answer": "To securely tie a rope or line",
+    "storylineHintKey": "boating_safety_15",
+    "fallbackHint": "Knowing how to properly secure a line to this simple piece of hardware is a fundamental boating skill."
+  },
+  {
+    "id": "TQ253",
+    "question": "What is the main ingredient in the local delicacy known as 'fried cheese curds'?",
+    "options": ["Mozzarella", "Cheddar", "Swiss", "It's a special curd cheese"],
+    "answer": "It's a special curd cheese",
+    "storylineHintKey": "food_dining_3",
+    "fallbackHint": "This squeaky, fresh cheese is a regional favorite, especially when battered and fried."
+  },
+  {
+    "id": "TQ254",
+    "question": "The wreck of the 'Keystorm', a large steel freighter, lies near which lighthouse?",
+    "options": ["Rock Island Lighthouse", "Tibbetts Point Lighthouse", "Sunken Rock Lighthouse", "Sister Island Lighthouse"],
+    "answer": "Rock Island Lighthouse",
+    "storylineHintKey": "shipwreck_lore_4",
+    "fallbackHint": "This massive wreck is one of the most popular advanced scuba diving sites in the region, resting in the shadow of a historic light."
+  },
+  {
+    "id": "TQ255",
+    "question": "What is the primary difference between a 'bay' and a 'cove'?",
+    "options": ["There is no difference", "Bays are on the US side, coves on the Canadian", "A cove is a type of small, sheltered bay", "Bays have fresh water, coves have salt water"],
+    "answer": "A cove is a type of small, sheltered bay",
+    "storylineHintKey": "island_geography_5",
+    "fallbackHint": "River Rats know that the coziest, most protected anchorages are found in the river's many coves."
+  },
+  {
+    "id": "TQ256",
+    "question": "The firm of 'Lawlor & Son' in Clayton was famous for building what type of vessel?",
+    "options": ["Steam yachts", "Houseboats", "St. Lawrence Skiffs", "Sailboats"],
+    "answer": "St. Lawrence Skiffs",
+    "storylineHintKey": "boating_history_3",
+    "fallbackHint": "This historic boatbuilder was one of the premier creators of the elegant, iconic rowing boats of the Thousand Islands."
+  },
+  {
+    "id": "TQ257",
+    "question": "If you are on the river at night and see a boat with a red and a green light, what direction is it heading?",
+    "options": ["Away from you", "Towards you", "Parallel to you", "It is anchored"],
+    "answer": "Towards you",
+    "storylineHintKey": "boating_safety_16",
+    "fallbackHint": "Seeing both sidelights means the bow is pointed your way, a crucial piece of information for night navigation."
+  },
+  {
+    "id": "TQ258",
+    "question": "Which of these is a traditional French-Canadian dish you might find in restaurants on the Ontario side of the river?",
+    "options": ["Sushi", "Poutine", "Tacos", "Pizza"],
+    "answer": "Poutine",
+    "storylineHintKey": "cross_border_culture_3",
+    "fallbackHint": "This hearty dish of fries, cheese curds, and gravy is a beloved comfort food in Canada."
+  },
+  {
+    "id": "TQ259",
+    "question": "The 'Tom Thumb' is a tiny island with a single cottage. What is it famously right next to?",
+    "options": ["Boldt Castle", "Just Room Enough Island", "A shipping channel marker", "The Canadian-US border"],
+    "answer": "A shipping channel marker",
+    "storylineHintKey": "local_landmarks_3",
+    "fallbackHint": "The residents of this tiny island get a front-row seat to the massive freighters gliding by their window."
+  },
+  {
+    "id": "TQ260",
+    "question": "What does PFD stand for in boating safety terms?",
+    "options": ["Port-Facing Door", "Personal Flotation Device", "Power Fast-Drive", "Primary Fuel Depot"],
+    "answer": "Personal Flotation Device",
+    "storylineHintKey": "boating_safety_17",
+    "fallbackHint": "Also known as a life jacket, having enough of these on board isn't just a good idea—it's the law."
+  },
+  {
+    "id": "TQ261",
+    "question": "Which Thousand Islands castle has a bowling alley in one of its towers?",
+    "options": ["Boldt Castle", "Singer Castle", "Calumet Castle", "Jorstadt Castle"],
+    "answer": "Boldt Castle",
+    "storylineHintKey": "architecture_clue_6",
+    "fallbackHint": "The Alster Tower, or 'playhouse,' at Boldt Castle was designed with a two-lane bowling alley for the family's entertainment."
+  },
+  {
+    "id": "TQ262",
+    "question": "What is the common name for the plant 'Lythrum salicaria', a beautiful but highly invasive purple flower?",
+    "options": ["Purple Loosestrife", "Wild Iris", "Pickerelweed", "Purple Orchid"],
+    "answer": "Purple Loosestrife",
+    "storylineHintKey": "environmental_fact_6",
+    "fallbackHint": "While its vibrant purple spikes are pretty, this invasive plant chokes out native wetland vegetation."
+  },
+  {
+    "id": "TQ263",
+    "question": "In a survival scenario, which of these common island trees has inner bark that is edible?",
+    "options": ["Oak", "Pine", "Maple", "Cedar"],
+    "answer": "Pine",
+    "storylineHintKey": "survival_scenario_4",
+    "fallbackHint": "The soft inner bark of a pine tree is a source of emergency nourishment, a piece of old woodsman's lore."
+  },
+  {
+    "id": "TQ264",
+    "question": "What is the 'fathom' a unit of measurement for?",
+    "options": ["Speed", "Weight", "Length", "Depth"],
+    "answer": "Depth",
+    "storylineHintKey": "boating_history_4",
+    "fallbackHint": "This old nautical term, equal to six feet, is used to measure the depth of water."
+  },
+  {
+    "id": "TQ265",
+    "question": "The Canadian span of the Thousand Islands Bridge system lands on what island?",
+    "options": ["Wolfe Island", "Hill Island", "Howe Island", "Grindstone Island"],
+    "answer": "Hill Island",
+    "storylineHintKey": "island_geography_6",
+    "fallbackHint": "This island serves as the Canadian anchor for the bridge system and is home to the 1000 Islands Tower."
+  },
+  {
+    "id": "TQ266",
+    "question": "The ghost of a lone soldier is said to haunt which historic military site?",
+    "options": ["Fort Henry", "Sackets Harbor Battlefield", "Fort Wellington", "Carleton Island"],
+    "answer": "Fort Henry",
+    "storylineHintKey": "ghost_story_2",
+    "fallbackHint": "Visitors report seeing a lone, uniformed figure patrolling the ramparts of this Kingston fort, still on duty after all these years."
+  },
+  {
+    "id": "TQ267",
+    "question": "If you are trolling for fish, what are you doing?",
+    "options": ["Fishing from a dock", "Fishing with a net", "Fishing by dragging a lure or bait behind a moving boat", "Fishing with a spear"],
+    "answer": "Fishing by dragging a lure or bait behind a moving boat",
+    "storylineHintKey": "fishing_lore_3",
+    "fallbackHint": "This popular fishing technique is a great way to cover a lot of water in search of predatory fish like pike or walleye."
+  },
+  {
+    "id": "TQ268",
+    "question": "What is the primary role of the United States Coast Guard in the Thousand Islands?",
+    "options": ["To collect tolls", "To lead sightseeing tours", "Search and rescue, and law enforcement", "To operate the locks"],
+    "answer": "Search and rescue, and law enforcement",
+    "storylineHintKey": "boating_safety_18",
+    "fallbackHint": "The Coast Guard is the primary maritime authority for ensuring safety and enforcing regulations on the US side of the river."
+  },
+  {
+    "id": "TQ269",
+    "question": "Which of these is NOT a real, named shoal or reef in the Thousand Islands?",
+    "options": ["Sugar Island", "Bloodletter Island", "Fiddler's Elbow", "Mermaid Island"],
+    "answer": "Mermaid Island",
+    "storylineHintKey": "island_names_4",
+    "fallbackHint": "While many islands have colorful and historic names, one of these is purely from a fantasy tale."
+  },
+  {
+    "id": "TQ270",
+    "question": "What is the name of the narrow, winding channel that separates Wellesley Island from the US mainland?",
+    "options": ["Lake of the Isles", "The Narrows", "Eel Bay", "The American Channel"],
+    "answer": "Lake of the Isles",
+    "storylineHintKey": "island_geography_7",
+    "fallbackHint": "This beautiful, sheltered body of water feels like a separate lake but is actually a part of the river."
+  },
+  {
+    "id": "TQ271",
+    "question": "The 'port' side of a boat is which side when you are facing forward?",
+    "options": ["The right side", "The left side", "The front side", "The back side"],
+    "answer": "The left side",
+    "storylineHintKey": "boating_safety_19",
+    "fallbackHint": "An old sailor's trick: 'port' and 'left' both have four letters."
+  },
+  {
+    "id": "TQ272",
+    "question": "What is the term for the violent, swirling water often found downstream of a dam or rapids?",
+    "options": ["An eddy", "A backwater", "A boil", "A calm"],
+    "answer": "A boil",
+    "storylineHintKey": "environmental_fact_7",
+    "fallbackHint": "These turbulent upwellings are extremely dangerous for boaters and swimmers."
+  },
+  {
+    "id": "TQ273",
+    "question": "The very first international hockey game is said to have been played between teams from which two river cities?",
+    "options": ["Clayton and Gananoque", "Kingston and Cape Vincent", "Syracuse and Cornwall", "Kingston and Sackets Harbor"],
+    "answer": "Kingston and Sackets Harbor",
+    "storylineHintKey": "cross_border_culture_4",
+    "fallbackHint": "In the 1880s, teams from these two historic cities faced off on the frozen river, a classic Canadian-American rivalry."
+  },
+  {
+    "id": "TQ274",
+    "question": "What is the name of the grand Gilded Age hotel in Alexandria Bay that burned down in 1897?",
+    "options": ["The Frontenac", "The Crossmon House", "The Monticello", "The Thousand Island House"],
+    "answer": "The Crossmon House",
+    "storylineHintKey": "local_history_4",
+    "fallbackHint": "This famous hotel hosted President Ulysses S. Grant and was a center of social life before its fiery demise."
+  },
+  {
+    "id": "TQ275",
+    "question": "If your boat runs aground on a shoal, what is a common first step to try and get free?",
+    "options": ["Put the engine in full reverse", "Shift weight to the part of the boat that is still floating deepest", "Drop your anchor immediately", "Call for a helicopter"],
+    "answer": "Shift weight to the part of the boat that is still floating deepest",
+    "storylineHintKey": "survival_scenario_5",
+    "fallbackHint": "Moving passengers or heavy items can sometimes lift the grounded part of the hull just enough to float free."
+  },
+  {
+    "id": "TQ276",
+    "question": "In what year did the tanker 'NEPCO 140' spill over 300,000 gallons of crude oil, a major environmental disaster for the river?",
+    "options": ["1965", "1976", "1989", "2001"],
+    "answer": "1976",
+    "storylineHintKey": "nepco_spill_1",
+    "fallbackHint": "This infamous spill coated shorelines and wildlife, leading to a massive cleanup and new environmental regulations."
+  },
+  {
+    "id": "TQ277",
+    "question": "Which long-standing Clayton business is famous for its classic boat restorations and marine services?",
+    "options": ["Weldon's Hardware", "Chalk's Marine", "Reinman's Department Store", "The Clayton Shurfine"],
+    "answer": "Chalk's Marine",
+    "storylineHintKey": "local_business_1",
+    "fallbackHint": "For generations, this family-owned marina has been a cornerstone of the river's wooden boat community."
+  },
+  {
+    "id": "TQ278",
+    "question": "What rare atmospheric event can sometimes be seen from the Thousand Islands on clear nights with strong solar activity?",
+    "options": ["A solar eclipse", "A green flash at sunset", "The Aurora Borealis (Northern Lights)", "Ball lightning"],
+    "answer": "The Aurora Borealis (Northern Lights)",
+    "storylineHintKey": "celestial_event_1",
+    "fallbackHint": "When conditions are right, the northern sky dances with ethereal curtains of green and purple light."
+  },
+  {
+    "id": "TQ279",
+    "question": "What is the primary factor that causes the historic '100-year floods' and high water levels seen in recent years?",
+    "options": ["Increased local rainfall", "Melting glaciers in the Arctic", "High water levels in the Great Lakes basin", "Dam malfunctions"],
+    "answer": "High water levels in the Great Lakes basin",
+    "storylineHintKey": "historic_flood_1",
+    "fallbackHint": "The river is the drain for the entire Great Lakes system, so when the lakes are full, the river has nowhere else to go but up."
+  },
+  {
+    "id": "TQ280",
+    "question": "Which Alexandria Bay restaurant, a local institution for decades, is known for its riverside dining and classic American fare?",
+    "options": ["Coleman's Dock", "The Dancing Bull", "Cavallario's Steak and Seafood House", "The Admiral's Inn"],
+    "answer": "Cavallario's Steak and Seafood House",
+    "storylineHintKey": "local_business_2",
+    "fallbackHint": "This downtown restaurant has been a fixture for family dinners and special occasions for over 50 years."
+  },
+  {
+    "id": "TQ281",
+    "question": "What is 'ice-out,' a significant annual event for river residents?",
+    "options": ["A hockey tournament", "A polar bear plunge", "The day the river ice breaks up, signaling spring's arrival", "The first snowfall"],
+    "answer": "The day the river ice breaks up, signaling spring's arrival",
+    "storylineHintKey": "seasonal_event_1",
+    "fallbackHint": "This event marks the end of winter's grip and the start of the boating season, a day of celebration for all River Rats."
+  },
+  {
+    "id": "TQ282",
+    "question": "The 'Two-Nation Tour' offered by Uncle Sam Boat Tours is unique because it is the only tour that does what?",
+    "options": ["Serves both poutine and hot dogs", "Stops and lets passengers off at Boldt Castle", "Travels in a submarine", "Has two captains"],
+    "answer": "Stops and lets passengers off at Boldt Castle",
+    "storylineHintKey": "river_cruises_2",
+    "fallbackHint": "This specific tour includes admission and allows visitors to disembark and explore the famous castle on Heart Island."
+  },
+  {
+    "id": "TQ283",
+    "question": "The long-running waterfront restaurant 'Foxy's' in Fishers Landing is famous for which weekly event?",
+    "options": ["Monday Night Karaoke", "Tuesday Taco Night", "A Friday Fish Fry", "Sunday Brunch Buffet"],
+    "answer": "A Friday Fish Fry",
+    "storylineHintKey": "local_business_3",
+    "fallbackHint": "This beloved local spot is a go-to destination for its traditional, and very popular, Friday fish fry."
+  },
+  {
+    "id": "TQ284",
+    "question": "What is a 'winteriver,' a term used by hardy year-round residents?",
+    "options": ["A type of ice-fishing shack", "A special insulated boat", "A person who stays on the river through the winter", "A frozen cocktail"],
+    "answer": "A person who stays on the river through the winter",
+    "storylineHintKey": "cross_border_culture_5",
+    "fallbackHint": "It takes a special kind of person to endure the ice, snow, and isolation of a Thousand Islands winter."
+  },
+  {
+    "id": "TQ285",
+    "question": "What significant change did the 'NEPCO 140' oil spill in 1976 bring about for the St. Lawrence River?",
+    "options": ["It ended all commercial shipping", "It created a new national park", "It led to stricter navigation and environmental regulations", "It revealed a new shipwreck"],
+    "answer": "It led to stricter navigation and environmental regulations",
+    "storylineHintKey": "nepco_spill_1",
+    "fallbackHint": "This disaster was a wake-up call, prompting new rules to protect the river from future spills."
+  },
+  {
+    "id": "TQ286",
+    "question": "Which of these is NOT a real, named shoal or reef in the Thousand Islands?",
+    "options": ["The Frying Pan Shoal", "The Granite State Shoal", "The Pirate's Bane Reef", "Whiskey Island Shoal"],
+    "answer": "The Pirate's Bane Reef",
+    "storylineHintKey": "island_names_5",
+    "fallbackHint": "While many shoals have colorful names, one of these is purely the stuff of pirate fantasy."
+  },
+  {
+    "id": "TQ287",
+    "question": "What is the 'Plan 2014' often debated by shoreline residents?",
+    "options": ["A new bridge project", "A tourism marketing plan", "An international water-level regulation plan", "A plan to build a new castle"],
+    "answer": "An international water-level regulation plan",
+    "storylineHintKey": "historic_flood_1",
+    "fallbackHint": "This controversial plan by the IJC changed how water is released from the dam, impacting shoreline erosion and flooding."
+  },
+  {
+    "id": "TQ288",
+    "question": "Uncle Sam Boat Tours, an institution in Alexandria Bay since 1926, was started by which family?",
+    "options": ["The Boldt Family", "The Thomson Family", "The Johnston Family", "The Quenell Family"],
+    "answer": "The Thomson Family",
+    "storylineHintKey": "local_business_4",
+    "fallbackHint": "This company has been guiding visitors through the islands for nearly a century."
+  },
+  {
+    "id": "TQ289",
+    "question": "What is the 'Cape Vincent Breakwall,' a popular fishing spot, primarily made of?",
+    "options": ["Poured concrete", "Stacked granite blocks", "Wooden pilings", "Sunken ships"],
+    "answer": "Stacked granite blocks",
+    "storylineHintKey": "local_landmarks_4",
+    "fallbackHint": "This massive structure was built from huge blocks of stone to protect the harbor."
+  },
+  {
+    "id": "TQ290",
+    "question": "What celestial alignment caused the 'Great Blackout of 1965,' which was traced to a power relay near Niagara but affected the entire region?",
+    "options": ["A solar flare", "A meteor shower", "A full moon", "There was no celestial alignment"],
+    "answer": "There was no celestial alignment",
+    "storylineHintKey": "historical_event_1",
+    "fallbackHint": "This massive power failure was caused by a simple, incorrectly set safety relay, a purely man-made cascade of errors."
+  },
+  {
+    "id": "TQ291",
+    "question": "A 'thermocline bar' is a piece of fishing equipment used to do what?",
+    "options": ["Measure water temperature at different depths", "Attract fish with sound", "Weigh a fish accurately", "Unhook a fish safely"],
+    "answer": "Measure water temperature at different depths",
+    "storylineHintKey": "fishing_lore_4",
+    "fallbackHint": "Anglers use this tool to find the 'thermocline,' a layer where temperature changes, attracting baitfish and predators."
+  },
+  {
+    "id": "TQ292",
+    "question": "What must all boaters operating in Canadian waters have on board, which is not required in the U.S.?",
+    "options": ["A valid passport", "A Canadian flag", "A Pleasure Craft Operator Card (PCOC)", "A serving of poutine"],
+    "answer": "A Pleasure Craft Operator Card (PCOC)",
+    "storylineHintKey": "cross_border_culture_6",
+    "fallbackHint": "When you cross the invisible line, you need to have this Canadian-mandated boating license."
+  },
+  {
+    "id": "TQ293",
+    "question": "The massive ice storm of 1998 was devastating because it consisted mainly of what?",
+    "options": ["Heavy snow and high winds", "Extremely cold temperatures", "Weeks of freezing rain", "A sudden, deep freeze"],
+    "answer": "Weeks of freezing rain",
+    "storylineHintKey": "historical_event_2",
+    "fallbackHint": "The prolonged freezing rain coated everything in a thick layer of ice, toppling trees and power lines for weeks."
+  },
+  {
+    "id": "TQ294",
+    "question": "If you see a boat flying an 'Alpha' flag (a blue and white swallow-tailed flag), what does it signify?",
+    "options": ["The captain is an Admiral", "The boat is for sale", "There is a diver in the water", "They are out of fuel"],
+    "answer": "There is a diver in the water",
+    "storylineHintKey": "boating_safety_20",
+    "fallbackHint": "This international signal flag means 'I have a diver down; keep well clear at slow speed.'"
+  },
+  {
+    "id": "TQ295",
+    "question": "What is the 'Mailboat,' such as the one that serves the Summerland Group of islands?",
+    "options": ["A high-speed ferry", "A floating post office", "A small, private vessel contracted to deliver mail", "A boat that only delivers packages"],
+    "answer": "A small, private vessel contracted to deliver mail",
+    "storylineHintKey": "local_culture_2",
+    "fallbackHint": "For many islanders without road access, these mailboats are their primary link to the mainland for letters and supplies."
+  },
+  {
+    "id": "TQ296",
+    "question": "What is 'The Narrows,' a section of the river near Wellesley Island?",
+    "options": ["The shallowest part of the river", "A particularly tight and scenic passage", "A famous fishing spot", "A large, open bay"],
+    "answer": "A particularly tight and scenic passage",
+    "storylineHintKey": "island_geography_8",
+    "fallbackHint": "This area is known for its beautiful cottages and the narrow, winding channel that boaters must navigate carefully."
+  },
+  {
+    "id": "TQ297",
+    "question": "A 'Secchi' disk is a simple tool used by scientists at TIBS to measure what?",
+    "options": ["Water temperature", "Water clarity", "Water depth", "Water current speed"],
+    "answer": "Water clarity",
+    "storylineHintKey": "conservation_2",
+    "fallbackHint": "This black and white disk is lowered into the water to determine how far down light can penetrate, a key indicator of ecosystem health."
+  },
+  {
+    "id": "TQ298",
+    "question": "What is the 'C-Way' program, a point of pride for the Canadian Coast Guard Auxiliary?",
+    "options": ["A water taxi service", "A marine weather broadcast", "A courtesy vessel safety check program", "A youth sailing school"],
+    "answer": "A courtesy vessel safety check program",
+    "storylineHintKey": "boating_safety_21",
+    "fallbackHint": "Volunteers will inspect your boat for free to ensure you have all the required safety equipment on board."
+  },
+  {
+    "id": "TQ299",
+    "question": "In the historic photo of President Grant's visit in 1872, what is he famously doing at the Crossmon House hotel?",
+    "options": ["Fishing from the dock", "Giving a speech", "Playing cards with locals", "Unfurling a large American flag"],
+    "answer": "Fishing from the dock",
+    "storylineHintKey": "famous_people_3",
+    "fallbackHint": "The iconic image of the president relaxing and fishing helped cement the region's status as a premier vacation spot."
+  },
+  {
+    "id": "TQ300",
+    "question": "What does it mean if a river channel is marked with both red and green buoys (bifurcation buoy)?",
+    "options": ["The channel is closed", "Danger on both sides", "The preferred channel is indicated by the top color", "The water is very deep"],
+    "answer": "The preferred channel is indicated by the top color",
+    "storylineHintKey": "boating_safety_22",
+    "fallbackHint": "This special buoy marks where a channel splits. If the top band is green, the primary channel is to the right (following 'Red, Right, Returning')."
+  }
+]
