@@ -4,9 +4,9 @@ import type {Config} from 'tailwindcss';
 export default {
   darkMode: ['class'],
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -49,23 +49,6 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
-        },
-        sidebar: {
-          DEFAULT: 'hsl(var(--sidebar-background))',
-          foreground: 'hsl(var(--sidebar-foreground))',
-          primary: 'hsl(var(--sidebar-primary))',
-          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-          accent: 'hsl(var(--sidebar-accent))',
-          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-          border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))',
-        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -89,54 +72,10 @@ export default {
             height: '0',
           },
         },
-        fadeIn: {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
-        },
-        slideUp: {
-          from: { opacity: '0', transform: 'translateY(20px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
-        },
-        'pulse-and-rotate': {
-          '0%, 100%': {
-            opacity: '1',
-            transform: 'rotate(0deg) scale(1)',
-          },
-          '12.5%': {
-            opacity: '0.5',
-            transform: 'scale(0.95)',
-          },
-          '25%': {
-            opacity: '1',
-            transform: 'scale(1)',
-          },
-          '37.5%': {
-            opacity: '0.5',
-            transform: 'scale(0.95)',
-          },
-          '50%': {
-            opacity: '1',
-            transform: 'scale(1)',
-          },
-          '62.5%': {
-            opacity: '0.5',
-            transform: 'scale(0.95)',
-          },
-          '75%': {
-            opacity: '1',
-            transform: 'scale(1)',
-          },
-          '90%': {
-            transform: 'rotate(360deg) scale(1)',
-          },
-        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'fadeIn': 'fadeIn 0.5s ease-in-out',
-        'slideUp': 'slideUp 0.5s ease-in-out',
-        'pulse-and-rotate': 'pulse-and-rotate 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },

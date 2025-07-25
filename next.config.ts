@@ -2,12 +2,6 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  typescript: {
-    // ignoreBuildErrors: true, // Removed
-  },
-  eslint: {
-    // ignoreDuringBuilds: true, // Removed
-  },
   images: {
     remotePatterns: [
       {
@@ -30,11 +24,6 @@ const nextConfig: NextConfig = {
       }
     ],
   },
-  allowedDevOrigins: [
-      "6000-firebase-studio-1749524487777.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev"
-  ]
 };
 
 export default nextConfig;
-
-    
