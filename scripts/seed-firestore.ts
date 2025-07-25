@@ -7,7 +7,7 @@
 
 import { db } from '@/lib/firebase';
 import { collection, getDocs, doc, setDoc, query, deleteDoc } from 'firebase/firestore';
-import triviaQuestions from '../data/trivia_questions.json';
+import triviaQuestions from './data/trivia_questions.json';
 
 const COLLECTION_NAME = 'triviaQuestions';
 
